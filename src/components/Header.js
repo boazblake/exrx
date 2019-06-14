@@ -1,53 +1,31 @@
 import m from 'mithril'
 import Hamburger from './Hamburger.js'
-import { animateChildrenLimitsEntrance, animateChildrenLimitsExit, animate } from '../utils/animations.js'
+import { animate } from '../utils/index.js'
 
-
-const Selector = {
-  onbeforeremove: animateChildrenLimitsExit,
-  view: ({ attrs: { model } }) =>
-    m(
-      '.limits',
-      model.limits.map((limit, idx) =>
-        m(
-          'button.btn.limit',
-          {
-            oncreate: animateChildrenLimitsEntrance(idx),
-            onclick: () => {
-              model.state.limit = limit
-              model.state.showLimits = false
-            },
-            key: idx,
+const ProgressBar = () => {
+  return {
+    view: ({
+      attrs: {
+        mdl: {
+          state: {
+            isLoading,
+            loadingProgress: { value, max },
           },
-          limit
-        )
-      )
-    ),
-}
-
-const ChangeLimits = {
-  view: ({ attrs: { model } }) =>
-    m('.changeLimits', [
-      m(
-        'button.changeLimitBtn',
-        {
-          onclick: () => model.toggleLimits(model),
         },
-        'Change Limit'
-      ),
-      model.state.showLimits && m(Selector, { model }),
-    ]),
+      },
+    }) => isLoading() && m('.progressbar', m('progress', { max, value })),
+  }
 }
 
 const Header = {
   oncreate: animate('slideDown'),
-  view: ({ attrs: { model } }) =>
+  view: ({ attrs: { mdl } }) =>
     m(
       'header.header',
       {
         id: 'header',
       },
-      [ m(Hamburger, { model }), m(ChangeLimits, { model }) ]
+      [m(Hamburger, { mdl }), m(ProgressBar, { mdl })]
     ),
 }
 

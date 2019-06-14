@@ -18,12 +18,12 @@ const Tab = ({ attrs: { key } }) => {
   }
 }
 
-const Sidebar = ({ attrs: { model } }) => {
-  let tabs = Object.keys(model.reqs.urls)
+const Sidebar = ({ attrs: { mdl } }) => {
+  let tabs = mdl.routes
 
   return {
     oncreate: animateSidebarEntrance,
-    view: ({ attrs: { model } }) =>
+    view: ({ attrs: { mdl } }) =>
       m(
         'aside.sidebar slide-left',
         {
@@ -32,7 +32,7 @@ const Sidebar = ({ attrs: { model } }) => {
         tabs.map((tab, idx) =>
           m(Tab, {
             key: idx,
-            active: model.state.route == tab,
+            active: mdl.state.route == tab,
             tab,
           })
         )

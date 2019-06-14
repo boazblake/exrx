@@ -5,7 +5,7 @@ import Sidebar from './Sidebar.js'
 import Modal from './Modal.js'
 import Body from './Body.js'
 
-const Layout = ({ attrs: { model } }) => {
+const Layout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
@@ -15,12 +15,14 @@ const Layout = ({ attrs: { model } }) => {
         },
         children
           ? [
-            m(Header, { model }),
-            model.state.profile == 'phone'
-              ? model.state.tabsShowing ? m(Modal, m(Sidebar, { model })) : null
-              : m(Sidebar, { model }),
-            m(Body, { model, children}),
-            m(Footer, { model }),
+            m(Header, { mdl }),
+            mdl.state.profile == 'phone'
+              ? mdl.state.showNav()
+                ? m(Modal, m(Sidebar, { mdl }))
+                : null
+              : m(Sidebar, { mdl }),
+            m(Body, { mdl, children }),
+            m(Footer, { mdl }),
           ]
           : []
       ),

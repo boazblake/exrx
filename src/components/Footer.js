@@ -1,14 +1,16 @@
 import m from 'mithril'
-import { animate, animateChildrenLimitsEntrance } from '../utils/animations.js'
-
-
+import { animate, animateChildrenLimitsEntrance } from '../utils/index.js'
 const Footer = {
   oncreate: animate('slideUp'),
-  view: () => m('footer.footer', {
-    oncreate:animateChildrenLimitsEntrance, id: 'footer',
-  },
-  'content served from https://jsonplaceholder.typicode.com',
-  ),
+  view: () =>
+    m(
+      'footer.footer',
+      {
+        oncreate: animateChildrenLimitsEntrance,
+        id: 'footer',
+      },
+      'content served from NCI Clinical Trials Search API'
+    ),
 }
 
 export default Footer

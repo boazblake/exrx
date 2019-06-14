@@ -1,39 +1,90 @@
-const routes = ['/posts', '/comments', '/albums', '/photos', '/todos', '/users']
+import Stream from 'mithril-stream'
+import Task from 'data.task'
+const routes = [
+  '/home',
+  '/clinical-trials',
+  '/interventions',
+  '/diseases',
+  '/terms',
+]
 
-const url = item => (start, limit) => `https://jsonplaceholder.typicode.com${item}?_start=${start}&_limit=${limit}`
-
-const urls = routes.reduce((req, item) => {
-  req[item] = url(item)
-  return req
-}, {})
-
-const http = model => url => route => m
-  .request({
-    url,
-    method: 'GET',
-    extract: xhr => {
-      model.data[route].limit = parseInt(xhr.getResponseHeader('x-total-count'))
-      return JSON.parse(xhr.responseText)
-    },
-  })
-  .then(data => {
-    model.data[route].data = model.data[route].data.concat(data)
-    return model
-  })
-
-const reqs = {
-  urls,
-  http,
+function onProgress(e) {
+  if (e.lengthComputable) {
+    model.state.loadingProgress.max = e.total
+    model.state.loadingProgress.value = e.loaded
+    m.redraw()
+  }
 }
+
+function onLoad(e) {
+  model.state.isLoading(true)
+  return false
+}
+
+function onLoadStart(e) {
+  console.log('onLoadStart', e)
+  return false
+}
+function onLoadEnd(e) {
+  model.state.isLoading(false)
+
+  console.log('onLoadEnd', e)
+  return false
+}
+
+const xhrProgress = {
+  config: (xhr) => {
+    console.log('xhr', xhr)
+    xhr.onprogress = onProgress
+    xhr.onload = onLoad
+    xhr.onloadstart = onLoadStart
+    xhr.onloadend = onLoadEnd
+  },
+}
+
+const _task = (url) => (args) =>
+  new Task((rej, res) =>
+    m.request(url, { ...args, ...xhrProgress }).then(res, rej)
+  )
+
+const getTask = (url) => (args) => {
+  return _task(url)({
+    params: { ...args },
+    method: 'GET',
+  })
+}
+
+const postTask = (url) => (args) => _task(url)({ ...args, method: 'POST' })
+const putTask = (url) => (args) => _task(url)({ ...args, method: 'PUT' })
+
+const http = {
+  getTask,
+  postTask,
+  putTask,
+}
+
+export default http
 
 export const model = {
   routes,
-  reqs,
-  limits: [ 30, 40, 50, 60, 70, 80, 90, 100 ],
+  http,
+  limits: [30, 40, 50, 60, 70, 80, 90, 100],
   data: {},
-  state: { url: '', route: '', scrollPos: 1, limit: 30, profile: '', tabsShowing: false, showLimits: false },
-  toggleLimits: model =>
-    model.state.showLimits = !model.state.showLimits,
-  showTabs: model =>
-    model.state.tabsShowing = !model.state.tabsShowing,
+  state: {
+    loadingProgress: {
+      max: 0,
+      value: 0,
+    },
+    isLoading: Stream(false),
+    url: '',
+    route: '',
+    scrollPos: 1,
+    limit: 30,
+    profile: '',
+    showLimits: Stream(false),
+    showNavigation: Stream(false),
+    showNav: Stream(false),
+  },
+  toggleLimits: (mdl) => mdl.state.showLimits(!mdl.state.showLimits()),
+  showTabs: (mdl) => mdl.state.showNav(!mdl.state.showNav()),
 }
