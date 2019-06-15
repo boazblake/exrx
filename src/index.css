@@ -1,9 +1,9 @@
 /* index.css */
-@import url('https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,900');
+@import url("https://fonts.googleapis.com/css?family=Montserrat+Alternates:400,900");
 
 * {
   box-sizing: border-box;
-  font-family: 'Montserrat+Alternatives', sans-serif;
+  font-family: "Montserrat+Alternatives", sans-serif;
   font-size: 16px;
 }
 
@@ -72,7 +72,7 @@ html {
   height: 100vh;
   min-width: 400px;
   min-height: 800px;
-  background: rgba(20, 29, 37, .9);
+  background: rgba(20, 29, 37, 0.9);
   z-index: 1;
   padding: 30px;
   display: flex;
@@ -80,7 +80,7 @@ html {
   justify-content: flex-start;
   line-height: 5rem;
   align-content: flex-start;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 #footer {
@@ -98,9 +98,10 @@ html {
   display: flex;
   flex-grow: 1;
   margin: 10px auto;
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   width: 60vw;
   min-width: 280px;
+  cursor: pointer;
 
   &:hover {
     border: 1.5px dashed #2980b9;
@@ -112,15 +113,15 @@ html {
   }
 
   .photo {
-    h1:{
+    h1: {
       padding: 4px;
       flex: 3;
-      left:auto;
+      left: auto;
     }
 
     img {
-    max-width: 150px;
-    min-width: 150px;
+      max-width: 150px;
+      min-width: 150px;
     }
   }
 
@@ -142,7 +143,7 @@ html {
   font-size: 3rem;
   color: white;
   letter-spacing: 1px;
-  transition: .2s;
+  transition: 0.2s;
 
   &:hover {
     color: #2980b9;
@@ -191,7 +192,7 @@ html {
   border-radius: 5px;
   width: 200px;
   height: 40px;
-  transition-duration: .2s;
+  transition-duration: 0.2s;
   letter-spacing: 1px;
 
   &:hover {
@@ -223,7 +224,7 @@ html {
   color: rgba(20, 29, 37, 1);
   background-color: white;
   letter-spacing: 1px;
-  transition: .5s;
+  transition: 0.5s;
 
   &:hover {
     box-shadow: 0px 1px 2px 0px rgba(20, 29, 37, 0.2);
@@ -251,6 +252,11 @@ html {
   margin-left: auto;
 }
 
+.pre {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
 /* Media Qs */
 
 @media (min-width: 668px) {
@@ -261,7 +267,7 @@ html {
   #layout {
     height: 100vh;
     display: grid;
-    grid-template-columns: .1fr 3fr 1fr;
+    grid-template-columns: 0.1fr 3fr 1fr;
     grid-gap: 10px;
     grid-template-areas: ". header header" "sidebar content content" "footer footer footer";
   }
@@ -287,7 +293,7 @@ html {
     flex-flow: column;
     justify-content: flex-start;
     align-content: flex-start;
-    transition: .2s;
+    transition: 0.2s;
   }
 
   .grid-item {

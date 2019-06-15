@@ -1,6 +1,26 @@
 import m from 'mithril'
-import { IsLoading } from '../utils'
+import { IsLoading, animateComponentEntrance } from '../utils'
 import { map, prop, pickAll } from 'ramda'
+
+const Trial = () => {
+  let showDescription = false
+  return {
+    view: ({
+      attrs: {
+        trial: { official_title, start_date, detail_description },
+      },
+    }) =>
+      m(
+        '.grid-item.row',
+        { onclick: () => (showDescription = !showDescription) },
+        [
+          m('h1.left', official_title),
+          m('p.right', 'Start Date', start_date),
+          showDescription && m('.row', m('pre.pre', detail_description)),
+        ]
+      ),
+  }
+}
 
 const ClinicalTrials = () => {
   const state = { error: {}, data: undefined }
@@ -31,8 +51,18 @@ const ClinicalTrials = () => {
         },
       },
     }) =>
-      m('.clinical-trials', 'CLINICAL TRIALS', [
-        state.data && m('code', JSON.stringify(state, null, 2)),
+      m('section.component.clinical-trials', [
+        state.data &&
+          m(
+            '.trials',
+            state.data.map((trial, key) =>
+              m(Trial, {
+                oncreate: animateComponentEntrance(key),
+                key,
+                trial,
+              })
+            )
+          ),
         isLoading() && IsLoading,
       ]),
   }
