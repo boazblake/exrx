@@ -1,5 +1,6 @@
 import m from 'mithril'
 import Hamburger from './Hamburger.js'
+import DropDown from './DropDown.js'
 import { animate } from '../utils/index.js'
 
 const ProgressBar = () => {
@@ -26,7 +27,7 @@ const Header = {
       {
         id: 'header',
       },
-      [m(Hamburger, { mdl }), m(ProgressBar, { mdl })]
+      [m(Hamburger, { mdl }), m(ProgressBar, { mdl }), m(DropDown, { mdl })]
     ),
 }
 

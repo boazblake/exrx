@@ -25,7 +25,7 @@ const Selector = {
     ),
 }
 
-const ChangeLimits = {
+const DropDown = {
   view: ({ attrs: { mdl } }) =>
     m('.changeLimits', [
       m(
@@ -39,4 +39,4 @@ const ChangeLimits = {
     ]),
 }
 
-export default ChangeLimits
+export default DropDown

@@ -1,6 +1,9 @@
 import m from 'mithril'
-import { IsLoading, animateComponentEntrance } from '../utils'
-import { map, prop, pickAll } from 'ramda'
+import { IsLoading, animateComponentEntrance, log } from '../utils'
+import { map, pickAll, lensProp, over } from 'ramda'
+import Button from '../components/Button.js'
+
+const trialLens = lensProp('trials')
 
 const Trial = () => {
   let showDescription = false
@@ -15,54 +18,71 @@ const Trial = () => {
         { onclick: () => (showDescription = !showDescription) },
         [
           m('h1.left', official_title),
-          m('p.right', 'Start Date', start_date),
+          m('p.right', 'Start Date: ', m('pre', start_date)),
           showDescription && m('.row', m('pre.pre', detail_description)),
         ]
       ),
   }
 }
 
-const ClinicalTrials = () => {
-  const state = { error: {}, data: undefined }
+const ClinicalTrials = ({ attrs: { mdl } }) => {
+  const state = { error: {}, data: undefined, from: 1, size: 10, total: 0 }
   const onError = (error) => (state.error = error)
-  const onSuccess = (data) => (state.data = data)
+  const onSuccess = ({ trials, total }) => {
+    state.data = trials
+    state.from = state.data.length++
+    state.size = mdl.state.limit
+    state.total = total
+  }
 
-  const onLoad = (http) => {
+  const getTrialData = pickAll([
+    'official_title',
+    'detail_description',
+    'start_date',
+  ])
+
+  const fetchData = (http) =>
     http
       .getTask('https://clinicaltrialsapi.cancer.gov/v1/clinical-trials')({
-        from: 1,
-        size: 10,
+        from: state.from,
+        size: state.size,
       })
-      .map(prop('trials'))
-      .map(map(pickAll(['official_title', 'detail_description', 'start_date'])))
+      .map(over(trialLens, map(getTrialData)))
+      .map(log('wtf'))
+
       .fork(onError, onSuccess)
-  }
 
   return {
     oninit: ({
       attrs: {
         mdl: { http },
       },
-    }) => onLoad(http),
+    }) => fetchData(http),
     view: ({
       attrs: {
         mdl: {
-          state: { isLoading },
+          http,
+          state: { isLoading, limit },
         },
       },
     }) =>
       m('section.component.clinical-trials', [
         state.data &&
-          m(
-            '.trials',
+          m('.trials', [
             state.data.map((trial, key) =>
               m(Trial, {
                 oncreate: animateComponentEntrance(key),
                 key,
                 trial,
               })
-            )
-          ),
+            ),
+            m('.actions', [
+              m(Button, {
+                action: () => fetchData(http),
+                label: `Load Next ${limit} of ${state.total}`,
+              }),
+            ]),
+          ]),
         isLoading() && IsLoading,
       ]),
   }
