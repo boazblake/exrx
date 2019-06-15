@@ -257,6 +257,21 @@ html {
   white-space: pre-wrap;
 }
 
+.progressBar {
+  width: 100%;
+}
+
+.progress {
+  width: 80%;
+  height: 1.5rem;
+  text-align: center;
+  color: #2980b9;
+  background-image: white;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 /* Media Qs */
 
 @media (min-width: 668px) {
