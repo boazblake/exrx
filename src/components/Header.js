@@ -8,12 +8,12 @@ const ProgressBar = () => {
       attrs: {
         mdl: {
           state: {
-            isLoading,
+            // isLoading,
             loadingProgress: { value, max },
           },
         },
       },
-    }) => isLoading() && m('.progressbar', m('progress', { max, value })),
+    }) => m('.progressbar', m('progress', { max, value })),
   }
 }
 

@@ -1,6 +1,6 @@
 import m from 'mithril'
 import Layout from './components/Layout.js'
-import { infiniteScroll, animate } from './utils/index.js'
+import { animate } from './utils/index.js'
 import Home from './Pages/Home.js'
 import ClinicalTrials from './Pages/ClinicalTrials.js'
 

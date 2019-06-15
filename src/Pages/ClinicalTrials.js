@@ -1,18 +1,22 @@
 import m from 'mithril'
 import { IsLoading } from '../utils'
+import { map, prop, pickAll } from 'ramda'
 
-const ClinicalTrials = (v) => {
+const ClinicalTrials = () => {
   const state = { error: {}, data: undefined }
   const onError = (error) => (state.error = error)
   const onSuccess = (data) => (state.data = data)
 
-  const onLoad = (http) =>
+  const onLoad = (http) => {
     http
       .getTask('https://clinicaltrialsapi.cancer.gov/v1/clinical-trials')({
-        // from: 1,
-        // size: 1,
+        from: 1,
+        size: 10,
       })
+      .map(prop('trials'))
+      .map(map(pickAll(['official_title', 'detail_description', 'start_date'])))
       .fork(onError, onSuccess)
+  }
 
   return {
     oninit: ({
@@ -20,14 +24,17 @@ const ClinicalTrials = (v) => {
         mdl: { http },
       },
     }) => onLoad(http),
-    view: () =>
-      m(
-        '.clinical-trials',
-        'CLINICAL TRIALS',
-        state.data && state.data.trials
-          ? m('code', JSON.stringify(state, null, 2))
-          : IsLoading
-      ),
+    view: ({
+      attrs: {
+        mdl: {
+          state: { isLoading },
+        },
+      },
+    }) =>
+      m('.clinical-trials', 'CLINICAL TRIALS', [
+        state.data && m('code', JSON.stringify(state, null, 2)),
+        isLoading() && IsLoading,
+      ]),
   }
 }
 

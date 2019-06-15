@@ -16,25 +16,21 @@ function onProgress(e) {
   }
 }
 
-function onLoad(e) {
+function onLoad() {
+  return false
+}
+
+function onLoadStart() {
   model.state.isLoading(true)
   return false
 }
-
-function onLoadStart(e) {
-  console.log('onLoadStart', e)
-  return false
-}
-function onLoadEnd(e) {
+function onLoadEnd() {
   model.state.isLoading(false)
-
-  console.log('onLoadEnd', e)
   return false
 }
 
 const xhrProgress = {
   config: (xhr) => {
-    console.log('xhr', xhr)
     xhr.onprogress = onProgress
     xhr.onload = onLoad
     xhr.onloadstart = onLoadStart
