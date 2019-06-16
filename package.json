@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "mithril": "^2.0.0-rc.6",
+    "mithril-stream": "^2.0.0",
     "ramda": "^0.26.0"
   },
   "scripts": {

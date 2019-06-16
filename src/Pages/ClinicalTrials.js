@@ -1,9 +1,30 @@
 import m from 'mithril'
-import { IsLoading, animateComponentEntrance } from '../utils'
-import { map, pickAll, lensProp, over } from 'ramda'
+import { IsLoading, animateComponentEntrance, log } from '../utils'
+import {
+  map,
+  pickAll,
+  lensProp,
+  over,
+  compose,
+  test,
+  prop,
+  filter,
+} from 'ramda'
 import Paginate from '../components/Paginate.js'
 
 const trialLens = lensProp('trials')
+
+const byTerms = (query) =>
+  compose(
+    test(new RegExp(query, 'i')),
+    prop('official_title')
+  )
+
+const searchData = (query) => (xs) =>
+  compose(
+    filter(byTerms(query)),
+    log('wtf')
+  )(xs)
 
 const Trial = () => {
   let showDescription = false
@@ -29,6 +50,7 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
   const state = { error: {}, data: undefined, from: 11960, size: 10, total: 0 }
   const onError = (error) => (state.error = error)
   const onSuccess = ({ trials, total }) => {
+    state.originalData = trials
     state.data = trials
     state.total = total
   }
@@ -54,6 +76,20 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
         mdl: { http },
       },
     }) => fetchData(http),
+
+    onupdate: ({
+      attrs: {
+        mdl: {
+          state: { query },
+        },
+      },
+    }) => {
+      if (!state.data) return false
+      else {
+        state.data = searchData(query())(state.originalData)
+      }
+    },
+
     view: ({
       attrs: {
         mdl: {

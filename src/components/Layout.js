@@ -8,7 +8,6 @@ import Navigation from './Navigation.js'
 import DropDown from './DropDown.js'
 
 const Layout = ({ attrs: { mdl } }) => {
-  console.log('show settings', mdl.state.showSettings())
   return {
     view: ({ children }) =>
       m(

@@ -67,12 +67,13 @@ export const model = {
   routes,
   http,
   limits: [10, 30, 40, 50, 60, 70, 80, 90, 100],
-  data: {},
+  data: Stream({}),
   state: {
     loadingProgress: {
       max: 0,
       value: 0,
     },
+    paginate: { from: 11960, size: 10, total: 0 },
     isLoading: Stream(false),
     url: '',
     route: '',
@@ -83,8 +84,10 @@ export const model = {
     showSettings: Stream(false),
     showNavigation: Stream(false),
     showNav: Stream(false),
+    query: Stream(''),
   },
   toggleLimits: (mdl) => mdl.state.showLimits(!mdl.state.showLimits()),
   toggleSettings: (mdl) => mdl.state.showSettings(!mdl.state.showSettings()),
   showTabs: (mdl) => mdl.state.showNav(!mdl.state.showNav()),
+  filterData: (mdl) => (query) => mdl.state.query(query),
 }

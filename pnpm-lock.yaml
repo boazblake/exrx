@@ -1,5 +1,6 @@
 dependencies:
   mithril: 2.0.0-rc.6
+  mithril-stream: 2.0.0
   ramda: 0.26.1
 devDependencies:
   '@babel/core': 7.4.5
@@ -5559,6 +5560,10 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-x471SsVjUtBRtcvd4BzKE9kFC+/2TeWgKCgw0bZcw1b9l2X3QX5vCWgF+KaZaYm87Ss//rHnWryupDrgLvmSkA==
+  /mithril-stream/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-7anPud4n2FMGIXBQATVpFzclkddXHmJ1TzlqOP9STybk8JZYOPAD2otMYiMDc6sPrTNDY5S6GPDlYNIUY8Qs3Q==
   /mithril/2.0.0-rc.6:
     dev: false
     hasBin: true
@@ -9269,6 +9274,7 @@ specifiers:
   html-webpack-plugin: ^3.0.4
   image-webpack-loader: ^4.6.0
   mithril: ^2.0.0-rc.6
+  mithril-stream: ^2.0.0
   node-sass: ^4.11.0
   optimize-css-assets-webpack-plugin: ^5.0.1
   purgecss-webpack-plugin: ^1.4.0
