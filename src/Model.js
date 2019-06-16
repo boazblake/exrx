@@ -73,7 +73,7 @@ export const model = {
       max: 0,
       value: 0,
     },
-    paginate: { from: 11960, size: 10, total: 0 },
+    paginate: { from: 1, size: 10, total: 0 },
     isLoading: Stream(false),
     url: '',
     route: '',

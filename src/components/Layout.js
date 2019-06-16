@@ -6,6 +6,7 @@ import Modal from './Modal.js'
 import Body from './Body.js'
 import Navigation from './Navigation.js'
 import DropDown from './DropDown.js'
+import SearchBar from './SearchBar.js'
 
 const Layout = ({ attrs: { mdl } }) => {
   return {
@@ -27,7 +28,10 @@ const Layout = ({ attrs: { mdl } }) => {
               children,
 
               mdl.state.showSettings() &&
-                  m(Sidebar, { classList: 'right' }, [m(DropDown, { mdl })]),
+                  m(Sidebar, { classList: 'right' }, [
+                    m(SearchBar, { mdl }),
+                    m(DropDown, { mdl }),
+                  ]),
             ]),
             m(Footer, { mdl }),
           ]

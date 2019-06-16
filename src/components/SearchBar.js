@@ -4,15 +4,13 @@ const SearchBar = ({ attrs: { mdl } }) => {
   const filterData = mdl.filterData(mdl)
 
   return {
-    view: () => {
-      return [
-        m('.searchBar', {}, [
-          'SEARCHBAR',
-
-          m('input.input', { onkeyup: (e) => filterData(e.target.value) }, []),
-        ]),
-      ]
-    },
+    view: () =>
+      m('.searchBar', [
+        m('input.input', {
+          placeholder: 'search query',
+          oninput: (e) => filterData(e.target.value),
+        }),
+      ]),
   }
 }
 
