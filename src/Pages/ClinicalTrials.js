@@ -1,7 +1,7 @@
 import m from 'mithril'
-import { IsLoading, animateComponentEntrance, log } from '../utils'
+import { IsLoading, animateComponentEntrance } from '../utils'
 import { map, pickAll, lensProp, over } from 'ramda'
-import Button from '../components/Button.js'
+import Paginate from '../components/Paginate.js'
 
 const trialLens = lensProp('trials')
 
@@ -30,8 +30,6 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
   const onError = (error) => (state.error = error)
   const onSuccess = ({ trials, total }) => {
     state.data = trials
-    state.from = state.data.length++
-    state.size = mdl.state.limit
     state.total = total
   }
 
@@ -48,8 +46,6 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
         size: state.size,
       })
       .map(over(trialLens, map(getTrialData)))
-      .map(log('wtf'))
-
       .fork(onError, onSuccess)
 
   return {
@@ -68,6 +64,7 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
     }) =>
       m('section.component.clinical-trials', [
         state.data &&
+          !isLoading() &&
           m('.trials', [
             state.data.map((trial, key) =>
               m(Trial, {
@@ -76,12 +73,13 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
                 trial,
               })
             ),
-            m('.actions', [
-              m(Button, {
-                action: () => fetchData(http),
-                label: `Load Next ${limit} of ${state.total}`,
-              }),
-            ]),
+            m(Paginate, {
+              state,
+              http,
+              paginateFn: fetchData,
+              limit,
+              mdl,
+            }),
           ]),
         isLoading() && IsLoading,
       ]),

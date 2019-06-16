@@ -78,7 +78,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [ '@babel/env' ],
+              presets: ['@babel/env'],
             },
           },
         ],
@@ -86,9 +86,10 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({ // <-- key to reducing React's size
+    new webpack.DefinePlugin({
+      // <-- key to reducing React's size
       'process.env': {
-        'NODE_ENV': JSON.stringify('production'),
+        NODE_ENV: JSON.stringify('production'),
       },
     }),
     new CompressionPlugin({
@@ -98,11 +99,11 @@ module.exports = {
       threshold: 10240,
       minRatio: 0.8,
     }),
-    new CopyWebpackPlugin([ { from: 'assets' } ]),
+    new CopyWebpackPlugin([{ from: 'assets' }]),
     new HtmlWebpackPlugin({
       title: 'Mithril-JSONPlaceholder-PWA',
-      favicon: './assets/favicon.png',
-      manifest:'./src/manifets.json',
+      favicon: './assets/nci-logo-full.__v1.svg',
+      manifest: './src/manifets.json',
       template: '../index.html',
     }),
     new WorkboxPlugin.GenerateSW({
@@ -124,7 +125,7 @@ module.exports = {
       scope: '/',
       icons: [
         {
-          src: resolve('src/assets/favicon.png'),
+          src: resolve('src/assets/nci-logo-full.__v1.svg'),
           sizes: [96, 128, 192, 256, 384, 512],
           destination: join('assets', 'icons'),
         },

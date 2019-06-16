@@ -26,6 +26,8 @@ function onLoadStart() {
 }
 function onLoadEnd() {
   model.state.isLoading(false)
+  model.state.loadingProgress.max = 0
+  model.state.loadingProgress.value = 0
   return false
 }
 
@@ -64,7 +66,7 @@ export default http
 export const model = {
   routes,
   http,
-  limits: [30, 40, 50, 60, 70, 80, 90, 100],
+  limits: [10, 30, 40, 50, 60, 70, 80, 90, 100],
   data: {},
   state: {
     loadingProgress: {
@@ -75,12 +77,14 @@ export const model = {
     url: '',
     route: '',
     scrollPos: 1,
-    limit: 30,
+    limit: 10,
     profile: '',
     showLimits: Stream(false),
+    showSettings: Stream(false),
     showNavigation: Stream(false),
     showNav: Stream(false),
   },
   toggleLimits: (mdl) => mdl.state.showLimits(!mdl.state.showLimits()),
+  toggleSettings: (mdl) => mdl.state.showSettings(!mdl.state.showSettings()),
   showTabs: (mdl) => mdl.state.showNav(!mdl.state.showNav()),
 }

@@ -2,8 +2,8 @@ import m from 'mithril'
 
 const Button = () => {
   return {
-    view: ({ attrs: { action, label } }) =>
-      m('button.btn', { onclick: (e) => action(e) }, label),
+    view: ({ attrs: { action, label, classList } }) =>
+      m(`button.btn.${classList}`, { onclick: (e) => action(e) }, label),
   }
 }
 

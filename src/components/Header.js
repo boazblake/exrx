@@ -1,6 +1,6 @@
 import m from 'mithril'
 import Hamburger from './Hamburger.js'
-import DropDown from './DropDown.js'
+import Button from './Button.js'
 import { animate } from '../utils/index.js'
 
 const ProgressBar = () => {
@@ -27,7 +27,15 @@ const Header = {
       {
         id: 'header',
       },
-      [m(Hamburger, { mdl }), m(ProgressBar, { mdl }), m(DropDown, { mdl })]
+      [
+        m(Hamburger, { mdl }),
+        m(ProgressBar, { mdl }),
+        m(Button, {
+          classList: 'right',
+          label: m.trust('&#9881;'),
+          action: () => mdl.toggleSettings(mdl),
+        }),
+      ]
     ),
 }
 
