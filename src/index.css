@@ -301,7 +301,7 @@ html {
     grid-template-columns: 0.1fr 3fr 1fr 0.1fr;
     grid-gap: 10px;
     grid-template-areas:
-      ". header header header"
+      "header header header header"
       "sidebarleft content content sidebarright"
       "footer footer footer footer";
   }
@@ -318,7 +318,7 @@ html {
 
   .sidebar-left {
     grid-area: sidebarleft;
-    min-width: 225px;
+    min-width: 300px;
     min-height: inherit;
     height: 80vh;
     background: inherit;
@@ -328,6 +328,7 @@ html {
     justify-content: flex-start;
     align-content: flex-start;
     transition: 0.2s;
+    word-break: none;
   }
 
   .sidebar-right {

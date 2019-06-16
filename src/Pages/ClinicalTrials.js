@@ -26,7 +26,7 @@ const Trial = () => {
 }
 
 const ClinicalTrials = ({ attrs: { mdl } }) => {
-  const state = { error: {}, data: undefined, from: 1, size: 10, total: 0 }
+  const state = { error: {}, data: undefined, from: 11960, size: 10, total: 0 }
   const onError = (error) => (state.error = error)
   const onSuccess = ({ trials, total }) => {
     state.data = trials

@@ -33,7 +33,10 @@ const Header = {
         m(Button, {
           classList: 'right',
           label: m.trust('&#9881;'),
-          action: () => mdl.toggleSettings(mdl),
+          action: () => {
+            console.log('settigns', mdl.state.showSettings())
+            mdl.toggleSettings(mdl)
+          },
         }),
       ]
     ),

@@ -5,8 +5,10 @@ import Sidebar from './Sidebar.js'
 import Modal from './Modal.js'
 import Body from './Body.js'
 import Navigation from './Navigation.js'
+import DropDown from './DropDown.js'
 
 const Layout = ({ attrs: { mdl } }) => {
+  console.log('show settings', mdl.state.showSettings())
   return {
     view: ({ children }) =>
       m(
@@ -22,12 +24,12 @@ const Layout = ({ attrs: { mdl } }) => {
                 ? m(Modal, m(Sidebar, m(Navigation, { mdl })))
                 : null
               : [m(Sidebar, { classList: 'left' }, m(Navigation, { mdl }))],
-            m(
-              Body,
-              { mdl, children },
+            m(Body, { mdl }, [
+              children,
+
               mdl.state.showSettings() &&
-                  m(Sidebar, { classList: 'right' }, 'Right Side')
-            ),
+                  m(Sidebar, { classList: 'right' }, [m(DropDown, { mdl })]),
+            ]),
             m(Footer, { mdl }),
           ]
           : []
