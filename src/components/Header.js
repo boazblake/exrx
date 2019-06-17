@@ -1,23 +1,8 @@
 import m from 'mithril'
 import Hamburger from './Hamburger.js'
 import Button from './Button.js'
+import ProgressBar from './ProgressBar.js'
 import { animate } from '../utils'
-
-const ProgressBar = () => {
-  return {
-    view: ({
-      attrs: {
-        mdl: {
-          state: {
-            isLoading,
-            loadingProgress: { value, max },
-          },
-        },
-      },
-    }) =>
-      isLoading() && m('.progressBar', m('progress.progress', { max, value })),
-  }
-}
 
 const Header = {
   oncreate: animate('slideDown'),

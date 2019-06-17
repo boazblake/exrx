@@ -81,3 +81,20 @@ export const filterTask = (query) => (prop) => (direction) => (offset) => (
     map(_sort(prop)),
     _search(query)
   )
+
+export const debounce = (wait, now) => (fn) => {
+  let timeout = undefined
+  return function() {
+    let context = this
+    let args = arguments
+    let later = function() {
+      timeout = undefined
+      if (!now) fn.apply(context, args)
+    }
+    let callNow = now && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    console.log(fn)
+    if (callNow) fn.apply(context, args)
+  }
+}

@@ -23,16 +23,19 @@ const Layout = ({ attrs: { mdl } }) => {
               ? mdl.state.showNav()
                 ? m(Modal, m(Sidebar, m(Navigation, { mdl })))
                 : null
-              : [m(Sidebar, { classList: 'left' }, m(Navigation, { mdl }))],
-            m(Body, { mdl }, [
-              children,
-
-              mdl.state.showSettings() &&
-                  m(Sidebar, { classList: 'right' }, [
-                    m(SearchBar, { mdl }),
-                    m(DropDown, { mdl }),
-                  ]),
-            ]),
+              : [
+                m(
+                  Sidebar,
+                  { classList: 'sidebar-left slide-left' },
+                  m(Navigation, { mdl })
+                ),
+              ],
+            m(Body, { mdl }, [children]),
+            mdl.state.showSettings() &&
+                m(Sidebar, { classList: 'sidebar-right slide-right' }, [
+                  m(SearchBar, { mdl }),
+                  m(DropDown, { mdl }),
+                ]),
             m(Footer, { mdl }),
           ]
           : []
