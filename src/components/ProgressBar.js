@@ -12,7 +12,7 @@ const ProgressBar = () => {
         },
       },
     }) =>
-      !isLoading() && m('.progressBar', m('progress.progress', { max, value })),
+      isLoading() && m('.progressBar', m('progress.progress', { max, value })),
   }
 }
 
