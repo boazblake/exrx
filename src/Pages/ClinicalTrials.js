@@ -15,19 +15,19 @@ import Paginate from '../components/Paginate.js'
 
 const trialLens = lensProp('trials')
 
-const byTerms = (query) =>
+const byTerms = (ps) => (query) =>
   compose(
     test(new RegExp(query, 'i')),
-    props(['official_title', 'detail_description'])
+    props(ps)
   )
 
 const markBy = (q) => (str) =>
-  replace(new RegExp(q, 'gi'), `<mark>${q}</mark>`, str)
+  q ? replace(new RegExp(q, 'gi'), `<mark>${q}</mark>`, str) : str
 
-const searchData = (query) =>
+const searchData = (ps) => (query) =>
   compose(
     map(map(markBy(query))),
-    filter(byTerms(query))
+    filter(byTerms(ps)(query))
   )
 
 const Trial = () => {
@@ -52,7 +52,12 @@ const Trial = () => {
 }
 
 const ClinicalTrials = ({ attrs: { mdl } }) => {
-  const state = { error: {}, data: undefined, ...mdl.state.paginate }
+  const state = {
+    error: {},
+    data: undefined,
+    ...mdl.state.paginate,
+    props: ['official_title', 'detail_description'],
+  }
   const onError = (error) => (state.error = error)
   const onSuccess = ({ trials, total }) => {
     state.originalData = trials
@@ -89,8 +94,8 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
         },
       },
     }) =>
-      state.data && query().length > 1
-        ? (state.data = searchData(query())(state.originalData))
+      state.data
+        ? (state.data = searchData(state.props)(query())(state.originalData))
         : true,
     view: ({
       attrs: {
