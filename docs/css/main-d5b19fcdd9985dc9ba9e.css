@@ -201,7 +201,8 @@ body {
   white-space: pre-wrap; }
 
 .pagination {
-  justify-content: space-around; }
+  justify-content: space-around;
+  margin: 10px; }
 
 .progressBar {
   width: 100%;
@@ -1090,4 +1091,4 @@ stretchRight
     transform: rotateZ(-308.57143deg);
     opacity: 1; } }
 
-/*# sourceMappingURL=main-177a3a0b0e1cc8dd8db5.css.map*/
+/*# sourceMappingURL=main-d5b19fcdd9985dc9ba9e.css.map*/
