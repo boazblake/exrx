@@ -1,9 +1,11 @@
 import m from 'mithril'
-const root = document.body
 import { model } from './Model.js'
 import ClinicalTrials from './ClinicalTrials.js'
 import Layout from './Layout.js'
 import { animate } from './utils'
+import 'normalize.css'
+
+const root = document.body
 
 if (module.hot) {
   module.hot.accept()
