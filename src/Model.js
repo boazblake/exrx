@@ -1,3 +1,4 @@
+import m from 'mithril'
 import Stream from 'mithril-stream'
 import Task from 'data.task'
 const routes = [
@@ -83,11 +84,11 @@ export const model = {
     showLimits: Stream(false),
     showSettings: Stream(false),
     showNavigation: Stream(false),
-    showNav: Stream(false),
+    showModal: Stream(false),
     query: Stream(''),
   },
   toggleLimits: (mdl) => mdl.state.showLimits(!mdl.state.showLimits()),
   toggleSettings: (mdl) => mdl.state.showSettings(!mdl.state.showSettings()),
-  showTabs: (mdl) => mdl.state.showNav(!mdl.state.showNav()),
+  toggleModal: (mdl) => mdl.state.showModal(!mdl.state.showModal()),
   filterData: (mdl) => (query) => mdl.state.query(query),
 }

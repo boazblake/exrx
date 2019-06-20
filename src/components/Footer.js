@@ -4,7 +4,7 @@ const Footer = {
   oncreate: animate('slideUp'),
   view: () =>
     m(
-      'footer.footer',
+      'footer',
       {
         oncreate: animateChildrenLimitsEntrance,
         id: 'footer',

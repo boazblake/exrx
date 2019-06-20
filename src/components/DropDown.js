@@ -1,3 +1,4 @@
+import m from 'mithril'
 import {
   animateChildrenLimitsEntrance,
   animateChildrenLimitsExit,
@@ -29,7 +30,7 @@ const DropDown = {
   view: ({ attrs: { mdl } }) =>
     m('.changeLimits', [
       m(
-        'button.changeLimitBtn',
+        'button.btn',
         {
           onclick: () => mdl.toggleLimits(mdl),
         },

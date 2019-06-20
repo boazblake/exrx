@@ -1,7 +1,8 @@
 import m from 'mithril'
 import Hamburger from './Hamburger.js'
-import Button from './Button.js'
 import ProgressBar from './ProgressBar.js'
+import DropDown from './DropDown.js'
+import SearchBar from './SearchBar.js'
 import { animate } from '../utils'
 
 const Header = {
@@ -13,13 +14,13 @@ const Header = {
         id: 'header',
       },
       [
-        m(Hamburger, { mdl }),
-        m(ProgressBar, { mdl }),
-        m(Button, {
-          classList: 'right',
-          label: m.trust('&#9881;'),
-          action: () => mdl.toggleSettings(mdl),
-        }),
+        mdl.state.isLoading()
+          ? m(ProgressBar, { mdl })
+          : [
+            m(Hamburger, { mdl }),
+            m(SearchBar, { mdl }),
+            m(DropDown, { mdl }),
+          ],
       ]
     ),
 }

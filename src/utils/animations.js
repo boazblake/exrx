@@ -1,3 +1,5 @@
+import m from 'mithril'
+
 export const IsLoading = m('.holder', [
   m('.preloader', [
     m('div'),

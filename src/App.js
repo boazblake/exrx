@@ -1,5 +1,5 @@
 import m from 'mithril'
-import Layout from './components/Layout.js'
+import Layout from './Layout.js/index.js'
 import { animate } from './utils/index.js'
 import Home from './Pages/Home.js'
 import ClinicalTrials from './Pages/ClinicalTrials.js'
@@ -22,7 +22,6 @@ const Component = {
       {
         id: 'component',
         route,
-        // onscroll: infiniteScroll(mdl),
       },
       m(Page, {
         oncreate: animate,
@@ -32,16 +31,10 @@ const Component = {
   },
 }
 
-// const getData = (mdl) => (path) => {
-//   let start = mdl.data[path].data.length
-//   mdl.reqs.http(mdl)(mdl.reqs.urls[path](start, mdl.state.limit))(path)
-// }
-
 const init = (mdl) => (path) => {
   mdl.state.route = path
   mdl.state.scrollPos = 1
   mdl.state.showNav(false)
-  // mdl.data[path] ? mdl.data[path] : (mdl.data[path] = { data: [], limit: 1 })
 }
 
 const makeRoutes = (mdl) => (toRoute) => (routes, route) => {

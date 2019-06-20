@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { IsLoading, animateComponentEntrance } from '../utils'
+import { IsLoading, animateComponentEntrance } from './utils'
 import {
   replace,
   map,
@@ -11,7 +11,7 @@ import {
   props,
   filter,
 } from 'ramda'
-import Paginate from '../components/Paginate.js'
+import Paginate from './components/Paginate.js'
 
 const trialLens = lensProp('trials')
 
@@ -69,6 +69,7 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
     'official_title',
     'detail_description',
     'start_date',
+    'nci_id',
   ])
 
   const fetchData = (http) =>
@@ -105,7 +106,14 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
         },
       },
     }) =>
-      m('section.component.clinical-trials', [
+      m('section.clinical-trials', [
+        m(Paginate, {
+          state,
+          http,
+          paginateFn: fetchData,
+          limit,
+          mdl,
+        }),
         state.data &&
           !isLoading() &&
           m('.trials', [
@@ -116,13 +124,6 @@ const ClinicalTrials = ({ attrs: { mdl } }) => {
                 trial,
               })
             ),
-            m(Paginate, {
-              state,
-              http,
-              paginateFn: fetchData,
-              limit,
-              mdl,
-            }),
           ]),
         isLoading() && IsLoading,
       ]),
