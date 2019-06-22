@@ -8,16 +8,17 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'source-map',
   devServer: {
+    host: '0.0.0.0',
     hot: true,
     contentBase: './docs',
     port: 3000,
-    proxy: {
-      '/api': 'https://localhost:3001',
+    // proxy: {
+    //   '/api': 'https://localhost:3001',
+    // },
+    overlay: {
+      errors: true,
+      warnings: true,
     },
-    /*overlay: {
-            errors: true,
-            warnings: true,
-        },*/
   },
   module: {
     rules: [

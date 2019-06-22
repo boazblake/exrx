@@ -50,7 +50,7 @@
     "wingcss": "^1.0.0-beta"
   },
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "webpack-dev-server --open --public localhost:3000 --config webpack.dev.js",
     "build": "webpack --progress --config webpack.prod.js",
     "lint": "eslint src/ webpack.*.js --cache --fix"
   },

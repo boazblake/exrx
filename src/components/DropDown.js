@@ -36,7 +36,7 @@ const DropDown = {
         },
         'Change Limit'
       ),
-      mdl.state.showLimits() && m(Selector, { mdl }),
+      mdl.state.showLimits() && [m(Selector, { mdl })],
     ]),
 }
 

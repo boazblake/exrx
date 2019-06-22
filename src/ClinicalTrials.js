@@ -22,7 +22,9 @@ const byTerms = (ps) => (query) =>
   )
 
 const markBy = (q) => (str) =>
-  q ? replace(new RegExp(q, 'gi'), `<mark>${q}</mark>`, str) : str
+  q
+    ? replace(new RegExp(q, 'gi'), `<span class="marked">${q}</span>`, str)
+    : str
 
 const searchData = (ps) => (query) =>
   compose(

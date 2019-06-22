@@ -3,7 +3,7 @@ import Button from '../components/Button.js'
 
 const Paginate = {
   view: ({ attrs: { state, http, paginateFn, limit, mdl } }) =>
-    m('.pagination.row', [
+    m('.pagination', [
       m(Button, {
         action: () => {
           state.from = state.from - mdl.state.limit
@@ -11,18 +11,22 @@ const Paginate = {
           paginateFn(http)
         },
         isDisabled: state.from - mdl.state.limit <= 0,
-        label: `Load Prev ${limit}`,
+        label: [m.trust('&#8678;'), limit],
       }),
-      m('code.code', `${state.from} / ${state.from + state.size} `),
       m(Button, {
         action: () => {
           state.from = state.from + state.data.length++
           state.size = mdl.state.limit
           paginateFn(http)
         },
-        label: `Load Next ${limit} of ${state.total}`,
+        label: [limit, m.trust('&#8680;')],
         isDisabled: state.from + mdl.state.limit > state.total,
       }),
+      m(
+        '.',
+        m('code.code', `${state.from} - ${state.from + state.size} `),
+        m('code.code.row', ` of ${state.total} `)
+      ),
     ]),
 }
 
