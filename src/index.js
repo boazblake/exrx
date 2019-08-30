@@ -1,9 +1,7 @@
 import m from 'mithril'
 import { model } from './Model.js'
-import ClinicalTrials from './ClinicalTrials.js'
-import Layout from './Layout.js'
-import { animate } from './utils'
 import 'normalize.css'
+import App from './App.js'
 
 const root = document.body
 
@@ -22,9 +20,9 @@ function getProfile(w) {
 }
 
 // Styles
-import './index.scss'
-import './utils/animations.css'
-import './utils/loader.scss'
+import './styles/index.scss'
+import './styles/animations.css'
+import './styles/loader.scss'
 
 let winW = window.innerWidth
 model.state.profile = getProfile(winW)
@@ -42,16 +40,4 @@ function checkWidth() {
 
 checkWidth()
 
-m.mount(root, {
-  view: () =>
-    m(
-      Layout,
-      {
-        mdl: model,
-      },
-      m(ClinicalTrials, {
-        oncreate: animate,
-        mdl: model,
-      })
-    ),
-})
+m.route(root, '/home', App(model))

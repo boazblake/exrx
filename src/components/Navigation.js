@@ -1,9 +1,8 @@
 import m from 'mithril'
-import { animateSidebarEntrance } from '../utils/animations.js'
+import Hamburger from './Hamburger.js'
 
 const Tab = ({ attrs: { key } }) => {
   return {
-    oncreate: animateSidebarEntrance,
     view: ({ attrs: { tab } }) =>
       m(
         'a.tab',
@@ -19,7 +18,8 @@ const Tab = ({ attrs: { key } }) => {
 }
 
 const Navigation = {
-  view: ({ attrs: { mdl } }) =>
+  view: ({ attrs: { mdl } }) => [
+    m(Hamburger, { mdl }),
     mdl.routes.map((tab, idx) =>
       m(Tab, {
         key: idx,
@@ -27,6 +27,7 @@ const Navigation = {
         tab,
       })
     ),
+  ],
 }
 
 export default Navigation

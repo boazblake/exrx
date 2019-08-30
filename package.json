@@ -1,5 +1,5 @@
 {
-  "name": "placeholder",
+  "name": "PAC",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -47,13 +47,13 @@
     "mithril-stream": "^2.0.0",
     "normalize.css": "^8.0.1",
     "ramda": "^0.26.0",
-    "wingcss": "^1.0.0-beta"
+    "spectre.css": "^0.5.8"
   },
   "scripts": {
     "start": "webpack-dev-server --open --public localhost:3000 --config webpack.dev.js",
     "build": "webpack --progress --config webpack.prod.js",
     "lint": "eslint src/ webpack.*.js --cache --fix"
   },
-  "description": "placeholder",
+  "description": "PAC",
   "author": "boazblake <boazblake@gmail.com>"
 }

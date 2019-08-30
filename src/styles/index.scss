@@ -1,0 +1,112 @@
+/* index.scss */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");
+@import "node_modules/spectre.css/src/spectre";
+
+* {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+body,
+html {
+  scroll-behavior: smooth;
+}
+
+@media (min-width: 768px) {
+  #layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(668px, 1fr)) 1fr;
+    grid-template-rows: header 10vh content 80vh footer 10vh;
+    grid-gap: 10px;
+    grid-template-areas:
+      "header header header header"
+      "leftcol content content rightcol"
+      "footer footer footer footer";
+  }
+}
+
+#header {
+  grid-area: header;
+}
+
+#content {
+  grid-area: content;
+}
+
+#leftcol {
+  grid-area: leftcol;
+}
+
+#rightcol {
+  grid-area: rightcol;
+}
+
+#footer {
+  grid-area: footer;
+  position: absolute;
+  bottom: 0;
+}
+
+.loader {
+  height: 80vh;
+  width: 80vw;
+}
+
+.progressBar {
+  width: 100%;
+  display: flex;
+  padding: 15px;
+  justify-content: center;
+  align-content: center;
+}
+
+.progress {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  width: 80%;
+  margin: 0, auto;
+  height: 1.5rem;
+  text-align: center;
+  color: #2980b9;
+  background-color: #ecf0f1;
+  background-image: #ecf0f1;
+  border-radius: 10px;
+
+  &::-webkit-progress-bar {
+    background-color: #ecf0f1;
+    width: 100%;
+    border-radius: 10px;
+  }
+  &::-webkit-progress-value {
+    background-color: #2980b9;
+    border-radius: 10px;
+  }
+  &::-moz-progress-value {
+    background-color: #ecf0f1;
+    border-radius: 10px;
+  }
+}
+
+/* Media Qs */
+
+@media (min-width: 668px) {
+  * {
+    font-size: 18px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}

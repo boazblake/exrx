@@ -12,7 +12,7 @@ const Hamburger = ({ attrs: { mdl } }) => {
       dom,
       m('path', {
         xmlns: 'http://www.w3.org/2000/svg',
-        d: mdl.state.showModal() ? state.close : state.open,
+        d: mdl.state.showNav() ? state.close : state.open,
       })
     )
   }
@@ -27,9 +27,9 @@ const Hamburger = ({ attrs: { mdl } }) => {
       return render(_dom)
     },
     view: ({ attrs: { mdl } }) =>
-      m('svg.hamburger', {
-        style: { fill: mdl.state.showModal() ? 'white' : 'inherit' },
-        onclick: () => mdl.toggleModal(mdl),
+      m('svg.hamburger.button', {
+        // style: { fill: mdl.state.showNav() ? 'white' : 'inherit' },
+        onclick: () => mdl.toggleNav(mdl),
       }),
   }
 }

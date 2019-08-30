@@ -3,7 +3,7 @@ dependencies:
   mithril-stream: 2.0.0
   normalize.css: 8.0.1
   ramda: 0.26.1
-  wingcss: 1.0.0-beta
+  spectre.css: 0.5.8
 devDependencies:
   '@babel/core': 7.4.5
   '@babel/preset-env': 7.4.5_@babel+core@7.4.5
@@ -7882,6 +7882,10 @@ packages:
       npm: '>=6.0.0'
     resolution:
       integrity: sha512-ot0oEGT/PGUpzf/6uk4AWLqkq+irlqHXkrdbk51oWONh3bxQmBuljxPNl66zlRRcIJStWq0QkLUCPOPjgjvU0Q==
+  /spectre.css/0.5.8:
+    dev: false
+    resolution:
+      integrity: sha512-3N4WocWY+Dl6b3e5v3nsZYyp+VSDcBfGDzyyHw/H78ie9BoAhHkxmrhLxo9y8RadxYzVrPjfPdlev3hXEUzR2w==
   /split-string/3.1.0:
     dependencies:
       extend-shallow: 3.0.2
@@ -8963,10 +8967,6 @@ packages:
     dev: true
     resolution:
       integrity: sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
-  /wingcss/1.0.0-beta:
-    dev: false
-    resolution:
-      integrity: sha1-DS7DJn6RtHx26zwCBpdl55U8zB0=
   /wordwrap/1.0.0:
     dev: true
     resolution:
@@ -9288,6 +9288,7 @@ specifiers:
   purgecss-webpack-plugin: ^1.4.0
   ramda: ^0.26.0
   sass-loader: ^7.1.0
+  spectre.css: ^0.5.8
   style-loader: ^0.23.1
   svg-url-loader: ^2.3.2
   uglifyjs-webpack-plugin: ^2.1.1
@@ -9297,5 +9298,4 @@ specifiers:
   webpack-dev-server: ^3.1.14
   webpack-merge: ^4.1.5
   webpack-pwa-manifest: ^4.0.0
-  wingcss: ^1.0.0-beta
   workbox-webpack-plugin: ^4.1.1

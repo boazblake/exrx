@@ -102,7 +102,7 @@ module.exports = {
     new CopyWebpackPlugin([{ from: 'assets' }]),
     new HtmlWebpackPlugin({
       title: 'Mithril-JSONPlaceholder-PWA',
-      favicon: './assets/nci-logo-full.__v1.svg',
+      favicon: './assets/professional-auto-care-logo-brand.png',
       manifest: './src/manifest.json',
       template: '../index.html',
     }),
@@ -125,7 +125,7 @@ module.exports = {
       scope: '/',
       icons: [
         {
-          src: resolve('src/assets/nci-logo-full.__v1.svg'),
+          src: resolve('src/assets/professional-auto-care-logo-brand.png'),
           sizes: [96, 128, 192, 256, 384, 512],
           destination: join('assets', 'icons'),
         },

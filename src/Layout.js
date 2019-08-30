@@ -2,7 +2,8 @@ import m from 'mithril'
 import Header from './components/Header.js'
 import Footer from './components/Footer.js'
 import Body from './components/Body.js'
-import Modal from './components/Modal.js'
+import Navigation from './components/Navigation.js'
+
 const Layout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
@@ -11,19 +12,14 @@ const Layout = ({ attrs: { mdl } }) => {
         {
           id: 'layout',
         },
-        children
-          ? [
-            m(Header, { mdl }),
-            mdl.state.showModal() &&
-                m(
-                  Modal,
-                  { mdl },
-                  m('code.about', 'Search For Clinical Trials')
-                ),
-            m(Body, { mdl }, [children]),
-            m(Footer, { mdl }),
-          ]
-          : []
+        [
+          m(Header, { mdl }),
+          mdl.state.showNav() && m(Navigation, { mdl }),
+          m('', { id: 'leftcol' }, 'left'),
+          m(Body, { mdl }, [children]),
+          m('', { id: 'rightcol' }, 'right'),
+          m(Footer, { mdl }),
+        ]
       ),
   }
 }
