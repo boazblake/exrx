@@ -1,9 +1,9 @@
 {
-  "short_name": "JSONPlaceholder-mithril",
+  "short_name": "cancer-research",
   "name": "Demo",
   "icons": [
     {
-      "src": "/assets/favicon.png",
+      "src": "src/assets/favicon.png",
       "type": "image/png",
       "sizes": "192x192"
     }
