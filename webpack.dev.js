@@ -12,9 +12,9 @@ module.exports = merge(common, {
     hot: true,
     contentBase: './docs',
     port: 3000,
-    // proxy: {
-    //   '/api': 'https://localhost:3001',
-    // },
+    proxy: {
+      '/api': 'https://localhost:3001',
+    },
     overlay: {
       errors: true,
       warnings: true,

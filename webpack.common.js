@@ -103,7 +103,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Mithril-JSONPlaceholder-PWA',
       favicon: './assets/nci-logo-full.__v1.svg',
-      manifest: './src/manifets.json',
+      manifest: './src/manifest.json',
       template: '../index.html',
     }),
     new WorkboxPlugin.GenerateSW({
