@@ -15,7 +15,7 @@ module.exports = {
     main: './index.js',
   },
   output: {
-    path: resolve(__dirname, 'docs'),
+    path: resolve(__dirname, 'public'),
     filename: '[name]-bundle.js',
     chunkFilename: '[name]-chunk.js',
   },

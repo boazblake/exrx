@@ -1,13 +1,13 @@
-const merge = require('webpack-merge')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const merge = require("webpack-merge")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
+const CleanWebpackPlugin = require("clean-webpack-plugin")
 
-const common = require('./webpack.common.js')
+const common = require("./webpack.common.js")
 
 module.exports = merge(common, {
-  mode: 'production',
-  devtool: 'source-map',
+  mode: "production",
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -15,32 +15,32 @@ module.exports = merge(common, {
         use: ExtractTextPlugin.extract({
           use: [
             {
-              loader: 'css-loader',
-              options: { sourceMap: true },
+              loader: "css-loader",
+              options: { sourceMap: true }
             },
             {
-              loader: 'sass-loader',
-              options: { sourceMap: true },
-            },
-          ],
-        }),
-      },
-    ],
+              loader: "sass-loader",
+              options: { sourceMap: true }
+            }
+          ]
+        })
+      }
+    ]
   },
   plugins: [
-    new CleanWebpackPlugin([ 'docs' ]),
+    new CleanWebpackPlugin(["public"]),
     new ExtractTextPlugin({
-      filename: (getPath) => getPath('css/[name]-[hash].css'),
-      allChunks: true,
-    }),
+      filename: (getPath) => getPath("css/[name]-[hash].css"),
+      allChunks: true
+    })
   ],
   optimization: {
     minimizer: [
       new UglifyJSPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true,
-      }),
-    ],
-  },
+        sourceMap: true
+      })
+    ]
+  }
 })
