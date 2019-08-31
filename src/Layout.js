@@ -6,7 +6,8 @@ import LeftAside from './components/LeftAside.js'
 import RightAside from './components/RightAside.js'
 
 const Layout = ({ attrs: { mdl } }) => {
-  // console.log('layout', mdl)
+  const showMenu = () => mdl.state.showNav() || mdl.state.profile == 'desktop'
+
   return {
     view: ({ children }) =>
       m(
@@ -16,8 +17,7 @@ const Layout = ({ attrs: { mdl } }) => {
         },
         [
           m(Header, { mdl }),
-          mdl.state.showNav() ||
-            (mdl.state.profile == 'desktop' && m(LeftAside, { mdl })),
+          showMenu() && m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(RightAside, { mdl }),
           m(Footer, { mdl }),

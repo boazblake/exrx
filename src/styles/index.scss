@@ -25,46 +25,14 @@ html {
   scroll-behavior: smooth;
 }
 
-@media (min-width: 768px) {
-  * {
-    font-size: 18px;
-  }
-
-  .hamburger {
-    display: none;
-  }
-
-  #layout {
-    position: relative;
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: max-content 1fr;
-    grid-template-areas:
-      "header header header header"
-      "left-aside content content right-aside"
-      "footer footer footer footer";
-  }
-
-  #content {
-    min-width: 100%;
-  }
-
-  #left-aside {
-    max-width: 200px;
-  }
-
-  #right-aside {
-    max-width: 200px;
-  }
-}
-
 #header {
   grid-area: header;
   display: flex;
   justify-content: space-between;
+  align-content: stretch;
   border: 2px dashed blue;
   min-height: 200px;
-  flex-flow: column-reverse;
+  flex-flow: column;
 }
 
 #navbar {
@@ -138,5 +106,43 @@ html {
   &::-moz-progress-value {
     border: 2px dashed #ecf0f1;
     border-radius: 10px;
+  }
+}
+
+@media (min-width: 920px) {
+  * {
+    font-size: 18px;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  #layout {
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content 1fr;
+    grid-template-areas:
+      "header header header header"
+      "left-aside content content right-aside"
+      "footer footer footer footer";
+  }
+
+  #header {
+    justify-content: space-evenly;
+    flex-flow: column-reverse;
+  }
+
+  #content {
+    min-width: 100%;
+  }
+
+  #left-aside {
+    max-width: 200px;
+  }
+
+  #right-aside {
+    max-width: 200px;
   }
 }

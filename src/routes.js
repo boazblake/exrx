@@ -6,6 +6,7 @@ import Layout from './Layout.js'
 import Home from './Pages/Home'
 import About from './Pages/About'
 import Contact from './Pages/Contact'
+import Discounts from './Pages/Discounts'
 
 const Routes = [
   {
@@ -51,12 +52,26 @@ const Routes = [
     component: (mdl) => m(Layout, { mdl }, m(Contact, { mdl })),
   },
   {
+    id: 'discounts',
+    title: 'Discounts',
+    icon: 'discounts',
+    route: '/discounts',
+    position: ['nav', 'footer'],
+    group: [],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(Discounts, { mdl })),
+  },
+  {
     id: 'services',
     title: 'Services',
     icon: services,
     route: '/services',
     position: ['nav', 'sidebar'],
-    group: ['services'],
+    group: [],
     children: ['air-conditioning', 'check-engine-light'],
     onmatch: (mdl, props, route) => {
       // console.log('props', props)
