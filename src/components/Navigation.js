@@ -1,33 +1,36 @@
 import m from 'mithril'
-import Hamburger from './Hamburger.js'
 
 const Tab = ({ attrs: { key } }) => {
   return {
     view: ({ attrs: { tab } }) =>
       m(
-        'a.tab',
+        m.route.Link,
         {
+          class: 'btn btn-link',
           key,
           id: `${tab}`,
           href: `${tab}`,
-          oncreate: m.route.link,
         },
-        tab.split('/')[1]
+        tab.title
       ),
   }
 }
 
 const Navigation = {
-  view: ({ attrs: { mdl } }) => [
-    m(Hamburger, { mdl }),
-    mdl.routes.map((tab, idx) =>
-      m(Tab, {
-        key: idx,
-        active: mdl.state.route == tab,
-        tab,
-      })
+  view: ({ attrs: { classList, routes, mdl } }) =>
+    m(
+      'ul',
+      {
+        class: classList,
+      },
+      routes.map((tab, idx) =>
+        m(Tab, {
+          key: idx,
+          active: mdl.state.route == tab.route,
+          tab,
+        })
+      )
     ),
-  ],
 }
 
 export default Navigation

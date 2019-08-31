@@ -1,13 +1,7 @@
 import m from 'mithril'
 import Stream from 'mithril-stream'
 import Task from 'data.task'
-const routes = [
-  '/home',
-  '/clinical-trials',
-  '/interventions',
-  '/diseases',
-  '/terms',
-]
+import Routes from './Routes.js'
 
 function onProgress(e) {
   if (e.lengthComputable) {
@@ -65,7 +59,7 @@ const http = {
 export default http
 
 export const model = {
-  routes,
+  Routes,
   http,
   limits: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
   data: Stream({}),

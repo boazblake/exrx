@@ -1,6 +1,6 @@
 /* index.scss */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");
-@import "node_modules/spectre.css/src/spectre";
+@import "node_modules/spectre.css/src/spectre.scss";
 
 * {
   font-family: "Roboto", sans-serif;
@@ -26,9 +26,6 @@ html {
   #layout {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(668px, 1fr)) 1fr;
-    grid-template-rows: header 10vh content 80vh footer 10vh;
-    grid-gap: 10px;
     grid-template-areas:
       "header header header header"
       "leftcol content content rightcol"
@@ -38,24 +35,34 @@ html {
 
 #header {
   grid-area: header;
+  border: 2px dashed blue;
+  min-height: 200px;
 }
 
 #content {
   grid-area: content;
+  border: 2px dashed red;
+  min-height: 100vh;
 }
 
 #leftcol {
   grid-area: leftcol;
+  border: 2px dashed green;
+  min-height: 200px;
+  min-width: 100px;
 }
 
 #rightcol {
   grid-area: rightcol;
+  border: 2px dashed yellow;
+  min-height: 200px;
+  min-width: 100px;
 }
 
 #footer {
   grid-area: footer;
-  position: absolute;
-  bottom: 0;
+  border: 2px dashed grey;
+  min-height: 200px;
 }
 
 .loader {
@@ -80,21 +87,21 @@ html {
   height: 1.5rem;
   text-align: center;
   color: #2980b9;
-  background-color: #ecf0f1;
+  border: 2px dashed #ecf0f1;
   background-image: #ecf0f1;
   border-radius: 10px;
 
   &::-webkit-progress-bar {
-    background-color: #ecf0f1;
+    border: 2px dashed #ecf0f1;
     width: 100%;
     border-radius: 10px;
   }
   &::-webkit-progress-value {
-    background-color: #2980b9;
+    border: 2px dashed #2980b9;
     border-radius: 10px;
   }
   &::-moz-progress-value {
-    background-color: #ecf0f1;
+    border: 2px dashed #ecf0f1;
     border-radius: 10px;
   }
 }

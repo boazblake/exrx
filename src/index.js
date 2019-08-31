@@ -1,6 +1,5 @@
 import m from 'mithril'
 import { model } from './Model.js'
-import 'normalize.css'
 import App from './App.js'
 
 const root = document.body

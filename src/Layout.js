@@ -2,6 +2,8 @@ import m from 'mithril'
 import Header from './components/Header.js'
 import Footer from './components/Footer.js'
 import Body from './components/Body.js'
+import LeftAside from './components/LeftAside.js'
+import RightAside from './components/RightAside.js'
 import Navigation from './components/Navigation.js'
 
 const Layout = ({ attrs: { mdl } }) => {
@@ -15,9 +17,9 @@ const Layout = ({ attrs: { mdl } }) => {
         [
           m(Header, { mdl }),
           mdl.state.showNav() && m(Navigation, { mdl }),
-          m('', { id: 'leftcol' }, 'left'),
+          m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
-          m('', { id: 'rightcol' }, 'right'),
+          m(RightAside, { mdl }),
           m(Footer, { mdl }),
         ]
       ),

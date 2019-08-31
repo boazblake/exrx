@@ -1,14 +1,19 @@
 import m from 'mithril'
 import Layout from './Layout.js'
 import Home from './Pages/Home'
-import ClinicalTrials from './Pages/ClinicalTrials'
+import About from './Pages/About'
+import Contact from './Pages/Contact'
 
 const App = (mdl) => {
   return {
-    '/home': { onmatch: () => {}, render: m(Layout, { mdl }, Home) },
-    '/trials': {
-      onmatch: () => {},
-      render: () => m(Layout, { mdl }, m(ClinicalTrials, { mdl })),
+    '/home': {
+      render: () => m(Layout, { mdl }, m(Home, { mdl })),
+    },
+    '/about': {
+      render: () => m(Layout, { mdl }, m(About, { mdl })),
+    },
+    '/contact': {
+      render: () => m(Layout, { mdl }, m(Contact, { mdl })),
     },
   }
 }
