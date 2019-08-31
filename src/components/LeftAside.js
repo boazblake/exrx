@@ -6,7 +6,7 @@ const LeftAside = ({ attrs: { mdl } }) => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(
-        '.left-aside',
+        '.left-aside menu',
         { id: 'left-aside' },
         m('ul.columns', m(Menu, { classList: 'column', routes, mdl }))
       ),

@@ -24,7 +24,7 @@ const Menu = {
 
     let routes = mdl.Routes.filter((r) => r.group.includes(route))
     return m(
-      'ul.menu',
+      'ul',
       {
         class: classList,
       },
