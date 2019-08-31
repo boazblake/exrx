@@ -22,7 +22,7 @@ const Navigation = () => {
   return {
     view: ({ attrs: { classList, routes, mdl } }) =>
       m(
-        'ul.navbar',
+        'nav.nav',
         {
           id: 'navbar',
           class: classList,

@@ -1,7 +1,7 @@
 import m from 'mithril'
 import Stream from 'mithril-stream'
 import Task from 'data.task'
-import Routes from './Routes.js'
+import Routes from './Routes/index.js'
 
 function onProgress(e) {
   if (e.lengthComputable) {

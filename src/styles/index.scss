@@ -36,6 +36,10 @@ html {
 }
 
 #navbar {
+  display: flex;
+  flex-flow: wrap;
+  align-content: center;
+  justify-content: space-between;
 }
 
 #hamburger {

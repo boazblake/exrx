@@ -2,6 +2,8 @@ import m from 'mithril'
 import { model } from './Model.js'
 import App from './App.js'
 
+// console.log(model)
+
 const root = document.body
 
 if (module.hot) {
