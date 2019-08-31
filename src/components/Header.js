@@ -4,7 +4,7 @@ import Hamburger from './Hamburger.js'
 import Navigation from './Navigation.js'
 
 const Header = ({ attrs: { mdl } }) => {
-  let routes = mdl.Routes.filter((r) => r.group.includes('nav'))
+  let routes = mdl.Routes.filter((r) => r.position.includes('nav'))
   return {
     view: ({ attrs: { mdl } }) =>
       m(
@@ -15,7 +15,10 @@ const Header = ({ attrs: { mdl } }) => {
         [
           mdl.state.isLoading()
             ? m(ProgressBar, { mdl })
-            : [m(Hamburger, { mdl }), m(Navigation, { routes, mdl })],
+            : [
+              mdl.state.profile !== 'desktop' && m(Hamburger, { mdl }),
+              m(Navigation, { routes, mdl }),
+            ],
         ]
       ),
   }

@@ -1,17 +1,14 @@
 import m from 'mithril'
-import Navigation from './Navigation'
+import Menu from './Menu'
 
 const LeftAside = ({ attrs: { mdl } }) => {
-  let routes = mdl.Routes.filter((r) => r.group.includes('sidebar'))
+  let routes = mdl.Routes.filter((r) => r.position.includes('sidebar'))
   return {
     view: ({ attrs: { mdl } }) =>
       m(
-        '.container',
-        { id: 'aside' },
-        m(
-          '.columns col-gapless',
-          m(Navigation, { classList: 'column col-3', routes, mdl })
-        )
+        '.left-aside',
+        { id: 'left-aside' },
+        m('ul.columns', m(Menu, { classList: 'column', routes, mdl }))
       ),
   }
 }

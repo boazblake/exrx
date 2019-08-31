@@ -17,18 +17,17 @@ const Hamburger = ({ attrs: { mdl } }) => {
     )
   }
 
+  const updateDom = ({ dom }) => {
+    let _dom = dom
+    return render(_dom)
+  }
+
   return {
-    oncreate: ({ dom }) => {
-      let _dom = dom
-      return render(_dom)
-    },
-    onupdate: ({ dom }) => {
-      let _dom = dom
-      return render(_dom)
-    },
+    oncreate: updateDom,
+    onupdate: updateDom,
     view: ({ attrs: { mdl } }) =>
-      m('svg.hamburger.button', {
-        // style: { fill: mdl.state.showNav() ? 'white' : 'inherit' },
+      m('svg.btn', {
+        id: 'hamburger',
         onclick: () => mdl.toggleNav(mdl),
       }),
   }

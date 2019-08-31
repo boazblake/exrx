@@ -7,7 +7,7 @@ const Footer = {
       {
         id: 'footer',
       },
-      m('p.p', 'content served from NCI Clinical Trials Search API')
+      m('p.p', 'PAC')
     ),
 }
 

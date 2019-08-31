@@ -1,21 +1,25 @@
-import m from 'mithril'
-import Layout from './Layout.js'
-import Home from './Pages/Home'
-import About from './Pages/About'
-import Contact from './Pages/Contact'
+const toRoutes = (mdl) => (acc, route) => {
+  acc[route.route] = {
+    onmatch: (props) => route.onmatch(mdl, props, route),
+    render: () => route.component(mdl),
+  }
+  return acc
+}
 
 const App = (mdl) => {
-  return {
-    '/home': {
-      render: () => m(Layout, { mdl }, m(Home, { mdl })),
-    },
-    '/about': {
-      render: () => m(Layout, { mdl }, m(About, { mdl })),
-    },
-    '/contact': {
-      render: () => m(Layout, { mdl }, m(Contact, { mdl })),
-    },
-  }
+  return mdl.Routes.reduce(toRoutes(mdl), {})
+
+  // return {
+  //   '/home': {
+  //     render: () => m(Layout, { mdl }, m(Home, { mdl })),
+  //   },
+  //   '/about': {
+  //     render: () => m(Layout, { mdl }, m(About, { mdl })),
+  //   },
+  //   '/contact': {
+  //     render: () => m(Layout, { mdl }, m(Contact, { mdl })),
+  //   },
+  // }
 }
 
 export default App

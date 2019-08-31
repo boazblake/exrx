@@ -1,9 +1,7 @@
 import m from 'mithril'
 
-const Contact = ({ attrs: { mdl, state } }) => {
-  console.log('mdl', mdl)
-
-  return { view: () => m('.contact', state.title) }
+const Contact = ({ attrs: { mdl } }) => {
+  return { view: () => m('.contact', mdl.state.route.title) }
 }
 
 export default Contact

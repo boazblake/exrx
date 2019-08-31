@@ -1,9 +1,9 @@
 import m from 'mithril'
 
-const AirConditioning = ({ attrs: { mdl, state } }) => {
+const AirConditioning = ({ attrs: { mdl } }) => {
   console.log('mdl', mdl)
 
-  return { view: () => m('.air-conditioning', state.title) }
+  return { view: () => m('.air-conditioning', mdl.state.route.title) }
 }
 
 export default AirConditioning

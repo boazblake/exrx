@@ -1,9 +1,9 @@
 import m from 'mithril'
 
-const About = ({ attrs: { mdl, state } }) => {
-  console.log('mdl', mdl)
+const About = ({ attrs: { mdl } }) => {
+  // console.log('mdl', mdl)
 
-  return { view: () => m('.about', state.title) }
+  return { view: () => m('.about', mdl.state.route.title) }
 }
 
 export default About
