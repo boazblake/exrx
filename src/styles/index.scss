@@ -27,7 +27,7 @@ html {
 
 #header {
   grid-area: header;
-  display: flex;
+  display: subgrid;
   justify-content: space-between;
   align-content: stretch;
   border: 2px dashed blue;
@@ -57,6 +57,9 @@ html {
   border: 2px dashed green;
   min-height: 200px;
   min-width: 100px;
+}
+
+#menu {
 }
 
 #right-aside {
@@ -135,7 +138,6 @@ html {
 
   #header {
     justify-content: space-evenly;
-    flex-flow: column-reverse;
   }
 
   #content {

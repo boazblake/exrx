@@ -23,8 +23,8 @@ const Tab = ({ attrs: { key } }) => {
 
 const Menu = {
   view: ({ attrs: { mdl } }) => {
-    let route = m.route.get().split('/')[1]
-    // console.log('ROUTE', route)
+    let route = m.route.get().split('/')[2]
+    console.log('MENU', route)
 
     let routes = mdl.Routes.filter((r) => r.group.includes(route))
     return m(

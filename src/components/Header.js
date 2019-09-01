@@ -3,8 +3,7 @@ import ProgressBar from './ProgressBar.js'
 import Hamburger from './Hamburger.js'
 import Navigation from './Navigation.js'
 
-const Header = ({ attrs: { mdl } }) => {
-  let routes = mdl.Routes.filter((r) => r.position.includes('nav'))
+const Header = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(
@@ -17,7 +16,7 @@ const Header = ({ attrs: { mdl } }) => {
             ? m(ProgressBar, { mdl })
             : [
               mdl.state.profile !== 'desktop' && m(Hamburger, { mdl }),
-              m(Navigation, { routes, mdl }),
+              m(Navigation, { mdl }),
             ],
         ]
       ),
