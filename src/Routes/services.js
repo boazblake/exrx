@@ -1,7 +1,82 @@
 import Layout from '../Layout.js'
 import Default from '../Pages/Default'
+import AirConditioning from '../Pages/Services/AirConditioning.js'
+import { flatten } from 'ramda'
 
-const Services = [
+const AirConditioningRoutes = [
+  {
+    id: 'service-maintenance',
+    title: 'Air Conditioning - Service & Maintenance',
+    icon: 'airconditioning',
+    route: '/services/air-conditioning/#service-maintenance',
+    position: ['sidebar'],
+    group: ['air-conditioning'],
+    children: [],
+    // onmatch: (mdl, props, route) => {
+    // console.log('props', props)
+    // return (mdl.state.route = route)
+    // },
+    // component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+  },
+  {
+    id: 'help-over-heating',
+    title: 'Air Conditioning - Help! OverHeating',
+    icon: 'airconditioning',
+    route: '/services/air-conditioning/#help-over-heating',
+    position: ['sidebar'],
+    group: ['air-conditioning'],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+  },
+  {
+    id: 'ac-video',
+    title: 'Air Conditioning - Video',
+    icon: 'airconditioning',
+    route: '/services/air-conditioning/#help-over-heating',
+    position: ['sidebar'],
+    group: ['air-conditioning'],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+  },
+  {
+    id: 'ac-parts',
+    title: 'Air Conditioning - Parts',
+    icon: 'airconditioning',
+    route: '/services/air-conditioning/#ac-parts',
+    position: ['sidebar'],
+    group: ['air-conditioning'],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+  },
+  {
+    id: 'ac-testing-fees',
+    title: 'Air Conditioning - Testing Fees',
+    icon: 'airconditioning',
+    route: '/services/air-conditioning/#ac-testing-fees',
+    position: ['sidebar'],
+    group: ['air-conditioning'],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+  },
+]
+
+const SubMenu = [
   {
     id: 'alignment',
     title: 'Alignment',
@@ -28,7 +103,7 @@ const Services = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
   {
     id: 'battery',
@@ -409,5 +484,7 @@ const Services = [
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
 ]
+
+const Services = flatten([SubMenu, AirConditioningRoutes])
 
 export default Services

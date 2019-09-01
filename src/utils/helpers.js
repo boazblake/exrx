@@ -98,3 +98,21 @@ export const debounce = (wait, now) => (fn) => {
     if (callNow) fn.apply(context, args)
   }
 }
+
+export const scrollToAnchor = (anchor) => {
+  let is = (el) => {
+    return el !== undefined && el !== null
+  }
+
+  console.log('HHHHH', anchor, document.getElementById(anchor))
+
+  //if you pass an undefined anchor it will scroll to the top of the body
+  let targetEl = is(anchor) ? document.getElementById(anchor) : document.body
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  let target = is(targetEl) ? targetEl.getBoundingClientRect().top : 0
+  window.scroll({
+    top: target + scrollTop - 70,
+    left: 0,
+    behavior: 'smooth',
+  })
+}

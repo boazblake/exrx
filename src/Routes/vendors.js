@@ -1,7 +1,6 @@
 import Layout from '../Layout.js'
 import Default from '../Pages/Default'
-import { flatten } from 'ramda'
-// BG Products
+// import { flatten } from 'ramda'
 
 const BGProducts = [
   {
@@ -10,7 +9,7 @@ const BGProducts = [
     icon: 'bgproducts',
     route: '/vendors/bg-products',
     position: ['sidebar'],
-    group: [],
+    group: ['vendors'],
     children: [],
     onmatch: (mdl, props, route) => {
       // console.log('props', props)
@@ -22,7 +21,7 @@ const BGProducts = [
     id: 'bg-products-fuel-Air-induction-service',
     title: 'BG Products Fuel/Air Induction Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-fuel-Air-induction-service',
+    route: '/vendors/bg-products/#bg-products-fuel-Air-induction-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -36,7 +35,7 @@ const BGProducts = [
     id: 'bg-products-lubrication-fuel-service',
     title: 'BG Products Lubrication + Fuel Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-lubrication-fuel-service',
+    route: '/vendors/bg-products/#bg-products-lubrication-fuel-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -50,7 +49,7 @@ const BGProducts = [
     id: 'bg-products-cooling-system-service',
     title: 'BG Products Cooling System Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-cooling-system-service',
+    route: '/vendors/bg-products/#bg-products-cooling-system-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -64,7 +63,7 @@ const BGProducts = [
     id: 'bg-products-transmission-service',
     title: 'BG Products Transmission Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-transmission-service',
+    route: '/vendors/bg-products/#bg-products-transmission-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -78,7 +77,7 @@ const BGProducts = [
     id: 'bg-products-drive-line',
     title: 'BG Products Drive Line',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-drive-line',
+    route: '/vendors/bg-products/#bg-products-drive-line',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -92,7 +91,7 @@ const BGProducts = [
     id: 'bg-products-break-service',
     title: 'BG Products Break Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-break-service',
+    route: '/vendors/bg-products/#bg-products-break-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -106,7 +105,7 @@ const BGProducts = [
     id: 'bg-products-climate-control-service',
     title: 'BG Products Climate Control Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-climate-control-service',
+    route: '/vendors/bg-products/#bg-products-climate-control-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -120,7 +119,7 @@ const BGProducts = [
     id: 'bg-products-battery-service',
     title: 'BG Products Battery Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-battery-service',
+    route: '/vendors/bg-products/#bg-products-battery-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -134,7 +133,7 @@ const BGProducts = [
     id: 'bg-products-power-steering-service',
     title: 'BG Products Power Steering Service',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-power-steering-service',
+    route: '/vendors/bg-products/#bg-products-power-steering-service',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -148,7 +147,7 @@ const BGProducts = [
     id: 'bg-products-ethanol-fuel-system-defender',
     title: 'BG Products Ethanol Fuel System Defender',
     icon: 'bgproducts',
-    route: '/vendors/bg-products/bg-products-ethanol-fuel-system-defender',
+    route: '/vendors/bg-products/#bg-products-ethanol-fuel-system-defender',
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
@@ -160,23 +159,6 @@ const BGProducts = [
   },
 ]
 
-const vendors = [
-  {
-    id: 'bg-products',
-    title: 'BG Products',
-    icon: 'bgproducts',
-    route: '/vendors/bg-products',
-    position: ['subnav'],
-    group: ['vendors'],
-    children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
-    },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
-  },
-]
-
-const Vendors = flatten([vendors, BGProducts])
+const Vendors = BGProducts
 
 export default Vendors

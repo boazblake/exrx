@@ -19,7 +19,13 @@ module.exports = {
     filename: '[name]-bundle.js',
     chunkFilename: '[name]-chunk.js',
   },
-  resolve: { alias: { zondicons: resolve(__dirname, '/assets/zondicons') } },
+  resolve: {
+    alias: {
+      zondicons: resolve(__dirname, '/assets/zondicons'),
+      'utils/helpers': resolve(__dirname, 'src/utils/helpers.js'),
+      'utils/animations': resolve(__dirname, 'src/utils/animations.js'),
+    },
+  },
   module: {
     rules: [
       {
