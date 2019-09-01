@@ -1,7 +1,7 @@
 import m from 'mithril'
 import ProgressBar from './ProgressBar.js'
 import Hamburger from './Hamburger.js'
-import Navigation from './Navigation.js'
+import Navigation from './Navigation/index.js'
 
 const Header = () => {
   return {

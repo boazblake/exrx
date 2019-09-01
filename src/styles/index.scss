@@ -1,9 +1,12 @@
 /* index.scss */
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");
-@import "./spectre/spectre.min.css";
+// @import "./spectre/spectre.min.css";
+// @import "./spectre/docs.min.css";
+// @import "./spectre/spectre-exp.min.css";
+// @import "./spectre/spectre-rtl.min.css";
+// @import "./spectre/spectre-icons.min.css";
 @import "./animations.css";
 @import "./loader.scss";
-@import "./spectre/spectre.min.css";
 
 * {
   font-family: "Roboto", sans-serif;
@@ -20,6 +23,12 @@
   font-weight: 700;
 }
 
+.sticky {
+  position: sticky;
+  top: 0;
+  background: primary-color;
+}
+
 body,
 html {
   scroll-behavior: smooth;
@@ -27,12 +36,22 @@ html {
 
 #header {
   grid-area: header;
-  display: subgrid;
+  display: flex;
   justify-content: space-between;
   align-content: stretch;
   // border: 2px dashed blue;
-  min-height: 200px;
   flex-flow: column;
+}
+
+#tabbar {
+  display: flex;
+  flex-flow: wrap;
+  align-content: center;
+  justify-content: space-between;
+}
+
+.tab .tab-item a {
+  box-shadow: none;
 }
 
 #navbar {
@@ -63,6 +82,7 @@ html {
 #menu {
   position: -webkit-sticky;
   position: sticky;
+  top: 0;
   top: 0;
 }
 

@@ -91,6 +91,20 @@ const Main = [
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
+  {
+    id: 'blog',
+    title: 'Blog',
+    icon: 'blog',
+    route: '/blog',
+    position: ['nav', 'footer'],
+    group: [],
+    children: [],
+    onmatch: (mdl, props, route) => {
+      // console.log('props', props)
+      return (mdl.state.route = route)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+  },
 ]
 
 export default Main

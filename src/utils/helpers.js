@@ -104,8 +104,6 @@ export const scrollToAnchor = (anchor) => {
     return el !== undefined && el !== null
   }
 
-  console.log('HHHHH', anchor, document.getElementById(anchor))
-
   //if you pass an undefined anchor it will scroll to the top of the body
   let targetEl = is(anchor) ? document.getElementById(anchor) : document.body
   let scrollTop = window.pageYOffset || document.documentElement.scrollTop
