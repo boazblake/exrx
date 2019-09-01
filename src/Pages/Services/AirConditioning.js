@@ -8,7 +8,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
       m('.air-conditioning', [
         m('h1', mdl.state.route.title),
 
-        m('h2.sticky.bg-secondary', 'service-maintenance'),
+        m('h2.subTitle.bg-secondary', 'service-maintenance'),
         m('.anchor', { id: 'service-maintenance' }),
 
         m(
@@ -31,7 +31,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           'Professional Auto Care is the premier full-service auto repair shop in SW Houston. Our auto repair shop has been family owned and operated for over 30 years. Professional Auto Care provides honest and reliable automotive repair and maintenance services. When a team member of our auto shop examines your auto A/C you can rest assured knowing a certified professional will be following a step by step procedure to not only determine what exactly the vehicle air conditioning needs, but also why it needs it. All our automotive air conditioning testing procedures come with a full report of the A/C testing findings.'
         ),
 
-        m('h2.sticky.bg-secondary', 'help-over-heating'),
+        m('h2.subTitle.bg-secondary', 'help-over-heating'),
         m('.anchor', { id: 'help-over-heating' }),
 
         m(
@@ -55,7 +55,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           'The above steps will help reduce heat on the system. If the overheating condition persists, pull over to the shoulder of the road and allow the engine to cool. DO NOT ATTEMPT TO OPEN THE HOOD. Wait until the vehicle is cool enough to open the hood if your vehicle is over heating and then open the hood to allow cooling. As a precautionary measure, have your vehicle checked by a professional technician as soon as possible.'
         ),
 
-        m('h2.sticky.bg-secondary', 'ac-video'),
+        m('h2.subTitle.bg-secondary', 'ac-video'),
         m('.anchor', { id: 'ac-video' }),
 
         m('iframe', {
@@ -71,12 +71,12 @@ const AirConditioning = ({ attrs: { mdl } }) => {
         }),
         // mdl.state.user.isAutherized ? [] :
 
-        m('h2.sticky.bg-secondary', 'ac-parts'),
+        m('h2.subTitle.bg-secondary', 'ac-parts'),
         m('.anchor', { id: 'ac-parts' }),
 
         m(UnautherizedView, { mdl }),
 
-        m('h2.sticky.bg-secondary', 'ac-testing-fees'),
+        m('h2.subTitle.bg-secondary', 'ac-testing-fees'),
         m('.anchor', { id: 'ac-testing-fees' }),
         m(
           'p.p',

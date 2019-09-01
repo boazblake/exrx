@@ -21,7 +21,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      zondicons: resolve(__dirname, '/assets/zondicons'),
+      zondicons: resolve(__dirname, 'src/assets/zondicons'),
+      icons: resolve(__dirname, 'src/assets/icons'),
       'utils/helpers': resolve(__dirname, 'src/utils/helpers.js'),
       'utils/animations': resolve(__dirname, 'src/utils/animations.js'),
     },

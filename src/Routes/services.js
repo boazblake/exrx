@@ -469,20 +469,6 @@ const SubMenu = [
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
-  {
-    id: 'cooling-system',
-    title: 'Cooling System',
-    icon: 'coolingsystem',
-    route: '/services/cooling-system',
-    position: ['sidebar'],
-    group: ['services'],
-    children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
-    },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
-  },
 ]
 
 const Services = flatten([SubMenu, AirConditioningRoutes])
