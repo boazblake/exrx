@@ -1,8 +1,6 @@
 import m from 'mithril'
 import lock from 'icons/lock.js'
 
-console.log(lock)
-
 const UnautherizedView = () => {
   return {
     view: () =>
