@@ -4,17 +4,15 @@ import NavLinks from './NavLinks.js'
 import Stream from 'mithril-stream'
 import { getRoute } from 'utils/helpers'
 
-const currentRoute = getRoute(1)
-
 const Navigation = () => {
-  let tabSelected = Stream(currentRoute)
+  let tabSelected = Stream(getRoute(1))
   return {
     view: ({ attrs: { mdl } }) => {
       return m(
         '.navigation',
         {
-          onmouseenter: () => tabSelected(currentRoute),
-          onmouseleave: () => tabSelected(currentRoute),
+          onmouseenter: () => tabSelected(getRoute(1)),
+          onmouseleave: () => tabSelected(getRoute(1)),
         },
         [m(NavTabs, { mdl, tabSelected }), m(NavLinks, { mdl, tabSelected })]
       )
