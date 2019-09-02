@@ -36,7 +36,7 @@ const AirConditioningRoutes = [
     id: 'ac-video',
     title: 'Air Conditioning - Video',
     icon: 'airconditioning',
-    route: '/services/air-conditioning/#help-over-heating',
+    route: '/services/air-conditioning/#ac-video',
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],

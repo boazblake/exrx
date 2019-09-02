@@ -22,8 +22,8 @@ const NavLink = ({ attrs: { key } }) => {
 
 const NavLinks = () => {
   return {
-    view: ({ attrs: { mdl, tabHovered } }) => {
-      let routes = mdl.Routes.filter((r) => r.group.includes(tabHovered()))
+    view: ({ attrs: { mdl, tabSelected } }) => {
+      let routes = mdl.Routes.filter((r) => r.group.includes(tabSelected()))
 
       const isActive = (route) => {
         let _active = getRoute(2)
