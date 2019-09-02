@@ -1,3 +1,5 @@
+import m from 'mithril'
+
 import {
   compose,
   join,
@@ -114,3 +116,5 @@ export const scrollToAnchor = (anchor) => {
     behavior: 'smooth',
   })
 }
+
+export const getRoute = (int) => m.route.get().split('/')[int]

@@ -68,6 +68,11 @@ html {
   justify-content: space-between;
 }
 
+.nav-links {
+  height: 150px;
+  background-color: rgb(187, 187, 187);
+}
+
 #hamburger {
   width: 35px;
 }
@@ -168,7 +173,7 @@ html {
   }
 
   #header {
-    justify-content: space-evenly;
+    justify-content: space-between;
   }
 
   #content {
@@ -177,9 +182,11 @@ html {
 
   #left-aside {
     max-width: 200px;
+    min-width: 20vw;
   }
 
   #right-aside {
-    max-width: 200px;
+    max-width: 400px;
+    min-width: 20vw;
   }
 }

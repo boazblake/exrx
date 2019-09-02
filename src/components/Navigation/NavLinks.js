@@ -1,6 +1,5 @@
 import m from 'mithril'
-
-const getRoute = (int) => m.route.get().split('/')[int]
+import { getRoute } from 'utils/helpers'
 
 const NavLink = ({ attrs: { key } }) => {
   return {
@@ -23,15 +22,16 @@ const NavLink = ({ attrs: { key } }) => {
 
 const NavLinks = () => {
   return {
-    view: ({ attrs: { mdl } }) => {
-      let routes = mdl.Routes.filter((r) => r.group.includes(getRoute(1)))
+    view: ({ attrs: { mdl, tabHovered } }) => {
+      let routes = mdl.Routes.filter((r) => r.group.includes(tabHovered()))
 
       const isActive = (route) => {
         let _active = getRoute(2)
         return route.id == _active
       }
 
-      return [
+      return m(
+        '.nav-links',
         m(
           `ul.accordian-body nav ${routes.length ? 'active' : 'hide'}`,
           {
@@ -47,8 +47,8 @@ const NavLinks = () => {
               mdl,
             })
           )
-        ),
-      ]
+        )
+      )
     },
   }
 }

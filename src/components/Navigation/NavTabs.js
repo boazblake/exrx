@@ -4,7 +4,7 @@ const getRoute = (int) => m.route.get().split('/')[int]
 
 const Tab = ({ attrs: { key } }) => {
   return {
-    view: ({ attrs: { tab, active } }) =>
+    view: ({ attrs: { tab, active, tabHovered } }) =>
       m(
         m.route.Link,
         {
@@ -12,6 +12,9 @@ const Tab = ({ attrs: { key } }) => {
           key,
           id: `${tab.id}`,
           href: `${tab.route}`,
+          onmouseenter: () => {
+            tabHovered(tab.id)
+          },
         },
         tab.title
       ),
@@ -20,9 +23,8 @@ const Tab = ({ attrs: { key } }) => {
 
 const NavTabs = () => {
   return {
-    view: ({ attrs: { mdl } }) => {
+    view: ({ attrs: { mdl, tabHovered } }) => {
       let tabs = mdl.Routes.filter((r) => r.position.includes('nav'))
-
       const isTabActive = (tab) => {
         let _active = getRoute(1)
         return tab.id == _active
@@ -43,6 +45,7 @@ const NavTabs = () => {
                   key: idx,
                   active: isTabActive(tab),
                   tab,
+                  tabHovered,
                   mdl,
                 })
               )
