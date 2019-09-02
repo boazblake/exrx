@@ -1,12 +1,13 @@
 /* index.scss */
+
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");
 @import "./spectre/spectre.min.css";
 @import "./spectre/docs.min.css";
 @import "./spectre/spectre-exp.min.css";
 @import "./spectre/spectre-rtl.min.css";
 @import "./spectre/spectre-icons.min.css";
-@import "./animations.css";
-@import "./loader.scss";
+// @import "./animations.css";
+// @import "./loader.scss";
 
 * {
   font-family: "Roboto", sans-serif;
@@ -36,6 +37,12 @@
   fill: primary-color;
 }
 
+.btn {
+  &:hover {
+    font-weight: bold;
+  }
+}
+
 body,
 html {
   scroll-behavior: smooth;
@@ -62,14 +69,14 @@ html {
 }
 
 #navbar {
-  display: flex;
+  display: inline-flex;
   flex-flow: wrap;
   align-content: center;
   justify-content: space-between;
 }
 
 .nav-links {
-  height: 150px;
+  min-height: 150px;
   background-color: rgb(187, 187, 187);
 }
 

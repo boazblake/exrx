@@ -46,7 +46,8 @@
     "mithril": "^2.0.4",
     "mithril-stream": "^2.0.0",
     "normalize.css": "^8.0.1",
-    "ramda": "^0.26.0"
+    "ramda": "^0.26.0",
+    "spectre.css": "^0.5.8"
   },
   "scripts": {
     "start": "webpack-dev-server --open --public localhost:3000 --config webpack.dev.js",
