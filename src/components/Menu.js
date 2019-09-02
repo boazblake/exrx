@@ -1,5 +1,4 @@
 import m from 'mithril'
-import { scrollToAnchor } from 'utils/helpers'
 
 const Tab = ({ attrs: { key } }) => {
   return {
@@ -10,10 +9,10 @@ const Tab = ({ attrs: { key } }) => {
           m.route.Link,
           {
             class: active ? ' active menu-item ' : 'menu-item',
-            onclick: (e) => {
-              console.log('EVENT', e)
+            onclick: () => {
+              // console.log('EVENT', e)
               m.route.set(tab.route, { a: tab.id })
-              scrollToAnchor(tab.id)
+              // scrollToAnchor(tab.id)
             },
             key,
             id: `${tab.id}-key`,

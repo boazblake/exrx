@@ -14,8 +14,8 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -29,8 +29,8 @@ const Main = [
     position: ['nav', 'sidebar'],
     group: [],
     children: ['air-conditioning', 'check-engine-light'],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -43,8 +43,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -57,8 +57,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -71,8 +71,8 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -85,8 +85,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
@@ -99,8 +99,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, route) => {
-      console.log('path in route', path)
+    onmatch: (mdl, args, path, fullroute, anchor) => {
+      console.log('path and route', fullroute, anchor)
       // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),

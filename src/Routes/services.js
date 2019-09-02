@@ -2,6 +2,7 @@ import Layout from '../Layout.js'
 import Default from '../Pages/Default'
 import AirConditioning from '../Pages/Services/AirConditioning.js'
 import { flatten } from 'ramda'
+import { scrollToAnchor } from 'utils/helpers'
 
 const AirConditioningRoutes = [
   {
@@ -12,11 +13,11 @@ const AirConditioningRoutes = [
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],
-    // onmatch: (mdl, props, route) => {
-    // console.log('props', props)
-    // return (mdl.state.route = route)
-    // },
-    // component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
+    },
+    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'help-over-heating',
@@ -26,9 +27,9 @@ const AirConditioningRoutes = [
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
@@ -40,9 +41,9 @@ const AirConditioningRoutes = [
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
@@ -54,9 +55,9 @@ const AirConditioningRoutes = [
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
@@ -68,9 +69,9 @@ const AirConditioningRoutes = [
     position: ['sidebar'],
     group: ['air-conditioning'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
@@ -85,9 +86,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -99,9 +100,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
   },
@@ -113,9 +114,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -127,9 +128,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -141,9 +142,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -155,9 +156,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -169,9 +170,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -183,9 +184,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -197,9 +198,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -211,9 +212,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -225,9 +226,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -239,9 +240,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -253,9 +254,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -267,9 +268,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -281,9 +282,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -295,9 +296,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -309,9 +310,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -323,9 +324,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -337,9 +338,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -351,9 +352,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -365,9 +366,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -379,9 +380,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -393,9 +394,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -407,9 +408,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -421,9 +422,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -435,9 +436,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -449,9 +450,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -463,9 +464,9 @@ const SubMenu = [
     position: ['sidebar'],
     group: ['services'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute) => {
+      console.log('onmatch', fullroute)
+      scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },

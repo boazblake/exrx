@@ -1,9 +1,11 @@
 import m from 'mithril'
 
 import UnautherizedView from '../Default/UnautherizedViews.js'
+import { scrollToAnchor } from '../../utils/helpers.js'
 
 const AirConditioning = ({ attrs: { mdl } }) => {
   return {
+    oncreate: scrollToAnchor(mdl.state.anchor),
     view: () =>
       m('.air-conditioning', [
         m('h1', mdl.state.route.title),

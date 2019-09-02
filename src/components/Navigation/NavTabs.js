@@ -1,6 +1,6 @@
 import m from 'mithril'
 import LoginRegister from '../Navigation/LoginRegister.js'
-const getRoute = (int) => m.route.get().split('/')[int]
+import { getRoute } from 'utils/helpers'
 
 const Tab = ({ attrs: { key } }) => {
   return {
