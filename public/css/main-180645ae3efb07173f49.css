@@ -1135,6 +1135,10 @@ body {
   align-content: center;
   justify-content: space-between; }
 
+.nav-links {
+  height: 150px;
+  background-color: #bbbbbb; }
+
 #hamburger {
   width: 35px; }
 
@@ -1201,12 +1205,14 @@ body {
     grid-template-rows: max-content 1fr;
     grid-template-areas: "header header header header" "left-aside content content right-aside" "footer footer footer footer"; }
   #header {
-    justify-content: space-evenly; }
+    justify-content: space-between; }
   #content {
     min-width: 100%; }
   #left-aside {
-    max-width: 200px; }
+    max-width: 200px;
+    min-width: 20vw; }
   #right-aside {
-    max-width: 200px; } }
+    max-width: 400px;
+    min-width: 20vw; } }
 
-/*# sourceMappingURL=main-f3ca1ef09a9c4d684a61.css.map*/
+/*# sourceMappingURL=main-180645ae3efb07173f49.css.map*/
