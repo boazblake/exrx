@@ -10,9 +10,7 @@ const Tab = ({ attrs: { key } }) => {
           {
             class: active ? ' active menu-item ' : 'menu-item',
             onclick: () => {
-              // console.log('EVENT', e)
               m.route.set(tab.route, { a: tab.id })
-              // scrollToAnchor(tab.id)
             },
             key,
             id: `${tab.id}-key`,

@@ -3,7 +3,8 @@ const toRoutes = (mdl) => (acc, route) => {
     onmatch: (args, path, fullroute) => {
       mdl.state.route = route
       mdl.state.anchor = path.split('#')[1]
-      route.onmatch(mdl, args, path, fullroute)
+      let isAnchor = Boolean(mdl.state.anchor)
+      route.onmatch(mdl, args, path, fullroute, isAnchor)
     },
     render: () => route.component(mdl),
   }

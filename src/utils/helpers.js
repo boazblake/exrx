@@ -130,16 +130,10 @@ export const getRoute = (int) => m.route.get().split('/')[int]
 export const scrollToAnchor = (anchor) => {
   let is = (el) => el !== undefined && el !== null
 
-  console.log('anchor', document.getElementById(anchor), document.body)
-
   //if you pass an undefined anchor it will scroll to the top of the body
   let targetEl = is(anchor) ? document.getElementById(anchor) : document.body
   let scrollTop = window.pageYOffset || document.documentElement.scrollTop
   let target = is(targetEl) ? targetEl.getBoundingClientRect().top : 0
-  console.log('ANCHOR', anchor)
-  console.log('targetEL', targetEl)
-  console.log('scrollTop', scrollTop)
-  console.log('target', target)
   window.scroll({
     top: target + scrollTop - 70,
     left: 0,

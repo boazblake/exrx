@@ -1,6 +1,8 @@
 import Layout from '../Layout.js'
 import Default from '../Pages/Default'
 
+import { scrollToAnchor } from 'utils/helpers'
+
 import home from '../assets/icons/home.js'
 import contact from '../assets/icons/contact.js'
 import services from '../assets/icons/services.js'
@@ -14,9 +16,8 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -28,10 +29,9 @@ const Main = [
     route: '/services',
     position: ['nav', 'sidebar'],
     group: [],
-    children: ['air-conditioning', 'check-engine-light'],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    children: [],
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -43,9 +43,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -57,9 +56,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -71,9 +69,8 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -85,9 +82,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -99,9 +95,8 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, args, path, fullroute, anchor) => {
-      console.log('path and route', fullroute, anchor)
-      // return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
