@@ -14,9 +14,9 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -29,9 +29,9 @@ const Main = [
     position: ['nav', 'sidebar'],
     group: [],
     children: ['air-conditioning', 'check-engine-light'],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -43,9 +43,9 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -57,9 +57,9 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -71,9 +71,9 @@ const Main = [
     position: ['nav'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -85,9 +85,9 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
@@ -99,9 +99,9 @@ const Main = [
     position: ['nav', 'footer'],
     group: [],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, route) => {
+      console.log('path in route', path)
+      // return (mdl.state.route = route)
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },

@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { model } from './Model.js'
 import App from './App.js'
+// import { scrollToAnchor } from 'utils/helpers'
 
 // console.log(model)
 
@@ -38,5 +39,7 @@ function checkWidth() {
 }
 
 checkWidth()
+
+// scrollToAnchor()
 
 m.route(root, '/home', App(model))

@@ -1,6 +1,13 @@
+// import { scrollToAnchor } from './utils/helpers'
+
 const toRoutes = (mdl) => (acc, route) => {
   acc[route.route] = {
-    onmatch: (props) => route.onmatch(mdl, props, route),
+    onmatch: (args, path, fullroute) => {
+      console.log('toRoute', 'args', args, 'path', path, 'route', fullroute)
+      mdl.state.route = route
+      // scrollToAnchor(path)
+      route.onmatch(mdl, args, path, fullroute)
+    },
     render: () => route.component(mdl),
   }
   return acc
