@@ -21,6 +21,23 @@ import {
 
 import Task from 'data.task'
 
+export const getProfile = (w) => {
+  if (w < 668) return 'phone'
+  if (w < 920) return 'tablet'
+  return 'desktop'
+}
+export const checkWidth = (winW) => {
+  let prev = getProfile(winW)
+  const w = window.innerWidth
+  if (winW !== w) {
+    winW = w
+    var lastProfile = prev
+    prev = getProfile(w)
+    if (lastProfile != prev) m.redraw()
+  }
+  return requestAnimationFrame(checkWidth)
+}
+
 export const log = (m) => (v) => {
   console.log(m, v)
   return v

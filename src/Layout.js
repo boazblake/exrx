@@ -11,7 +11,7 @@ const Layout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
-        'section.layout',
+        '.layout',
         {
           id: 'layout',
         },

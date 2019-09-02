@@ -11,7 +11,17 @@ const AirConditioning = ({ attrs: { mdl } }) => {
         m('h1', mdl.state.route.title),
 
         m('h2.subTitle.bg-secondary', 'service-maintenance'),
-        m('.anchor', { id: 'service-maintenance' }),
+        m('.anchor', {
+          id: 'service-maintenance',
+
+          onscroll: ({ dom }) => {
+            console.log(
+              'getBoundingClientRect',
+              dom,
+              dom.getBoundingClientRect()
+            )
+          },
+        }),
 
         m(
           'p.p',
@@ -75,6 +85,11 @@ const AirConditioning = ({ attrs: { mdl } }) => {
 
         m('h2.subTitle.bg-secondary', 'ac-parts'),
         m('.anchor', { id: 'ac-parts' }),
+
+        m(
+          'p.p',
+          'The air conditioning is a complex system and understanding the reason something failed is just as important as fixing the car itself. What Parts Make Up the Air Conditioning System? Below are some common heating and air conditioning components, click on the component to get a detailed description and picture.'
+        ),
 
         m(UnautherizedView, { mdl }),
 

@@ -1,11 +1,6 @@
 /* index.scss */
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap");
-@import "./spectre/spectre.min.css";
-@import "./spectre/docs.min.css";
-@import "./spectre/spectre-exp.min.css";
-@import "./spectre/spectre-rtl.min.css";
-@import "./spectre/spectre-icons.min.css";
 // @import "./animations.css";
 // @import "./loader.scss";
 
@@ -77,7 +72,7 @@ html {
 
 .nav-links {
   min-height: 150px;
-  background-color: rgb(187, 187, 187);
+  background-color: primary-color;
 }
 
 #hamburger {
@@ -87,13 +82,11 @@ html {
 #content {
   grid-area: content;
   padding: 10px;
-  // border: 2px dashed red;
   min-height: 100vh;
 }
 
 #left-aside {
   grid-area: left-aside;
-  // border: 2px dashed green;
   min-height: 200px;
   min-width: 100px;
 }
@@ -107,14 +100,12 @@ html {
 
 #right-aside {
   grid-area: right-aside;
-  // border: 2px dashed yellow;
   min-height: 200px;
   min-width: 100px;
 }
 
 #footer {
   grid-area: footer;
-  // border: 2px dashed grey;
   min-height: 200px;
 }
 
@@ -140,21 +131,21 @@ html {
   height: 1.5rem;
   text-align: center;
   color: #2980b9;
-  // border: 2px dashed #ecf0f1;
+  border: 2px dashed #ecf0f1;
   background-image: #ecf0f1;
   border-radius: 10px;
 
   &::-webkit-progress-bar {
-    // border: 2px dashed #ecf0f1;
+    border: 2px dashed #ecf0f1;
     width: 100%;
     border-radius: 10px;
   }
   &::-webkit-progress-value {
-    // border: 2px dashed #2980b9;
+    border: 2px dashed #2980b9;
     border-radius: 10px;
   }
   &::-moz-progress-value {
-    // border: 2px dashed #ecf0f1;
+    border: 2px dashed #ecf0f1;
     border-radius: 10px;
   }
 }
