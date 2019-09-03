@@ -1,17 +1,13 @@
 import Layout from '../Layout.js'
 import Default from '../Pages/Default'
-
-import { scrollToAnchor } from 'utils/helpers'
-
-import home from '../assets/icons/home.js'
-import contact from '../assets/icons/contact.js'
-import services from '../assets/icons/services.js'
+import { scrollToAnchor } from 'utils'
+import Icons from 'icons'
 
 const Main = [
   {
     id: 'home',
     title: 'Home',
-    icon: home,
+    icon: Icons.home,
     route: '/home',
     position: ['nav'],
     group: [],
@@ -25,7 +21,7 @@ const Main = [
   {
     id: 'services',
     title: 'Services',
-    icon: services,
+    icon: Icons.services,
     route: '/services',
     position: ['nav', 'sidebar'],
     group: [],
@@ -77,7 +73,7 @@ const Main = [
   {
     id: 'contact',
     title: 'Contact',
-    icon: contact,
+    icon: Icons.contact,
     route: '/contact',
     position: ['nav', 'footer'],
     group: [],

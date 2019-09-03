@@ -1,5 +1,5 @@
 import m from 'mithril'
-import { getRoute } from 'utils/helpers'
+import { getRoute } from 'utils'
 
 const NavLink = ({ attrs: { key } }) => {
   return {

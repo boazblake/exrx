@@ -1,7 +1,7 @@
 import m from 'mithril'
 
 import UnautherizedView from '../Default/UnautherizedViews.js'
-import { scrollToAnchor } from '../../utils/helpers.js'
+import { scrollToAnchor } from 'utils'
 
 const AirConditioning = ({ attrs: { mdl } }) => {
   return {

@@ -2,7 +2,7 @@ import Layout from '../Layout.js'
 import Default from '../Pages/Default'
 import AirConditioning from '../Pages/Services/AirConditioning.js'
 import { flatten } from 'ramda'
-import { scrollToAnchor } from 'utils/helpers'
+import { scrollToAnchor } from 'utils'
 
 const AirConditioningRoutes = [
   {

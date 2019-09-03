@@ -1,6 +1,9 @@
 import m from 'mithril'
 import LoginRegister from '../Navigation/LoginRegister.js'
-import { getRoute } from 'utils/helpers'
+import { getRoute } from 'utils'
+import Brand from 'assets/professional-auto-care-logo-brand.png'
+
+console.log(Brand)
 
 const Tab = ({ attrs: { key } }) => {
   return {
@@ -16,7 +19,9 @@ const Tab = ({ attrs: { key } }) => {
             tabSelected(tab.id)
           },
         },
-        tab.title
+        tab.title === 'Home'
+          ? m('img', { style: { width: '100px' }, src: Brand })
+          : tab.title
       ),
   }
 }

@@ -15,8 +15,8 @@ const Header = () => {
           mdl.state.isLoading()
             ? m(ProgressBar, { mdl })
             : [
-              mdl.state.profile !== 'desktop' && m(Hamburger, { mdl }),
               m(Navigation, { mdl }),
+              mdl.state.profile !== 'desktop' && m(Hamburger, { mdl }),
             ],
         ]
       ),

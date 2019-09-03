@@ -2,7 +2,7 @@ import m from 'mithril'
 import NavTabs from './NavTabs.js'
 import NavLinks from './NavLinks.js'
 import Stream from 'mithril-stream'
-import { getRoute } from 'utils/helpers'
+import { getRoute } from 'utils'
 
 const Navigation = () => {
   let tabSelected = Stream(getRoute(1))
