@@ -86,11 +86,17 @@ html {
   min-height: 150px;
 }
 
-#hamburger {
+.mobileNav {
+  display: flex;
+  flex-flow: row;
   width: 100%;
   position: fixed;
-  top: 0;
   z-index: 3;
+}
+
+.hamburger {
+  margin-left: auto;
+  width: 40px;
 }
 
 #content {
@@ -175,7 +181,7 @@ html {
     font-size: 18px;
   }
 
-  #hamburger {
+  .mobileNav {
     display: none;
   }
 
