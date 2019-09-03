@@ -57,6 +57,12 @@ body {
 .nav-links {
   min-height: 150px; }
 
+#hamburger {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 3; }
+
 #content {
   grid-area: content;
   padding: 10px;
@@ -64,8 +70,10 @@ body {
 
 #left-aside {
   grid-area: left-aside;
-  min-height: 200px;
-  min-width: 100px; }
+  width: 100%;
+  position: fixed;
+  top: 30px;
+  z-index: 3; }
 
 #menu {
   position: -webkit-sticky;
@@ -133,9 +141,13 @@ body {
     min-width: 100%; }
   #left-aside {
     max-width: 200px;
-    min-width: 20vw; }
+    min-width: 20vw;
+    width: 100%;
+    position: inherit;
+    top: 0;
+    z-index: inherit; }
   #right-aside {
     max-width: 400px;
     min-width: 20vw; } }
 
-/*# sourceMappingURL=main-6d0ad3c79d3d705a98ab.css.map*/
+/*# sourceMappingURL=main-7d9b9f263ea636e4bd92.css.map*/

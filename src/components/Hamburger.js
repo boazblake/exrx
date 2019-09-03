@@ -27,10 +27,14 @@ const Hamburger = ({ attrs: { mdl } }) => {
     oncreate: updateDom,
     onupdate: updateDom,
     view: ({ attrs: { mdl } }) =>
-      m('svg.btn', {
-        id: 'hamburger',
-        onclick: () => mdl.toggleNav(mdl),
-      }),
+      m(
+        'svg.btn',
+        {
+          id: 'hamburger',
+          onclick: () => mdl.toggleNav(mdl),
+        },
+        'SHOW'
+      ),
   }
 }
 
