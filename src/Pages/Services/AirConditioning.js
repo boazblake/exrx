@@ -67,13 +67,14 @@ const AirConditioning = ({ attrs: { mdl } }) => {
 
             m('iframe', {
               id: 'ac-video',
-              class: 'plyr__video-embed',
+              class: 'plyr__video-embed video-responsive',
               width: '600',
               height: '400',
+              frameborder: 0,
               src:
                 'https://www.youtube.com/embed/lfAQtaBFi0Y?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1',
-              allowfullscreen: 'allowfullscreen',
-              allowtransparency: '',
+              allowfullscreen: true,
+              allowtransparency: false,
               allow: 'autoplay',
             }),
             // mdl.state.user.isAutherized ? [] :
