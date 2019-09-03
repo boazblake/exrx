@@ -57,9 +57,6 @@ body {
 .nav-links {
   min-height: 150px; }
 
-#hamburger {
-  width: 35px; }
-
 #content {
   grid-area: content;
   padding: 10px;
@@ -122,7 +119,7 @@ body {
 @media (min-width: 920px) {
   * {
     font-size: 18px; }
-  .hamburger {
+  #hamburger {
     display: none; }
   #layout {
     position: relative;
@@ -141,4 +138,4 @@ body {
     max-width: 400px;
     min-width: 20vw; } }
 
-/*# sourceMappingURL=main-6c9dd891248051fad4a8.css.map*/
+/*# sourceMappingURL=main-6d0ad3c79d3d705a98ab.css.map*/
