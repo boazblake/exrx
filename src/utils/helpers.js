@@ -21,23 +21,6 @@ import {
 
 import Task from 'data.task'
 
-export const getProfile = (w) => {
-  if (w < 668) return 'phone'
-  if (w < 920) return 'tablet'
-  return 'desktop'
-}
-export const checkWidth = (winW) => {
-  let prev = getProfile(winW)
-  const w = window.innerWidth
-  if (winW !== w) {
-    winW = w
-    var lastProfile = prev
-    prev = getProfile(w)
-    if (lastProfile != prev) m.redraw()
-  }
-  return requestAnimationFrame(checkWidth)
-}
-
 export const log = (m) => (v) => {
   console.log(m, v)
   return v
@@ -53,30 +36,6 @@ export const infiniteScroll = (mdl) => (e) => {
     mdl.state.scrollPos++ + e.target.scrollTop
   }
 }
-
-// const smoothScrolling = () => {
-//   $(function () {
-//     $('a[href*="#"]:not([href="#"])').click(function () {
-//       if (
-//         location.pathname.replace(/^\//, '') ==
-//         this.pathname.replace(/^\//, '') &&
-//         location.hostname == this.hostname
-//       ) {
-//         var target = $(this.hash)
-//         target = target.length ? target : $('[name=' + this.hash.slice(1) + ']')
-//         if (target.length) {
-//           $('html, body').animate(
-//             {
-//               scrollTop: target.offset().top,
-//             },
-//             900,
-//             'swing'
-//           )
-//           return false
-//         }
-//       }
-//     })
-//   })}
 
 export const addTerms = (item) => {
   const terms = compose(
@@ -152,7 +111,7 @@ export const scrollToAnchor = (anchor) => {
   let scrollTop = window.pageYOffset || document.documentElement.scrollTop
   let target = is(targetEl) ? targetEl.getBoundingClientRect().top : 0
   window.scroll({
-    top: target + scrollTop - 70,
+    top: target + scrollTop - 10,
     left: 0,
     behavior: 'smooth',
   })

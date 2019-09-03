@@ -31,7 +31,7 @@ const NavLinks = () => {
       }
 
       return m(
-        '.nav-links',
+        '.nav-links bg-secondary',
         m(
           `ul.accordian-body nav ${routes.length ? 'active' : 'hide'}`,
           {

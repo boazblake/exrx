@@ -7,7 +7,10 @@ const Footer = {
       {
         id: 'footer',
       },
-      m('p.p', 'PAC')
+      m(
+        'p.p text-center',
+        `Copyright © Professional Auto Care. All rights reserved. ${new Date().getFullYear()} Privacy Policy`
+      )
     ),
 }
 

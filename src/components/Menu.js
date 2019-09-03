@@ -27,17 +27,19 @@ const Menu = {
     let route = m.route.get().split('/')[2]
 
     let routes = mdl.Routes.filter((r) => r.group.includes(route))
-    return m(
-      'ul.menu',
-      { id: 'menu' },
-      routes.map((tab, idx) =>
-        m(Tab, {
-          key: idx,
-          active: mdl.state.route.route == tab.route,
-          tab,
-        })
+    return routes.length
+      ? m(
+        'ul.menu',
+        { id: 'menu' },
+        routes.map((tab, idx) =>
+          m(Tab, {
+            key: idx,
+            active: mdl.state.route.route == tab.route,
+            tab,
+          })
+        )
       )
-    )
+      : []
   },
 }
 
