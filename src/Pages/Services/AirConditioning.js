@@ -88,7 +88,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
               'The air conditioning is a complex system and understanding the reason something failed is just as important as fixing the car itself. What Parts Make Up the Air Conditioning System? Below are some common heating and air conditioning components, click on the component to get a detailed description and picture.'
             ),
 
-            m(UnautherizedView, { mdl }),
+            !mdl.state.isAuth() && m(UnautherizedView, { mdl }),
           ]),
 
           m('section.anchor', { id: 'ac-testing-fees' }, [

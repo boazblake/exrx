@@ -53,14 +53,14 @@ const NavTabs = () => {
                 })
               )
             ),
-            [
-              m(
+            mdl.state.isAuth()
+              ? m('button.btn btn-primary', 'User Settings')
+              : m(
                 'button.btn btn-primary',
                 { onclick: () => mdl.toggleAuthModal(mdl) },
                 'Login / Register'
               ),
-              m(AuthComponent, { mdl }),
-            ],
+            m(AuthComponent, { mdl }),
           ]
         ),
       ]

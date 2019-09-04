@@ -1,7 +1,6 @@
 import m from 'mithril'
 import Stream from 'mithril-stream'
 import Task from 'data.task'
-import Routes from './Routes/index.js'
 
 function onProgress(e) {
   if (e.lengthComputable) {
@@ -59,7 +58,6 @@ const http = {
 export default http
 
 export const model = {
-  Routes,
   http,
   data: Stream({}),
   state: {
@@ -67,6 +65,7 @@ export const model = {
       max: 0,
       value: 0,
     },
+    isAuth: Stream(false),
     paginate: { from: 1, size: 10, total: 0 },
     isLoading: Stream(false),
     url: '',

@@ -2,6 +2,7 @@ import m from 'mithril'
 import { model } from './Model.js'
 import App from './App.js'
 import { FP } from './fp/index.js'
+import Routes from './Routes/index.js'
 
 // Styles
 import './styles/index.scss'
@@ -52,5 +53,9 @@ model.state.profile = getProfile(winW)
 checkWidth(winW)
 
 FP.configure()
+
+model.Routes = model.state.isAuth()
+  ? Routes
+  : Routes.filter((route) => !route.group.includes('authenticated'))
 
 m.route(root, '/home', App(model))

@@ -6,6 +6,10 @@ import Stream from 'mithril-stream'
 const state = {
   forms: { 0: Register, 1: Login },
   page: 0,
+  title: {
+    0: 'Register',
+    1: 'Login',
+  },
   errors: {},
   mdl: {
     name: Stream(''),
@@ -42,19 +46,24 @@ const AuthLinkButton = () => {
   }
 }
 
-const AuthComponent = () => {
+const AuthComponent = ({ attrs: { mdl } }) => {
+  console.log('MODEL', mdl)
   return {
     view: ({ attrs: { mdl } }) => [
       m(Modal, {
         isActive: mdl.state.showAuthModal(),
         close: () => mdl.toggleAuthModal(mdl),
-        title: state.page ? 'Login' : 'Register',
+        title: state.title[state.page],
         content: m(state.forms[state.page], { mdl: state.mdl }),
         footer: [
-          m('button.btn', { onclick: () => validateData(state.mdl) }, 'Submit'),
+          m(
+            'button.btn.btn-primary',
+            { onclick: () => validateData(state.mdl) },
+            'Submit'
+          ),
           m(AuthLinkButton, {
             mdl,
-            title: state.page ? 'Register' : 'Login',
+            title: state.title[state.page],
           }),
         ],
       }),
