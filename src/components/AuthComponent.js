@@ -1,16 +1,34 @@
 import m from 'mithril'
-import { Login, Register } from './Forms/index.js'
+import { Login, Register, validationsTask } from './forms/index.js'
 import Modal from './Modal.js'
+import Stream from 'mithril-stream'
 
 const state = {
   forms: { 0: Register, 1: Login },
   page: 0,
-  mdl: {},
+  errors: {},
+  mdl: {
+    name: Stream(''),
+    email: Stream(''),
+    password: Stream(''),
+    confirmEmail: Stream(''),
+    confirmPassword: Stream(''),
+  },
 }
 
-console.log()
+const validateData = (data) => {
+  const onErr = (errs) => {
+    state.errors = errs
+    console.log('failed - state', state)
+  }
+  const onSucc = (data) => {
+    console.log('validation success', data)
+  }
 
-const AuthButton = () => {
+  validationsTask(data).fork(onErr, onSucc)
+}
+
+const AuthLinkButton = () => {
   return {
     view: ({ attrs: { title } }) =>
       m(
@@ -32,10 +50,13 @@ const AuthComponent = () => {
         close: () => mdl.toggleAuthModal(mdl),
         title: state.page ? 'Login' : 'Register',
         content: m(state.forms[state.page], { mdl: state.mdl }),
-        footer: m(AuthButton, {
-          mdl,
-          title: state.page ? 'Register' : 'Login',
-        }),
+        footer: [
+          m('button.btn', { onclick: () => validateData(state.mdl) }, 'Submit'),
+          m(AuthLinkButton, {
+            mdl,
+            title: state.page ? 'Register' : 'Login',
+          }),
+        ],
       }),
     ],
   }

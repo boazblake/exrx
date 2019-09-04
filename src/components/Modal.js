@@ -15,7 +15,7 @@ const Modal = {
             'aria-label': 'Close',
             onclick: () => close(),
           }),
-          m('.modal-title h5', title),
+          m('.modal-title h3', title),
         ]),
         m('.modal-body', m('.content', content)),
         m('.modal-footer', footer),

@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { model } from './Model.js'
 import App from './App.js'
+import { FP } from './fp/index.js'
 
 // Styles
 import './styles/index.scss'
@@ -49,5 +50,7 @@ model.state.profile = getProfile(winW)
 // }
 
 checkWidth(winW)
+
+FP.configure()
 
 m.route(root, '/home', App(model))

@@ -19,7 +19,7 @@ module.exports = {
     'linebreak-style': ['warn', 'windows'],
     quotes: ['warn', 'single'],
     semi: ['warn', 'never'],
-    'no-unused-vars': ['warn'],
+    'no-unused-vars': ['warn', { argsIgnorePattern: '_' }],
     'no-console': 0,
     'rest-spread-spacing': ['warn', 'never'],
   },

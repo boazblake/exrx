@@ -1,2 +1,1 @@
-export * from './Login.js'
-export * from './Register.js'
+export * from './authentication/index.js'

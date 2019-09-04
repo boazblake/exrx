@@ -53,13 +53,17 @@ module.exports = merge(common, {
         options: {
           cache: true,
           configFile: '.eslintrc.js',
-          emitWarning: true,
+          emitWarning: false,
           // Fail only on errors
           failOnWarning: false,
           failOnError: false,
           // Toggle autofix
           fix: true,
           formatter: require('eslint/lib/formatters/stylish'),
+          outputReport: {
+            filePath: 'checkstyle.xml',
+            formatter: 'checkstyle',
+          },
         },
       },
     ],
