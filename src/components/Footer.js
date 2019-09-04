@@ -1,4 +1,5 @@
 import m from 'mithril'
+import SocialMedia from './SocialMedia.js'
 
 const Footer = {
   view: () =>
@@ -7,10 +8,10 @@ const Footer = {
       {
         id: 'footer',
       },
-      m(
-        'p.p text-center',
-        `Copyright © Professional Auto Care. All rights reserved. ${new Date().getFullYear()} Privacy Policy`
-      )
+      m('p.text-center', [
+        `Copyright © Professional Auto Care. All rights reserved. ${new Date().getFullYear()} Privacy Policy`,
+        m(SocialMedia),
+      ])
     ),
 }
 

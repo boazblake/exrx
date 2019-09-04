@@ -4,6 +4,14 @@
 
 $primary-color: #5755d9;
 $secondary-color: #f1f1fc;
+$success: #32b643;
+$warning: #ffb700;
+$error: #e85600;
+$disabled: #f7f8f9;
+$dark-grey: #303742;
+$grey: #66758c;
+$light-grey: #bcc3ce;
+$white: #fff;
 
 // @import "./animations.css";
 // @import "./loader.scss";
@@ -133,6 +141,26 @@ html {
   justify-content: space-around;
   min-height: 200px;
   background-color: $primary-color;
+  color: $white;
+}
+
+.socialmedias {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-between;
+  align-content: center;
+  padding: 12px 0;
+  margin: 0 auto;
+  width: 200px;
+}
+
+.socialmedia {
+  width: 65px;
+  cursor: pointer;
+}
+
+.avatar {
+  border: 1px solid $white;
 }
 
 .loader {

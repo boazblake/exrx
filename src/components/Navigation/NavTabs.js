@@ -1,9 +1,7 @@
 import m from 'mithril'
-import LoginRegister from '../Navigation/LoginRegister.js'
 import { getRoute } from 'utils'
 import Brand from 'assets/professional-auto-care-logo-brand.png'
-
-console.log(Brand)
+import AuthComponent from '../AuthComponent.js'
 
 const Tab = ({ attrs: { key } }) => {
   return {
@@ -55,7 +53,14 @@ const NavTabs = () => {
                 })
               )
             ),
-            m(LoginRegister),
+            [
+              m(
+                'button.btn btn-primary',
+                { onclick: () => mdl.toggleAuthModal(mdl) },
+                'Login / Register'
+              ),
+              m(AuthComponent, { mdl }),
+            ],
           ]
         ),
       ]

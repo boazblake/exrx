@@ -61,7 +61,6 @@ export default http
 export const model = {
   Routes,
   http,
-  limits: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
   data: Stream({}),
   state: {
     loadingProgress: {
@@ -75,12 +74,12 @@ export const model = {
     scrollPos: 1,
     limit: 10,
     profile: '',
-    showLimits: Stream(false),
+    showAuthModal: Stream(false),
     showSettings: Stream(false),
     showNav: Stream(false),
     query: Stream(''),
   },
-  toggleLimits: (mdl) => mdl.state.showLimits(!mdl.state.showLimits()),
+  toggleAuthModal: (mdl) => mdl.state.showAuthModal(!mdl.state.showAuthModal()),
   toggleSettings: (mdl) => mdl.state.showSettings(!mdl.state.showSettings()),
   toggleNav: (mdl) => mdl.state.showNav(!mdl.state.showNav()),
   filterData: (mdl) => (query) => mdl.state.query(query),
