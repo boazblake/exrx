@@ -21,9 +21,9 @@ module.exports = {
   },
   resolve: {
     alias: {
-      assets: resolve(__dirname, 'src/assets'),
-      icons: resolve(__dirname, 'src/assets/icons/index.js'),
-      utils: resolve(__dirname, 'src/utils/index.js'),
+      assets: resolve(__dirname, 'src/Assets'),
+      icons: resolve(__dirname, 'src/Assets/Icons/index.js'),
+      utils: resolve(__dirname, 'src/Utils/index.js'),
     },
   },
   module: {

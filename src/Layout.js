@@ -1,9 +1,9 @@
 import m from 'mithril'
-import Header from './components/Header.js'
-import Footer from './components/Footer.js'
-import Body from './components/Body.js'
-import LeftAside from './components/LeftAside.js'
-import RightAside from './components/RightAside.js'
+import Header from './Components/Header.js'
+import Footer from './Components/Footer.js'
+import Body from './Components/Body.js'
+import LeftAside from './Components/LeftAside.js'
+import RightAside from './Components/RightAside.js'
 
 const Layout = ({ attrs: { mdl } }) => {
   const showMenu = () => mdl.state.showNav() || mdl.state.profile == 'desktop'

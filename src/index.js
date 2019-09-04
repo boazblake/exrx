@@ -1,11 +1,11 @@
 import m from 'mithril'
 import { model } from './Model.js'
 import App from './App.js'
-import { FP } from './fp/index.js'
+import { FP } from './Fp/index.js'
 import Routes from './Routes/index.js'
 
 // Styles
-import './styles/index.scss'
+import './Styles/index.scss'
 
 const root = document.body
 let winW = window.innerWidth

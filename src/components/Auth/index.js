@@ -25,19 +25,44 @@ const state = {
   },
 }
 
-const validateData = (data) => {
-  const onErr = (errs) => {
+const onRegisterError = (error) => console.log('error with registering', error)
+const onRegisterSuccess = (data) => console.log('succes with registering', data)
+const onLoginError = (error) => console.log('error with login', error)
+const onLoginSuccess = (mdl) => (user) => {
+  window.sessionStorage.setItem('user-token', user['user-token'])
+  mdl.user = user
+}
+
+const validateForm = (mdl) => (data) => {
+  const onValidationError = (errs) => {
     state.errors = errs
     console.log('failed - state', state)
   }
-  const onSucc = (data) => {
-    console.log('validation success', data)
+
+  const onValidationSuccess = (data) => {
+    state.errors = {}
+    console.log('validation success', data, state.page)
+    state.page
+      ? loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
+      : registerUser(mdl)(data).fork(onRegisterError, onRegisterSuccess)
   }
 
+  state.isSubmitted = true
   state.page
-    ? validateLoginTask(data).fork(onErr, onSucc)
-    : validateRegistrationTask(data).fork(onErr, onSucc)
+    ? validateLoginTask(data).fork(onValidationError, onValidationSuccess)
+    : validateRegistrationTask(data).fork(
+      onValidationError,
+      onValidationSuccess
+    )
 }
+
+const loginUser = (mdl) => (dto) =>
+  mdl.http.postTask(mdl)('users/login')({
+    dto: { login: dto.email, password: dto.password },
+  })
+
+const registerUser = (mdl) => (dto) =>
+  mdl.http.postTask(mdl)('users/register')({ dto })
 
 const AuthLinkButton = () => {
   return {
@@ -68,12 +93,12 @@ const AuthComponent = () => {
         footer: [
           m(
             'button.btn.btn-primary',
-            { onclick: () => validateData(state.data) },
+            { onclick: () => validateForm(mdl)(state.data) },
             'Submit'
           ),
           m(AuthLinkButton, {
             mdl,
-            title: state.title[state.page],
+            title: state.page ? 'Register' : 'Login',
           }),
         ],
       }),

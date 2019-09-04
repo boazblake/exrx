@@ -1,7 +1,7 @@
 import m from 'mithril'
 import { getRoute } from 'utils'
 import Brand from 'assets/professional-auto-care-logo-brand.png'
-import AuthComponent from '../AuthComponent.js'
+import AuthComponent from '../Auth/index.js'
 
 const Tab = ({ attrs: { key } }) => {
   return {

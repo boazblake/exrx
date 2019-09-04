@@ -4,30 +4,32 @@ import Task from 'data.task'
 
 export class ParseError extends Error {}
 
-const id = x => x
+const id = (x) => x
 
-const _groupsOf = curry(
-  (n, xs) =>
-    !xs.length ? [] : [xs.slice(0, n)].concat(_groupsOf(n, xs.slice(n, length)))
+const _groupsOf = curry((n, xs) =>
+  !xs.length ? [] : [xs.slice(0, n)].concat(_groupsOf(n, xs.slice(n, length)))
 )
 
-export const mjoin = mmv => {
+export const mjoin = (mmv) => {
   if (mmv.mjoin) return mmv.mjoin()
   return chain(id, mmv)
 }
 
-export const mconcat = curry(
-  (xs, empty) => (xs.length ? xs.reduce(concat) : empty())
+export const mconcat = curry((xs, empty) =>
+  xs.length ? xs.reduce(concat) : empty()
 )
 
 export const sequenceA = curry((point, fctr) => {
   return fctr.traverse(id, point)
 })
 
-export const of = x => x.of
+export const of = (x) => x.of
 
 export const traverse = curry((f, point, fctr) =>
-  compose(sequenceA(point), map(f))(fctr)
+  compose(
+    sequenceA(point),
+    map(f)
+  )(fctr)
 )
 
 export const foldMap = curry((f, fldable) =>
@@ -40,15 +42,20 @@ export const foldMap = curry((f, fldable) =>
 
 export const fold = curry((f, g, x) => x.fold(f, g))
 
-export const toList = x => x.reduce((acc, y) => [y].concat(acc), [])
+export const toList = (x) => x.reduce((acc, y) => [y].concat(acc), [])
 
-export const eitherToTask = x =>
+export const eitherToTask = (x) =>
   x.cata({
-    Left: e => Task.rejected(new ParseError(e)),
-    Right: x => Task.of(x),
+    Left: (e) => Task.rejected(new ParseError(e)),
+    Right: (x) => Task.of(x),
   })
 
-export const promiseToTask = p => new Task((rej, res) => p.then(res, rej))
-export const taskToPromise = t => new Promise((res, rej) => t.fork(rej, res))
+export const promiseToTask = (p) => new Task((rej, res) => p.then(res, rej))
+export const taskToPromise = (t) => new Promise((res, rej) => t.fork(rej, res))
 
-export const parse = Either.try(compose(JSON.parse, prop('response')))
+export const parse = Either.try(
+  compose(
+    JSON.parse,
+    prop('response')
+  )
+)
