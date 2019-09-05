@@ -52,7 +52,6 @@ const validateForm = (mdl) => (data) => {
 
   const onValidationSuccess = (data) => {
     state.errors = {}
-    console.log('validation success', data, state.page)
     state.page
       ? loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
       : registerUser(mdl)(data).fork(
@@ -108,7 +107,7 @@ const AuthComponent = () => {
           m(
             'button.btn.btn-primary',
             { onclick: () => validateForm(mdl)(state.data) },
-            'Submit'
+            state.title[state.page]
           ),
           m(AuthLinkButton, {
             mdl,

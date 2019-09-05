@@ -47,7 +47,7 @@ const NavMenu = {
         window.scrollY !== 0 && m('li.menu-item', goToTop(mdl)),
         routes.map((tab, idx) =>
           m(Tab, {
-            key: idx + 1,
+            key: idx,
             active: mdl.state.route.route == tab.route,
             tab,
             mdl,
