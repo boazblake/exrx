@@ -8,12 +8,13 @@ import {
 import Modal from '../Modal.js'
 import { jsonCopy } from 'utils'
 
-const initData = {
+const userModel = {
   name: '',
   email: '',
   password: '',
   confirmEmail: '',
   confirmPassword: '',
+  isAdmin: false,
 }
 
 const state = {
@@ -26,11 +27,11 @@ const state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: jsonCopy(initData),
+  data: jsonCopy(userModel),
 }
 
 const resetState = () => {
-  state.data = jsonCopy(initData)
+  state.data = jsonCopy(userModel)
   state.errors = {}
   state.httpError = undefined
   state.isSubmitted = false
@@ -44,8 +45,8 @@ const onRegisterError = (error) => {
 }
 
 const onRegisterSuccess = (mdl) => (data) => {
-  state.page = 1
   console.log('succes with registering', data, mdl)
+  return (state.page = 0)
 }
 const onLoginError = (error) => {
   console.log('error with login', error)
@@ -83,13 +84,15 @@ const validateForm = (mdl) => (data) => {
     : validateLoginTask(data).fork(onValidationError, onValidationSuccess)
 }
 
-const loginUser = (mdl) => (dto) =>
+const loginUser = (mdl) => ({ email, password }) =>
   mdl.http.postTask(mdl)('users/login')({
-    dto: { login: dto.email, password: dto.password },
+    dto: { login: email, password: password },
   })
 
-const registerUser = (mdl) => (dto) =>
-  mdl.http.postTask(mdl)('users/register')({ dto })
+const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
+  mdl.http.postTask(mdl)('users/register')({
+    dto: { name, email, password, isAdmin },
+  })
 
 const changePage = () => {
   state.httpError = undefined
