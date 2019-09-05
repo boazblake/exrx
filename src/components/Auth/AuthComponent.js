@@ -118,6 +118,7 @@ const AuthComponent = () => {
       m(Modal, {
         isActive: mdl.state.showAuthModal(),
         close: () => {
+          resetState()
           mdl.toggleAuthModal(mdl)
         },
         title: state.title[state.page],
@@ -130,7 +131,10 @@ const AuthComponent = () => {
         footer: [
           m(
             'button.btn.btn-primary authBtn',
-            { onclick: () => validateForm(mdl)(state.data) },
+            {
+              onclick: () => validateForm(mdl)(state.data),
+              class: mdl.state.isLoading() && 'loading',
+            },
             state.title[state.page]
           ),
           m(AuthLink, {

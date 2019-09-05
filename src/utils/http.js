@@ -80,7 +80,6 @@ const postQl = (model) => (query) => {
 
 const postTask = (model) => (url) => ({ dto }) => {
   model.state.isLoading(true)
-  console.log('DTO', dto)
   return new Task((rej, res) =>
     m
       .request({
