@@ -24,7 +24,7 @@ const Tab = ({ attrs: { key } }) => {
           {
             class: active ? ' active menu-item ' : 'menu-item',
             onclick: () => {
-              m.route.set(tab.route, { a: tab.id })
+              m.route.set(`${tab.route}/#${tab.id}`)
               mdl.toggleNav(mdl)
             },
             key,

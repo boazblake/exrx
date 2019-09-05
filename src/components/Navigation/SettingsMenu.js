@@ -7,11 +7,11 @@ const Logout = () => {
     console.log('error', error, mdl)
   }
 
-  const onSuccess = (mdl) => (data) => {
-    console.log('success', data, mdl)
+  const onSuccess = (mdl) => () => {
     window.sessionStorage.removeItem('user-token')
     mdl.state.isAuth(false)
-    history.go(-1)
+    mdl.user = null
+    mdl.state.route.group.includes('authenticated') && history.back()
   }
 
   const logout = (mdl) =>

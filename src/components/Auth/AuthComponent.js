@@ -8,7 +8,7 @@ import {
 import Modal from '../Modal.js'
 import { jsonCopy } from 'utils'
 
-const initState = {
+const initData = {
   name: '',
   email: '',
   password: '',
@@ -25,23 +25,40 @@ const state = {
   },
   isSubmitted: false,
   errors: {},
-  data: jsonCopy(initState),
+  httpError: undefined,
+  data: jsonCopy(initData),
 }
 
-const onRegisterError = (error) => console.log('error with registering', error)
+const resetState = () => {
+  state.data = jsonCopy(initData)
+  state.errors = {}
+  state.httpError = undefined
+  state.isSubmitted = false
+  state.page = 0
+}
+
+const onRegisterError = (error) => {
+  state.httpError = error.message
+  state.isSubmitted = false
+  console.log('error with registering', error)
+}
+
 const onRegisterSuccess = (mdl) => (data) => {
   state.page = 1
-
   console.log('succes with registering', data, mdl)
 }
-const onLoginError = (error) => console.log('error with login', error)
+const onLoginError = (error) => {
+  console.log('error with login', error)
+  state.httpError = error.message
+  state.isSubmitted = false
+}
 
 const onLoginSuccess = (mdl) => (user) => {
   window.sessionStorage.setItem('user-token', user['user-token'])
   mdl.user = user
   mdl.state.isAuth(true)
   mdl.toggleAuthModal(mdl)
-  state.data = jsonCopy(initState)
+  resetState()
 }
 
 const validateForm = (mdl) => (data) => {
@@ -95,11 +112,14 @@ const AuthComponent = () => {
     view: ({ attrs: { mdl } }) =>
       m(Modal, {
         isActive: mdl.state.showAuthModal(),
-        close: () => mdl.toggleAuthModal(mdl),
+        close: () => {
+          mdl.toggleAuthModal(mdl)
+        },
         title: state.title[state.page],
         content: m(state.forms[state.page], {
           data: state.data,
           errors: state.errors,
+          httpError: state.httpError,
           isSubmitted: state.isSubmitted,
         }),
         footer: [

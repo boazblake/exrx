@@ -2,7 +2,7 @@ import m from 'mithril'
 
 export const Register = () => {
   return {
-    view: ({ attrs: { data, errors, isSubmitted } }) =>
+    view: ({ attrs: { data, errors, isSubmitted, httpError } }) =>
       m('form.column', { role: 'form' }, [
         m(
           '.form-group ',
@@ -94,6 +94,7 @@ export const Register = () => {
               m('p.form-input-hint', errors.confirmPassword),
           ]
         ),
+        httpError && m('p', httpError),
       ]),
   }
 }

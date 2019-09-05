@@ -12,13 +12,11 @@ const Header = () => {
           id: 'header',
         },
         [
-          mdl.state.isLoading()
-            ? m(ProgressBar, { mdl })
-            : [
-              mdl.state.profile !== 'desktop' &&
-                  m('.mobileNav', m(Hamburger, { mdl })),
-              m(Navigation, { mdl }),
-            ],
+          mdl.state.isLoading() && m(ProgressBar, { mdl }),
+
+          mdl.state.profile !== 'desktop' &&
+            m('.mobileNav', m(Hamburger, { mdl })),
+          m(Navigation, { mdl }),
         ]
       ),
   }

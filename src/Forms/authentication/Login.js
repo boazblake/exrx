@@ -2,7 +2,7 @@ import m from 'mithril'
 
 export const Login = () => {
   return {
-    view: ({ attrs: { data, errors, isSubmitted } }) =>
+    view: ({ attrs: { data, errors, isSubmitted, httpError } }) =>
       m('form.column', [
         m(
           '.form-group',
@@ -36,6 +36,7 @@ export const Login = () => {
             errors.password && m('p.form-input-hint', errors.password),
           ]
         ),
+        httpError && m('.toast toast-error', httpError),
       ]),
   }
 }
