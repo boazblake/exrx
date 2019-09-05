@@ -9,6 +9,15 @@ const contact = m(
   })
 )
 
+const dotsVerticleThree = m(
+  'svg',
+  { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 20 20' },
+  m('path', {
+    d:
+      'M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+  })
+)
+
 const downChevron = m(
   'svg',
   { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 20 20' },
@@ -51,6 +60,12 @@ const services = m(
   })
 )
 
-const Icon = { contact, services, home, downChevron, lock, upChevron }
-
-export default Icon
+export default {
+  contact,
+  services,
+  home,
+  downChevron,
+  lock,
+  upChevron,
+  dotsVerticleThree,
+}
