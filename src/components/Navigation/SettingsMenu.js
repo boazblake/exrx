@@ -11,6 +11,7 @@ const Logout = () => {
     console.log('success', data, mdl)
     window.sessionStorage.removeItem('user-token')
     mdl.state.isAuth(false)
+    history.go(-1)
   }
 
   const logout = (mdl) =>
@@ -69,6 +70,12 @@ const SettingsMenu = () => {
           ),
           state.showMenu() &&
             m('ul.menu', [
+              m('.panel', [
+                m('.panel-header', m('.panel-title', 'Comments')),
+                m('.panel-nav'),
+                m('.panel-body'),
+                m('.panel-footer'),
+              ]),
               m(Logout, { mdl }),
               routes.map((tab, idx) =>
                 m(Tab, {
