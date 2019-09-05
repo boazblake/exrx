@@ -39,16 +39,6 @@ a {
   align-content: center;
   align-items: center; }
 
-.toast {
-  position: absolute;
-  width: 90%;
-  top: 85vh;
-  display: flex;
-  flex-flow: column; }
-
-#btn-toast {
-  align-self: flex-end; }
-
 body {
   scroll-behavior: smooth; }
 
@@ -177,4 +167,4 @@ body {
     max-width: 400px;
     min-width: 20vw; } }
 
-/*# sourceMappingURL=main-501f6cf75249fd9fa9df.css.map*/
+/*# sourceMappingURL=main-59de742023ecdbe0ed1e.css.map*/
