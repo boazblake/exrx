@@ -6,6 +6,15 @@ import {
   validateRegistrationTask,
 } from '../../Forms/index.js'
 import Modal from '../Modal.js'
+import { jsonCopy } from 'utils'
+
+const initState = {
+  name: '',
+  email: '',
+  password: '',
+  confirmEmail: '',
+  confirmPassword: '',
+}
 
 const state = {
   forms: { 0: Register, 1: Login },
@@ -16,21 +25,23 @@ const state = {
   },
   isSubmitted: false,
   errors: {},
-  data: {
-    name: '',
-    email: '',
-    password: '',
-    confirmEmail: '',
-    confirmPassword: '',
-  },
+  data: jsonCopy(initState),
 }
 
 const onRegisterError = (error) => console.log('error with registering', error)
-const onRegisterSuccess = (data) => console.log('succes with registering', data)
+const onRegisterSuccess = (mdl) => (data) => {
+  state.page = 1
+
+  console.log('succes with registering', data, mdl)
+}
 const onLoginError = (error) => console.log('error with login', error)
+
 const onLoginSuccess = (mdl) => (user) => {
   window.sessionStorage.setItem('user-token', user['user-token'])
   mdl.user = user
+  mdl.state.isAuth(true)
+  mdl.toggleAuthModal(mdl)
+  state.data = jsonCopy(initState)
 }
 
 const validateForm = (mdl) => (data) => {
@@ -44,7 +55,10 @@ const validateForm = (mdl) => (data) => {
     console.log('validation success', data, state.page)
     state.page
       ? loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
-      : registerUser(mdl)(data).fork(onRegisterError, onRegisterSuccess)
+      : registerUser(mdl)(data).fork(
+        onRegisterError(mdl),
+        onRegisterSuccess(mdl)
+      )
   }
 
   state.isSubmitted = true

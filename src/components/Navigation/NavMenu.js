@@ -37,7 +37,7 @@ const Tab = ({ attrs: { key } }) => {
   }
 }
 
-const Menu = {
+const NavMenu = {
   view: ({ attrs: { mdl } }) => {
     let route = m.route.get().split('/')[2]
 
@@ -58,4 +58,4 @@ const Menu = {
   },
 }
 
-export default Menu
+export default NavMenu

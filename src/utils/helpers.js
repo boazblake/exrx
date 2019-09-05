@@ -116,3 +116,5 @@ export const scrollToAnchor = (anchor) => {
     behavior: 'smooth',
   })
 }
+
+export const jsonCopy = (src) => JSON.parse(JSON.stringify(src))

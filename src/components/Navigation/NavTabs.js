@@ -2,6 +2,7 @@ import m from 'mithril'
 import { getRoute } from 'utils'
 import Brand from 'assets/professional-auto-care-logo-brand.png'
 import AuthComponent from '../Auth/index.js'
+import SettingsMenu from '../SettingsMenu.js'
 
 const Tab = ({ attrs: { key } }) => {
   return {
@@ -54,7 +55,7 @@ const NavTabs = () => {
               )
             ),
             mdl.state.isAuth()
-              ? m('button.btn btn-primary', 'User Settings')
+              ? m(SettingsMenu, { mdl })
               : m(
                 'button.btn btn-primary',
                 { onclick: () => mdl.toggleAuthModal(mdl) },

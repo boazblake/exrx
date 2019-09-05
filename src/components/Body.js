@@ -1,13 +1,14 @@
 import m from 'mithril'
+import Toaster from './Toaster.js'
 
 const Body = {
-  view: ({ children }) =>
+  view: ({ children, attrs: { mdl } }) =>
     m(
       '.content',
       {
         id: 'content',
       },
-      children
+      [children, mdl.state.toast.show() && m(Toaster, { mdl })]
     ),
 }
 

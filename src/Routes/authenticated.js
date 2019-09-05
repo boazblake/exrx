@@ -8,7 +8,7 @@ const authenticated = [
     id: 'profile-page',
     title: 'Profile Page',
     icon: Icons.home,
-    route: '/profile:name',
+    route: '/profile/:name',
     position: [],
     group: ['authenticated', 'all', 'client'],
     children: [],
@@ -19,7 +19,8 @@ const authenticated = [
         args,
         path,
         fullroute,
-        isAnchor
+        isAnchor,
+        !mdl.state.isAuth()
       )
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },

@@ -41,6 +41,8 @@ const Main = [
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
+      if (!mdl.state.isAuth()) return m.route.SKIP
+      console.log('WTF IS GOING ON', mdl.Routes, mdl.state.isAuth())
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },
