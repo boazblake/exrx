@@ -14,13 +14,20 @@ import {
   identity,
   reverse,
   slice,
+  split,
+  trim,
   max,
   min,
   map,
 } from 'ramda'
-
 import Task from 'data.task'
 
+export const makeRoute = compose(
+  join('-'),
+  split(' '),
+  trim(),
+  toLower()
+)
 export const log = (m) => (v) => {
   console.log(m, v)
   return v

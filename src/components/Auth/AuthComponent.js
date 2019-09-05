@@ -17,11 +17,11 @@ const initState = {
 }
 
 const state = {
-  forms: { 0: Register, 1: Login },
+  forms: { 1: Register, 0: Login },
   page: 0,
   title: {
-    0: 'Register',
-    1: 'Login',
+    1: 'Register',
+    0: 'Login',
   },
   isSubmitted: false,
   errors: {},
@@ -53,20 +53,20 @@ const validateForm = (mdl) => (data) => {
   const onValidationSuccess = (data) => {
     state.errors = {}
     state.page
-      ? loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
-      : registerUser(mdl)(data).fork(
+      ? registerUser(mdl)(data).fork(
         onRegisterError(mdl),
         onRegisterSuccess(mdl)
       )
+      : loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
   }
 
   state.isSubmitted = true
   state.page
-    ? validateLoginTask(data).fork(onValidationError, onValidationSuccess)
-    : validateRegistrationTask(data).fork(
+    ? validateRegistrationTask(data).fork(
       onValidationError,
       onValidationSuccess
     )
+    : validateLoginTask(data).fork(onValidationError, onValidationSuccess)
 }
 
 const loginUser = (mdl) => (dto) =>
@@ -77,13 +77,12 @@ const loginUser = (mdl) => (dto) =>
 const registerUser = (mdl) => (dto) =>
   mdl.http.postTask(mdl)('users/register')({ dto })
 
-const AuthLinkButton = () => {
+const AuthLink = () => {
   return {
     view: ({ attrs: { title } }) =>
       m(
-        'a',
+        'a.AuthLinkBtn btn-link',
         {
-          class: 'btn-link',
           onclick: () => (state.page ? (state.page = 0) : (state.page = 1)),
         },
         title
@@ -93,7 +92,7 @@ const AuthLinkButton = () => {
 
 const AuthComponent = () => {
   return {
-    view: ({ attrs: { mdl } }) => [
+    view: ({ attrs: { mdl } }) =>
       m(Modal, {
         isActive: mdl.state.showAuthModal(),
         close: () => mdl.toggleAuthModal(mdl),
@@ -105,17 +104,16 @@ const AuthComponent = () => {
         }),
         footer: [
           m(
-            'button.btn.btn-primary',
+            'button.btn.btn-primary authBtn',
             { onclick: () => validateForm(mdl)(state.data) },
             state.title[state.page]
           ),
-          m(AuthLinkButton, {
+          m(AuthLink, {
             mdl,
-            title: state.page ? 'Register' : 'Login',
+            title: state.page ? 'Login' : 'Register',
           }),
         ],
       }),
-    ],
   }
 }
 

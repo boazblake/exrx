@@ -1,6 +1,6 @@
 import m from 'mithril'
 import Icons from 'icons'
-import AuthComponent from '../../Components/Auth/index.js'
+import AuthComponent from '../../Components/Auth/AuthComponent.js'
 
 const UnautherizedView = () => {
   return {

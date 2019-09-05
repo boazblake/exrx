@@ -1,5 +1,6 @@
 import m from 'mithril'
 import Stream from 'mithril-stream'
+import { makeRoute } from 'utils'
 
 const Logout = () => {
   const onError = (mdl) => (error) => {
@@ -32,16 +33,16 @@ const Tab = ({ attrs: { key } }) => {
       m(
         'li.menu-item',
         m(
-          m.route.Link,
+          'a.btn btn-link menu-item',
           {
-            class: active ? 'active menu-item' : 'menu-item',
+            class: active && 'active',
             onclick: () => {
-              m.route.set(tab.route, { a: tab.id })
+              m.route.set(tab.route, { name: makeRoute(mdl.user.name) })
               mdl.toggleNav(mdl)
             },
             key,
             id: `${tab.id}-key`,
-            href: `${tab.route}`,
+            // href: `${tab.route}`,
           },
           tab.title
         )
@@ -57,12 +58,11 @@ const SettingsMenu = () => {
         route.group.includes('authenticated')
       )
       return [
-        m('.dropdown', [
+        m('li.dropdown dropdown-right', [
           m(
             'a.btn btn-primary dropdown-toggle',
             {
               onclick: () => state.showMenu(!state.showMenu()),
-              href: '#',
               tabindex: '0',
             },
             ['User Settings', m('i.icon icon-arrow-down')]

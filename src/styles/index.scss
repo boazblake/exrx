@@ -111,7 +111,7 @@ html {
   display: inline-flex;
   flex-flow: wrap;
   align-content: center;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .nav-links {
@@ -198,6 +198,17 @@ html {
 .loader {
   height: 80vh;
   width: 80vw;
+}
+
+.AuthLink {
+  font-size: 16px;
+  flex-basis: 1;
+}
+
+.authBtn {
+  font-size: 20px;
+  flex-basis: 5;
+  width: 80%;
 }
 
 // .progressBar {

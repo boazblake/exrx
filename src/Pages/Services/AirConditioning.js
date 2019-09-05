@@ -77,7 +77,6 @@ const AirConditioning = ({ attrs: { mdl } }) => {
               allowtransparency: false,
               allow: 'autoplay',
             }),
-            // mdl.state.user.isAutherized ? [] :
           ]),
 
           m('section.anchor', { id: 'ac-parts' }, [
@@ -88,7 +87,18 @@ const AirConditioning = ({ attrs: { mdl } }) => {
               'The air conditioning is a complex system and understanding the reason something failed is just as important as fixing the car itself. What Parts Make Up the Air Conditioning System? Below are some common heating and air conditioning components, click on the component to get a detailed description and picture.'
             ),
 
-            !mdl.state.isAuth() && m(UnautherizedView, { mdl }),
+            mdl.state.isAuth()
+              ? m('ul', [
+                m('li', 'Set the climate control system to "Heat"'),
+                m('li', 'Set the blower fan on "High"'),
+                m('li', 'Set the blower fan on "High"'),
+                m('li', 'Roll down your windows'),
+                m(
+                  'li',
+                  'Allow more distance between your vehicle and the one in front of you. (This enables your engine to "breathe" more easily.)'
+                ),
+              ])
+              : m(UnautherizedView, { mdl }),
           ]),
 
           m('section.anchor', { id: 'ac-testing-fees' }, [
