@@ -38,9 +38,9 @@ const resetState = () => {
 }
 
 const onRegisterError = (error) => {
+  console.log('error with registering', error)
   state.httpError = error.message
   state.isSubmitted = false
-  console.log('error with registering', error)
 }
 
 const onRegisterSuccess = (mdl) => (data) => {
@@ -70,10 +70,7 @@ const validateForm = (mdl) => (data) => {
   const onValidationSuccess = (data) => {
     state.errors = {}
     state.page
-      ? registerUser(mdl)(data).fork(
-        onRegisterError(mdl),
-        onRegisterSuccess(mdl)
-      )
+      ? registerUser(mdl)(data).fork(onRegisterError, onRegisterSuccess(mdl))
       : loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
   }
 
@@ -94,13 +91,18 @@ const loginUser = (mdl) => (dto) =>
 const registerUser = (mdl) => (dto) =>
   mdl.http.postTask(mdl)('users/register')({ dto })
 
+const changePage = () => {
+  state.httpError = undefined
+  return state.page ? (state.page = 0) : (state.page = 1)
+}
+
 const AuthLink = () => {
   return {
     view: ({ attrs: { title } }) =>
       m(
         'a.AuthLinkBtn btn-link',
         {
-          onclick: () => (state.page ? (state.page = 0) : (state.page = 1)),
+          onclick: changePage,
         },
         title
       ),

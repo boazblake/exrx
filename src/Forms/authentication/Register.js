@@ -94,7 +94,7 @@ export const Register = () => {
               m('p.form-input-hint', errors.confirmPassword),
           ]
         ),
-        httpError && m('p', httpError),
+        httpError && m('.toast toast-error', httpError),
       ]),
   }
 }
