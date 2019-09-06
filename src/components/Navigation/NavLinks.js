@@ -31,22 +31,21 @@ const NavLinks = () => {
       }
 
       return m(
-        '.nav-links bg-secondary',
-        m(
-          `ul.accordian-body nav ${routes.length ? 'active' : 'hide'}`,
-          {
-            id: 'navbar',
-          },
+        `ul.nav-links bg-secondary accordian-body nav ${
+          routes.length ? 'active' : 'hide'
+        }`,
+        {
+          id: 'navbar',
+        },
 
-          routes.map((route, idx) =>
-            m(NavLink, {
-              class: 'nav-item',
-              key: idx,
-              active: isActive(route),
-              route,
-              mdl,
-            })
-          )
+        routes.map((route, idx) =>
+          m(NavLink, {
+            class: 'nav-item',
+            key: idx,
+            active: isActive(route),
+            route,
+            mdl,
+          })
         )
       )
     },

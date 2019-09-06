@@ -272,6 +272,11 @@ a {
       "footer";
   }
 
+  a#home-route-address,
+  a#home-route-call {
+    font-size: 30px;
+  }
+
   #profileLayout {
     position: relative;
     display: grid;
@@ -285,6 +290,10 @@ a {
 
   #header {
     justify-content: space-between;
+  }
+
+  #navbar {
+    width: 100%;
   }
 
   #content {

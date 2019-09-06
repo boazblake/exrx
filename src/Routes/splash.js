@@ -1,34 +1,35 @@
-import { SplashLayout } from '../Layouts/index.js'
+import { MainLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import { flatten } from 'ramda'
 import { scrollToAnchor } from 'utils'
+import Icons from 'icons'
 
 const SubMenu = [
   {
-    id: 'home-route-1',
-    title: 'home-route-1',
-    icon: 'home-route-1',
-    route: '/home/home-route-1',
+    id: 'home-route-call',
+    title: '713.270.0474',
+    icon: Icons.phone,
+    route: '/contact',
     position: [],
     group: ['home'],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
-    id: 'home-route-2',
-    title: 'home-route-2',
-    icon: 'home-route-2',
-    route: '/home/home-route-2',
+    id: 'home-route-address',
+    title: 'Professional Auto Care 9916 Honeywell St Houston TX 77074',
+    icon: 'address',
+    route: '/contact',
     position: [],
     group: ['home'],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 
