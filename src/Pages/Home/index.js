@@ -3,7 +3,7 @@ import m from 'mithril'
 const Home = ({ attrs: { mdl } }) => {
   console.log('mdl', mdl)
 
-  return { view: () => m('.home', mdl.state.route.title) }
+  return { view: () => m('.home', [m('section.')]) }
 }
 
 export default Home

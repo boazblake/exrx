@@ -1,19 +1,23 @@
 import m from 'mithril'
-import Header from '../Components/Header.js'
+import { Header, FooterHeader } from '../Components/Headers/index.js'
 import Footer from '../Components/Footer.js'
 import Body from '../Components/Body.js'
 
-const Layout = ({ attrs: { mdl } }) => {
+const HomeLayout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
-        '.layout',
+        '.homelayout',
         {
-          id: 'layout',
+          id: 'homelayout',
         },
-        [m(Header, { mdl }), m(Body, { mdl }, [children]), m(Footer, { mdl })]
+        [
+          m(Body, { mdl }, m(Header, { mdl }), [children]),
+          m(FooterHeader, { mdl }),
+          m(Footer, { mdl }),
+        ]
       ),
   }
 }
 
-export default Layout
+export default HomeLayout

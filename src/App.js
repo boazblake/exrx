@@ -2,7 +2,7 @@ const toRoutes = (mdl) => (acc, route) => {
   acc[route.route] = {
     onmatch: (args, path, fullroute) => {
       if (route.group.includes('authenticated') && !mdl.state.isAuth()) {
-        mdl.route.set(m.roue.get())
+        mdl.route.set(m.route.get())
       }
 
       mdl.state.route = route

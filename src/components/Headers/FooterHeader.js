@@ -1,9 +1,9 @@
 import m from 'mithril'
-import ProgressBar from './ProgressBar.js'
-import Hamburger from './Hamburger.js'
-import Navigation from './Navigation/index.js'
+import ProgressBar from '../ProgressBar.js'
+import Hamburger from '../Hamburger.js'
+import Navigation from '../Navigation/index.js'
 
-const Header = ({ attrs: { isNotHome } }) => {
+const FooterHeader = ({ attrs: { isNotHome } }) => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(
@@ -22,4 +22,4 @@ const Header = ({ attrs: { isNotHome } }) => {
   }
 }
 
-export default Header
+export default FooterHeader

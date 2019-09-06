@@ -1,4 +1,4 @@
-import { Layout } from '../Layouts/index.js'
+import { ProfileLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import { scrollToAnchor } from 'utils'
 import Icons from 'icons'
@@ -24,7 +24,7 @@ const authenticated = [
       )
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(ProfileLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 

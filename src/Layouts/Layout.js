@@ -1,22 +1,22 @@
 import m from 'mithril'
-import Header from '../Components/Header.js'
+import { Header } from '../Components/Headers/index.js'
 import Footer from '../Components/Footer.js'
 import Body from '../Components/Body.js'
 import LeftAside from '../Components/LeftAside.js'
 import RightAside from '../Components/RightAside.js'
 
-const Layout = ({ attrs: { mdl } }) => {
+const MainLayout = ({ attrs: { mdl } }) => {
   const showMenu = () => mdl.state.showNav() || mdl.state.profile == 'desktop'
 
   return {
     view: ({ children }) =>
       m(
-        '.layout',
+        '.mainLayout',
         {
-          id: 'layout',
+          id: 'mainLayout',
         },
         [
-          m(Header, { mdl }),
+          m(Header, { mdl, isNotHome: true }),
           showMenu() && m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(RightAside, { mdl }),
@@ -26,4 +26,4 @@ const Layout = ({ attrs: { mdl } }) => {
   }
 }
 
-export default Layout
+export default MainLayout
