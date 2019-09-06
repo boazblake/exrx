@@ -1,5 +1,6 @@
-import Layout from '../Layout.js'
+import { Layout, HomeLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
+import Home from '../Pages/Home'
 import { scrollToAnchor } from 'utils'
 import Icons from 'icons'
 
@@ -15,9 +16,8 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(HomeLayout, { mdl }, m(Home, { mdl })),
   },
-
   {
     id: 'services',
     title: 'Services',
@@ -42,7 +42,6 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
       if (!mdl.state.isAuth()) return m.route.SKIP
-      console.log('WTF IS GOING ON', mdl.Routes, mdl.state.isAuth())
     },
     component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
   },

@@ -1,4 +1,4 @@
-import Layout from '../Layout.js'
+import { Layout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import AirConditioning from '../Pages/Services/AirConditioning.js'
 import { flatten } from 'ramda'

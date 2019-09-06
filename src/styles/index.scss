@@ -12,12 +12,26 @@ $dark-grey: #303742;
 $grey: #66758c;
 $light-grey: #bcc3ce;
 $white: #fff;
+$text: #1caffc;
+
+%icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
 
 // @import "./animations.css";
 // @import "./loader.scss";
 * {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
+}
+
+body,
+html {
+  scroll-behavior: smooth;
 }
 
 a {
@@ -32,6 +46,11 @@ a {
 
 .bold {
   font-weight: 700;
+}
+
+.hamburger {
+  @extend %icon;
+  margin-left: auto;
 }
 
 .page {
@@ -68,11 +87,6 @@ a {
   justify-content: space-between;
   align-content: center;
   align-items: center;
-}
-
-body,
-html {
-  scroll-behavior: smooth;
 }
 
 #header {
@@ -112,19 +126,6 @@ html {
   width: 100%;
   position: fixed;
   z-index: 3;
-}
-
-%icon {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-}
-
-.hamburger {
-  @extend %icon;
-  margin-left: auto;
 }
 
 #content {
