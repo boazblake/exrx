@@ -3,7 +3,7 @@ import ProgressBar from '../ProgressBar.js'
 import Hamburger from '../Hamburger.js'
 import Navigation from '../Navigation/index.js'
 
-const Header = ({ attrs: { isNotHome } }) => {
+const Header = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(
@@ -16,7 +16,7 @@ const Header = ({ attrs: { isNotHome } }) => {
 
           mdl.state.profile !== 'desktop' &&
             m('.mobileNav', m(Hamburger, { mdl })),
-          m(Navigation, { mdl, isNotHome }),
+          m(Navigation, { mdl }),
         ]
       ),
   }

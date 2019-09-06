@@ -1,4 +1,4 @@
-import { Layout } from '../Layouts/index.js'
+import { SplashLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import { flatten } from 'ramda'
 import { scrollToAnchor } from 'utils'
@@ -15,7 +15,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'home-route-2',
@@ -28,7 +28,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 

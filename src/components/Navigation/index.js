@@ -4,7 +4,7 @@ import NavLinks from './NavLinks.js'
 import Stream from 'mithril-stream'
 import { getRoute } from 'utils'
 
-const Navigation = ({ attrs: { isNotHome } }) => {
+const Navigation = () => {
   let tabSelected = Stream(getRoute(1))
 
   return {
@@ -15,10 +15,7 @@ const Navigation = ({ attrs: { isNotHome } }) => {
           onmouseenter: () => tabSelected(getRoute(1)),
           onmouseleave: () => tabSelected(getRoute(1)),
         },
-        [
-          m(NavTabs, { mdl, tabSelected }),
-          isNotHome && m(NavLinks, { mdl, tabSelected }),
-        ]
+        [m(NavTabs, { mdl, tabSelected }), m(NavLinks, { mdl, tabSelected })]
       )
     },
   }

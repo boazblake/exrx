@@ -1,5 +1,5 @@
-import Layout from './Layout.js'
-import HomeLayout from './HomeLayout.js'
+import MainLayout from './MainLayout.js'
+import SplashLayout from './SplashLayout.js'
 import ProfileLayout from './ProfileLayout.js'
 
-export { Layout, ProfileLayout, HomeLayout }
+export { MainLayout, ProfileLayout, SplashLayout }

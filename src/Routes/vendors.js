@@ -1,4 +1,4 @@
-import { Layout } from '../Layouts/index.js'
+import { MainLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 // import { flatten } from 'ramda'
 
@@ -15,7 +15,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-fuel-Air-induction-service',
@@ -29,7 +29,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-lubrication-fuel-service',
@@ -43,7 +43,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-cooling-system-service',
@@ -57,7 +57,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-transmission-service',
@@ -71,7 +71,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-drive-line',
@@ -85,7 +85,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-break-service',
@@ -99,7 +99,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-climate-control-service',
@@ -113,7 +113,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-battery-service',
@@ -127,7 +127,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-power-steering-service',
@@ -141,7 +141,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'bg-products-ethanol-fuel-system-defender',
@@ -155,7 +155,7 @@ const BGProducts = [
       // console.log('props', props)
       return (mdl.state.route = route)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 

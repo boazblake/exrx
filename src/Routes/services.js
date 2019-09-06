@@ -1,4 +1,4 @@
-import { Layout } from '../Layouts/index.js'
+import { MainLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import AirConditioning from '../Pages/Services/AirConditioning.js'
 import { flatten } from 'ramda'
@@ -17,7 +17,7 @@ const AirConditioningRoutes = [
       console.log('onmatch service main', isAnchor)
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'help-over-heating',
@@ -30,7 +30,7 @@ const AirConditioningRoutes = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(AirConditioning, { mdl })),
   },
   {
     id: 'ac-video',
@@ -43,7 +43,7 @@ const AirConditioningRoutes = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(AirConditioning, { mdl })),
   },
   {
     id: 'ac-parts',
@@ -56,7 +56,7 @@ const AirConditioningRoutes = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(AirConditioning, { mdl })),
   },
   {
     id: 'ac-testing-fees',
@@ -69,7 +69,7 @@ const AirConditioningRoutes = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(AirConditioning, { mdl })),
   },
 ]
 
@@ -85,7 +85,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'air-conditioning',
@@ -98,7 +98,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(AirConditioning, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(AirConditioning, { mdl })),
   },
   {
     id: 'battery',
@@ -111,7 +111,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'belts',
@@ -124,7 +124,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'brakes',
@@ -137,7 +137,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'check-engine-light',
@@ -150,7 +150,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'clutch',
@@ -163,7 +163,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'cooling-system',
@@ -176,7 +176,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'drive-train',
@@ -189,7 +189,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'engine-remanufactured',
@@ -202,7 +202,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'exhuast-emissions',
@@ -215,7 +215,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'exterior-repair',
@@ -228,7 +228,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'filters',
@@ -241,7 +241,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'flood-repair',
@@ -254,7 +254,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'fuel-system',
@@ -267,7 +267,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'hoses',
@@ -280,7 +280,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'ignition',
@@ -293,7 +293,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'inspections',
@@ -306,7 +306,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'interior-repairs',
@@ -319,7 +319,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'maintenance',
@@ -332,7 +332,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'oil-change',
@@ -345,7 +345,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'timing-belt',
@@ -358,7 +358,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'tire-management',
@@ -371,7 +371,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'starting-charging',
@@ -384,7 +384,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'steering',
@@ -397,7 +397,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'suspension',
@@ -410,7 +410,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'transmission-remanufactured',
@@ -423,7 +423,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'window-repairs',
@@ -436,7 +436,7 @@ const SubMenu = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 

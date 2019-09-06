@@ -3,16 +3,17 @@ import { Header, FooterHeader } from '../Components/Headers/index.js'
 import Footer from '../Components/Footer.js'
 import Body from '../Components/Body.js'
 
-const HomeLayout = ({ attrs: { mdl } }) => {
+const SplashLayout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
-        '.homelayout',
+        '.splashlayout',
         {
-          id: 'homelayout',
+          id: 'splashlayout',
         },
         [
-          m(Body, { mdl }, m(Header, { mdl }), [children]),
+          m(Header, { mdl }),
+          m(Body, { mdl }, [children]),
           m(FooterHeader, { mdl }),
           m(Footer, { mdl }),
         ]
@@ -20,4 +21,4 @@ const HomeLayout = ({ attrs: { mdl } }) => {
   }
 }
 
-export default HomeLayout
+export default SplashLayout

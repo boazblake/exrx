@@ -16,7 +16,7 @@ const MainLayout = ({ attrs: { mdl } }) => {
           id: 'mainLayout',
         },
         [
-          m(Header, { mdl, isNotHome: true }),
+          m(Header, { mdl }),
           showMenu() && m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(RightAside, { mdl }),

@@ -249,7 +249,7 @@ a {
     display: none;
   }
 
-  #layout {
+  #mainLayout {
     position: relative;
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -258,6 +258,29 @@ a {
       "header header header header"
       "left-aside content content right-aside"
       "footer footer footer footer";
+  }
+
+  #homeLayout {
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content 1fr;
+    grid-template-areas:
+      "header"
+      "content"
+      "header"
+      "footer";
+  }
+
+  #profileLayout {
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content 1fr;
+    grid-template-areas:
+      "header header header"
+      "left-aside content content"
+      "footer footer footer";
   }
 
   #header {

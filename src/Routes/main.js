@@ -1,4 +1,4 @@
-import { Layout, HomeLayout } from '../Layouts/index.js'
+import { MainLayout, SplashLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
 import Home from '../Pages/Home'
 import { scrollToAnchor } from 'utils'
@@ -16,7 +16,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(HomeLayout, { mdl }, m(Home, { mdl })),
+    component: (mdl) => m(SplashLayout, { mdl }, m(Home, { mdl })),
   },
   {
     id: 'services',
@@ -29,7 +29,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'discounts',
@@ -43,7 +43,7 @@ const Main = [
       isAnchor && scrollToAnchor(mdl.state.anchor)
       if (!mdl.state.isAuth()) return m.route.SKIP
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'vendors',
@@ -56,7 +56,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'about',
@@ -69,7 +69,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'contact',
@@ -82,7 +82,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
     id: 'blog',
@@ -95,7 +95,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(Layout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 
