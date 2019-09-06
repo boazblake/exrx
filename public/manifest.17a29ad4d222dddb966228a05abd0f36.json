@@ -1,0 +1,45 @@
+{
+  "icons": [
+    {
+      "src": "assets/icons/icon_512x512.2fe0c1136656008cab8857c68f014ec8.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon_384x384.b5cd2ac593a80c0b70004c46beb88b75.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon_256x256.5cd8ebc97897ef0830ebc00a5219b779.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon_192x192.b1496da33e5fbc5436332e37a010de68.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon_128x128.1daa070d94b798dfb05ba0361d57d989.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon_96x96.5ca1e293183c1cc15ff8f59828d87740.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "Professional Auto care",
+  "short_name": "PAC",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "lang": "en-US",
+  "description": "PAC!",
+  "background_color": "#5755d9",
+  "theme_color": "#5755d9",
+  "theme-color": "#5755d9",
+  "scope": "/"
+}
