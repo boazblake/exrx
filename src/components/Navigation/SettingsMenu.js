@@ -16,7 +16,7 @@ const Logout = () => {
 
   const logout = (mdl) =>
     mdl.http
-      .getTask(mdl)('users/logout')
+      .getTask(mdl)(mdl.http.baseDBUrl + 'users/logout')
       .fork(onError(mdl), onSuccess(mdl))
 
   return {

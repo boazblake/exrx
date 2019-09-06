@@ -84,7 +84,7 @@ const postTask = (model) => (url) => ({ dto }) => {
     m
       .request({
         method: 'POST',
-        url: `${baseUrl}/${APP_ID}/${API_KEY}/${url}`,
+        url: `${url}`,
         body: dto,
         headers: { 'user-token': getUserToken() },
         withCredentials: false,
@@ -100,7 +100,7 @@ const putTask = (model) => (url) => ({ dto }) => {
     m
       .request({
         method: 'PUT',
-        url: `${baseUrl}/${APP_ID}/${API_KEY}/${url}`,
+        url: `${url}`,
         body: dto,
         headers: { 'user-token': getUserToken() },
         withCredentials: false,
@@ -116,7 +116,7 @@ const getTask = (model) => (url) => {
     m
       .request({
         method: 'GET',
-        url: `${baseUrl}/${APP_ID}/${API_KEY}/${url}`,
+        url: `${url}`,
         headers: { 'user-token': getUserToken() },
         withCredentials: false,
         ...xhrProgress,
@@ -130,7 +130,7 @@ const deleteTask = (model) => (url) => (id) => {
     m
       .request({
         method: 'DELETE',
-        url: `${baseUrl}/${APP_ID}/${API_KEY}/${url}/${id}`,
+        url: `${url}/${id}`,
         headers: { 'user-token': getUserToken() },
         withCredentials: false,
         ...xhrProgress,
@@ -150,7 +150,10 @@ const lookupLocationTask = (query) => {
   )
 }
 
+const baseDBUrl = `${baseUrl}/${APP_ID}/${API_KEY}/`
+
 const http = {
+  baseDBUrl,
   postQl,
   postTask,
   getTask,

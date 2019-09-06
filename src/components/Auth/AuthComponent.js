@@ -7,6 +7,7 @@ import {
 } from '../../Forms/index.js'
 import Modal from '../Modal.js'
 import { jsonCopy } from 'utils'
+import { range } from 'ramda'
 
 const userModel = {
   name: '',
@@ -16,6 +17,20 @@ const userModel = {
   confirmPassword: '',
   isAdmin: false,
 }
+
+const carModel = {
+  year: undefined,
+  make: undefined,
+  model: undefined,
+  mileage: '000000',
+  findByVin: true,
+  vin: '',
+  years: range(1900, new Date().getFullYear()).reverse(),
+  makes: undefined,
+  models: undefined,
+}
+
+const dataModel = { carModel, userModel }
 
 const state = {
   forms: { 1: Register, 0: Login },
@@ -27,19 +42,19 @@ const state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: jsonCopy(userModel),
+  data: jsonCopy(dataModel),
 }
 
 const resetState = () => {
-  state.data = jsonCopy(userModel)
+  state.data = jsonCopy(dataModel)
   state.errors = {}
   state.httpError = undefined
   state.isSubmitted = false
   state.page = 0
 }
 
-const onRegisterError = (error) => {
-  console.log('error with registering', error)
+const onError = (error) => {
+  console.log('error with http calll', error)
   state.httpError = error.message
   state.isSubmitted = false
 }
@@ -47,11 +62,6 @@ const onRegisterError = (error) => {
 const onRegisterSuccess = (mdl) => (data) => {
   console.log('succes with registering', data, mdl)
   return (state.page = 0)
-}
-const onLoginError = (error) => {
-  console.log('error with login', error)
-  state.httpError = error.message
-  state.isSubmitted = false
 }
 
 const onLoginSuccess = (mdl) => (user) => {
@@ -62,6 +72,29 @@ const onLoginSuccess = (mdl) => (user) => {
   resetState()
 }
 
+const onMakeSuccess = (data) => {
+  state.data.carModel.makes = data
+}
+
+const onYearSuccess = ({ years: { min_year, max_year } }) => {
+  // { "Years": {"min_year":"1941", "max_year":"2019"} }
+  state.data.carmodel.years = range(min_year, max_year).reverse()
+}
+
+const getYears = (mdl) =>
+  mdl.http
+    .getTask(mdl)(
+      'https://crossorigin.me/https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getYears'
+    )
+    .fork(onError, onYearSuccess)
+
+const getMakes = (mdl) =>
+  mdl.http
+    .getTask(mdl)(
+      'https://crossorigin.me/https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json'
+    )
+    .fork(onError, onMakeSuccess)
+
 const validateForm = (mdl) => (data) => {
   const onValidationError = (errs) => {
     state.errors = errs
@@ -71,8 +104,8 @@ const validateForm = (mdl) => (data) => {
   const onValidationSuccess = (data) => {
     state.errors = {}
     state.page
-      ? registerUser(mdl)(data).fork(onRegisterError, onRegisterSuccess(mdl))
-      : loginUser(mdl)(data).fork(onLoginError, onLoginSuccess(mdl))
+      ? registerUser(mdl)(data).fork(onError, onRegisterSuccess(mdl))
+      : loginUser(mdl)(data).fork(onError, onLoginSuccess(mdl))
   }
 
   state.isSubmitted = true
@@ -85,12 +118,12 @@ const validateForm = (mdl) => (data) => {
 }
 
 const loginUser = (mdl) => ({ email, password }) =>
-  mdl.http.postTask(mdl)('users/login')({
+  mdl.http.postTask(mdl)(mdl.http.baseDBUrl + 'users/login')({
     dto: { login: email, password: password },
   })
 
 const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
-  mdl.http.postTask(mdl)('users/register')({
+  mdl.http.postTask(mdl)(mdl.http.baseDBUrl + 'users/register')({
     dto: { name, email, password, isAdmin },
   })
 
@@ -127,6 +160,9 @@ const AuthComponent = () => {
           errors: state.errors,
           httpError: state.httpError,
           isSubmitted: state.isSubmitted,
+          getYears: () => getYears(mdl),
+          getMakes: () => getMakes(mdl),
+          getModels: () => console.log('getting models', state.data),
         }),
         footer: [
           m(
