@@ -3,7 +3,7 @@ import {
   Login,
   Register,
   validateLoginTask,
-  validateRegistrationTask,
+  validateUserRegistrationTask,
 } from '../../Forms/index.js'
 import Modal from '../Modal.js'
 import { jsonCopy } from 'utils'
@@ -25,7 +25,7 @@ const carModel = {
   mileage: '000000',
   findByVin: true,
   vin: '',
-  years: range(1900, new Date().getFullYear()).reverse(),
+  years: range(1900, new Date().getFullYear() + 1).reverse(),
   makes: undefined,
   models: undefined,
 }
@@ -72,28 +72,55 @@ const onLoginSuccess = (mdl) => (user) => {
   resetState()
 }
 
-const onMakeSuccess = (data) => {
-  state.data.carModel.makes = data
+const onMakeSuccess = (data) => (state.data.carModel.makes = data.Results)
+
+const onVinSuccess = (data) => {
+  console.log(data.Results)
+
+  // let VariableProp = (variable) => propEq('Variable', variable)
+  // let ValueProp = (value) => propEq('Value', value)
+  // let ValueIdProp = (valueId) => propEq('ValueId', valueId)
+  // let makeVar = data.Results.filter()
+
+  // let carModel = { Make: { Make_ID: '', Make_Name: '' }, Model: { Model_ID: '', Model_Name: '' }}
+
+  // carReducer = (carMdl, next) => {
+
+  //   return carMdl
+  // }
+
+  // let res = data.Results.filter()
+
+  // state.data.carModel.make = 483
+  // state.data.carModel.model = 'Grand Cherokee'
+  // state.data.carModel.year = '2000' //Model Year
+  // state.data.carModel.findByVin = false
 }
 
-const onYearSuccess = ({ years: { min_year, max_year } }) => {
-  // { "Years": {"min_year":"1941", "max_year":"2019"} }
-  state.data.carmodel.years = range(min_year, max_year).reverse()
-}
-
-const getYears = (mdl) =>
-  mdl.http
-    .getTask(mdl)(
-      'https://crossorigin.me/https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getYears'
-    )
-    .fork(onError, onYearSuccess)
+const onModelSuccess = (data) => (state.data.carModel.models = data.Results)
 
 const getMakes = (mdl) =>
   mdl.http
-    .getTask(mdl)(
-      'https://crossorigin.me/https://vpic.nhtsa.dot.gov/api/vehicles/getallmakes?format=json'
-    )
+    .HttpTask(mdl)('GET')(
+      'http://localhost:3001/nhtsa/api/vehicles/getallmakes?format=json'
+    )({})(null)
     .fork(onError, onMakeSuccess)
+
+const getModels = (mdl) =>
+  mdl.http
+    .HttpTask(mdl)('GET')(
+      `http://localhost:3001/nhtsa/api/vehicles/GetModelsForMakeId/${state.data.carModel.make}?format=json`
+    )({})(null)
+    .fork(onError, onModelSuccess)
+
+const getVin = (mdl) =>
+  mdl.http
+    .HttpTask(mdl)('GET')(
+      `http://localhost:3001/nhtsa/api/vehicles/DecodeVIN/${encodeURI(
+        state.data.carModel.vin
+      )}?format=json`
+    )({})(null)
+    .fork(onError, onVinSuccess)
 
 const validateForm = (mdl) => (data) => {
   const onValidationError = (errs) => {
@@ -104,27 +131,36 @@ const validateForm = (mdl) => (data) => {
   const onValidationSuccess = (data) => {
     state.errors = {}
     state.page
-      ? registerUser(mdl)(data).fork(onError, onRegisterSuccess(mdl))
+      ? registerUser(mdl)({ data, ...state.data.carModel }).fork(
+        onError,
+        onRegisterSuccess(mdl)
+      )
       : loginUser(mdl)(data).fork(onError, onLoginSuccess(mdl))
   }
-
   state.isSubmitted = true
   state.page
-    ? validateRegistrationTask(data).fork(
+    ? validateUserRegistrationTask(data.userModel).fork(
       onValidationError,
       onValidationSuccess
     )
-    : validateLoginTask(data).fork(onValidationError, onValidationSuccess)
+    : validateLoginTask(data.userModel).fork(
+      onValidationError,
+      onValidationSuccess
+    )
 }
 
 const loginUser = (mdl) => ({ email, password }) =>
-  mdl.http.postTask(mdl)(mdl.http.baseDBUrl + 'users/login')({
-    dto: { login: email, password: password },
+  mdl.http.backEnd.post(mdl)('users/login')({
+    login: email,
+    password: password,
   })
 
 const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
-  mdl.http.postTask(mdl)(mdl.http.baseDBUrl + 'users/register')({
-    dto: { name, email, password, isAdmin },
+  mdl.http.backEnd.post(mdl)('users/register')({
+    name,
+    email,
+    password,
+    isAdmin,
   })
 
 const changePage = () => {
@@ -160,14 +196,15 @@ const AuthComponent = () => {
           errors: state.errors,
           httpError: state.httpError,
           isSubmitted: state.isSubmitted,
-          getYears: () => getYears(mdl),
           getMakes: () => getMakes(mdl),
-          getModels: () => console.log('getting models', state.data),
+          getModels: () => getModels(mdl),
+          getVin: () => getVin(mdl),
         }),
         footer: [
           m(
-            'button.btn.btn-primary authBtn',
+            'input.btn.btn-primary authBtn',
             {
+              type: 'submit',
               onclick: () => validateForm(mdl)(state.data),
               class: mdl.state.isLoading() && 'loading',
             },

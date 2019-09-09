@@ -15,8 +15,8 @@ const Logout = () => {
   }
 
   const logout = (mdl) =>
-    mdl.http
-      .getTask(mdl)(mdl.http.baseDBUrl + 'users/logout')
+    mdl.http.backEnd
+      .get(mdl)('users/logout')
       .fork(onError(mdl), onSuccess(mdl))
 
   return {
@@ -55,8 +55,13 @@ const SettingsMenu = () => {
   return {
     showMenu: Stream(false),
     view: ({ state, attrs: { mdl } }) => {
-      let routes = mdl.Routes.filter((route) =>
-        route.group.includes('authenticated')
+      let routes = mdl.Routes.filter(
+        (route) =>
+          (route.group.includes('authenticated') &&
+            route.group.includes('admin') &&
+            mdl.user.isAdmin) ||
+          (route.group.includes('authenticated') &&
+            !route.group.includes('admin'))
       )
       return [
         m('li.dropdown dropdown-right', [

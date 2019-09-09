@@ -26,6 +26,30 @@ const authenticated = [
     },
     component: (mdl) => m(ProfileLayout, { mdl }, m(Default, { mdl })),
   },
+  {
+    id: 'manage-users',
+    title: 'Manage Users',
+    icon: Icons.users,
+    route: '/admin/user-management',
+    position: [],
+    group: ['authenticated', 'admin'],
+    children: [],
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      console.log(
+        'manage users on match',
+        mdl,
+        args,
+        path,
+        fullroute,
+        isAnchor,
+        mdl.state.isAuth(),
+        mdl.user.isAdmin
+      )
+      !mdl.user.isAdmin && m.route.set(m.route.get())
+      isAnchor && scrollToAnchor(mdl.state.anchor)
+    },
+    component: (mdl) => m(ProfileLayout, { mdl }, m(Default, { mdl })),
+  },
 ]
 
 export default authenticated

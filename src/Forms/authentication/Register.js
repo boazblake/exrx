@@ -12,10 +12,10 @@ export const Register = () => {
         httpError,
         getMakes,
         getModels,
-        getYears,
+        getVin,
       },
     }) => [
-      m('form.columns', { role: 'form' }, [
+      m('form.columns', { role: 'form', onsubmit: false }, [
         m(RegisterUser, { data: userModel, errors, isSubmitted, httpError }),
         m(RegisterCar, {
           data: carModel,
@@ -24,7 +24,7 @@ export const Register = () => {
           httpError,
           getMakes,
           getModels,
-          getYears,
+          getVin,
         }),
       ]),
 

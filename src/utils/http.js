@@ -1,5 +1,5 @@
 import Task from 'data.task'
-import { baseUrl, APP_ID, API_KEY } from './secrets.js'
+import { BackEnd } from './secrets.js'
 import { model } from '../Model.js'
 
 function onProgress(e) {
@@ -18,6 +18,7 @@ function onLoadStart() {
   model.state.isLoading(true)
   return false
 }
+
 function onLoadEnd() {
   model.state.isLoading(false)
   model.state.loadingProgress.max = 0
@@ -34,12 +35,12 @@ const xhrProgress = {
   },
 }
 
-const makeQuery = (string) => JSON.parse(JSON.stringify(string))
+// const makeQuery = (string) => JSON.parse(JSON.stringify(string))
 
-const parseQLResponse = (model) => ({ data, errors }) => {
-  model.state.isLoading(false)
-  return errors ? Promise.reject(errors) : Promise.resolve(data)
-}
+// const parseQLResponse = (model) => ({ data, errors }) => {
+//   model.state.isLoading(false)
+//   return errors ? Promise.reject(errors) : Promise.resolve(data)
+// }
 
 export const parseHttpError = (model) => (rej) => (Error) => {
   model.state.isLoading(false)
@@ -51,93 +52,113 @@ export const parseHttpSuccess = (model) => (res) => (data) => {
   return res(data)
 }
 
-const getUserToken = () =>
-  window.sessionStorage.getItem('user-token')
-    ? window.sessionStorage.getItem('user-token')
-    : ''
+// const getUserToken = () =>
+//   window.sessionStorage.getItem('user-token')
+//     ? window.sessionStorage.getItem('user-token')
+//     : ''
 
-const postQl = (model) => (query) => {
-  model.state.isLoading(true)
+// const postQl = (model) => (query) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'POST',
+//         // url: graphQl,
+//         withCredentials: false,
+//         ...xhrProgress,
+//         data: makeQuery(query),
+//         headers: {
+//           Authorization: `Bearer ${model.state.token}`,
+//           'cache-control': 'no-cache',
+//           'x-apikey': '64fecd3f0cbb54d46d7f7260b86b8ad45d31b',
+//           'content-type': 'application/json',
+//         },
+//       })
+//       .then(parseQLResponse(model))
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+
+const HttpTask = (mdl) => (method) => (url) => (_headers) => (body) => {
+  mdl.state.isLoading(true)
   return new Task((rej, res) =>
     m
       .request({
-        method: 'POST',
-        // url: graphQl,
-        withCredentials: false,
-        ...xhrProgress,
-        data: makeQuery(query),
+        method,
+        url,
         headers: {
-          Authorization: `Bearer ${model.state.token}`,
-          'cache-control': 'no-cache',
-          'x-apikey': '64fecd3f0cbb54d46d7f7260b86b8ad45d31b',
           'content-type': 'application/json',
+          ..._headers,
         },
+        body,
+        withCredentials: false,
+        ...xhrProgress,
       })
-      .then(parseQLResponse(model))
-      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+      .then(parseHttpSuccess(mdl)(res), parseHttpError(mdl)(rej))
   )
 }
 
-const postTask = (model) => (url) => ({ dto }) => {
-  model.state.isLoading(true)
-  return new Task((rej, res) =>
-    m
-      .request({
-        method: 'POST',
-        url: `${url}`,
-        body: dto,
-        headers: { 'user-token': getUserToken() },
-        withCredentials: false,
-        ...xhrProgress,
-      })
-      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
-  )
-}
+// const postTask = (model) => (url) => ({ dto }) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'POST',
+//         url: `${url}`,
+//         body: dto,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
 
-const putTask = (model) => (url) => ({ dto }) => {
-  model.state.isLoading(true)
-  return new Task((rej, res) =>
-    m
-      .request({
-        method: 'PUT',
-        url: `${url}`,
-        body: dto,
-        headers: { 'user-token': getUserToken() },
-        withCredentials: false,
-        ...xhrProgress,
-      })
-      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
-  )
-}
+// const putTask = (model) => (url) => ({ dto }) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'PUT',
+//         url: `${url}`,
+//         body: dto,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
 
-const getTask = (model) => (url) => {
-  model.state.isLoading(true)
-  return new Task((rej, res) =>
-    m
-      .request({
-        method: 'GET',
-        url: `${url}`,
-        headers: { 'user-token': getUserToken() },
-        withCredentials: false,
-        ...xhrProgress,
-      })
-      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
-  )
-}
-const deleteTask = (model) => (url) => (id) => {
-  model.state.isLoading(true)
-  return new Task((rej, res) =>
-    m
-      .request({
-        method: 'DELETE',
-        url: `${url}/${id}`,
-        headers: { 'user-token': getUserToken() },
-        withCredentials: false,
-        ...xhrProgress,
-      })
-      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
-  )
-}
+// const getTask = (model) => (url) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'GET',
+//         url: `${url}`,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+
+// const deleteTask = (model) => (url) => (id) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'DELETE',
+//         url: `${url}/${id}`,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
 
 const lookupLocationTask = (query) => {
   return new Task((rej, res) =>
@@ -150,15 +171,28 @@ const lookupLocationTask = (query) => {
   )
 }
 
-const baseDBUrl = `${baseUrl}/${APP_ID}/${API_KEY}/`
+const nhtsaUrl = 'http://localhost:3001/nhtsa/api/'
+const nhtsa = {
+  get: (mdl) => (url) => HttpTask(mdl)('GET')(nhtsaUrl + '/' + url)({})(null),
+}
+
+const backEndUrl = `${BackEnd.baseUrl}/${BackEnd.APP_ID}/${BackEnd.API_KEY}/`
+const backEnd = {
+  get: (mdl) => (url) =>
+    HttpTask(mdl)('GET')(backEndUrl + url)(BackEnd.headers)(null),
+  post: (mdl) => (url) => (dto) =>
+    HttpTask(mdl)('POST')(backEndUrl + url)(BackEnd.headers)(dto),
+}
 
 const http = {
-  baseDBUrl,
-  postQl,
-  postTask,
-  getTask,
-  putTask,
-  deleteTask,
+  backEnd,
+  nhtsa,
+  HttpTask,
+  // postQl,
+  // postTask,
+  // getTask,
+  // putTask,
+  // deleteTask,
   lookupLocationTask,
 }
 

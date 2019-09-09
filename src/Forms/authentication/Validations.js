@@ -81,7 +81,7 @@ const validatePassword = (data) =>
     validate(isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data)
   )
 
-export const validateRegistrationTask = (data) =>
+export const validateUserRegistrationTask = (data) =>
   ValidateRegistration.ap(validateName(data))
     .ap(validateEmails(data))
     .ap(validatePasswords(data))

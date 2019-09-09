@@ -3,7 +3,7 @@ const merge = require('webpack-merge')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const common = require('./webpack.common.js')
-
+//
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'source-map',
@@ -12,9 +12,23 @@ module.exports = merge(common, {
     hot: true,
     contentBase: './public',
     port: 3000,
-    proxy: {
-      '/api': 'https://localhost:3001',
-    },
+    // proxy: {
+    //   '/nhtsa': {
+    //     changeOrigin: true,
+    //     cookieDomainRewrite: 'localhost',
+    //     target: 'https://vpic.nhtsa.dot.gov/',
+    //     onProxyReq: (proxyReq) => {
+    //       // Browers may send Origin headers even with same-origin
+    //       // requests. To prevent CORS issues, we have to change
+    //       // the Origin to match the target URL.
+    //       if (proxyReq.getHeader('origin')) {
+    //         proxyReq.setHeader('origin', 'https://vpic.nhtsa.dot.gov/')
+    //       }
+
+    //       console.log('working???', proxyReq)
+    //     },
+    //   },
+    // },
     overlay: {
       errors: true,
       warnings: true,

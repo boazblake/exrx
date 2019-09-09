@@ -8,7 +8,7 @@ const Car = () => {
         errors,
         getMakes,
         getModels,
-        getYears,
+        getVin,
         isSubmitted,
         isLoading,
       },
@@ -22,10 +22,6 @@ const Car = () => {
               onclick: () => {
                 console.log('wtf', data)
                 data.findByVin = !data.findByVin
-                if (!data.findByVin) {
-                  console.log(data)
-                  getYears()
-                }
               },
               checked: data.findByVin,
               value: data.findByVin,
@@ -40,7 +36,7 @@ const Car = () => {
             m(
               '.toast toast-primary',
               { id: 'register-form-toast' },
-              'Find your car by Drop Down'
+              'Select your vehicle'
             ),
             m(
               '.form-group ',
@@ -55,7 +51,7 @@ const Car = () => {
                     id: 'car-year',
                     onchange: (e) => {
                       data.year = e.target.value
-                      getMakes()
+                      !data.make && getMakes()
                     },
                     value: data.year,
                   },
@@ -65,9 +61,8 @@ const Car = () => {
               ]
             ),
             data.year &&
-                data.makes &&
                 m(
-                  '.form-group',
+                  '.form-group has-icon-right',
                   isSubmitted && {
                     class: errors.make ? 'has-error' : 'has-success',
                   },
@@ -75,18 +70,31 @@ const Car = () => {
                     m(
                       'label.form-label text-left',
                       { for: 'reg-make' },
-                      'make'
+                      'Select Make'
                     ),
-                    m('input.form-select', {
-                      id: 'reg-make',
-                      onchange: (e) => (data.make = e.target.value),
-                      value: data.make,
-                    }),
+                    data.makes || data.make
+                      ? m(
+                        'select.form-select',
+                        {
+                          id: 'reg-make',
+                          onchange: (e) => {
+                            data.make = e.target.value
+                            data.model = undefined
+                            !data.model && getModels()
+                          },
+                          value: data.make,
+                        },
+
+                        data.makes &&
+                            data.makes.map(({ Make_ID, Make_Name }) =>
+                              m('option.option', { value: Make_ID }, Make_Name)
+                            )
+                      )
+                      : m('icon.form-icon loading'),
                     errors.make && m('p.form-input-hint', errors.make),
                   ]
                 ),
             data.make &&
-                data.models &&
                 m(
                   '.form-group',
                   isSubmitted && {
@@ -96,39 +104,54 @@ const Car = () => {
                     m(
                       'label.form-label text-left',
                       { for: 'reg-model' },
-                      'model'
+                      'Select Model'
                     ),
-                    m('input.form-select', {
-                      id: 'reg-model',
-                      onchange: (e) => {
-                        data.model = e.target.value
-                        getModels()
-                      },
-                      value: data.model,
-                    }),
+
+                    data.models || !data.model
+                      ? m(
+                        'select.form-select',
+                        {
+                          id: 'reg-model',
+                          onchange: (e) => (data.model = e.target.value),
+                          value: data.model,
+                        },
+                        data.models.map(({ Model_ID, Model_Name }) =>
+                          m('option.option', { value: Model_ID }, Model_Name)
+                        )
+                      )
+                      : m('icon.form-icon loading'),
                     errors.model && m('p.form-input-hint', errors.model),
                   ]
                 ),
           ]
           : [
-            m('.toast toast-primary', 'Find your car by VIN'),
+            m(
+              '.toast toast-primary',
+              { id: 'vin-toast' },
+              'Find your car by VIN'
+            ),
             m(
               '.form-group input-group',
               isSubmitted && {
                 class: errors.vin ? 'has-error' : 'has-success',
               },
               [
-                m('label.form-label text-left', { for: 'pass-confirm' }),
+                m('label.form-label text-left', { for: 'vin' }),
                 m('input.form-input', {
-                  id: 'pass-confirm',
-                  type: 'password',
-                  placeholder: 'must contain and not contain',
+                  id: 'vin',
+                  type: 'text',
+                  placeholder: '5UXWX7C5*BA,2011; 5YJSA3DS*EF ',
                   onkeyup: (e) => (data.vin = e.target.value),
                   value: data.vin,
                 }),
                 m(
                   'button.btn btn-primary input-group-btn',
-                  { onclick: () => console.log('car data', data) },
+                  {
+                    onclick: (e) => {
+                      e.preventDefault()
+                      getVin()
+                    },
+                  },
                   m(`i.icon.icon-search ${isLoading && 'loading'} `)
                 ),
                 errors.vin && m('p.form-input-hint', errors.vin),
@@ -141,14 +164,17 @@ const Car = () => {
             class: errors.mileage ? 'has-error' : 'has-success',
           },
           [
-            m('label.form-label text-left', { for: 'reg-pass' }, 'mileage'),
-            m('input.form-input', {
-              id: 'reg-pass',
-              type: 'mileage',
-              placeholder: 'must contain and not contain',
-              onkeyup: (e) => (data.mileage = e.target.value),
-              value: data.mileage,
-            }),
+            m('label.form-label text-left', { for: 'mileage' }, 'mileage'),
+            m('.input-group', [
+              m('input.form-input', {
+                id: 'mileage',
+                type: 'number',
+                placeholder: '0000000',
+                onkeyup: (e) => (data.mileage = e.target.value),
+                value: data.mileage,
+              }),
+              m('span.input-group-addon', {}, 'MPH'),
+            ]),
             errors.mileage && m('p.form-input-hint', errors.mileage),
           ]
         ),

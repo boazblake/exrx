@@ -23,7 +23,9 @@ const NavLink = ({ attrs: { key } }) => {
 const NavLinks = () => {
   return {
     view: ({ attrs: { mdl, tabSelected } }) => {
-      let routes = mdl.Routes.filter((r) => r.group.includes(tabSelected()))
+      let routes = mdl.Routes.filter(
+        (r) => r.group.includes(tabSelected()) && !r.group.includes('admin')
+      )
 
       const isActive = (route) => {
         let _active = getRoute(2)
