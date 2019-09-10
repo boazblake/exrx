@@ -10,7 +10,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
       m(
         '.page.air-conditioning',
         {
-          onscroll: () => console.log('wtyf'),
+          id: mdl.state.route.id,
         },
         [
           m('h1.title', mdl.state.route.title),

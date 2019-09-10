@@ -79,7 +79,7 @@ export const parseHttpSuccess = (model) => (res) => (data) => {
 //   )
 // }
 
-const HttpTask = (mdl) => (method) => (url) => (_headers) => (body) => {
+const HttpTask = (_headers) => (method) => (mdl) => (url) => (body) => {
   mdl.state.isLoading(true)
   return new Task((rej, res) =>
     m
@@ -171,17 +171,19 @@ const lookupLocationTask = (query) => {
   )
 }
 
+const getTask = (mdl) => (url) => HttpTask({})('GET')(mdl)(url)(null)
+
 const nhtsaUrl = 'http://localhost:3001/nhtsa/api/'
 const nhtsa = {
-  get: (mdl) => (url) => HttpTask(mdl)('GET')(nhtsaUrl + '/' + url)({})(null),
+  get: (mdl) => (url) => getTask(mdl)(nhtsaUrl + '/' + url),
 }
 
 const backEndUrl = `${BackEnd.baseUrl}/${BackEnd.APP_ID}/${BackEnd.API_KEY}/`
 const backEnd = {
   get: (mdl) => (url) =>
-    HttpTask(mdl)('GET')(backEndUrl + url)(BackEnd.headers)(null),
+    HttpTask(BackEnd.headers)('GET')(mdl)(backEndUrl + url)(null),
   post: (mdl) => (url) => (dto) =>
-    HttpTask(mdl)('POST')(backEndUrl + url)(BackEnd.headers)(dto),
+    HttpTask(BackEnd.headers)('POST')(mdl)(backEndUrl + url)(dto),
 }
 
 const http = {
@@ -190,7 +192,7 @@ const http = {
   HttpTask,
   // postQl,
   // postTask,
-  // getTask,
+  getTask,
   // putTask,
   // deleteTask,
   lookupLocationTask,

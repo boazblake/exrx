@@ -55,6 +55,7 @@ a {
 
 .page {
   padding-left: 10px;
+  height: 100%;
 }
 
 .subTitle {
@@ -81,12 +82,23 @@ a {
   }
 }
 
+.required {
+  color: $warning;
+  padding: 4px;
+}
+
 #register-form-toast {
   padding: 0.3rem;
 }
 
 #vin-toast {
   margin: 0.3rem 0;
+}
+
+#modal-close {
+  &:hover {
+    color: $primary-color;
+  }
 }
 
 .form-input-hint {
@@ -144,6 +156,7 @@ a {
   grid-area: content;
   padding: 10px;
   min-height: 100vh;
+  height: 100%;
 }
 
 #left-aside {

@@ -19,6 +19,19 @@ const SubMenu = [
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
   {
+    id: 'home-route-brand',
+    title: 'BRAND',
+    icon: 'Assets/professional-auto-care-logo-brand.png',
+    route: '/contact',
+    position: [],
+    group: ['home'],
+    children: [],
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
+    },
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
+  },
+  {
     id: 'home-route-address',
     title: 'Professional Auto Care 9916 Honeywell St Houston TX 77074',
     icon: 'address',

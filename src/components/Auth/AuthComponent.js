@@ -23,7 +23,7 @@ const carModel = {
   make: undefined,
   model: undefined,
   mileage: '000000',
-  findByVin: true,
+  findByVin: false,
   vin: '',
   years: range(1900, new Date().getFullYear() + 1).reverse(),
   makes: undefined,
@@ -59,8 +59,8 @@ const onError = (error) => {
   state.isSubmitted = false
 }
 
-const onRegisterSuccess = (mdl) => (data) => {
-  console.log('succes with registering', data, mdl)
+const onRegisterSuccess = (data) => {
+  console.log('succes with registering', data, state)
   return (state.page = 0)
 }
 
@@ -101,25 +101,25 @@ const onModelSuccess = (data) => (state.data.carModel.models = data.Results)
 
 const getMakes = (mdl) =>
   mdl.http
-    .HttpTask(mdl)('GET')(
+    .getTask(mdl)(
       'http://localhost:3001/nhtsa/api/vehicles/getallmakes?format=json'
-    )({})(null)
+    )
     .fork(onError, onMakeSuccess)
 
 const getModels = (mdl) =>
   mdl.http
-    .HttpTask(mdl)('GET')(
+    .getTask(mdl)(
       `http://localhost:3001/nhtsa/api/vehicles/GetModelsForMakeId/${state.data.carModel.make}?format=json`
-    )({})(null)
+    )
     .fork(onError, onModelSuccess)
 
 const getVin = (mdl) =>
   mdl.http
-    .HttpTask(mdl)('GET')(
+    .getTask(mdl)(
       `http://localhost:3001/nhtsa/api/vehicles/DecodeVIN/${encodeURI(
         state.data.carModel.vin
       )}?format=json`
-    )({})(null)
+    )
     .fork(onError, onVinSuccess)
 
 const validateForm = (mdl) => (data) => {
@@ -131,10 +131,7 @@ const validateForm = (mdl) => (data) => {
   const onValidationSuccess = (data) => {
     state.errors = {}
     state.page
-      ? registerUser(mdl)({ data, ...state.data.carModel }).fork(
-        onError,
-        onRegisterSuccess(mdl)
-      )
+      ? registerUser(mdl)(data).fork(onError, onRegisterSuccess)
       : loginUser(mdl)(data).fork(onError, onLoginSuccess(mdl))
   }
   state.isSubmitted = true
@@ -156,12 +153,22 @@ const loginUser = (mdl) => ({ email, password }) =>
   })
 
 const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
-  mdl.http.backEnd.post(mdl)('users/register')({
-    name,
-    email,
-    password,
-    isAdmin,
-  })
+  mdl.http.backEnd
+    .post(mdl)('users/register')({
+      name,
+      email,
+      password,
+      isAdmin,
+    })
+    .chain(({ objectId }) =>
+      mdl.http.backEnd.post(mdl)('data/Cars')({
+        Make: state.data.carModel.make,
+        Model: state.data.carModel.model,
+        Year: state.data.carModel.year,
+        Vin: state.data.carModel.vin,
+        Owner: objectId,
+      })
+    )
 
 const changePage = () => {
   state.httpError = undefined
@@ -205,6 +212,7 @@ const AuthComponent = () => {
             'input.btn.btn-primary authBtn',
             {
               type: 'submit',
+              form: `${state.title[state.page]}-form`,
               onclick: () => validateForm(mdl)(state.data),
               class: mdl.state.isLoading() && 'loading',
             },

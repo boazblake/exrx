@@ -1,5 +1,6 @@
 import { ProfileLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
+import ManageUsers from '../Pages/Admin/ManageUsers.js'
 import { scrollToAnchor } from 'utils'
 import Icons from 'icons'
 
@@ -48,7 +49,7 @@ const authenticated = [
       !mdl.user.isAdmin && m.route.set(m.route.get())
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(ProfileLayout, { mdl }, m(Default, { mdl })),
+    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageUsers, { mdl })),
   },
 ]
 

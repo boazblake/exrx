@@ -10,7 +10,7 @@ export const Login = () => {
         httpError,
       },
     }) =>
-      m('form.column', { role: 'form', onsubmit: () => alert('wtf') }, [
+      m('form.column', { role: 'form', id: 'Login-form', onsubmit: false }, [
         m(
           '.form-group',
           isSubmitted && {

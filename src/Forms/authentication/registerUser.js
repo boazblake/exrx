@@ -8,7 +8,10 @@ const RegisterUser = () => {
           '.form-group ',
           isSubmitted && { class: errors.name ? 'has-error' : 'has-success' },
           [
-            m('label.form-label text-left', { for: 'reg-name' }, 'Name'),
+            m('label.form-label text-left', { for: 'reg-name' }, [
+              'Name',
+              m('span.span required', '*'),
+            ]),
             m('input.form-input', {
               id: 'reg-name',
               type: 'text',
@@ -23,7 +26,10 @@ const RegisterUser = () => {
           '.form-group',
           isSubmitted && { class: errors.email ? 'has-error' : 'has-success' },
           [
-            m('label.form-label text-left', { for: 'reg-email' }, 'Email'),
+            m('label.form-label text-left', { for: 'reg-email' }, [
+              'Email',
+              m('span.span required', '*'),
+            ]),
             m('input.form-input', {
               id: 'reg-email',
               type: 'email',
@@ -40,11 +46,10 @@ const RegisterUser = () => {
             class: errors.confirmEmail ? 'has-error' : 'has-success',
           },
           [
-            m(
-              'label.form-label text-left',
-              { for: 'confirmEmail' },
-              'Confirm Email'
-            ),
+            m('label.form-label text-left', { for: 'confirmEmail' }, [
+              'Confirm Email',
+              m('span.span required', '*'),
+            ]),
             m('input.form-input', {
               id: 'confirmEmail',
               type: 'email',
@@ -61,7 +66,10 @@ const RegisterUser = () => {
             class: errors.password ? 'has-error' : 'has-success',
           },
           [
-            m('label.form-label text-left', { for: 'reg-pass' }, 'Password'),
+            m('label.form-label text-left', { for: 'reg-pass' }, [
+              'Password',
+              m('span.span required', '*'),
+            ]),
             m('input.form-input', {
               id: 'reg-pass',
               type: 'password',
@@ -78,11 +86,10 @@ const RegisterUser = () => {
             class: errors.confirmPassword ? 'has-error' : 'has-success',
           },
           [
-            m(
-              'label.form-label text-left',
-              { for: 'pass-confirm' },
-              'Confirm Password'
-            ),
+            m('label.form-label text-left', { for: 'pass-confirm' }, [
+              'Confirm Password',
+              m('span.span required', '*'),
+            ]),
             m('input.form-input', {
               id: 'pass-confirm',
               type: 'password',

@@ -1,7 +1,8 @@
 import m from 'mithril'
-import { Header, FooterHeader } from '../Components/Headers/index.js'
+import { SplashHeader } from '../Components/Headers/index.js'
 import Footer from '../Components/Footer.js'
 import Body from '../Components/Body.js'
+import ProgressBar from '../Components/ProgressBar.js'
 
 const SplashLayout = ({ attrs: { mdl } }) => {
   return {
@@ -12,9 +13,10 @@ const SplashLayout = ({ attrs: { mdl } }) => {
           id: 'splashlayout',
         },
         [
-          m(Header, { mdl }),
+          mdl.state.isLoading() && m(ProgressBar, { mdl }),
+          m(SplashHeader, { mdl }),
           m(Body, { mdl }, [children]),
-          m(FooterHeader, { mdl }),
+          m(SplashHeader, { mdl }),
           m(Footer, { mdl }),
         ]
       ),

@@ -10,6 +10,7 @@ const Modal = {
       m('.modal-container', { role: 'document' }, [
         m('.modal-header', [
           m('a.btn btn-clear float-right', {
+            id: 'modal-close',
             'aria-label': 'Close',
             onclick: () => close(),
           }),
