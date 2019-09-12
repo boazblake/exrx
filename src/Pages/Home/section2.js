@@ -67,9 +67,10 @@ const Section2 = ({ attrs: { mdl } }) => {
           '.hero-body',
           m('h1.text-center', [
             'section 2',
-            m('.menu col-4 float-right', [
+            m('.menu col-3 float-right', [
               m('h3.h3', 'Your Car'),
               m(RegisterCar, {
+                colSize: 12,
                 data: state.data,
                 errors: state.errors,
                 isSubmitted: state.isSubmitted,

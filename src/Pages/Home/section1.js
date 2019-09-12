@@ -11,7 +11,7 @@ const Section1 = ({ attrs: { mdl } }) => {
         m('.parallax-bottom-left'),
         m('.parallax-bottom-right'),
         m('.parallax-content', [
-          // m('h1.h1 parallax-front text-center', 'section 1'),
+          m('h1.h1 parallax-front text-center', 'section 1'),
           m('img.img center', {
             height: '500px',
             width: '100%',

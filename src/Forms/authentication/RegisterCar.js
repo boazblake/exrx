@@ -8,12 +8,13 @@ const Car = () => {
         errors,
         getMakes,
         getModels,
+        colSize,
         // getVin,
         isSubmitted,
         // isLoading,
       },
     }) =>
-      m('.column col-5', [
+      m(`.column col-${colSize}`, [
         // m(
         //   'div.form-group',
         //   m('label.form-switch', [
