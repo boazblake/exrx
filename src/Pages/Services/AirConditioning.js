@@ -16,7 +16,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           m('h1.title', mdl.state.route.title),
 
           m('section.anchor', { id: 'service-maintenance' }, [
-            m('h2.subTitle.bg-secondary', 'service-maintenance'),
+            m('h2.subTitle.bg-secondary', 'service maintenance'),
             m(
               'p.p',
               'Is the air conditioning system of your vehicle blowing hot air or not blowing at all?...  The air conditioning system can have three different types of issues; mechanical, electrical or refrigerant all of which can have the similar effect--an uncomfortable vehicle interior. The benefit of having a certified technician investigate your vehicle\'s air conditioning system is to discover where the source of your problem lies.'
@@ -39,7 +39,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           ]),
 
           m('section.anchor', { id: 'help-over-heating' }, [
-            m('h2.subTitle.bg-secondary', 'help-over-heating'),
+            m('h2.subTitle.bg-secondary', 'help over heating'),
             m(
               'p.p',
               'If your engine begins overheating while driving in heavy traffic, the following steps can help alleviate the condition:'
@@ -63,7 +63,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           ]),
 
           m('section.anchor', { id: 'ac-video' }, [
-            m('h2.subTitle.bg-secondary', 'ac-video'),
+            m('h2.subTitle.bg-secondary', 'AC video'),
 
             m('iframe', {
               id: 'ac-video',
@@ -80,7 +80,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           ]),
 
           m('section.anchor', { id: 'ac-parts' }, [
-            m('h2.subTitle.bg-secondary', 'ac-parts'),
+            m('h2.subTitle.bg-secondary', 'AC parts'),
 
             m(
               'p.p',
@@ -102,7 +102,7 @@ const AirConditioning = ({ attrs: { mdl } }) => {
           ]),
 
           m('section.anchor', { id: 'ac-testing-fees' }, [
-            m('h2.subTitle.bg-secondary', 'ac-testing-fees'),
+            m('h2.subTitle.bg-secondary', 'AC Testing fees'),
             m(
               'p.p',
               'Testing fees range between $54.99 for mechanic testing up to $168.90 (including refrigerant, technician testing, oil and dye).Please call for details.'

@@ -2,12 +2,14 @@ import m from 'mithril'
 
 const goToTop = (mdl) =>
   m(
-    m.route.Link,
+    'button.btn.btn-primary',
     {
-      selector: 'button.btn.btn-primary',
-      href: mdl.state.route.route,
       onclick: () => {
-        window.scrollTo(0, 0)
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        })
         mdl.toggleNav(mdl)
       },
     },
@@ -18,11 +20,10 @@ const Tab = ({ attrs: { key } }) => {
   return {
     view: ({ attrs: { tab, active, mdl } }) =>
       m(
-        'li',
+        `li.${active ? 'menu-item' : 'menu-item'}`,
         m(
           m.route.Link,
           {
-            class: active ? ' active menu-item ' : 'menu-item',
             onclick: () => {
               m.route.set(`${tab.route}/#${tab.id}`)
               mdl.toggleNav(mdl)

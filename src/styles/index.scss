@@ -65,6 +65,7 @@ a {
   top: 0;
   background: $primary-color;
   line-height: 60px;
+  text-transform: capitalize;
 }
 
 .empty {
@@ -136,8 +137,8 @@ a {
 #navbar {
   display: flex;
   flex-flow: wrap;
-  align-content: center;
-  justify-content: space-around;
+  align-content: top;
+  justify-content: flex-start;
 }
 
 .nav-links {
@@ -323,6 +324,7 @@ progress {
 
   #navbar {
     width: 100%;
+    transition: all 2s ease-in-out;
   }
 
   #content {

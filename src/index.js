@@ -52,5 +52,8 @@ model.state.profile = getProfile(winW)
 checkWidth(winW)
 
 FP.configure()
+window.onscroll = (e) => {
+  console.log('SCROLLING', e, window.pageYOffset)
+}
 
 m.route(root, '/home', App(model))

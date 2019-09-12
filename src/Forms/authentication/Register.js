@@ -17,7 +17,11 @@ export const Register = () => {
     }) => [
       m(
         'form.columns',
-        { role: 'form', id: 'Register-form', onsubmit: false },
+        {
+          role: 'form',
+          id: 'Register-form',
+          onsubmit: (e) => e.preventDefault(),
+        },
         [
           m(RegisterUser, { data: userModel, errors, isSubmitted, httpError }),
           m(RegisterCar, {
