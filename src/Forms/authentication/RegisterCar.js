@@ -13,7 +13,7 @@ const Car = () => {
         // isLoading,
       },
     }) =>
-      m('.column col-6', [
+      m('.column col-5', [
         // m(
         //   'div.form-group',
         //   m('label.form-switch', [

@@ -14,6 +14,14 @@ $light-grey: #bcc3ce;
 $white: #fff;
 $text: #1caffc;
 
+.bg-light-grey {
+  background-color: $light-grey;
+}
+
+.bg-dark-grey {
+  background-color: $dark-grey;
+}
+
 %icon {
   width: 36px;
   height: 36px;
@@ -86,6 +94,10 @@ a {
 .required {
   color: $warning;
   padding: 4px;
+}
+
+.home-section {
+  height: 80vh;
 }
 
 #register-form-toast {

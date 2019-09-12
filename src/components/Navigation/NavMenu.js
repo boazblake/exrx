@@ -11,6 +11,7 @@ const goToTop = (mdl) =>
           behavior: 'smooth',
         })
         mdl.toggleNav(mdl)
+        m.route.set(mdl.state.route.route)
       },
     },
     'Top of Page'
@@ -26,6 +27,7 @@ const Tab = ({ attrs: { key } }) => {
           {
             onclick: () => {
               m.route.set(`${tab.route}/#${tab.id}`)
+              mdl.state.scrollPos(window.scrollY)
               mdl.toggleNav(mdl)
             },
             key,
@@ -38,25 +40,28 @@ const Tab = ({ attrs: { key } }) => {
   }
 }
 
-const NavMenu = {
-  view: ({ attrs: { mdl } }) => {
-    let route = m.route.get().split('/')[2]
-
-    let routes = mdl.Routes.filter((r) => r.group.includes(route))
-    return routes.length
-      ? m('ul.menu', { id: 'menu' }, [
-        window.scrollY !== 0 && m('li.menu-item', goToTop(mdl)),
-        routes.map((tab, idx) =>
-          m(Tab, {
-            key: idx,
-            active: mdl.state.route.route == tab.route,
-            tab,
-            mdl,
-          })
-        ),
-      ])
-      : []
-  },
+const NavMenu = ({ attrs: { mdl } }) => {
+  return {
+    onupdate: console.log('update', mdl.state.scrollPos()),
+    view: ({ attrs: { mdl } }) => {
+      let route = m.route.get().split('/')[2]
+      console.log('nav view', mdl.state.scrollPos())
+      let routes = mdl.Routes.filter((r) => r.group.includes(route))
+      return routes.length
+        ? m('ul.menu', { id: 'menu' }, [
+          mdl.state.scrollPos() > 0 && m('li.menu-item', goToTop(mdl)),
+          routes.map((tab, idx) =>
+            m(Tab, {
+              key: idx,
+              active: mdl.state.route.route == tab.route,
+              tab,
+              mdl,
+            })
+          ),
+        ])
+        : []
+    },
+  }
 }
 
 export default NavMenu

@@ -1,5 +1,5 @@
 // import m from 'mithril'
-import Stream from 'mithril-stream'
+import Stream from 'mithril/stream'
 import http from './Utils/http.js'
 import Routes from './Routes/index.js'
 
@@ -17,7 +17,7 @@ export const model = {
     isLoading: Stream(false),
     url: '',
     route: '',
-    scrollPos: 1,
+    scrollPos: Stream(window.scrollY),
     limit: 10,
     profile: '',
     showAuthModal: Stream(false),

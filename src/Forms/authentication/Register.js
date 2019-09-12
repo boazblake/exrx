@@ -24,6 +24,7 @@ export const Register = () => {
         },
         [
           m(RegisterUser, { data: userModel, errors, isSubmitted, httpError }),
+          m('.divider-vert', { dataContent: '|' }),
           m(RegisterCar, {
             data: carModel,
             errors,

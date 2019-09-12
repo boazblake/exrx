@@ -1,22 +1,9 @@
 import { MainLayout } from '../Layouts/index.js'
 import Default from '../Pages/Default'
-// import { flatten } from 'ramda'
+import { flatten } from 'ramda'
+import { scrollToAnchor } from 'utils'
 
 const BGProducts = [
-  {
-    id: 'bg-products',
-    title: 'BG Products',
-    icon: 'bgproducts',
-    route: '/vendors/bg-products',
-    position: ['sidebar'],
-    group: ['vendors'],
-    children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
-    },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
-  },
   {
     id: 'bg-products-fuel-Air-induction-service',
     title: 'BG Products Fuel/Air Induction Service',
@@ -25,9 +12,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -39,9 +25,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -53,9 +38,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -67,9 +51,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -81,9 +64,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -95,9 +77,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -109,9 +90,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -123,9 +103,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -137,9 +116,8 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
@@ -151,14 +129,29 @@ const BGProducts = [
     position: ['sidebar'],
     group: ['bg-products'],
     children: [],
-    onmatch: (mdl, props, route) => {
-      // console.log('props', props)
-      return (mdl.state.route = route)
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
   },
 ]
 
-const Vendors = BGProducts
+const SubMenu = [
+  {
+    id: 'bg-products',
+    title: 'BG Products',
+    icon: 'bgproducts',
+    route: '/vendors/bg-products',
+    position: ['sidebar'],
+    group: ['vendors'],
+    children: [],
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      isAnchor && scrollToAnchor(mdl.state.anchor)
+    },
+    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl })),
+  },
+]
+
+const Vendors = flatten([SubMenu, BGProducts])
 
 export default Vendors
