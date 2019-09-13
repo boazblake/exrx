@@ -1,4 +1,5 @@
 import m from 'mithril'
+import Brand from 'assets/professional-auto-care-logo-brand.png'
 
 const Section1 = ({ attrs: { mdl } }) => {
   console.log('mdl', mdl)
@@ -15,7 +16,7 @@ const Section1 = ({ attrs: { mdl } }) => {
           m('img.img center', {
             height: '500px',
             width: '100%',
-            src: 'Assets/professional-auto-care-logo-brand.png',
+            src: Brand,
           }),
         ]),
       ]),
