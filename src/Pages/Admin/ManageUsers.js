@@ -27,7 +27,23 @@ const ManageUsers = () => {
         m('h1.title', mdl.state.route.title),
 
         state.users &&
-          state.users.map((u) => m('div', [m('p', u.name), m('p', u.email)])),
+          state.users.map((u) =>
+            m(
+              '.menu',
+              m('.menu-item', [
+                m('p', u.name),
+                m('p', u.email),
+                m(
+                  '.form-group',
+                  m('label.form-checkbox', [
+                    m('input', { type: 'checkbox', value: u.isAdmin }),
+                    m('i.form-icon'),
+                    'User is Admin',
+                  ])
+                ),
+              ])
+            )
+          ),
       ]),
   }
 }

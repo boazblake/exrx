@@ -1,4 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,700&display=swap);/* index.scss */
+.bg-light-grey {
+  background-color: #bcc3ce; }
+
 .hamburger {
   width: 36px;
   height: 36px;
@@ -25,7 +28,8 @@ a {
   margin-left: auto; }
 
 .page {
-  padding-left: 10px; }
+  padding-left: 10px;
+  height: 100%; }
 
 .subTitle {
   position: sticky;
@@ -33,7 +37,8 @@ a {
   padding: 20px;
   top: 0;
   background: #5755d9;
-  line-height: 60px; }
+  line-height: 60px;
+  text-transform: capitalize; }
 
 .empty {
   background-color: rgba(87, 85, 217, 0.2); }
@@ -44,6 +49,25 @@ a {
 .btn:hover {
   font-weight: bold;
   background-color: box-shadow(inset 0 1px 0 #a9a8ec); }
+
+.required {
+  color: #ffb700;
+  padding: 4px; }
+
+.home-section {
+  height: 80vh; }
+
+#register-form-toast {
+  padding: 0.3rem; }
+
+#vin-toast {
+  margin: 0.3rem 0; }
+
+#modal-close:hover {
+  color: #5755d9; }
+
+.form-input-hint {
+  text-align: left; }
 
 .modal-footer {
   display: flex;
@@ -69,10 +93,10 @@ a {
   box-shadow: none; }
 
 #navbar {
-  display: inline-flex;
+  display: flex;
   flex-flow: wrap;
-  align-content: center;
-  justify-content: space-around; }
+  align-content: top;
+  justify-content: flex-start; }
 
 .nav-links {
   min-height: 150px; }
@@ -87,7 +111,8 @@ a {
 #content {
   grid-area: content;
   padding: 10px;
-  min-height: 100vh; }
+  min-height: 100vh;
+  height: 100%; }
 
 #left-aside {
   grid-area: left-aside;
@@ -141,19 +166,37 @@ a {
   flex-basis: 5;
   width: 80%; }
 
+.progressBar {
+  display: contents; }
+
+progress {
+  z-index: 500; }
+
 @media (min-width: 920px) {
   * {
     font-size: 18px; }
   .mobileNav {
     display: none; }
-  #layout {
+  #mainLayout {
     position: relative;
     display: grid;
     grid-template-columns: max-content 1fr;
     grid-template-rows: max-content 1fr;
     grid-template-areas: "header header header header" "left-aside content content right-aside" "footer footer footer footer"; }
+  a#home-route-address,
+  a#home-route-call {
+    font-size: 30px; }
+  #profileLayout {
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content 1fr;
+    grid-template-areas: "header header header" "left-aside content content" "footer footer footer"; }
   #header {
     justify-content: space-between; }
+  #navbar {
+    width: 100%;
+    transition: all 2s ease-in-out; }
   #content {
     min-width: 100%; }
   #left-aside {
@@ -167,4 +210,4 @@ a {
     max-width: 400px;
     min-width: 20vw; } }
 
-/*# sourceMappingURL=main-e04d6f837165bda230cd.css.map*/
+/*# sourceMappingURL=main-05058993a4e22b40ab2d.css.map*/
