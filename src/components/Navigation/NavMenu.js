@@ -42,7 +42,7 @@ const Tab = ({ attrs: { key } }) => {
 
 const NavMenu = ({ attrs: { mdl } }) => {
   return {
-    onupdate: console.log('update', mdl.state.scrollPos()),
+    onupdate: () => console.log('update', mdl.state.scrollPos()),
     view: ({ attrs: { mdl } }) => {
       let route = m.route.get().split('/')[2]
       console.log('nav view', mdl.state.scrollPos())
