@@ -28,11 +28,12 @@ const NavLinks = () => {
 
       const isActive = (route) => {
         let _active = getRoute(2)
+        console.log("_active", _active)
         return route.id == _active
       }
 
       return m(
-        `ul.nav-links bg-secondary accordian-body nav ${
+        `ul.nav-links menu navbar bg-secondary accordian-body ${
           routes.length ? "active" : "hide"
         }`,
         {

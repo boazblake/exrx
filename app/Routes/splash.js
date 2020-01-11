@@ -1,4 +1,4 @@
-import { MainLayout } from "../Layouts/index.js"
+import MainLayout from "Layouts/MainLayout"
 import Default from "../Pages/Default"
 import { flatten } from "ramda"
 import { scrollToAnchor } from "Utils"

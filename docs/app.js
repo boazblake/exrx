@@ -539,13 +539,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _ProgressBar = _interopRequireDefault(require("../ProgressBar.js"));
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
 
-var _Hamburger = _interopRequireDefault(require("../Hamburger.js"));
+var _Hamburger = _interopRequireDefault(require("Components/Hamburger"));
 
-var _index = _interopRequireDefault(require("../Navigation/index.js"));
+var _Navigation = _interopRequireDefault(require("Components/Navigation"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log(_ProgressBar.default);
 
 var Header = function Header() {
   return {
@@ -557,7 +559,7 @@ var Header = function Header() {
         mdl: mdl
       }), mdl.state.profile !== "desktop" && m(".mobileNav", m(_Hamburger.default, {
         mdl: mdl
-      })), m(_index.default, {
+      })), m(_Navigation.default, {
         mdl: mdl
       })]);
     }
@@ -578,6 +580,8 @@ exports.default = void 0;
 
 var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
 
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SplashHeader = function SplashHeader() {
@@ -586,7 +590,7 @@ var SplashHeader = function SplashHeader() {
       var mdl = _ref.attrs.mdl;
       return m("header.header", {
         id: "header"
-      }, [mdl.state.isLoading() && m(ProgressBar, {
+      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
         mdl: mdl
       }), m(_NavTabs.default, {
         mdl: mdl,
@@ -810,10 +814,11 @@ var NavLinks = function NavLinks() {
       var isActive = function isActive(route) {
         var _active = (0, _Utils.getRoute)(2);
 
+        console.log("_active", _active);
         return route.id == _active;
       };
 
-      return m("ul.nav-links bg-secondary accordian-body nav ".concat(routes.length ? "active" : "hide"), {
+      return m("ul.nav-links menu navbar bg-secondary accordian-body ".concat(routes.length ? "active" : "hide"), {
         id: "navbar"
       }, routes.map(function (route, idx) {
         return m(NavLink, {
@@ -889,9 +894,9 @@ var NavMenu = function NavMenu(_ref3) {
     view: function view(_ref4) {
       var mdl = _ref4.attrs.mdl;
 
-      var route = _mithril.default.route.get().split("/")[2];
+      var route = _mithril.default.route.get().split("/")[2]; // console.log("nav view", mdl.state.scrollPos())
 
-      console.log("nav view", mdl.state.scrollPos());
+
       var routes = mdl.Routes.filter(function (r) {
         return r.group.includes(route);
       });
@@ -1139,11 +1144,7 @@ var _default = Navigation;
 exports.default = _default;
 });
 
-;require.register("Components/Navigation/navigation.scss", function(exports, require, module) {
-module.exports = {"nav":"_nav_htg3j_1"};
-});
-
-require.register("Components/Paginate.js", function(exports, require, module) {
+;require.register("Components/Paginate.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1196,17 +1197,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var ProgressBar = function ProgressBar() {
   return {
     view: function view(_ref) {
       var _ref$attrs$mdl$state$ = _ref.attrs.mdl.state.loadingProgress,
           value = _ref$attrs$mdl$state$.value,
           max = _ref$attrs$mdl$state$.max;
-      return (0, _mithril.default)('.progressBar', (0, _mithril.default)('progress.progress', {
+      return m(".progressBar", m("progress.progress", {
         max: max,
         value: value ? value : null
       }));
@@ -1512,6 +1509,18 @@ Object.keys(_index2).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _index2[key];
+    }
+  });
+});
+
+var _ProgressBar = require("./ProgressBar.js");
+
+Object.keys(_ProgressBar).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProgressBar[key];
     }
   });
 });
@@ -3035,7 +3044,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _Headers = _interopRequireDefault(require("Components/Headers"));
+var _Header = _interopRequireDefault(require("Components/Headers/Header"));
 
 var _Footer = _interopRequireDefault(require("Components/Footer"));
 
@@ -3052,7 +3061,7 @@ var ProfileLayout = function ProfileLayout(_ref) {
       var children = _ref2.children;
       return m(".profileLayout", {
         id: "profileLayout"
-      }, [m(_Headers.default, {
+      }, [m(_Header.default, {
         mdl: mdl
       }), m(_LeftAside.default, {
         mdl: mdl
@@ -3077,7 +3086,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _Headers = _interopRequireDefault(require("Components/Headers"));
+var _SplashHeader = _interopRequireDefault(require("Components/Headers/SplashHeader"));
 
 var _Footer = _interopRequireDefault(require("Components/Footer"));
 
@@ -3096,11 +3105,11 @@ var SplashLayout = function SplashLayout(_ref) {
         id: "splashlayout"
       }, [mdl.state.isLoading() && m(_ProgressBar.default, {
         mdl: mdl
-      }), m(_Headers.default, {
+      }), m(_SplashHeader.default, {
         mdl: mdl
       }), m(_Body.default, {
         mdl: mdl
-      }, [children]), m(_Headers.default, {
+      }, [children]), m(_SplashHeader.default, {
         mdl: mdl
       }), m(_Footer.default, {
         mdl: mdl
@@ -3157,11 +3166,7 @@ Object.keys(_ProfileLayout).forEach(function (key) {
 });
 });
 
-;require.register("Layouts/styles.scss", function(exports, require, module) {
-module.exports = {"hamburger":"_hamburger_1ncq7_3","bold":"_bold_1ncq7_26","page":"_page_1ncq7_32","subTitle":"_subTitle_1ncq7_35","empty":"_empty_1ncq7_43","unauth-lock":"_unauth-lock_1ncq7_46","btn":"_btn_1ncq7_49","modal-footer":"_modal-footer_1ncq7_53","header":"_header_1ncq7_1","tabbar":"_tabbar_1ncq7_1","tab":"_tab_1ncq7_73","tab-item":"_tab-item_1ncq7_73","navbar":"_navbar_1ncq7_1","nav-links":"_nav-links_1ncq7_82","mobileNav":"_mobileNav_1ncq7_85","content":"_content_1ncq7_1","left-aside":"_left-aside_1ncq7_1","menu":"_menu_1ncq7_1","right-aside":"_right-aside_1ncq7_1","footer":"_footer_1ncq7_1","socialmedias":"_socialmedias_1ncq7_124","socialmedia":"_socialmedia_1ncq7_124","avatar":"_avatar_1ncq7_137","loader":"_loader_1ncq7_140","AuthLink":"_AuthLink_1ncq7_144","authBtn":"_authBtn_1ncq7_148","progressBar":"_progressBar_1ncq7_153","homelayout":"_homelayout_1ncq7_1"};
-});
-
-require.register("Model.js", function(exports, require, module) {
+;require.register("Model.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3522,7 +3527,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = require("../Layouts/index.js");
+var _ProfileLayout = _interopRequireDefault(require("Layouts/ProfileLayout"));
 
 var _Default = _interopRequireDefault(require("../Pages/Default"));
 
@@ -3547,7 +3552,7 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_index.ProfileLayout, {
+    return m(_ProfileLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -3567,7 +3572,7 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_index.ProfileLayout, {
+    return m(_ProfileLayout.default, {
       mdl: mdl
     }, m(_ManageUsers.default, {
       mdl: mdl
@@ -4389,7 +4394,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = require("../Layouts/index.js");
+var _MainLayout = _interopRequireDefault(require("Layouts/MainLayout"));
 
 var _Default = _interopRequireDefault(require("../Pages/Default"));
 
@@ -4413,7 +4418,7 @@ var SubMenu = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_index.MainLayout, {
+    return m(_MainLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -4431,7 +4436,7 @@ var SubMenu = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_index.MainLayout, {
+    return m(_MainLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -4449,7 +4454,7 @@ var SubMenu = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_index.MainLayout, {
+    return m(_MainLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -4684,19 +4689,7 @@ var _default = Vendors;
 exports.default = _default;
 });
 
-;require.register("Styles/animations.scss", function(exports, require, module) {
-module.exports = {"reverseAnimation":"_reverseAnimation_1hw2t_19","slideDown":"_slideDown_1hw2t_23","slideUp":"_slideUp_1hw2t_65","slideLeft":"_slideLeft_1hw2t_107","slideRight":"_slideRight_1hw2t_149","slideExpandUp":"_slideExpandUp_1hw2t_191","expandUp":"_expandUp_1hw2t_245","fadeIn":"_fadeIn_1hw2t_279","expandOpen":"_expandOpen_1hw2t_319","bigEntrance":"_bigEntrance_1hw2t_357","hatch":"_hatch_1hw2t_417","bounce":"_bounce_1hw2t_466","pulse":"_pulse_1hw2t_510","floating":"_floating_1hw2t_545","tossing":"_tossing_1hw2t_574","pullUp":"_pullUp_1hw2t_603","pullDown":"_pullDown_1hw2t_651","stretchLeft":"_stretchLeft_1hw2t_699","stretchRight":"_stretchRight_1hw2t_747","hamburger--elastic":"_hamburger--elastic_1hw2t_794","hamburger-inner":"_hamburger-inner_1hw2t_794","is-active":"_is-active_1hw2t_807","hamburger--elastic-r":"_hamburger--elastic-r_1hw2t_822"};
-});
-
-require.register("Styles/index.scss", function(exports, require, module) {
-module.exports = {"bg-light-grey":"_bg-light-grey_1abfi_3","bg-dark-grey":"_bg-dark-grey_1abfi_6","hamburger":"_hamburger_1abfi_9","bold":"_bold_1abfi_32","page":"_page_1abfi_38","subTitle":"_subTitle_1abfi_42","empty":"_empty_1abfi_51","unauth-lock":"_unauth-lock_1abfi_54","btn":"_btn_1abfi_57","required":"_required_1abfi_61","home-section":"_home-section_1abfi_65","register-form-toast":"_register-form-toast_1abfi_1","vin-toast":"_vin-toast_1abfi_1","modal-close":"_modal-close_1abfi_1","form-input-hint":"_form-input-hint_1abfi_77","modal-footer":"_modal-footer_1abfi_80","header":"_header_1abfi_1","tabbar":"_tabbar_1abfi_1","tab":"_tab_1abfi_100","tab-item":"_tab-item_1abfi_100","navbar":"_navbar_1abfi_1","nav-links":"_nav-links_1abfi_109","mobileNav":"_mobileNav_1abfi_112","content":"_content_1abfi_1","left-aside":"_left-aside_1abfi_1","menu":"_menu_1abfi_1","right-aside":"_right-aside_1abfi_1","footer":"_footer_1abfi_1","socialmedias":"_socialmedias_1abfi_152","socialmedia":"_socialmedia_1abfi_152","avatar":"_avatar_1abfi_165","loader":"_loader_1abfi_168","AuthLink":"_AuthLink_1abfi_172","authBtn":"_authBtn_1abfi_176","progressBar":"_progressBar_1abfi_181","mainLayout":"_mainLayout_1abfi_1","homeLayout":"_homeLayout_1abfi_1","home-route-address":"_home-route-address_1abfi_1","home-route-call":"_home-route-call_1abfi_1","profileLayout":"_profileLayout_1abfi_1"};
-});
-
-require.register("Styles/loader.scss", function(exports, require, module) {
-module.exports = {"holder":"_holder_1uw36_1","preloader":"_preloader_1uw36_8","rotatePreloader":"_rotatePreloader_1uw36_1","rotateCircle1":"_rotateCircle1_1uw36_1","rotateCircle2":"_rotateCircle2_1uw36_1","rotateCircle3":"_rotateCircle3_1uw36_1","rotateCircle4":"_rotateCircle4_1uw36_1","rotateCircle5":"_rotateCircle5_1uw36_1","rotateCircle6":"_rotateCircle6_1uw36_1","rotateCircle7":"_rotateCircle7_1uw36_1"};
-});
-
-require.register("Utils/animations.js", function(exports, require, module) {
+;require.register("Utils/animations.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5417,13 +5410,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var root = document.body;
 var winW = window.innerWidth;
+console.log("WTF", module.hot);
 
 if (module.hot) {
   module.hot.accept();
 }
 
 if ('development' !== "production") {
-  console.log("Looks like we are in development mode!");
+  console.log("Looks like we are in development mode!", process);
 }
 
 var getProfile = function getProfile(w) {

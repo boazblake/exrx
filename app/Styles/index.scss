@@ -146,7 +146,7 @@ a {
   box-shadow: none;
 }
 
-#navbar {
+.navbar {
   display: flex;
   flex-flow: wrap;
   align-content: top;
@@ -173,6 +173,14 @@ a {
 }
 
 #left-aside {
+  grid-area: left-aside;
+  width: 100%;
+  position: fixed;
+  top: 30px;
+  z-index: 3;
+}
+
+.left-aside {
   grid-area: left-aside;
   width: 100%;
   position: fixed;

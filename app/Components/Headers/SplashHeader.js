@@ -1,4 +1,5 @@
 import NavTabs from "../Navigation/NavTabs.js"
+import ProgressBar from "Components/ProgressBar"
 
 const SplashHeader = () => {
   return {

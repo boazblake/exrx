@@ -7,6 +7,7 @@ dependencies:
   mithril: 2.0.4
   mithril-stream: 2.0.0
   ramda: 0.26.1
+  spectre.css: 0.5.8
 devDependencies:
   '@babel/plugin-transform-spread': 7.7.4
   auto-reload-brunch: 2.7.1
@@ -4414,6 +4415,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-J+FWzZoynJEXGphVIS+XEh3kFSjZX/1i9gFBaWQcB+/tmpe2qUsSBABpcxqxnAxFdiUFEgAX1bjYGQvIZmoz9Q==
+  /spectre.css/0.5.8:
+    dev: false
+    resolution:
+      integrity: sha512-3N4WocWY+Dl6b3e5v3nsZYyp+VSDcBfGDzyyHw/H78ie9BoAhHkxmrhLxo9y8RadxYzVrPjfPdlev3hXEUzR2w==
   /split-string/3.1.0:
     dependencies:
       extend-shallow: 3.0.2
@@ -4966,4 +4971,5 @@ specifiers:
   mithril-stream: ^2.0.0
   ramda: ^0.26.1
   sass-brunch: ^2.10.8
+  spectre.css: ^0.5.8
   uglify-js-brunch: ^2.10.0

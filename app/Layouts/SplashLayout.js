@@ -1,4 +1,4 @@
-import SplashHeader from "Components/Headers"
+import SplashHeader from "Components/Headers/SplashHeader"
 import Footer from "Components/Footer"
 import Body from "Components/Body"
 import ProgressBar from "Components/ProgressBar"

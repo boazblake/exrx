@@ -45,7 +45,7 @@ const NavMenu = ({ attrs: { mdl } }) => {
     // onupdate: () => console.log('update', mdl.state.scrollPos()),
     view: ({ attrs: { mdl } }) => {
       let route = m.route.get().split("/")[2]
-      console.log("nav view", mdl.state.scrollPos())
+      // console.log("nav view", mdl.state.scrollPos())
       let routes = mdl.Routes.filter((r) => r.group.includes(route))
       return routes.length
         ? m("ul.menu", { id: "menu" }, [

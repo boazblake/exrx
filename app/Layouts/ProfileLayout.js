@@ -1,4 +1,4 @@
-import Header from "Components/Headers"
+import Header from "Components/Headers/Header"
 import Footer from "Components/Footer"
 import LeftAside from "Components/LeftAside"
 import Body from "Components/Body"

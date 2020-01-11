@@ -1,4 +1,4 @@
-import { ProfileLayout } from "../Layouts/index.js"
+import ProfileLayout from "Layouts/ProfileLayout"
 import Default from "../Pages/Default"
 import ManageUsers from "../Pages/Admin/ManageUsers.js"
 import { scrollToAnchor } from "Utils"

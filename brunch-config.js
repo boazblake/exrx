@@ -9,13 +9,20 @@ exports.files = {
   },
   stylesheets: {
     joinTo: {
-      "app.css": ["./app/**/*.scss", (path) => path.includes(".scss")]
+      "app.css": [
+        (path) => path.includes(".scss"),
+        (path) => path.includes("spectre.css")
+      ]
     }
   }
 }
 
 exports.plugins = {
-  sass: { mode: "native", modules: true },
+  sass: {
+    mode: "native",
+    sourceMapEmbed: true,
+    includePaths: ["node_modules/spectre.css/src/**/*.scss"]
+  },
   "@babel": { presets: ["env"] }
 }
 
@@ -25,5 +32,15 @@ exports.paths = {
 }
 
 exports.npm = {
-  globals: { m: "mithril", Stream: "mithril-stream" }
+  globals: {
+    m: "mithril",
+    Stream: "mithril-stream"
+  },
+  styles: {
+    "spectre.css": [
+      "dist/spectre.css",
+      "dist/spectre-exp.css",
+      "dist/spectre-icons.css"
+    ]
+  }
 }

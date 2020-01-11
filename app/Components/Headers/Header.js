@@ -1,6 +1,8 @@
-import ProgressBar from "../ProgressBar.js"
-import Hamburger from "../Hamburger.js"
-import Navigation from "../Navigation/index.js"
+import ProgressBar from "Components/ProgressBar"
+import Hamburger from "Components/Hamburger"
+import Navigation from "Components/Navigation"
+
+console.log(ProgressBar)
 
 const Header = () => {
   return {

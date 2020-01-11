@@ -5,12 +5,14 @@ import { FP } from "FP"
 const root = document.body
 let winW = window.innerWidth
 
+console.log("WTF", module.hot)
+
 if (module.hot) {
   module.hot.accept()
 }
 
 if (process.env.NODE_ENV !== "production") {
-  console.log("Looks like we are in development mode!")
+  console.log("Looks like we are in development mode!", process)
 }
 
 const getProfile = (w) => {
