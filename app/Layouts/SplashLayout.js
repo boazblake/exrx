@@ -12,10 +12,8 @@ const SplashLayout = ({ attrs: { mdl } }) => {
           id: "splashlayout"
         },
         [
-          mdl.state.isLoading() && m(ProgressBar, { mdl }),
           m(SplashHeader, { mdl }),
           m(Body, { mdl }, [children]),
-          m(SplashHeader, { mdl }),
           m(Footer, { mdl })
         ]
       )

@@ -1,4 +1,3 @@
-import MainLayout from "Layouts/MainLayout"
 import SplashLayout from "Layouts/SplashLayout"
 import Default from "../Pages/Default"
 import Home from "../Pages/Home"
@@ -9,7 +8,7 @@ const Main = [
   {
     id: "home",
     title: "Home",
-    icon: Icons.home,
+    icon: Icons.logo,
     route: "/home",
     position: ["nav"],
     group: [],
@@ -18,46 +17,6 @@ const Main = [
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
     component: (mdl) => m(SplashLayout, { mdl }, m(Home, { mdl }))
-  },
-  {
-    id: "services",
-    title: "Services",
-    icon: Icons.services,
-    route: "/services",
-    position: ["nav", "sidebar"],
-    group: [],
-    children: [],
-    onmatch: (mdl, args, path, fullroute, isAnchor) => {
-      isAnchor && scrollToAnchor(mdl.state.anchor)
-    },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
-  },
-  {
-    id: "discounts",
-    title: "Discounts",
-    icon: "discounts",
-    route: "/discounts",
-    position: ["nav", "footer"],
-    group: [],
-    children: [],
-    onmatch: (mdl, args, path, fullroute, isAnchor) => {
-      isAnchor && scrollToAnchor(mdl.state.anchor)
-      if (!mdl.state.isAuth()) return m.route.SKIP
-    },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
-  },
-  {
-    id: "vendors",
-    title: "Vendors",
-    icon: "vendors",
-    route: "/vendors",
-    position: ["nav", "footer"],
-    group: [],
-    children: [],
-    onmatch: (mdl, args, path, fullroute, isAnchor) => {
-      isAnchor && scrollToAnchor(mdl.state.anchor)
-    },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
   },
   {
     id: "about",
@@ -70,7 +29,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
+    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl }))
   },
   {
     id: "contact",
@@ -83,7 +42,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
+    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl }))
   },
   {
     id: "blog",
@@ -96,7 +55,7 @@ const Main = [
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(MainLayout, { mdl }, m(Default, { mdl }))
+    component: (mdl) => m(SplashLayout, { mdl }, m(Default, { mdl }))
   }
 ]
 

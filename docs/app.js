@@ -253,6 +253,7 @@ var onLoginSuccess = function onLoginSuccess(mdl) {
     mdl.user = user;
     mdl.state.isAuth(true);
     mdl.toggleAuthModal(mdl);
+    m.route.set("/admin/".concat(mdl.user.name, "/dashboard"));
     resetState();
   };
 };
@@ -469,11 +470,30 @@ var _SocialMedia = _interopRequireDefault(require("./SocialMedia.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var GoToTop = {
+  view: function view(_ref) {
+    var mdl = _ref.attrs.mdl;
+    return m("button.btn.btn-primary", {
+      onclick: function onclick() {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+        mdl.toggleNav(mdl);
+        m.route.set(mdl.state.route.route);
+      }
+    }, "Back Up");
+  }
+};
 var Footer = {
-  view: function view() {
+  view: function view(_ref2) {
+    var mdl = _ref2.attrs.mdl;
     return m("footer", {
       id: "footer"
-    }, m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy"), m(_SocialMedia.default)]));
+    }, m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy"), m(_SocialMedia.default), m(GoToTop, {
+      mdl: mdl
+    })]));
   }
 };
 var _default = Footer;
@@ -531,7 +551,7 @@ var _default = Hamburger;
 exports.default = _default;
 });
 
-;require.register("Components/Headers/Header.js", function(exports, require, module) {
+;require.register("Components/Headers/MainHeader.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -546,8 +566,6 @@ var _Hamburger = _interopRequireDefault(require("Components/Hamburger"));
 var _Navigation = _interopRequireDefault(require("Components/Navigation"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-console.log(_ProgressBar.default);
 
 var Header = function Header() {
   return {
@@ -567,6 +585,40 @@ var Header = function Header() {
 };
 
 var _default = Header;
+exports.default = _default;
+});
+
+;require.register("Components/Headers/ProfileHeader.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
+
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileHeader = function ProfileHeader() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m("header.header", {
+        id: "header"
+      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+        mdl: mdl
+      }), m(_NavTabs.default, {
+        mdl: mdl,
+        tabSelected: function tabSelected() {}
+      })]);
+    }
+  };
+};
+
+var _default = ProfileHeader;
 exports.default = _default;
 });
 
@@ -611,14 +663,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Header = require("./Header.js");
+var _MainHeader = require("./MainHeader.js");
 
-Object.keys(_Header).forEach(function (key) {
+Object.keys(_MainHeader).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _Header[key];
+      return _MainHeader[key];
     }
   });
 });
@@ -634,6 +686,18 @@ Object.keys(_SplashHeader).forEach(function (key) {
     }
   });
 });
+
+var _ProfileHeader = require("./ProfileHeader.js");
+
+Object.keys(_ProfileHeader).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProfileHeader[key];
+    }
+  });
+});
 });
 
 ;require.register("Components/Icons/index.js", function(exports, require, module) {
@@ -643,6 +707,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var logo = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+  version: "1.1",
+  x: "0px",
+  y: "0px",
+  viewBox: "0 0 99.978 100",
+  "enable-background": "new 0 0 99.978 100",
+  "xml:space": "preserve"
+}, [m("polygon", {
+  fill: "#ecf0f1",
+  points: "49.987,0 0,25 0,37.5 49.987,12.5 99.978,37.5 99.978,25 "
+}), m("path", {
+  id: "ruler",
+  fill: "#ecf0f1",
+  d: "M74.978,37.5V100h18.75V37.5H74.978z M89.561,45.834h-6.25V50h6.25v4.167h-3.125v4.167h3.125V62.5h-6.25  v4.167h6.25v4.166h-3.125V75h3.125v4.167h-6.25v4.166h6.25V87.5h-3.125v4.166h3.125v4.167H79.145V41.667h10.416V45.834z"
+}), m("path", {
+  id: "hammer",
+  fill: "#ecf0f1",
+  d: "M41.111,48.539c-5.442-7.942-12.465-9.623-17.427-9.623c-3.235,0-5.497,0.741-5.593,0.773  c-0.307,0.102-0.586,0.276-0.814,0.505l-1.473,1.473h-1.221c0-1.151-0.932-2.083-2.083-2.083H8.333  c-1.151,0-2.083,0.932-2.083,2.083v6.25C6.25,49.068,7.182,50,8.333,50H12.5c1.151,0,2.083-0.932,2.083-2.083h2.083v14.245  l-1.975,5.929c-0.071,0.212-0.108,0.436-0.108,0.659v29.166c0,1.152,0.932,2.084,2.083,2.084H25c1.151,0,2.083-0.932,2.083-2.084  V68.75c0-0.224-0.037-0.447-0.108-0.659L25,62.162V49.149c0.903-0.386,1.961-0.581,3.158-0.581c4.905,0,10.302,3.186,10.355,3.218  c0.325,0.195,0.684,0.289,1.043,0.293c1.17,0.094,2.15-0.907,2.15-2.079C41.707,49.431,41.479,48.914,41.111,48.539z"
+}), m("path", {
+  id: "mouse",
+  fill: "#ecf0f1",
+  d: "M58.26,60.588c1.029-1.677,1.978-3.805,1.994-6.092c0.014-2.233-0.86-4.301-2.531-5.969  c-0.539-0.541-1.2-1.082-1.904-1.652c-2.256-1.822-3.735-3.174-3.735-5.208c0-2.689,2.569-5.867,3.558-6.864  c0.81-0.813,0.808-2.132-0.006-2.946c-0.816-0.81-2.13-0.81-2.942,0.004c-0.488,0.488-4.777,4.916-4.777,9.807  c0,4.175,3.052,6.645,5.281,8.447c0.58,0.472,1.133,0.911,1.579,1.359c0.887,0.887,1.314,1.863,1.31,2.982  c-0.012,2.254-1.737,4.703-2.838,5.969c-7.212,0.11-13.666,1.624-13.666,10.408v8.334c0,10.241,5.455,20.833,14.583,20.833  c9.473,0,14.583-10.734,14.583-20.833v-8.334C68.75,63.367,64.088,61.153,58.26,60.588z M64.583,70.833v2.084H56.25v-8.289  C63.303,64.93,64.583,66.874,64.583,70.833z M52.083,64.628v8.289H43.75v-2.084C43.75,66.874,45.029,64.93,52.083,64.628z   M54.167,95.833c-6.433,0-10.417-8.65-10.417-16.666v-2.084h20.833v2.084C64.583,86.088,61.352,95.833,54.167,95.833z"
+})]);
 var contact = m("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 20 20"
@@ -686,6 +775,7 @@ var services = m("svg", {
   d: "M9 20v-1.7l.01-.24L15.07 12h2.94c1.1 0 1.99.89 1.99 2v4a2 2 0 0 1-2 2H9zm0-3.34V5.34l2.08-2.07a1.99 1.99 0 0 1 2.82 0l2.83 2.83a2 2 0 0 1 0 2.82L9 16.66zM0 1.99C0 .9.89 0 2 0h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zM4 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
 }));
 var _default = {
+  logo: logo,
   contact: contact,
   services: services,
   home: home,
@@ -774,69 +864,6 @@ var _default = Modal;
 exports.default = _default;
 });
 
-;require.register("Components/Navigation/NavLinks.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _Utils = require("Utils");
-
-var NavLink = function NavLink(_ref) {
-  var key = _ref.attrs.key;
-  return {
-    view: function view(_ref2) {
-      var _ref2$attrs = _ref2.attrs,
-          route = _ref2$attrs.route,
-          active = _ref2$attrs.active;
-      return m("li", m(m.route.Link, {
-        class: active ? "btn btn-primary active" : "btn btn-link",
-        key: key,
-        id: "".concat(route.id),
-        href: "".concat(route.route)
-      }, route.title));
-    }
-  };
-};
-
-var NavLinks = function NavLinks() {
-  return {
-    view: function view(_ref3) {
-      var _ref3$attrs = _ref3.attrs,
-          mdl = _ref3$attrs.mdl,
-          tabSelected = _ref3$attrs.tabSelected;
-      var routes = mdl.Routes.filter(function (r) {
-        return r.group.includes(tabSelected()) && !r.group.includes("admin");
-      });
-
-      var isActive = function isActive(route) {
-        var _active = (0, _Utils.getRoute)(2);
-
-        console.log("_active", _active);
-        return route.id == _active;
-      };
-
-      return m("ul.nav-links menu navbar bg-secondary accordian-body ".concat(routes.length ? "active" : "hide"), {
-        id: "navbar"
-      }, routes.map(function (route, idx) {
-        return m(NavLink, {
-          class: "nav-item",
-          key: idx,
-          active: isActive(route),
-          route: route,
-          mdl: mdl
-        });
-      }));
-    }
-  };
-};
-
-var _default = NavLinks;
-exports.default = _default;
-});
-
 ;require.register("Components/Navigation/NavMenu.js", function(exports, require, module) {
 "use strict";
 
@@ -844,38 +871,34 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var goToTop = function goToTop(mdl) {
-  return (0, _mithril.default)("button.btn.btn-primary", {
-    onclick: function onclick() {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: "smooth"
-      });
-      mdl.toggleNav(mdl);
-
-      _mithril.default.route.set(mdl.state.route.route);
-    }
-  }, "Top of Page");
+var GoToTop = {
+  view: function view(_ref) {
+    var mdl = _ref.attrs.mdl;
+    return m("li.menu-item", m("button.btn.btn-primary", {
+      onclick: function onclick() {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+        mdl.toggleNav(mdl);
+        m.route.set(mdl.state.route.route);
+      }
+    }, "Top of Page"));
+  }
 };
 
-var Tab = function Tab(_ref) {
-  var key = _ref.attrs.key;
+var Tab = function Tab(_ref2) {
+  var key = _ref2.attrs.key;
   return {
-    view: function view(_ref2) {
-      var _ref2$attrs = _ref2.attrs,
-          tab = _ref2$attrs.tab,
-          active = _ref2$attrs.active,
-          mdl = _ref2$attrs.mdl;
-      return (0, _mithril.default)("li.".concat(active ? "menu-item" : "menu-item"), (0, _mithril.default)(_mithril.default.route.Link, {
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          tab = _ref3$attrs.tab,
+          active = _ref3$attrs.active,
+          mdl = _ref3$attrs.mdl;
+      return m("li.".concat(active ? "menu-item" : "menu-item"), m(m.route.Link, {
         onclick: function onclick() {
-          _mithril.default.route.set("".concat(tab.route, "/#").concat(tab.id));
-
+          m.route.set("".concat(tab.route, "/#").concat(tab.id));
           mdl.state.scrollPos(window.scrollY);
           mdl.toggleNav(mdl);
         },
@@ -887,23 +910,23 @@ var Tab = function Tab(_ref) {
   };
 };
 
-var NavMenu = function NavMenu(_ref3) {
-  var mdl = _ref3.attrs.mdl;
+var NavMenu = function NavMenu(_ref4) {
+  var mdl = _ref4.attrs.mdl;
   return {
     // onupdate: () => console.log('update', mdl.state.scrollPos()),
-    view: function view(_ref4) {
-      var mdl = _ref4.attrs.mdl;
-
-      var route = _mithril.default.route.get().split("/")[2]; // console.log("nav view", mdl.state.scrollPos())
-
+    view: function view(_ref5) {
+      var mdl = _ref5.attrs.mdl;
+      var route = m.route.get().split("/")[2]; // console.log("nav view", mdl.state.scrollPos())
 
       var routes = mdl.Routes.filter(function (r) {
         return r.group.includes(route);
       });
-      return routes.length ? (0, _mithril.default)("ul.menu", {
+      return routes.length ? m("ul.menu", {
         id: "menu"
-      }, [mdl.state.scrollPos() > 0 && (0, _mithril.default)("li.menu-item", goToTop(mdl)), routes.map(function (tab, idx) {
-        return (0, _mithril.default)(Tab, {
+      }, [mdl.state.scrollPos() > 0 && m(GoToTop, {
+        mdl: mdl
+      }), routes.map(function (tab, idx) {
+        return m(Tab, {
           key: idx,
           active: mdl.state.route.route == tab.route,
           tab: tab,
@@ -932,6 +955,8 @@ var _Auth = _interopRequireDefault(require("Components/Auth"));
 
 var _SettingsMenu = _interopRequireDefault(require("./SettingsMenu.js"));
 
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Tab = function Tab(_ref) {
@@ -939,6 +964,7 @@ var Tab = function Tab(_ref) {
   return {
     view: function view(_ref2) {
       var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
           tab = _ref2$attrs.tab,
           active = _ref2$attrs.active,
           tabSelected = _ref2$attrs.tabSelected;
@@ -946,16 +972,22 @@ var Tab = function Tab(_ref) {
         class: active ? "tab-item active" : "tab-item",
         key: key,
         id: "".concat(tab.id),
-        href: "".concat(tab.route),
-        onmouseenter: function onmouseenter() {
-          tabSelected(tab.id);
-        }
-      }, tab.title === "Home" ? m("img", {
+        href: tab.group.includes("authenticated") ? "admin/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route) // onmouseenter: () => {
+        //   tabSelected(tab.id)
+        // },
+        // onclick: (e) => {
+        //   e.preventDefault()
+        //   console.log(tab.group)
+        //   tab.group.includes("authenticated")
+        //     ? m.route.set(`admin/${mdl.user.name}/${tab.id}`)
+        //     : m.route.set(tab.route)
+        // }
+
+      }, ["Dashboard", "Home"].includes(tab.title) ? m(".img", {
         style: {
-          width: "100px"
-        },
-        src: "Brand"
-      }) : tab.title);
+          width: "50px"
+        }
+      }, _Icons.default.logo) : tab.title);
     }
   };
 };
@@ -966,12 +998,15 @@ var NavTabs = function NavTabs() {
       var _ref3$attrs = _ref3.attrs,
           mdl = _ref3$attrs.mdl,
           tabSelected = _ref3$attrs.tabSelected;
-      var tabs = mdl.Routes.filter(function (r) {
+      var tabs = mdl.state.isAuth() ? mdl.Routes.filter(function (r) {
+        return r.position.includes("auth-nav");
+      }) : mdl.Routes.filter(function (r) {
         return r.position.includes("nav");
       });
 
       var isTabActive = function isTabActive(tab) {
-        var _active = (0, _Utils.getRoute)(1);
+        var _active = (0, _Utils.getRoute)(1); // console.log(tab.id, _active)
+
 
         return tab.id == _active;
       };
@@ -1098,49 +1133,6 @@ var SettingsMenu = function SettingsMenu() {
 };
 
 var _default = SettingsMenu;
-exports.default = _default;
-});
-
-;require.register("Components/Navigation/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _NavTabs = _interopRequireDefault(require("./NavTabs.js"));
-
-var _NavLinks = _interopRequireDefault(require("./NavLinks.js"));
-
-var _Utils = require("Utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Navigation = function Navigation() {
-  var tabSelected = Stream((0, _Utils.getRoute)(1));
-  return {
-    view: function view(_ref) {
-      var mdl = _ref.attrs.mdl;
-      return m(".navigation", {
-        onmouseenter: function onmouseenter() {
-          return tabSelected((0, _Utils.getRoute)(1));
-        },
-        onmouseleave: function onmouseleave() {
-          return tabSelected((0, _Utils.getRoute)(1));
-        }
-      }, [m(_NavTabs.default, {
-        mdl: mdl,
-        tabSelected: tabSelected
-      }), m(_NavLinks.default, {
-        mdl: mdl,
-        tabSelected: tabSelected
-      })]);
-    }
-  };
-};
-
-var _default = Navigation;
 exports.default = _default;
 });
 
@@ -2993,7 +2985,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _Header = _interopRequireDefault(require("Components/Headers/Header"));
+var _MainHeader = _interopRequireDefault(require("Components/Headers/MainHeader"));
 
 var _Footer = _interopRequireDefault(require("Components/Footer"));
 
@@ -3017,7 +3009,7 @@ var MainLayout = function MainLayout(_ref) {
       var children = _ref2.children;
       return m(".mainLayout", {
         id: "mainLayout"
-      }, [m(_Header.default, {
+      }, [m(_MainHeader.default, {
         mdl: mdl
       }), showMenu() && m(_LeftAside.default, {
         mdl: mdl
@@ -3044,7 +3036,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _Header = _interopRequireDefault(require("Components/Headers/Header"));
+var _ProfileHeader = _interopRequireDefault(require("Components/Headers/ProfileHeader"));
 
 var _Footer = _interopRequireDefault(require("Components/Footer"));
 
@@ -3061,7 +3053,7 @@ var ProfileLayout = function ProfileLayout(_ref) {
       var children = _ref2.children;
       return m(".profileLayout", {
         id: "profileLayout"
-      }, [m(_Header.default, {
+      }, [m(_ProfileHeader.default, {
         mdl: mdl
       }), m(_LeftAside.default, {
         mdl: mdl
@@ -3103,15 +3095,11 @@ var SplashLayout = function SplashLayout(_ref) {
       var children = _ref2.children;
       return m(".splashlayout", {
         id: "splashlayout"
-      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
-        mdl: mdl
-      }), m(_SplashHeader.default, {
+      }, [m(_SplashHeader.default, {
         mdl: mdl
       }), m(_Body.default, {
         mdl: mdl
-      }, [children]), m(_SplashHeader.default, {
-        mdl: mdl
-      }), m(_Footer.default, {
+      }, [children]), m(_Footer.default, {
         mdl: mdl
       })]);
     }
@@ -3259,6 +3247,28 @@ var _default = About;
 exports.default = _default;
 });
 
+;require.register("Pages/Admin/CalculatorConfig.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var ConfigCalculators = function ConfigCalculators(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".calc-config", m("h1", mdl.state.route.title));
+    }
+  };
+};
+
+var _default = ConfigCalculators;
+exports.default = _default;
+});
+
 ;require.register("Pages/Admin/ManageUsers.js", function(exports, require, module) {
 "use strict";
 
@@ -3309,6 +3319,38 @@ var _default = ManageUsers;
 exports.default = _default;
 });
 
+;require.register("Pages/Admin/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _CalculatorConfig = require("./CalculatorConfig");
+
+Object.keys(_CalculatorConfig).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _CalculatorConfig[key];
+    }
+  });
+});
+
+var _ManageUsers = require("./ManageUsers");
+
+Object.keys(_ManageUsers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ManageUsers[key];
+    }
+  });
+});
+});
+
 ;require.register("Pages/Contact/index.js", function(exports, require, module) {
 "use strict";
 
@@ -3331,6 +3373,28 @@ var Contact = function Contact(_ref) {
 };
 
 var _default = Contact;
+exports.default = _default;
+});
+
+;require.register("Pages/Dashboard/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Dashboard = function Dashboard(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".dashboard", m("h1", mdl.state.route.title));
+    }
+  };
+};
+
+var _default = Dashboard;
 exports.default = _default;
 });
 
@@ -3375,46 +3439,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var Default = function Default(_ref) {
   var mdl = _ref.attrs.mdl;
   // console.log('mdl', mdl)
   return {
     view: function view() {
-      return (0, _mithril.default)('.default', (0, _mithril.default)('h1', mdl.state.route.title));
+      return m(".default", m("h1", mdl.state.route.title));
     }
   };
 };
 
 var _default = Default;
-exports.default = _default;
-});
-
-;require.register("Pages/Discounts/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Discounts = function Discounts(_ref) {
-  var mdl = _ref.attrs.mdl;
-  return {
-    view: function view() {
-      return (0, _mithril.default)('.discounts', mdl.state.route.title);
-    }
-  };
-};
-
-var _default = Discounts;
 exports.default = _default;
 });
 
@@ -3426,11 +3461,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Home = function Home(_ref) {
   var mdl = _ref.attrs.mdl;
   return {
     view: function view() {
-      return m(".home", [m("section.home-section hero hero-lg bg-primary parall", m(".hero-body", m("h1", "section 1"))), m("section.home-section hero hero-lg bg-secondary", m(".hero-body", m("h1", "section 2")))]);
+      return m(".home", [m("section.home-section hero hero-lg bg-primary parall", m(".hero-body", [m("h1", "section 1")])), m("section.home-section hero hero-lg bg-secondary", m(".hero-body", m("h1", "section 2")))]);
     }
   };
 };
@@ -3519,6 +3558,86 @@ var _default = Home;
 exports.default = _default;
 });
 
+;require.register("Pages/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("./About/index");
+
+Object.keys(_index).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index[key];
+    }
+  });
+});
+
+var _index2 = require("./Admin/index");
+
+Object.keys(_index2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index2[key];
+    }
+  });
+});
+
+var _index3 = require("./Contact/index");
+
+Object.keys(_index3).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index3[key];
+    }
+  });
+});
+
+var _index4 = require("./Dashboard/index");
+
+Object.keys(_index4).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index4[key];
+    }
+  });
+});
+
+var _index5 = require("./Default/index");
+
+Object.keys(_index5).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index5[key];
+    }
+  });
+});
+
+var _index6 = require("./Home/index");
+
+Object.keys(_index6).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index6[key];
+    }
+  });
+});
+});
+
 ;require.register("Routes/authenticated.js", function(exports, require, module) {
 "use strict";
 
@@ -3529,9 +3648,13 @@ exports.default = void 0;
 
 var _ProfileLayout = _interopRequireDefault(require("Layouts/ProfileLayout"));
 
-var _Default = _interopRequireDefault(require("../Pages/Default"));
+var _Dashboard = _interopRequireDefault(require("Pages/Dashboard"));
 
-var _ManageUsers = _interopRequireDefault(require("../Pages/Admin/ManageUsers.js"));
+var _Default = _interopRequireDefault(require("Pages/Default"));
+
+var _ManageUsers = _interopRequireDefault(require("Pages/Admin/ManageUsers.js"));
+
+var _CalculatorConfig = _interopRequireDefault(require("Pages/Admin/CalculatorConfig.js"));
 
 var _Utils = require("Utils");
 
@@ -3540,10 +3663,28 @@ var _Icons = _interopRequireDefault(require("Components/Icons"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var authenticated = [{
+  id: "dashboard",
+  title: "Dashboard",
+  icon: _Icons.default.logo,
+  route: "/admin/:name/dashboard",
+  position: ["auth-nav"],
+  group: ["authenticated"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_Dashboard.default, {
+      mdl: mdl
+    }));
+  }
+}, {
   id: "profile-page",
   title: "Profile Page",
   icon: _Icons.default.home,
-  route: "/profile/:name",
+  route: "/admin/:name/profile",
   position: [],
   group: ["authenticated", "all", "client"],
   children: [],
@@ -3559,10 +3700,39 @@ var authenticated = [{
     }));
   }
 }, {
+  id: "calculator-config",
+  title: "Configure Calculators",
+  icon: _Icons.default.calcs,
+  route: "/admin/:name/calculator-config",
+  position: ["auth-nav"],
+  group: ["authenticated", "admin"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    // console.log(
+    //   "calcconfig",
+    //   mdl,
+    //   args,
+    //   path,
+    //   fullroute,
+    //   isAnchor,
+    //   mdl.state.isAuth(),
+    //   mdl.user.isAdmin
+    // )
+    // !mdl.user.isAdmin && m.route.set(m.route.get())
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_CalculatorConfig.default, {
+      mdl: mdl
+    }));
+  }
+}, {
   id: "manage-users",
   title: "Manage Users",
   icon: _Icons.default.users,
-  route: "/admin/user-management",
+  route: "/admin/:name/user-management",
   position: [],
   group: ["authenticated", "admin"],
   children: [],
@@ -3593,19 +3763,13 @@ exports.default = void 0;
 
 var _main = _interopRequireDefault(require("./main.js"));
 
-var _services = _interopRequireDefault(require("./services.js"));
-
 var _authenticated = _interopRequireDefault(require("./authenticated"));
-
-var _vendors = _interopRequireDefault(require("./vendors.js"));
-
-var _splash = _interopRequireDefault(require("./splash.js"));
 
 var _ramda = require("ramda");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Routes = (0, _ramda.flatten)([_main.default, _services.default, _vendors.default, _splash.default, _authenticated.default]);
+var Routes = (0, _ramda.flatten)([_main.default, _authenticated.default]);
 var _default = Routes;
 exports.default = _default;
 });
@@ -3617,8 +3781,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
-var _MainLayout = _interopRequireDefault(require("Layouts/MainLayout"));
 
 var _SplashLayout = _interopRequireDefault(require("Layouts/SplashLayout"));
 
@@ -3635,7 +3797,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Main = [{
   id: "home",
   title: "Home",
-  icon: _Icons.default.home,
+  icon: _Icons.default.logo,
   route: "/home",
   position: ["nav"],
   group: [],
@@ -3651,61 +3813,6 @@ var Main = [{
     }));
   }
 }, {
-  id: "services",
-  title: "Services",
-  icon: _Icons.default.services,
-  route: "/services",
-  position: ["nav", "sidebar"],
-  group: [],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "discounts",
-  title: "Discounts",
-  icon: "discounts",
-  route: "/discounts",
-  position: ["nav", "footer"],
-  group: [],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-    if (!mdl.state.isAuth()) return m.route.SKIP;
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "vendors",
-  title: "Vendors",
-  icon: "vendors",
-  route: "/vendors",
-  position: ["nav", "footer"],
-  group: [],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
   id: "about",
   title: "About",
   icon: "about",
@@ -3717,7 +3824,7 @@ var Main = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_MainLayout.default, {
+    return m(_SplashLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -3735,7 +3842,7 @@ var Main = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_MainLayout.default, {
+    return m(_SplashLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -3753,7 +3860,7 @@ var Main = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_MainLayout.default, {
+    return m(_SplashLayout.default, {
       mdl: mdl
     }, m(_Default.default, {
       mdl: mdl
@@ -3761,628 +3868,6 @@ var Main = [{
   }
 }];
 var _default = Main;
-exports.default = _default;
-});
-
-;require.register("Routes/services.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _MainLayout = _interopRequireDefault(require("Layouts/MainLayout"));
-
-var _Default = _interopRequireDefault(require("../Pages/Default"));
-
-var _AirConditioning = _interopRequireDefault(require("../Pages/Services/AirConditioning.js"));
-
-var _ramda = require("ramda");
-
-var _Utils = require("Utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var AirConditioningRoutes = [{
-  id: "service-maintenance",
-  title: "Air Conditioning - Service & Maintenance",
-  icon: "airconditioning",
-  route: "/services/air-conditioning/#service-maintenance",
-  position: ["sidebar"],
-  group: ["air-conditioning"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    console.log("onmatch service main", isAnchor);
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "help-over-heating",
-  title: "Air Conditioning - Help! OverHeating",
-  icon: "airconditioning",
-  route: "/services/air-conditioning/#help-over-heating",
-  position: ["sidebar"],
-  group: ["air-conditioning"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_AirConditioning.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "ac-video",
-  title: "Air Conditioning - Video",
-  icon: "airconditioning",
-  route: "/services/air-conditioning/#ac-video",
-  position: ["sidebar"],
-  group: ["air-conditioning"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_AirConditioning.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "ac-parts",
-  title: "Air Conditioning - Parts",
-  icon: "airconditioning",
-  route: "/services/air-conditioning/#ac-parts",
-  position: ["sidebar"],
-  group: ["air-conditioning"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_AirConditioning.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "ac-testing-fees",
-  title: "Air Conditioning - Testing Fees",
-  icon: "airconditioning",
-  route: "/services/air-conditioning/#ac-testing-fees",
-  position: ["sidebar"],
-  group: ["air-conditioning"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_AirConditioning.default, {
-      mdl: mdl
-    }));
-  }
-}];
-var SubMenu = [{
-  id: "alignment",
-  title: "Alignment",
-  icon: "alignment",
-  route: "/services/alignment",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "air-conditioning",
-  title: "Air Conditioning",
-  icon: "airconditioning",
-  route: "/services/air-conditioning",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_AirConditioning.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "battery",
-  title: "Battery",
-  icon: "battery",
-  route: "/services/battery",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "belts",
-  title: "Belts",
-  icon: "belts",
-  route: "/services/belts",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "brakes",
-  title: "Brakes",
-  icon: "brakes",
-  route: "/services/brakes",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "check-engine-light",
-  title: "Check Engine Light",
-  icon: "checkenginelight",
-  route: "/services/check-engine-light",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "clutch",
-  title: "Clutch",
-  icon: "clutch",
-  route: "/services/clutch",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "cooling-system",
-  title: "Cooling System",
-  icon: "coolingsystem",
-  route: "/services/cooling-system",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "drive-train",
-  title: "Drivetrain",
-  icon: "drivetrain",
-  route: "/services/drive-train",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "engine-remanufactured",
-  title: "Engine Remanufactured",
-  icon: "engineremanufactured",
-  route: "/services/engine-remanufactured",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "exhuast-emissions",
-  title: "Exhaust & Emissions",
-  icon: "exhuastemissions",
-  route: "/services/exhuast-emissions",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "exterior-repair",
-  title: "Exterior Repair",
-  icon: "exteriorrepair",
-  route: "/services/exterior-repair",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "filters",
-  title: "Filters",
-  icon: "filters",
-  route: "/services/filters",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "flood-repair",
-  title: "Flood Repair",
-  icon: "floodrepair",
-  route: "/services/flood-repair",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "fuel-system",
-  title: "Fuel System",
-  icon: "fuelsystem",
-  route: "/services/fuel-system",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "hoses",
-  title: "Hoses",
-  icon: "hoses",
-  route: "/services/hoses",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "ignition",
-  title: "Ignition",
-  icon: "ignition",
-  route: "/services/ignition",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "inspections",
-  title: "Inspections",
-  icon: "inspections",
-  route: "/services/inspections",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "interior-repairs",
-  title: "Interior Repairs",
-  icon: "interiorrepairs",
-  route: "/services/interior-repairs",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "maintenance",
-  title: "Maintenance",
-  icon: "maintenance",
-  route: "/services/maintenance",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "oil-change",
-  title: "Oil Change",
-  icon: "oilchange",
-  route: "/services/oil-change",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "timing-belt",
-  title: "Timing Belt",
-  icon: "timingbelt",
-  route: "/services/timing-belt",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "tire-management",
-  title: "Tire Management",
-  icon: "tiremanagement",
-  route: "/services/tire-management",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "starting-charging",
-  title: "Starting Charging",
-  icon: "startingcharging",
-  route: "/services/starting-charging",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "steering",
-  title: "Steering",
-  icon: "steering",
-  route: "/services/steering",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "suspension",
-  title: "Suspension",
-  icon: "suspension",
-  route: "/services/suspension",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "transmission-remanufactured",
-  title: "Transmission Remanufactured",
-  icon: "transmissionremanufactured",
-  route: "/services/transmission-remanufactured",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "window-repairs",
-  title: "Window Repairs",
-  icon: "windowrepairs",
-  route: "/services/window-repairs",
-  position: ["sidebar"],
-  group: ["services"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}];
-var Services = (0, _ramda.flatten)([SubMenu, AirConditioningRoutes]);
-var _default = Services;
 exports.default = _default;
 });
 
@@ -4463,229 +3948,6 @@ var SubMenu = [{
 }];
 var Splash = (0, _ramda.flatten)([SubMenu]);
 var _default = Splash;
-exports.default = _default;
-});
-
-;require.register("Routes/vendors.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _MainLayout = _interopRequireDefault(require("Layouts/MainLayout"));
-
-var _Default = _interopRequireDefault(require("../Pages/Default"));
-
-var _ramda = require("ramda");
-
-var _Utils = require("Utils");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var BGProducts = [{
-  id: "bg-products-fuel-Air-induction-service",
-  title: "BG Products Fuel/Air Induction Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-fuel-Air-induction-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-lubrication-fuel-service",
-  title: "BG Products Lubrication + Fuel Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-lubrication-fuel-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-cooling-system-service",
-  title: "BG Products Cooling System Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-cooling-system-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-transmission-service",
-  title: "BG Products Transmission Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-transmission-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-drive-line",
-  title: "BG Products Drive Line",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-drive-line",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-break-service",
-  title: "BG Products Break Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-break-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-climate-control-service",
-  title: "BG Products Climate Control Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-climate-control-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-battery-service",
-  title: "BG Products Battery Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-battery-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-power-steering-service",
-  title: "BG Products Power Steering Service",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-power-steering-service",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}, {
-  id: "bg-products-ethanol-fuel-system-defender",
-  title: "BG Products Ethanol Fuel System Defender",
-  icon: "bgproducts",
-  route: "/vendors/bg-products/#bg-products-ethanol-fuel-system-defender",
-  position: ["sidebar"],
-  group: ["bg-products"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}];
-var SubMenu = [{
-  id: "bg-products",
-  title: "BG Products",
-  icon: "bgproducts",
-  route: "/vendors/bg-products",
-  position: ["sidebar"],
-  group: ["vendors"],
-  children: [],
-  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
-    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
-  },
-  component: function component(mdl) {
-    return m(_MainLayout.default, {
-      mdl: mdl
-    }, m(_Default.default, {
-      mdl: mdl
-    }));
-  }
-}];
-var Vendors = (0, _ramda.flatten)([SubMenu, BGProducts]);
-var _default = Vendors;
 exports.default = _default;
 });
 
@@ -4810,15 +4072,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterTask = exports._paginate = exports._direction = exports._sort = exports._search = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
 
-var _mithril = _interopRequireDefault(require("mithril"));
-
 var _ramda = require("ramda");
 
 var _data = _interopRequireDefault(require("data.task"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var makeRoute = (0, _ramda.compose)((0, _ramda.join)('-'), (0, _ramda.split)(' '), (0, _ramda.trim)(), (0, _ramda.toLower)());
+var makeRoute = (0, _ramda.compose)((0, _ramda.join)("-"), (0, _ramda.split)(" "), (0, _ramda.trim)(), (0, _ramda.toLower)());
 exports.makeRoute = makeRoute;
 
 var log = function log(m) {
@@ -4851,14 +4111,14 @@ var infiniteScroll = function infiniteScroll(mdl) {
 exports.infiniteScroll = infiniteScroll;
 
 var addTerms = function addTerms(item) {
-  var terms = (0, _ramda.compose)((0, _ramda.join)(' '), _ramda.values, (0, _ramda.props)(['uuid', 'id', 'name']))(item);
-  return (0, _ramda.assoc)('_terms', terms, item);
+  var terms = (0, _ramda.compose)((0, _ramda.join)(" "), _ramda.values, (0, _ramda.props)(["uuid", "id", "name"]))(item);
+  return (0, _ramda.assoc)("_terms", terms, item);
 };
 
 exports.addTerms = addTerms;
 
 var byTerms = function byTerms(query) {
-  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(query, 'i')), (0, _ramda.prop)('name'));
+  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(query, "i")), (0, _ramda.prop)("name"));
 };
 
 var _search = function _search(query) {
@@ -4874,7 +4134,7 @@ var _sort = function _sort(p) {
 exports._sort = _sort;
 
 var _direction = function _direction(dir) {
-  return dir == 'asc' ? _ramda.identity : _ramda.reverse;
+  return dir == "asc" ? _ramda.identity : _ramda.reverse;
 };
 
 exports._direction = _direction;
@@ -4926,8 +4186,8 @@ var debounce = function debounce(wait, now) {
 
 exports.debounce = debounce;
 
-var getRoute = function getRoute(int) {
-  return _mithril.default.route.get().split('/')[int];
+var getRoute = function getRoute() {
+  return (0, _ramda.last)(m.route.get().split("/"));
 };
 
 exports.getRoute = getRoute;
@@ -4944,7 +4204,7 @@ var scrollToAnchor = function scrollToAnchor(anchor) {
   window.scroll({
     top: target + scrollTop - 10,
     left: 0,
-    behavior: 'smooth'
+    behavior: "smooth"
   });
 };
 
@@ -5410,14 +4670,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var root = document.body;
 var winW = window.innerWidth;
-console.log("WTF", module.hot);
 
 if (module.hot) {
   module.hot.accept();
 }
 
 if ('development' !== "production") {
-  console.log("Looks like we are in development mode!", process);
+  console.log("Looks like we are in development mode!");
 }
 
 var getProfile = function getProfile(w) {

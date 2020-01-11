@@ -1,21 +1,24 @@
-import m from "mithril"
-
-const goToTop = (mdl) =>
-  m(
-    "button.btn.btn-primary",
-    {
-      onclick: () => {
-        window.scroll({
-          top: 0,
-          left: 0,
-          behavior: "smooth"
-        })
-        mdl.toggleNav(mdl)
-        m.route.set(mdl.state.route.route)
-      }
-    },
-    "Top of Page"
-  )
+const GoToTop = {
+  view: ({ attrs: { mdl } }) =>
+    m(
+      "li.menu-item",
+      m(
+        "button.btn.btn-primary",
+        {
+          onclick: () => {
+            window.scroll({
+              top: 0,
+              left: 0,
+              behavior: "smooth"
+            })
+            mdl.toggleNav(mdl)
+            m.route.set(mdl.state.route.route)
+          }
+        },
+        "Top of Page"
+      )
+    )
+}
 
 const Tab = ({ attrs: { key } }) => {
   return {
@@ -49,7 +52,7 @@ const NavMenu = ({ attrs: { mdl } }) => {
       let routes = mdl.Routes.filter((r) => r.group.includes(route))
       return routes.length
         ? m("ul.menu", { id: "menu" }, [
-            mdl.state.scrollPos() > 0 && m("li.menu-item", goToTop(mdl)),
+            mdl.state.scrollPos() > 0 && m(GoToTop, { mdl }),
             routes.map((tab, idx) =>
               m(Tab, {
                 key: idx,

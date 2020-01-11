@@ -55,6 +55,7 @@ const onLoginSuccess = (mdl) => (user) => {
   mdl.user = user
   mdl.state.isAuth(true)
   mdl.toggleAuthModal(mdl)
+  m.route.set(`/admin/${mdl.user.name}/dashboard`)
   resetState()
 }
 

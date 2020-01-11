@@ -1,4 +1,4 @@
-import Header from "Components/Headers/Header"
+import MainHeader from "Components/Headers/MainHeader"
 import Footer from "Components/Footer"
 import Body from "Components/Body"
 import LeftAside from "Components/LeftAside"
@@ -15,7 +15,7 @@ const MainLayout = ({ attrs: { mdl } }) => {
           id: "mainLayout"
         },
         [
-          m(Header, { mdl }),
+          m(MainHeader, { mdl }),
           showMenu() && m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(RightAside, { mdl }),

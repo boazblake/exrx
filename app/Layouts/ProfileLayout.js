@@ -1,4 +1,4 @@
-import Header from "Components/Headers/Header"
+import ProfileHeader from "Components/Headers/ProfileHeader"
 import Footer from "Components/Footer"
 import LeftAside from "Components/LeftAside"
 import Body from "Components/Body"
@@ -12,7 +12,7 @@ const ProfileLayout = ({ attrs: { mdl } }) => {
           id: "profileLayout"
         },
         [
-          m(Header, { mdl }),
+          m(ProfileHeader, { mdl }),
           m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(Footer, { mdl })
