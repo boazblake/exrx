@@ -802,7 +802,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var LeftAside = function LeftAside(_ref) {
   var mdl = _ref.attrs.mdl;
   var routes = mdl.Routes.filter(function (r) {
-    return r.position.includes("sidebar");
+    return r.position.includes("left-aside");
   });
   return {
     view: function view(_ref2) {
@@ -915,12 +915,9 @@ var NavMenu = function NavMenu(_ref4) {
   return {
     // onupdate: () => console.log('update', mdl.state.scrollPos()),
     view: function view(_ref5) {
-      var mdl = _ref5.attrs.mdl;
-      var route = m.route.get().split("/")[2]; // console.log("nav view", mdl.state.scrollPos())
-
-      var routes = mdl.Routes.filter(function (r) {
-        return r.group.includes(route);
-      });
+      var _ref5$attrs = _ref5.attrs,
+          mdl = _ref5$attrs.mdl,
+          routes = _ref5$attrs.routes;
       return routes.length ? m("ul.menu", {
         id: "menu"
       }, [mdl.state.scrollPos() > 0 && m(GoToTop, {
@@ -975,13 +972,6 @@ var Tab = function Tab(_ref) {
         href: tab.group.includes("authenticated") ? "admin/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route) // onmouseenter: () => {
         //   tabSelected(tab.id)
         // },
-        // onclick: (e) => {
-        //   e.preventDefault()
-        //   console.log(tab.group)
-        //   tab.group.includes("authenticated")
-        //     ? m.route.set(`admin/${mdl.user.name}/${tab.id}`)
-        //     : m.route.set(tab.route)
-        // }
 
       }, ["Dashboard", "Home"].includes(tab.title) ? m(".img", {
         style: {
@@ -1111,14 +1101,20 @@ var SettingsMenu = function SettingsMenu() {
       var state = _ref4.state,
           mdl = _ref4.attrs.mdl;
       var routes = mdl.Routes.filter(function (route) {
-        return route.group.includes("authenticated") && route.group.includes("admin") && mdl.user.isAdmin || route.group.includes("authenticated") && !route.group.includes("admin");
+        return route.group.includes("settings");
       });
       return [m("li.dropdown dropdown-right", [m("a.btn btn-primary dropdown-toggle", {
         onclick: function onclick() {
           return state.showMenu(!state.showMenu());
         },
         tabindex: "0"
-      }, ["User Settings", m("i.icon icon-arrow-down")]), state.showMenu() && m("ul.menu", [m(".panel", [m(".panel-header", m(".panel-title", "Comments")), m(".panel-nav"), m(".panel-body"), m(".panel-footer")]), m(Logout, {
+      }, ["User Settings", m("i.icon icon-arrow-down")]), state.showMenu() && m("ul.menu", [// m(".panel", [
+      //   m(".panel-header", m(".panel-title", "Comments")),
+      //   m(".panel-nav"),
+      //   m(".panel-body"),
+      //   m(".panel-footer")
+      // ]),
+      m(Logout, {
         mdl: mdl
       }), routes.map(function (tab, idx) {
         return m(Tab, {
@@ -3288,28 +3284,28 @@ var ManageUsers = function ManageUsers() {
     var mdl = _ref.attrs.mdl;
 
     var onError = function onError(e) {
-      console.log('ERROR', e);
+      console.log("ERROR", e);
     };
 
     var onSuccess = function onSuccess(s) {
-      console.log('SUCCESSS', s);
+      console.log("SUCCESSS", s);
       state.users = s;
     };
 
-    return mdl.http.getTask(mdl)('https://api.backendless.com/A0DC91A6-8088-D365-FF60-0DE1BB0C8600/7C923A78-BBF7-7D49-FF41-80A623EBE100/data/Users').fork(onError, onSuccess);
+    return mdl.http.getTask(mdl)("https://api.backendless.com/A0DC91A6-8088-D365-FF60-0DE1BB0C8600/7C923A78-BBF7-7D49-FF41-80A623EBE100/data/Users?pageSize=100").fork(onError, onSuccess);
   };
 
   return {
     oninit: loadUsers,
     view: function view(_ref2) {
       var mdl = _ref2.attrs.mdl;
-      return (0, _mithril.default)('.manageusers', {
+      return (0, _mithril.default)(".manageusers", {
         id: mdl.state.route.id
-      }, [(0, _mithril.default)('h1.title', mdl.state.route.title), state.users && state.users.map(function (u) {
-        return (0, _mithril.default)('.menu', (0, _mithril.default)('.menu-item', [(0, _mithril.default)('p', u.name), (0, _mithril.default)('p', u.email), (0, _mithril.default)('.form-group', (0, _mithril.default)('label.form-checkbox', [(0, _mithril.default)('input', {
-          type: 'checkbox',
+      }, [(0, _mithril.default)("h1.title", mdl.state.route.title), state.users && state.users.map(function (u) {
+        return (0, _mithril.default)(".menu", (0, _mithril.default)(".menu-item", [(0, _mithril.default)("p", u.name), (0, _mithril.default)("p", u.email), (0, _mithril.default)(".form-group", (0, _mithril.default)("label.form-checkbox", [(0, _mithril.default)("input", {
+          type: "checkbox",
           value: u.isAdmin
-        }), (0, _mithril.default)('i.form-icon'), 'User is Admin']))]));
+        }), (0, _mithril.default)("i.form-icon"), "User is Admin"]))]));
       })]);
     }
   };
@@ -3686,7 +3682,7 @@ var authenticated = [{
   icon: _Icons.default.home,
   route: "/admin/:name/profile",
   position: [],
-  group: ["authenticated", "all", "client"],
+  group: ["authenticated", "admin", "settings"],
   children: [],
   onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
     console.log("profile page login on match", mdl, args, path, fullroute, isAnchor, !mdl.state.isAuth());
@@ -3704,7 +3700,7 @@ var authenticated = [{
   title: "Configure Calculators",
   icon: _Icons.default.calcs,
   route: "/admin/:name/calculator-config",
-  position: ["auth-nav"],
+  position: ["left-aside"],
   group: ["authenticated", "admin"],
   children: [],
   onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
@@ -3734,7 +3730,7 @@ var authenticated = [{
   icon: _Icons.default.users,
   route: "/admin/:name/user-management",
   position: [],
-  group: ["authenticated", "admin"],
+  group: ["authenticated", "admin", "settings"],
   children: [],
   onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
     console.log("manage users on match", mdl, args, path, fullroute, isAnchor, mdl.state.isAuth(), mdl.user.isAdmin);

@@ -46,10 +46,7 @@ const Tab = ({ attrs: { key } }) => {
 const NavMenu = ({ attrs: { mdl } }) => {
   return {
     // onupdate: () => console.log('update', mdl.state.scrollPos()),
-    view: ({ attrs: { mdl } }) => {
-      let route = m.route.get().split("/")[2]
-      // console.log("nav view", mdl.state.scrollPos())
-      let routes = mdl.Routes.filter((r) => r.group.includes(route))
+    view: ({ attrs: { mdl, routes } }) => {
       return routes.length
         ? m("ul.menu", { id: "menu" }, [
             mdl.state.scrollPos() > 0 && m(GoToTop, { mdl }),

@@ -53,14 +53,10 @@ const SettingsMenu = () => {
   return {
     showMenu: Stream(false),
     view: ({ state, attrs: { mdl } }) => {
-      let routes = mdl.Routes.filter(
-        (route) =>
-          (route.group.includes("authenticated") &&
-            route.group.includes("admin") &&
-            mdl.user.isAdmin) ||
-          (route.group.includes("authenticated") &&
-            !route.group.includes("admin"))
+      let routes = mdl.Routes.filter((route) =>
+        route.group.includes("settings")
       )
+
       return [
         m("li.dropdown dropdown-right", [
           m(
@@ -73,12 +69,12 @@ const SettingsMenu = () => {
           ),
           state.showMenu() &&
             m("ul.menu", [
-              m(".panel", [
-                m(".panel-header", m(".panel-title", "Comments")),
-                m(".panel-nav"),
-                m(".panel-body"),
-                m(".panel-footer")
-              ]),
+              // m(".panel", [
+              //   m(".panel-header", m(".panel-title", "Comments")),
+              //   m(".panel-nav"),
+              //   m(".panel-body"),
+              //   m(".panel-footer")
+              // ]),
               m(Logout, { mdl }),
               routes.map((tab, idx) =>
                 m(Tab, {

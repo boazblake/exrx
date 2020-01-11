@@ -18,13 +18,6 @@ const Tab = ({ attrs: { key } }) => {
           // onmouseenter: () => {
           //   tabSelected(tab.id)
           // },
-          // onclick: (e) => {
-          //   e.preventDefault()
-          //   console.log(tab.group)
-          //   tab.group.includes("authenticated")
-          //     ? m.route.set(`admin/${mdl.user.name}/${tab.id}`)
-          //     : m.route.set(tab.route)
-          // }
         },
         ["Dashboard", "Home"].includes(tab.title)
           ? m(".img", { style: { width: "50px" } }, Icons.logo)

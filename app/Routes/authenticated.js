@@ -26,7 +26,7 @@ const authenticated = [
     icon: Icons.home,
     route: "/admin/:name/profile",
     position: [],
-    group: ["authenticated", "all", "client"],
+    group: ["authenticated", "admin", "settings"],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       console.log(
@@ -47,7 +47,7 @@ const authenticated = [
     title: "Configure Calculators",
     icon: Icons.calcs,
     route: "/admin/:name/calculator-config",
-    position: ["auth-nav"],
+    position: ["left-aside"],
     group: ["authenticated", "admin"],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
@@ -72,7 +72,7 @@ const authenticated = [
     icon: Icons.users,
     route: "/admin/:name/user-management",
     position: [],
-    group: ["authenticated", "admin"],
+    group: ["authenticated", "admin", "settings"],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       console.log(
