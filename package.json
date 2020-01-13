@@ -32,7 +32,8 @@
     "fresh": "pnpm run clean && pnpm install && pnpm run start",
     "debug": "export LOGGY_STACKS=1 && pnpm run start",
     "start": "brunch watch --server",
-    "build": "brunch build --production"
+    "build:pre": "rm -rf docs",
+    "build": "pnpm run build:pre && brunch build --production"
   },
   "description": "",
   "author": "boazblake <boazblake@gmail.com>"

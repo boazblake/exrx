@@ -4,6 +4,8 @@ import LeftAside from "Components/LeftAside"
 import Body from "Components/Body"
 
 const ProfileLayout = ({ attrs: { mdl } }) => {
+  const showMenu = () => mdl.state.showNav() || mdl.state.profile == "desktop"
+
   return {
     view: ({ children }) =>
       m(
@@ -13,7 +15,7 @@ const ProfileLayout = ({ attrs: { mdl } }) => {
         },
         [
           m(ProfileHeader, { mdl }),
-          m(LeftAside, { mdl }),
+          showMenu() && m(LeftAside, { mdl }),
           m(Body, { mdl }, [children]),
           m(Footer, { mdl })
         ]

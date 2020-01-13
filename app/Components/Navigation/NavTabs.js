@@ -5,7 +5,7 @@ import Icons from "Components/Icons"
 
 const Tab = ({ attrs: { key } }) => {
   return {
-    view: ({ attrs: { mdl, tab, active, tabSelected } }) =>
+    view: ({ attrs: { mdl, tab, active } }) =>
       m(
         m.route.Link,
         {
@@ -14,10 +14,10 @@ const Tab = ({ attrs: { key } }) => {
           id: `${tab.id}`,
           href: tab.group.includes("authenticated")
             ? `admin/${mdl.user.name}/${tab.id}`
-            : `${tab.route}`
-          // onmouseenter: () => {
-          //   tabSelected(tab.id)
-          // },
+            : `${tab.route}`,
+          onclick: (e) => {
+            mdl.state.profile != "desktop" && mdl.state.toggleSideBar(mdl)
+          }
         },
         ["Dashboard", "Home"].includes(tab.title)
           ? m(".img", { style: { width: "50px" } }, Icons.logo)
@@ -28,7 +28,7 @@ const Tab = ({ attrs: { key } }) => {
 
 const NavTabs = () => {
   return {
-    view: ({ attrs: { mdl, tabSelected } }) => {
+    view: ({ attrs: { mdl } }) => {
       let tabs = mdl.state.isAuth()
         ? mdl.Routes.filter((r) => r.position.includes("auth-nav"))
         : mdl.Routes.filter((r) => r.position.includes("nav"))
@@ -54,7 +54,6 @@ const NavTabs = () => {
                   key: idx,
                   active: isTabActive(tab),
                   tab,
-                  tabSelected,
                   mdl
                 })
               )

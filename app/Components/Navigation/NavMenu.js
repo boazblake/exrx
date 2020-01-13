@@ -1,4 +1,5 @@
 const Tab = ({ attrs: { key } }) => {
+  const getUser = (user) => (user ? user.name : "")
   return {
     view: ({ attrs: { tab, active, mdl } }) =>
       m(
@@ -9,7 +10,7 @@ const Tab = ({ attrs: { key } }) => {
             key,
             id: `${tab.id}-key`,
             href: tab.group.includes("authenticated")
-              ? `admin/${mdl.user.name}/${tab.id}`
+              ? `admin/${getUser(mdl.user)}/${tab.id}`
               : `${tab.route}`
           },
           tab.title

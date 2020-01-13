@@ -1,28 +1,28 @@
-import m from 'mithril'
+import m from "mithril"
 
-export const IsLoading = m('.holder', [
-  m('.preloader', [
-    m('div'),
-    m('div'),
-    m('div'),
-    m('div'),
-    m('div'),
-    m('div'),
-    m('div'),
-  ]),
+export const IsLoading = m(".holder", [
+  m(".preloader", [
+    m("div"),
+    m("div"),
+    m("div"),
+    m("div"),
+    m("div"),
+    m("div"),
+    m("div")
+  ])
 ])
 
 export const animateComponentEntrance = (idx) => ({ dom }) => {
   dom.style.opacity = 0
   return setTimeout(() => {
-    dom.classList.toggle('stretchRight')
+    dom.classList.toggle("stretchRight")
     dom.style.opacity = 1
   }, idx * 100 + 20)
 }
 
 export const animateSidebarEntrance = ({ dom }) => {
   dom.style.opacity = 0
-  dom.classList.toggle('slideRight')
+  dom.classList.toggle("slideRight")
   dom.style.opacity = 1
 }
 
@@ -32,7 +32,7 @@ export const animateChildrenEntrance = ({ dom }) => {
   return children.map((child, idx) => {
     child.style.opacity = 0
     setTimeout(() => {
-      child.classList.toggle('slideRight')
+      child.classList.toggle("slideRight")
       child.style.opacity = 1
     }, (idx + 1) * 10)
   })
@@ -41,14 +41,14 @@ export const animateChildrenEntrance = ({ dom }) => {
 export const animateChildrenLimitsEntrance = (idx) => ({ dom }) => {
   dom.style.opacity = 0
   setTimeout(() => {
-    dom.classList.toggle('slideDown')
+    dom.classList.toggle("slideDown")
     dom.style.opacity = 1
   }, (idx + 1) * 200)
 }
 
 export const animate = (dir) => ({ dom }) => {
   dom.style.opacity = 0
-  setTimeout(() => {
+  return setTimeout(() => {
     dom.classList.toggle(dir)
     dom.style.opacity = 1
   }, 200)
@@ -56,18 +56,18 @@ export const animate = (dir) => ({ dom }) => {
 
 export const slideModalOut = ({ dom }) => {
   return new Promise(() => {
-    dom.classList.remove('slideRight')
+    dom.classList.remove("slideRight")
     return setTimeout(() => {
-      dom.classList.add('reverseAnimation', 'slideRight')
+      dom.classList.add("reverseAnimation", "slideRight")
     }, 200)
   })
 }
 
 export const animateChildrenLimitsExit = ({ dom }) =>
   new Promise(() => {
-    [...dom.children].reverse().map((child, idx) => {
+    ;[...dom.children].reverse().map((child, idx) => {
       return setTimeout(() => {
-        child.style.display = 'none'
+        child.style.display = "none"
       }, idx * 100)
     })
   })
