@@ -3,7 +3,7 @@ import SocialMedia from "./SocialMedia.js"
 const GoToTop = {
   view: ({ attrs: { mdl } }) =>
     m(
-      "button.btn.btn-primary",
+      "button.btn btn-action btn-secondary btn-lg s-circle icon icon-arrow-up",
       {
         onclick: () => {
           window.scroll({

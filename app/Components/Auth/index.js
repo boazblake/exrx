@@ -84,13 +84,13 @@ const validateForm = (mdl) => (data) => {
 }
 
 const loginUser = (mdl) => ({ email, password }) =>
-  mdl.http.backEnd.post(mdl)("users/login")({
+  mdl.http.backEnd.postTask(mdl)("users/login")({
     login: email,
     password: password
   })
 
 const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
-  mdl.http.backEnd.post(mdl)("users/register")({
+  mdl.http.backEnd.postTask(mdl)("users/register")({
     name,
     email,
     password,

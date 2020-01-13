@@ -180,14 +180,6 @@ a {
   z-index: 3;
 }
 
-.left-aside {
-  grid-area: left-aside;
-  width: 100%;
-  position: fixed;
-  top: 30px;
-  z-index: 3;
-}
-
 #menu {
   position: -webkit-sticky;
   position: sticky;
@@ -358,6 +350,7 @@ progress {
     position: inherit;
     top: 0;
     z-index: inherit;
+    border-right: 1px $primary-color;
   }
 
   #right-aside {

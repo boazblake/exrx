@@ -25,8 +25,8 @@ const authenticated = [
     title: "Profile Page",
     icon: Icons.home,
     route: "/admin/:name/profile",
-    position: [],
-    group: ["authenticated", "admin", "settings"],
+    position: ["settings-nav"],
+    group: ["authenticated"],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
       console.log(
@@ -71,20 +71,20 @@ const authenticated = [
     title: "Manage Users",
     icon: Icons.users,
     route: "/admin/:name/user-management",
-    position: [],
-    group: ["authenticated", "admin", "settings"],
+    position: ["settings-nav"],
+    group: ["authenticated", "admin"],
     children: [],
     onmatch: (mdl, args, path, fullroute, isAnchor) => {
-      console.log(
-        "manage users on match",
-        mdl,
-        args,
-        path,
-        fullroute,
-        isAnchor,
-        mdl.state.isAuth(),
-        mdl.user.isAdmin
-      )
+      // console.log(
+      //   "manage users on match",
+      //   mdl,
+      //   args,
+      //   path,
+      //   fullroute,
+      //   isAnchor,
+      //   mdl.state.isAuth(),
+      //   mdl.user.isAdmin
+      // )
       !mdl.user.isAdmin && m.route.set(m.route.get())
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },

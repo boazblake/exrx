@@ -1,4 +1,5 @@
 import { makeRoute } from "Utils"
+import { propEq } from "ramda"
 
 const Logout = () => {
   const onError = (mdl) => (error) => {
@@ -14,7 +15,7 @@ const Logout = () => {
 
   const logout = (mdl) =>
     mdl.http.backEnd
-      .get(mdl)("users/logout")
+      .getTask(mdl)("users/logout")
       .fork(onError(mdl), onSuccess(mdl))
 
   return {
@@ -49,13 +50,20 @@ const Tab = ({ attrs: { key } }) => {
   }
 }
 
+const toSettingsMenuRoutes = (mdl) =>
+  mdl.user.isAdmin
+    ? mdl.Routes.filter((route) => route.position.includes("settings-nav"))
+    : mdl.Routes.filter(
+        (route) =>
+          route.position.includes("settings-nav") &&
+          !route.group.includes("admin")
+      )
+
 const SettingsMenu = () => {
   return {
     showMenu: Stream(false),
     view: ({ state, attrs: { mdl } }) => {
-      let routes = mdl.Routes.filter((route) =>
-        route.group.includes("settings")
-      )
+      let routes = toSettingsMenuRoutes(mdl)
 
       return [
         m("li.dropdown dropdown-right", [

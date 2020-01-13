@@ -1,6 +1,6 @@
-import Task from 'data.task'
-import { BackEnd } from './secrets.js'
-import { model } from '../Model.js'
+import Task from "data.task"
+import { BackEnd } from "./secrets.js"
+import { model } from "../Model.js"
 
 function onProgress(e) {
   if (e.lengthComputable) {
@@ -32,7 +32,7 @@ const xhrProgress = {
     xhr.onload = onLoad
     xhr.onloadstart = onLoadStart
     xhr.onloadend = onLoadEnd
-  },
+  }
 }
 
 // const makeQuery = (string) => JSON.parse(JSON.stringify(string))
@@ -87,12 +87,12 @@ const HttpTask = (_headers) => (method) => (mdl) => (url) => (body) => {
         method,
         url,
         headers: {
-          'content-type': 'application/json',
-          ..._headers,
+          "content-type": "application/json",
+          ..._headers
         },
         body,
         withCredentials: false,
-        ...xhrProgress,
+        ...xhrProgress
       })
       .then(parseHttpSuccess(mdl)(res), parseHttpError(mdl)(rej))
   )
@@ -164,26 +164,28 @@ const lookupLocationTask = (query) => {
   return new Task((rej, res) =>
     m
       .request({
-        method: 'GET',
-        url: `https://nominatim.openstreetmap.org/search?q=${query}&format=json`,
+        method: "GET",
+        url: `https://nominatim.openstreetmap.org/search?q=${query}&format=json`
       })
       .then(res, rej)
   )
 }
 
-const getTask = (mdl) => (url) => HttpTask({})('GET')(mdl)(url)(null)
+const getTask = (mdl) => (url) => HttpTask({})("GET")(mdl)(url)(null)
 
-const nhtsaUrl = 'http://localhost:3001/nhtsa/api/'
+const nhtsaUrl = "http://localhost:3001/nhtsa/api/"
 const nhtsa = {
-  get: (mdl) => (url) => getTask(mdl)(nhtsaUrl + '/' + url),
+  get: (mdl) => (url) => getTask(mdl)(nhtsaUrl + "/" + url)
 }
 
 const backEndUrl = `${BackEnd.baseUrl}/${BackEnd.APP_ID}/${BackEnd.API_KEY}/`
 const backEnd = {
-  get: (mdl) => (url) =>
-    HttpTask(BackEnd.headers)('GET')(mdl)(backEndUrl + url)(null),
-  post: (mdl) => (url) => (dto) =>
-    HttpTask(BackEnd.headers)('POST')(mdl)(backEndUrl + url)(dto),
+  getTask: (mdl) => (url) =>
+    HttpTask(BackEnd.headers())("GET")(mdl)(backEndUrl + url)(null),
+  postTask: (mdl) => (url) => (dto) =>
+    HttpTask(BackEnd.headers())("POST")(mdl)(backEndUrl + url)(dto),
+  putTask: (mdl) => (url) => (dto) =>
+    HttpTask(BackEnd.headers())("PUT")(mdl)(backEndUrl + url)(dto)
 }
 
 const http = {
@@ -195,7 +197,7 @@ const http = {
   getTask,
   // putTask,
   // deleteTask,
-  lookupLocationTask,
+  lookupLocationTask
 }
 
 export default http

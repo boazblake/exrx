@@ -1,5 +1,3 @@
-import m from "mithril"
-
 const ManageUsers = () => {
   const state = {}
 
@@ -13,11 +11,27 @@ const ManageUsers = () => {
       state.users = s
     }
 
-    return mdl.http
-      .getTask(mdl)(
-        "https://api.backendless.com/A0DC91A6-8088-D365-FF60-0DE1BB0C8600/7C923A78-BBF7-7D49-FF41-80A623EBE100/data/Users?pageSize=100"
-      )
+    return mdl.http.backEnd
+      .getTask(mdl)("data/users?pageSize=100")
       .fork(onError, onSuccess)
+  }
+
+  const updateAdminStatus = (mdl, user) => (e) => {
+    const onError = (user) => (e) => {
+      user.isAdmin = !user.isAdmin
+      console.log("ERROR", e)
+    }
+
+    const onSuccess = (user) => (s) => {
+      console.log("SUCCESSS", user)
+    }
+
+    console.log({ mdl, user })
+    mdl.http.backEnd
+      .putTask(mdl)(`data/Users/${user.objectId}`)({
+        isAdmin: (user.isAdmin = !user.isAdmin)
+      })
+      .fork(onError(user), onSuccess(user))
   }
 
   return {
@@ -35,8 +49,13 @@ const ManageUsers = () => {
                 m("p", u.email),
                 m(
                   ".form-group",
-                  m("label.form-checkbox", [
-                    m("input", { type: "checkbox", value: u.isAdmin }),
+                  m("label.form-switch", [
+                    m("input[type='checkbox']", {
+                      checked: u.isAdmin,
+                      onchange: updateAdminStatus(mdl, u),
+                      isDisabled: false,
+                      class: ""
+                    }),
                     m("i.form-icon"),
                     "User is Admin"
                   ])
