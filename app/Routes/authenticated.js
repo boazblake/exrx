@@ -1,8 +1,9 @@
 import ProfileLayout from "Layouts/ProfileLayout"
-import Dashboard from "Pages/Dashboard"
+import Dashboard from "Pages/Admin/Dashboard"
 import Default from "Pages/Default"
-import ManageUsers from "Pages/Admin/ManageUsers.js"
-import CalculatorConfig from "Pages/Admin/CalculatorConfig.js"
+import ManageUsers from "Pages/Admin/ManageUsers"
+import ManageClients from "Pages/Admin/ManageClients"
+import BatteryTestConfig from "Pages/Admin/BatteryConfig"
 import { scrollToAnchor } from "Utils"
 import Icons from "Components/Icons"
 
@@ -43,10 +44,10 @@ const authenticated = [
     component: (mdl) => m(ProfileLayout, { mdl }, m(Default, { mdl }))
   },
   {
-    id: "calculator-config",
-    title: "Configure Calculators",
+    id: "battery-config",
+    title: "Configure Batteries",
     icon: Icons.calcs,
-    route: "/EXRX/:name/calculator-config",
+    route: "/EXRX/:name/battery-config",
     position: ["left-aside"],
     group: ["authenticated", "admin"],
     children: [],
@@ -64,13 +65,36 @@ const authenticated = [
       // !mdl.user.isAdmin && m.route.set(m.route.get())
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(ProfileLayout, { mdl }, m(CalculatorConfig, { mdl }))
+    component: (mdl) => m(ProfileLayout, { mdl }, m(BatteryTestConfig, { mdl }))
   },
   {
     id: "manage-users",
     title: "Manage Users",
     icon: Icons.users,
-    route: "/EXRX/:name/user-management",
+    route: "/EXRX/:name/manage-users",
+    position: ["left-aside"],
+    group: ["authenticated", "admin"],
+    children: [],
+    onmatch: (mdl, args, path, fullroute, isAnchor) => {
+      // console.log(
+      //   "manage users on match",
+      //   mdl,
+      //   args,
+      //   path,
+      //   fullroute,
+      //   isAnchor,
+      //   mdl.state.isAuth(),
+      //   mdl.user.isAdmin
+      // )
+      isAnchor && scrollToAnchor(mdl.state.anchor)
+    },
+    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageUsers, { mdl }))
+  },
+  {
+    id: "manage-clients",
+    title: "Manage Clients",
+    icon: Icons.users,
+    route: "/EXRX/:name/client-management",
     position: ["settings-nav"],
     group: ["authenticated", "admin"],
     children: [],
@@ -88,7 +112,7 @@ const authenticated = [
       !mdl.user.isAdmin && m.route.set(m.route.get())
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageUsers, { mdl }))
+    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageClients, { mdl }))
   }
 ]
 

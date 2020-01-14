@@ -1,5 +1,5 @@
 import Task from "data.task"
-import { BackEnd } from "./secrets.js"
+import { BackEnd, GraphQl } from "./secrets.js"
 import { model } from "../Model.js"
 
 function onProgress(e) {
@@ -35,12 +35,12 @@ const xhrProgress = {
   }
 }
 
-// const makeQuery = (string) => JSON.parse(JSON.stringify(string))
+const makeQuery = (string) => JSON.parse(JSON.stringify(string))
 
-// const parseQLResponse = (model) => ({ data, errors }) => {
-//   model.state.isLoading(false)
-//   return errors ? Promise.reject(errors) : Promise.resolve(data)
-// }
+const parseQLResponse = (model) => ({ data, errors }) => {
+  model.state.isLoading(false)
+  return errors ? Promise.reject(errors) : Promise.resolve(data)
+}
 
 export const parseHttpError = (model) => (rej) => (Error) => {
   model.state.isLoading(false)
@@ -57,27 +57,21 @@ export const parseHttpSuccess = (model) => (res) => (data) => {
 //     ? window.sessionStorage.getItem('user-token')
 //     : ''
 
-// const postQl = (model) => (query) => {
-//   model.state.isLoading(true)
-//   return new Task((rej, res) =>
-//     m
-//       .request({
-//         method: 'POST',
-//         // url: graphQl,
-//         withCredentials: false,
-//         ...xhrProgress,
-//         data: makeQuery(query),
-//         headers: {
-//           Authorization: `Bearer ${model.state.token}`,
-//           'cache-control': 'no-cache',
-//           'x-apikey': '64fecd3f0cbb54d46d7f7260b86b8ad45d31b',
-//           'content-type': 'application/json',
-//         },
-//       })
-//       .then(parseQLResponse(model))
-//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
-//   )
-// }
+const postQl = (model) => (query) => {
+  model.state.isLoading(true)
+  return new Task((rej, res) =>
+    m
+      .request({
+        method: "POST",
+        url: GraphQl.url,
+        withCredentials: false,
+        ...xhrProgress,
+        body: makeQuery(query)
+      })
+      .then(parseQLResponse(model))
+      .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+  )
+}
 
 const HttpTask = (_headers) => (method) => (mdl) => (url) => (body) => {
   mdl.state.isLoading(true)
@@ -160,24 +154,6 @@ const HttpTask = (_headers) => (method) => (mdl) => (url) => (body) => {
 //   )
 // }
 
-const lookupLocationTask = (query) => {
-  return new Task((rej, res) =>
-    m
-      .request({
-        method: "GET",
-        url: `https://nominatim.openstreetmap.org/search?q=${query}&format=json`
-      })
-      .then(res, rej)
-  )
-}
-
-const getTask = (mdl) => (url) => HttpTask({})("GET")(mdl)(url)(null)
-
-const nhtsaUrl = "http://localhost:3001/nhtsa/api/"
-const nhtsa = {
-  get: (mdl) => (url) => getTask(mdl)(nhtsaUrl + "/" + url)
-}
-
 const backEndUrl = `${BackEnd.baseUrl}/${BackEnd.APP_ID}/${BackEnd.API_KEY}/`
 const backEnd = {
   getTask: (mdl) => (url) =>
@@ -190,14 +166,7 @@ const backEnd = {
 
 const http = {
   backEnd,
-  nhtsa,
-  HttpTask,
-  // postQl,
-  // postTask,
-  getTask,
-  // putTask,
-  // deleteTask,
-  lookupLocationTask
+  postQl
 }
 
 export default http

@@ -1,4 +1,4 @@
-const ManageUsers = () => {
+const ManageClients = () => {
   const state = {}
 
   const loadUsers = ({ attrs: { mdl } }) => {
@@ -37,7 +37,7 @@ const ManageUsers = () => {
   return {
     oninit: loadUsers,
     view: ({ attrs: { mdl } }) =>
-      m(".manageusers", { id: mdl.state.route.id }, [
+      m(".manageClients", { id: mdl.state.route.id }, [
         m("h1.title", mdl.state.route.title),
 
         state.users &&
@@ -67,4 +67,4 @@ const ManageUsers = () => {
   }
 }
 
-export default ManageUsers
+export default ManageClients

@@ -1,4 +1,4 @@
-const ConfigCalculators = ({ attrs: { mdl } }) => {
+const BatteryTestConfig = ({ attrs: { mdl } }) => {
   // console.log('mdl', mdl)
 
   return {
@@ -6,4 +6,4 @@ const ConfigCalculators = ({ attrs: { mdl } }) => {
   }
 }
 
-export default ConfigCalculators
+export default BatteryTestConfig

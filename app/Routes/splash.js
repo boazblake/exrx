@@ -1,6 +1,6 @@
 import SplashLayout from "Layouts/SplashLayout"
 import Default from "../Pages/Default"
-import Home from "../Pages/Home"
+import Home from "Pages/Splash/Home"
 import { scrollToAnchor } from "Utils"
 import Icons from "Components/Icons"
 

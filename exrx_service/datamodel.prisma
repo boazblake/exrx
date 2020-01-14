@@ -1,0 +1,22 @@
+type Client {
+  id: ID! @id
+  firstname: String!
+  lastname: String!
+  email: String!
+  birthdate: DateTime!
+  biometrics: [Biometric!]! @relation(name: "ClientBiometric")
+  trainerId: User @relation(name: "ClientTrainer")
+}
+
+type Biometric {
+  id: ID! @id
+  clientId: Client @relation(name: "ClientBiometric")
+  weight: Float
+  height: Float
+  createdAt: DateTime! @createdAt
+}
+
+type User {
+  id: ID! @id
+  clients: [Client!]! @relation(name: "ClientTrainer")
+}
