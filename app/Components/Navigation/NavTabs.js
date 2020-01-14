@@ -12,12 +12,16 @@ const Tab = ({ attrs: { key } }) => {
           class: active ? "tab-item active" : "tab-item",
           key,
           id: `${tab.id}`,
-          href: tab.group.includes("authenticated")
-            ? `admin/${mdl.user.name}/${tab.id}`
-            : `${tab.route}`,
           onclick: (e) => {
-            mdl.state.profile != "desktop" && mdl.state.toggleSideBar(mdl)
-          }
+            if (tab.id == "dashboard" && mdl.state.profile != "desktop") {
+              e.stopPropagation()
+              e.preventDefault()
+              mdl.toggleSidebarModal(mdl)
+            }
+          },
+          href: tab.group.includes("authenticated")
+            ? `/EXRX/${mdl.user.name}/${tab.id}`
+            : `${tab.route}`
         },
         ["Dashboard", "Home"].includes(tab.title)
           ? m(".img", { style: { width: "50px" } }, Icons.logo)

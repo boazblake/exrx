@@ -1,17 +1,23 @@
 import NavMenu from "./Navigation/NavMenu.js"
-import { animate } from "Utils/animations"
+import { SlideInRight, SlideOutLeft } from "Utils/animations"
+import { without, propEq } from "ramda"
 
 const LeftAside = ({ attrs: { mdl } }) => {
   let routes = mdl.Routes.filter((r) => r.position.includes("left-aside"))
+
+  if (mdl.state.profile == "desktop") {
+    routes = routes.filter((r) => r.id != "dashboard")
+  }
+
   return {
-    oncreate: animate("slide-right"),
+    oncreate: SlideInRight,
+    onbeforeremove: SlideOutLeft,
     view: ({ attrs: { mdl } }) =>
       m(
-        ".left-aside.slide-left",
+        ".left-aside.sidebar-modal",
         { id: "left-aside" },
         m(NavMenu, { routes, mdl })
-      ),
-    onbeforeremove: animate("slide-left")
+      )
   }
 }
 export default LeftAside

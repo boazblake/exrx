@@ -10,7 +10,7 @@ const Tab = ({ attrs: { key } }) => {
             key,
             id: `${tab.id}-key`,
             href: tab.group.includes("authenticated")
-              ? `admin/${getUser(mdl.user)}/${tab.id}`
+              ? `EXRX/${getUser(mdl.user)}/${tab.id}`
               : `${tab.route}`
           },
           tab.title

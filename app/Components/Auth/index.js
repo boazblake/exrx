@@ -55,7 +55,7 @@ const onLoginSuccess = (mdl) => (user) => {
   mdl.user = user
   mdl.state.isAuth(true)
   mdl.toggleAuthModal(mdl)
-  m.route.set(`/admin/${mdl.user.name}/dashboard`)
+  m.route.set(`/EXRX/${mdl.user.name}/dashboard`)
   resetState()
 }
 
@@ -119,6 +119,7 @@ const AuthComponent = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(Modal, {
+        classList: "auth-modal",
         isActive: mdl.state.showAuthModal(),
         close: () => {
           resetState()

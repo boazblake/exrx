@@ -19,6 +19,7 @@ export const model = {
     scrollPos: Stream(window.scrollY),
     limit: 10,
     profile: "",
+    showSidebarModal: Stream(false),
     showAuthModal: Stream(false),
     showSettings: Stream(false),
     showNav: Stream(false),
@@ -30,6 +31,8 @@ export const model = {
     query: Stream("")
   },
   toggleToast: (mdl) => mdl.state.toast.show(!mdl.state.toast.show()),
+  toggleSidebarModal: (mdl) =>
+    mdl.state.showSidebarModal(!mdl.state.showSidebarModal()),
   toggleAuthModal: (mdl) => mdl.state.showAuthModal(!mdl.state.showAuthModal()),
   toggleSettings: (mdl) => mdl.state.showSettings(!mdl.state.showSettings()),
   toggleNav: (mdl) => mdl.state.showNav(!mdl.state.showNav()),

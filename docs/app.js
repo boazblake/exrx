@@ -160,13 +160,14 @@ var toRoutes = function toRoutes(mdl) {
   return function (acc, route) {
     acc[route.route] = {
       onmatch: function onmatch(args, path, fullroute) {
-        if (route.group.includes('authenticated') && !mdl.state.isAuth()) {
+        if (route.group.includes("authenticated") && !mdl.state.isAuth()) {
           mdl.route.set(m.route.get());
         }
 
         mdl.state.route = route;
-        mdl.state.anchor = path.split('#')[1];
+        mdl.state.anchor = path.split("#")[1];
         var isAnchor = Boolean(mdl.state.anchor);
+        mdl.state.showSidebarModal(false);
         route.onmatch(mdl, args, path, fullroute, isAnchor);
       },
       render: function render() {
@@ -253,7 +254,7 @@ var onLoginSuccess = function onLoginSuccess(mdl) {
     mdl.user = user;
     mdl.state.isAuth(true);
     mdl.toggleAuthModal(mdl);
-    m.route.set("/admin/".concat(mdl.user.name, "/dashboard"));
+    m.route.set("/EXRX/".concat(mdl.user.name, "/dashboard"));
     resetState();
   };
 };
@@ -322,6 +323,7 @@ var AuthComponent = function AuthComponent() {
     view: function view(_ref4) {
       var mdl = _ref4.attrs.mdl;
       return m(_Modal.default, {
+        classList: "auth-modal",
         isActive: mdl.state.showAuthModal(),
         close: function close() {
           resetState();
@@ -799,6 +801,8 @@ var _NavMenu = _interopRequireDefault(require("./Navigation/NavMenu.js"));
 
 var _animations = require("Utils/animations");
 
+var _ramda = require("ramda");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LeftAside = function LeftAside(_ref) {
@@ -806,18 +810,25 @@ var LeftAside = function LeftAside(_ref) {
   var routes = mdl.Routes.filter(function (r) {
     return r.position.includes("left-aside");
   });
+
+  if (mdl.state.profile == "desktop") {
+    routes = routes.filter(function (r) {
+      return r.id != "dashboard";
+    });
+  }
+
   return {
-    oncreate: (0, _animations.animate)("slide-right"),
+    oncreate: _animations.SlideInRight,
+    onbeforeremove: _animations.SlideOutLeft,
     view: function view(_ref2) {
       var mdl = _ref2.attrs.mdl;
-      return m(".left-aside.slide-left", {
+      return m(".left-aside.sidebar-modal", {
         id: "left-aside"
       }, m(_NavMenu.default, {
         routes: routes,
         mdl: mdl
       }));
-    },
-    onbeforeremove: (0, _animations.animate)("slide-left")
+    }
   };
 };
 
@@ -833,35 +844,36 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _animations = require("Utils/animations");
 
 var Modal = {
+  oncreate: _animations.SlideInRight,
+  onbeforeremove: _animations.SlideOutLeft,
   view: function view(_ref) {
     var _ref$attrs = _ref.attrs,
+        classList = _ref$attrs.classList,
         isActive = _ref$attrs.isActive,
         close = _ref$attrs.close,
         title = _ref$attrs.title,
         content = _ref$attrs.content,
         footer = _ref$attrs.footer;
-    return (0, _mithril.default)('.modal', {
-      class: isActive ? 'active' : '',
-      id: 'modal'
-    }, [(0, _mithril.default)('a.modal-overlay', {
-      'aria-label': 'Close',
+    return m("section.modal.".concat(classList), {
+      class: isActive ? "active" : "",
+      id: "modal"
+    }, [m("a.modal-overlay", {
+      "aria-label": "Close",
       onclick: function onclick() {
         return close();
       }
-    }), (0, _mithril.default)('.modal-container', {
-      role: 'document'
-    }, [(0, _mithril.default)('.modal-header', [(0, _mithril.default)('a.btn btn-clear float-right', {
-      id: 'modal-close',
-      'aria-label': 'Close',
+    }), m(".modal-container", {
+      role: "document"
+    }, [m(".modal-header", [m("a.btn btn-clear float-right", {
+      id: "modal-close",
+      "aria-label": "Close",
       onclick: function onclick() {
         return close();
       }
-    }), (0, _mithril.default)('.modal-title h3', title)]), (0, _mithril.default)('.modal-body', (0, _mithril.default)('.content', content)), (0, _mithril.default)('.modal-footer', footer)])]);
+    }), m(".modal-title h3", title)]), m(".modal-body", m(".content", content)), m(".modal-footer", footer)])]);
   }
 };
 var _default = Modal;
@@ -892,7 +904,7 @@ var Tab = function Tab(_ref) {
       return m("li.".concat(active ? "nav-item" : "nav-item"), m(m.route.Link, {
         key: key,
         id: "".concat(tab.id, "-key"),
-        href: tab.group.includes("authenticated") ? "admin/".concat(getUser(mdl.user), "/").concat(tab.id) : "".concat(tab.route)
+        href: tab.group.includes("authenticated") ? "EXRX/".concat(getUser(mdl.user), "/").concat(tab.id) : "".concat(tab.route)
       }, tab.title));
     }
   };
@@ -953,10 +965,14 @@ var Tab = function Tab(_ref) {
         class: active ? "tab-item active" : "tab-item",
         key: key,
         id: "".concat(tab.id),
-        href: tab.group.includes("authenticated") ? "admin/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route),
         onclick: function onclick(e) {
-          mdl.state.profile != "desktop" && mdl.state.toggleSideBar(mdl);
-        }
+          if (tab.id == "dashboard" && mdl.state.profile != "desktop") {
+            e.stopPropagation();
+            e.preventDefault();
+            mdl.toggleSidebarModal(mdl);
+          }
+        },
+        href: tab.group.includes("authenticated") ? "/EXRX/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route)
       }, ["Dashboard", "Home"].includes(tab.title) ? m(".img", {
         style: {
           width: "50px"
@@ -3115,15 +3131,12 @@ var _LeftAside = _interopRequireDefault(require("Components/LeftAside"));
 
 var _Body = _interopRequireDefault(require("Components/Body"));
 
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProfileLayout = function ProfileLayout(_ref) {
   var mdl = _ref.attrs.mdl;
-
-  var showMenu = function showMenu() {
-    return mdl.state.showNav() || mdl.state.profile == "desktop";
-  };
-
   return {
     view: function view(_ref2) {
       var children = _ref2.children;
@@ -3131,7 +3144,17 @@ var ProfileLayout = function ProfileLayout(_ref) {
         id: "profileLayout"
       }, [m(_ProfileHeader.default, {
         mdl: mdl
-      }), showMenu() && m(_LeftAside.default, {
+      }), mdl.state.profile !== "desktop" ? m(_Modal.default, {
+        isActive: mdl.state.showSidebarModal(),
+        close: function close() {
+          return mdl.toggleSidebarModal(mdl);
+        },
+        classList: "",
+        mdl: mdl,
+        content: m(_LeftAside.default, {
+          mdl: mdl
+        })
+      }) : m(_LeftAside.default, {
         mdl: mdl
       }), m(_Body.default, {
         mdl: mdl
@@ -3266,6 +3289,7 @@ var model = {
     scrollPos: Stream(window.scrollY),
     limit: 10,
     profile: "",
+    showSidebarModal: Stream(false),
     showAuthModal: Stream(false),
     showSettings: Stream(false),
     showNav: Stream(false),
@@ -3278,6 +3302,9 @@ var model = {
   },
   toggleToast: function toggleToast(mdl) {
     return mdl.state.toast.show(!mdl.state.toast.show());
+  },
+  toggleSidebarModal: function toggleSidebarModal(mdl) {
+    return mdl.state.showSidebarModal(!mdl.state.showSidebarModal());
   },
   toggleAuthModal: function toggleAuthModal(mdl) {
     return mdl.state.showAuthModal(!mdl.state.showAuthModal());
@@ -3765,8 +3792,8 @@ var authenticated = [{
   id: "dashboard",
   title: "Dashboard",
   icon: _Icons.default.logo,
-  route: "/admin/:name/dashboard",
-  position: ["auth-nav"],
+  route: "/EXRX/:name/dashboard",
+  position: ["auth-nav", "left-aside"],
   group: ["authenticated"],
   children: [],
   onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
@@ -3783,7 +3810,7 @@ var authenticated = [{
   id: "profile-page",
   title: "Profile Page",
   icon: _Icons.default.home,
-  route: "/admin/:name/profile",
+  route: "/EXRX/:name/profile",
   position: ["settings-nav"],
   group: ["authenticated"],
   children: [],
@@ -3802,7 +3829,7 @@ var authenticated = [{
   id: "calculator-config",
   title: "Configure Calculators",
   icon: _Icons.default.calcs,
-  route: "/admin/:name/calculator-config",
+  route: "/EXRX/:name/calculator-config",
   position: ["left-aside"],
   group: ["authenticated", "admin"],
   children: [],
@@ -3831,7 +3858,7 @@ var authenticated = [{
   id: "manage-users",
   title: "Manage Users",
   icon: _Icons.default.users,
-  route: "/admin/:name/user-management",
+  route: "/EXRX/:name/user-management",
   position: ["settings-nav"],
   group: ["authenticated", "admin"],
   children: [],
@@ -3977,6 +4004,114 @@ var Splash = [{
 }];
 var _default = Splash;
 exports.default = _default;
+});
+
+;require.register("Styles/animations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RemoveChildrenOut = exports.animate = exports.SlideChildrenInDown = exports.StretchInLeft = exports.SlideChildrenInRight = exports.SlideOutLeft = exports.SlideInRight = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var SlideInRight = function SlideInRight(_ref) {
+  var dom = _ref.dom;
+  dom.style.opacity = 0;
+  dom.classList.toggle("slideRight");
+  dom.style.opacity = 1;
+};
+
+exports.SlideInRight = SlideInRight;
+
+var SlideOutLeft = function SlideOutLeft(_ref2) {
+  var dom = _ref2.dom;
+  return new Promise(function () {
+    dom.classList.remove("slideRight");
+    return setTimeout(function () {
+      dom.classList.add("reverseAnimation", "slideRight");
+    }, 200);
+  });
+};
+
+exports.SlideOutLeft = SlideOutLeft;
+
+var SlideChildrenInRight = function SlideChildrenInRight(_ref3) {
+  var dom = _ref3.dom;
+
+  var children = _toConsumableArray(dom.children);
+
+  return children.map(function (child, idx) {
+    child.style.opacity = 0;
+    setTimeout(function () {
+      child.classList.toggle("slideRight");
+      child.style.opacity = 1;
+    }, (idx + 1) * 10);
+  });
+};
+
+exports.SlideChildrenInRight = SlideChildrenInRight;
+
+var StretchInLeft = function StretchInLeft(idx) {
+  return function (_ref4) {
+    var dom = _ref4.dom;
+    dom.style.opacity = 0;
+    return setTimeout(function () {
+      dom.classList.toggle("stretchRight");
+      dom.style.opacity = 1;
+    }, idx * 100 + 20);
+  };
+};
+
+exports.StretchInLeft = StretchInLeft;
+
+var SlideChildrenInDown = function SlideChildrenInDown(idx) {
+  return function (_ref5) {
+    var dom = _ref5.dom;
+    dom.style.opacity = 0;
+    setTimeout(function () {
+      dom.classList.toggle("slideDown");
+      dom.style.opacity = 1;
+    }, (idx + 1) * 200);
+  };
+};
+
+exports.SlideChildrenInDown = SlideChildrenInDown;
+
+var animate = function animate(dir) {
+  return function (_ref6) {
+    var dom = _ref6.dom;
+    dom.style.opacity = 0;
+    setTimeout(function () {
+      dom.classList.toggle(dir);
+      dom.style.opacity = 1;
+    }, 200);
+  };
+};
+
+exports.animate = animate;
+
+var RemoveChildrenOut = function RemoveChildrenOut(_ref7) {
+  var dom = _ref7.dom;
+  return new Promise(function () {
+    ;
+
+    _toConsumableArray(dom.children).reverse().map(function (child, idx) {
+      return setTimeout(function () {
+        child.style.display = "none";
+      }, idx * 100);
+    });
+  });
+};
+
+exports.RemoveChildrenOut = RemoveChildrenOut;
 });
 
 ;require.register("Utils/animations.js", function(exports, require, module) {

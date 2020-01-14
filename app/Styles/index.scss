@@ -210,6 +210,10 @@ a {
   cursor: pointer;
 }
 
+.sidebar-modal {
+  min-height: 100vh;
+}
+
 .avatar {
   border: 1px solid $white;
 }
