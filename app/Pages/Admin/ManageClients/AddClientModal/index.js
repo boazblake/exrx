@@ -26,8 +26,8 @@ const resetState = () => {
   state.isSubmitted = false
 }
 
-const saveClientTask = (mdl) => ({ email, firstName, lastName, birthdate }) => {
-  const query = `mutation {
+const saveClientTask = (mdl) => ({ email, firstName, lastName, birthdate }) =>
+  mdl.http.postQl(mdl)(`mutation {
   createClient(
     data: {
       email:${JSON.stringify(email)},
@@ -38,10 +38,7 @@ const saveClientTask = (mdl) => ({ email, firstName, lastName, birthdate }) => {
     }), {
     id
   }
-}`
-
-  return mdl.http.postQl(mdl)(query)
-}
+}`)
 
 const validateForm = (mdl) => (data) => {
   const onError = (errs) => {
@@ -50,10 +47,9 @@ const validateForm = (mdl) => (data) => {
   }
 
   const onSuccess = (mdl) => ({ createClient }) => {
-    console.log("data", data)
     mdl.clients.push(createClient)
     mdl.toggleModal(mdl)
-    state.errors = {}
+    resetState()
   }
 
   state.isSubmitted = true
@@ -70,10 +66,7 @@ const AddClientActions = () => {
         {
           type: "submit",
           form: `client-form`,
-          onclick: () => {
-            // console.log(state)
-            validateForm(mdl)(state.data)
-          },
+          onclick: () => validateForm(mdl)(state.data),
           class: mdl.state.isLoading() && "loading"
         },
         "Add New Client"
@@ -88,7 +81,6 @@ const AddClient = () => {
       m(".", [
         m("button.btn", { onclick: (e) => mdl.toggleModal(mdl) }, "Add Client"),
         m(Modal, {
-          onremove: (v) => console.log("who am i??", v),
           animateEntrance: animateComponentEntrance,
           animateExit: slideModalOut,
           mdl,

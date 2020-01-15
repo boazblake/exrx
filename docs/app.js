@@ -3455,8 +3455,7 @@ var saveClientTask = function saveClientTask(mdl) {
         firstName = _ref.firstName,
         lastName = _ref.lastName,
         birthdate = _ref.birthdate;
-    var query = "mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstName), ",\n      lastname:").concat(JSON.stringify(lastName), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {\n    id\n  }\n}");
-    return mdl.http.postQl(mdl)(query);
+    return mdl.http.postQl(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstName), ",\n      lastname:").concat(JSON.stringify(lastName), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {\n    id\n  }\n}"));
   };
 };
 
@@ -3470,10 +3469,9 @@ var validateForm = function validateForm(mdl) {
     var onSuccess = function onSuccess(mdl) {
       return function (_ref2) {
         var createClient = _ref2.createClient;
-        console.log("data", data);
         mdl.clients.push(createClient);
         mdl.toggleModal(mdl);
-        state.errors = {};
+        resetState();
       };
     };
 
@@ -3492,8 +3490,7 @@ var AddClientActions = function AddClientActions() {
         type: "submit",
         form: "client-form",
         onclick: function onclick() {
-          // console.log(state)
-          validateForm(mdl)(state.data);
+          return validateForm(mdl)(state.data);
         },
         "class": mdl.state.isLoading() && "loading"
       }, "Add New Client")];
@@ -3510,9 +3507,6 @@ var AddClient = function AddClient() {
           return mdl.toggleModal(mdl);
         }
       }, "Add Client"), m(_Modal["default"], {
-        onremove: function onremove(v) {
-          return console.log("who am i??", v);
-        },
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
@@ -3621,24 +3615,19 @@ var _index = _interopRequireDefault(require("./AddClientModal/index.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ManageClients = function ManageClients() {
-  var state = {};
-
   var loadClients = function loadClients(_ref) {
     var mdl = _ref.attrs.mdl;
-    console.log("fetching clients");
-    var query = "query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id}\n}");
 
     var onError = function onError(e) {
-      console.log("ERROR", e);
+      return console.log("ERROR Fetching Clients", e);
     };
 
     var onSuccess = function onSuccess(_ref2) {
       var clients = _ref2.clients;
-      console.log("SUCCESSS", clients);
-      mdl.clients = clients;
+      return mdl.clients = clients;
     };
 
-    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
+    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id}\n}")).fork(onError, onSuccess);
   };
 
   return {

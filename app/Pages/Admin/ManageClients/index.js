@@ -1,25 +1,17 @@
 import AddClient from "./AddClientModal/index.js"
 
 const ManageClients = () => {
-  const state = {}
-
   const loadClients = ({ attrs: { mdl } }) => {
-    console.log("fetching clients")
-    const query = `query{
-  clients(where:{trainer:{userId:${JSON.stringify(mdl.user.objectId)}}}){id}
-}`
+    const onError = (e) => console.log("ERROR Fetching Clients", e)
 
-    const onError = (e) => {
-      console.log("ERROR", e)
-    }
-
-    const onSuccess = ({ clients }) => {
-      console.log("SUCCESSS", clients)
-      mdl.clients = clients
-    }
+    const onSuccess = ({ clients }) => (mdl.clients = clients)
 
     return mdl.http
-      .postQl(mdl)(query)
+      .postQl(mdl)(
+        `query{
+  clients(where:{trainer:{userId:${JSON.stringify(mdl.user.objectId)}}}){id}
+}`
+      )
       .fork(onError, onSuccess)
   }
 
