@@ -1,68 +1,41 @@
+import AddClient from "./AddClient.js"
+import { removeHyphens } from "Utils/helpers"
+
 const ManageClients = () => {
   const state = {}
 
   const loadUsers = ({ attrs: { mdl } }) => {
+    const query = `query {
+  user(where:{clientId: ${removeHyphens(mdl.user.objectId)}}){clients{id}}
+}`
+
     const onError = (e) => {
       console.log("ERROR", e)
     }
 
     const onSuccess = (s) => {
       console.log("SUCCESSS", s)
-      state.users = s
+      state.clients = s
     }
 
-    return mdl.http.backEnd
-      .getTask(mdl)("data/users?pageSize=100")
+    console.log("the Q", query)
+    return mdl.http
+      .postQl(mdl)(query)
       .fork(onError, onSuccess)
-  }
-
-  const updateAdminStatus = (mdl, user) => (e) => {
-    const onError = (user) => (e) => {
-      user.isAdmin = !user.isAdmin
-      console.log("ERROR", e)
-    }
-
-    const onSuccess = (user) => (s) => {
-      console.log("SUCCESSS", user)
-    }
-
-    console.log({ mdl, user })
-    mdl.http.backEnd
-      .putTask(mdl)(`data/Users/${user.objectId}`)({
-        isAdmin: (user.isAdmin = !user.isAdmin)
-      })
-      .fork(onError(user), onSuccess(user))
   }
 
   return {
     oninit: loadUsers,
     view: ({ attrs: { mdl } }) =>
-      m(".manageClients", { id: mdl.state.route.id }, [
-        m("h1.title", mdl.state.route.title),
-
-        state.users &&
-          state.users.map((u) =>
-            m(
-              ".menu",
-              m(".menu-item", [
-                m("p", u.name),
-                m("p", u.email),
-                m(
-                  ".form-group",
-                  m("label.form-switch", [
-                    m("input[type='checkbox']", {
-                      checked: u.isAdmin,
-                      onchange: updateAdminStatus(mdl, u),
-                      isDisabled: false,
-                      class: ""
-                    }),
-                    m("i.form-icon"),
-                    "User is Admin"
-                  ])
-                )
-              ])
-            )
-          )
+      m(".content", [
+        m("section.section", { id: "content-toolbar" }, [
+          m(AddClient, { mdl })
+        ]),
+        m("section.section", { id: "content-data" }, [
+          m(".manageClients", { id: mdl.state.route.id }, [
+            m("h1.title", mdl.state.route.title)
+          ])
+        ])
       ])
   }
 }

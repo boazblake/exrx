@@ -1,4 +1,4 @@
-import RegisterUser from "./registerUser.js"
+import RegisterForm from "../forms/RegisterForm.js"
 
 export const Register = () => {
   return {
@@ -18,7 +18,12 @@ export const Register = () => {
           onsubmit: (e) => e.preventDefault()
         },
         [
-          m(RegisterUser, { data: userModel, errors, isSubmitted, httpError }),
+          m(RegisterForm, {
+            data: userModel,
+            errors,
+            isSubmitted,
+            httpError
+          }),
           m(".divider-vert", { dataContent: "|" })
         ]
       ),

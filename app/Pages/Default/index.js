@@ -2,7 +2,15 @@ const Default = ({ attrs: { mdl } }) => {
   // console.log('mdl', mdl)
 
   return {
-    view: () => m(".default", m("h1", mdl.state.route.title))
+    view: () =>
+      m(".content", [
+        m("section.section", { id: "content-toolbar" }, []),
+        m("section.section", { id: "content-data" }, [
+          m(".default", { id: mdl.state.route.id }, [
+            m("h1.title", mdl.state.route.title)
+          ])
+        ])
+      ])
   }
 }
 

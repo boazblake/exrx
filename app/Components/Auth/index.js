@@ -1,13 +1,13 @@
 import {
-  Login,
-  Register,
+  LoginForm,
+  RegisterForm,
   validateLoginTask,
   validateUserRegistrationTask
-} from "../../Forms/index.js"
+} from "./forms"
 import Modal from "../Modal.js"
 import { jsonCopy } from "Utils"
 
-const userModel = {
+const data = {
   name: "",
   email: "",
   password: "",
@@ -16,10 +16,8 @@ const userModel = {
   isAdmin: false
 }
 
-const dataModel = { userModel }
-
 const state = {
-  forms: { 1: Register, 0: Login },
+  forms: { 1: RegisterForm, 0: LoginForm },
   page: 0,
   title: {
     1: "Register",
@@ -28,11 +26,11 @@ const state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: jsonCopy(dataModel)
+  data: jsonCopy(data)
 }
 
 const resetState = () => {
-  state.data = jsonCopy(dataModel)
+  state.data = jsonCopy(data)
   state.errors = {}
   state.httpError = undefined
   state.isSubmitted = false
@@ -106,7 +104,7 @@ const AuthLink = () => {
   return {
     view: ({ attrs: { title } }) =>
       m(
-        "a.AuthLinkBtn btn-link",
+        "a.authLinkBtn btn-link",
         {
           onclick: changePage
         },

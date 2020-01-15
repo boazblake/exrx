@@ -35,7 +35,7 @@ const xhrProgress = {
   }
 }
 
-const makeQuery = (string) => JSON.parse(JSON.stringify(string))
+const makeQueryString = (query) => JSON.parse(JSON.stringify(query))
 
 const parseQLResponse = (model) => ({ data, errors }) => {
   model.state.isLoading(false)
@@ -66,7 +66,7 @@ const postQl = (model) => (query) => {
         url: GraphQl.url,
         withCredentials: false,
         ...xhrProgress,
-        body: makeQuery(query)
+        body: makeQueryString({ query })
       })
       .then(parseQLResponse(model))
       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))

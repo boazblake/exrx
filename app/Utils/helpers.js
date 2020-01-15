@@ -19,6 +19,7 @@ import {
   min,
   map
 } from "ramda"
+
 import Task from "data.task"
 
 export const makeRoute = compose(join("-"), split(" "), trim(), toLower())
@@ -43,6 +44,8 @@ export const addTerms = (item) => {
 
   return assoc("_terms", terms, item)
 }
+
+export const removeHyphens = (str) => str.replace(/-/gi, "")
 
 const byTerms = (query) => compose(test(new RegExp(query, "i")), prop("name"))
 

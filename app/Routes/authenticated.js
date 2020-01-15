@@ -1,8 +1,8 @@
 import ProfileLayout from "Layouts/ProfileLayout"
 import Dashboard from "Pages/Admin/Dashboard"
 import Default from "Pages/Default"
-import ManageUsers from "Pages/Admin/ManageUsers"
 import ManageClients from "Pages/Admin/ManageClients"
+import ManageNetwork from "Pages/Admin/ManageNetwork"
 import BatteryTestConfig from "Pages/Admin/BatteryConfig"
 import { scrollToAnchor } from "Utils"
 import Icons from "Components/Icons"
@@ -45,7 +45,7 @@ const authenticated = [
   },
   {
     id: "battery-config",
-    title: "Configure Batteries",
+    title: "Batteries",
     icon: Icons.calcs,
     route: "/EXRX/:name/battery-config",
     position: ["left-aside"],
@@ -68,10 +68,10 @@ const authenticated = [
     component: (mdl) => m(ProfileLayout, { mdl }, m(BatteryTestConfig, { mdl }))
   },
   {
-    id: "manage-users",
-    title: "Manage Users",
+    id: "manage-clients",
+    title: "Clientelle",
     icon: Icons.users,
-    route: "/EXRX/:name/manage-users",
+    route: "/EXRX/:name/manage-clients",
     position: ["left-aside"],
     group: ["authenticated", "admin"],
     children: [],
@@ -88,13 +88,13 @@ const authenticated = [
       // )
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageUsers, { mdl }))
+    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageClients, { mdl }))
   },
   {
-    id: "manage-clients",
-    title: "Manage Clients",
+    id: "manage-network",
+    title: "Configure Network",
     icon: Icons.users,
-    route: "/EXRX/:name/client-management",
+    route: "/EXRX/:name/network-management",
     position: ["settings-nav"],
     group: ["authenticated", "admin"],
     children: [],
@@ -112,7 +112,7 @@ const authenticated = [
       !mdl.user.isAdmin && m.route.set(m.route.get())
       isAnchor && scrollToAnchor(mdl.state.anchor)
     },
-    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageClients, { mdl }))
+    component: (mdl) => m(ProfileLayout, { mdl }, m(ManageNetwork, { mdl }))
   }
 ]
 

@@ -154,7 +154,7 @@ require.register("App.js", function(exports, require, module) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var toRoutes = function toRoutes(mdl) {
   return function (acc, route) {
@@ -183,7 +183,285 @@ var App = function App(mdl) {
 };
 
 var _default = App;
-exports.default = _default;
+exports["default"] = _default;
+});
+
+;require.register("Components/Auth/authentication/register.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Register = void 0;
+
+var _RegisterForm = _interopRequireDefault(require("../forms/RegisterForm.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var Register = function Register() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          userModel = _ref$attrs.data.userModel,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError;
+      return [m("form.columns", {
+        role: "form",
+        id: "Register-form",
+        onsubmit: function onsubmit(e) {
+          return e.preventDefault();
+        }
+      }, [m(_RegisterForm["default"], {
+        data: userModel,
+        errors: errors,
+        isSubmitted: isSubmitted,
+        httpError: httpError
+      }), m(".divider-vert", {
+        dataContent: "|"
+      })]), httpError && m(".toast toast-error", httpError)];
+    }
+  };
+};
+
+exports.Register = Register;
+});
+
+;require.register("Components/Auth/forms/LoginForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoginForm = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var LoginForm = function LoginForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError;
+      return m("form.column", {
+        role: "form",
+        id: "Login-form",
+        onsubmit: function onsubmit(e) {
+          return e.preventDefault();
+        }
+      }, [m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "password",
+        label: "password",
+        id: "reg-pass",
+        type: "password"
+      }), httpError && m(".toast toast-error", httpError)]);
+    }
+  };
+};
+
+exports.LoginForm = LoginForm;
+});
+
+;require.register("Components/Auth/forms/RegisterForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RegisterForm = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var RegisterForm = function RegisterForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError;
+      return [m("form.column", {
+        role: "form",
+        id: "Register-form",
+        onsubmit: function onsubmit(e) {
+          return e.preventDefault();
+        }
+      }, [(".column col-6", [m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "name",
+        label: "Name",
+        id: "name",
+        type: "text"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "password",
+        label: "password",
+        id: "reg-pass",
+        type: "password"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "confirmPassword",
+        label: "Confirm Password",
+        id: "pass-confirm",
+        type: "password"
+      })]), m(".divider-vert", {
+        dataContent: "|"
+      })]), httpError && m(".toast toast-error", httpError)];
+    }
+  };
+};
+
+exports.RegisterForm = RegisterForm;
+});
+
+;require.register("Components/Auth/forms/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateLoginTask = exports.validateUserRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+var ValidateLogin = (0, _data.Success)((0, _ramda.curryN)(2, _ramda.identity));
+var nameLense = (0, _ramda.lensProp)("name");
+var passwordLense = (0, _ramda.lensProp)("password");
+var passwordConfirmLense = (0, _ramda.lensProp)("confirmPassword");
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+var NAME_REQUIRED_MSG = "A Name is required";
+var PASSWORD_REQUIRED_MSG = "A Password is required";
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+var PASSWORDS_MUST_MATCH = "Passwords do not match";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateName = function validateName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense, NAME_REQUIRED_MSG, data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateEmail = function validateEmail(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validatePasswords = function validatePasswords(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordConfirmLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.password), passwordConfirmLense, PASSWORDS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmPassword), passwordLense, PASSWORDS_MUST_MATCH, data));
+};
+
+var validatePassword = function validatePassword(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data));
+};
+
+var validateUserRegistrationTask = function validateUserRegistrationTask(data) {
+  return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)).ap(validatePasswords(data)).failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateUserRegistrationTask = validateUserRegistrationTask;
+
+var validateLoginTask = function validateLoginTask(data) {
+  return ValidateLogin.ap(validateEmail(data)).ap(validatePassword(data)).failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateLoginTask = validateLoginTask;
+});
+
+;require.register("Components/Auth/forms/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _LoginForm = require("./LoginForm.js");
+
+Object.keys(_LoginForm).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _LoginForm[key];
+    }
+  });
+});
+
+var _RegisterForm = require("./RegisterForm.js");
+
+Object.keys(_RegisterForm).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _RegisterForm[key];
+    }
+  });
+});
+
+var _Validations = require("./Validations.js");
+
+Object.keys(_Validations).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Validations[key];
+    }
+  });
+});
 });
 
 ;require.register("Components/Auth/index.js", function(exports, require, module) {
@@ -192,17 +470,17 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _index = require("../../Forms/index.js");
+var _forms = require("./forms");
 
 var _Modal = _interopRequireDefault(require("../Modal.js"));
 
 var _Utils = require("Utils");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var userModel = {
+var data = {
   name: "",
   email: "",
   password: "",
@@ -210,13 +488,10 @@ var userModel = {
   confirmPassword: "",
   isAdmin: false
 };
-var dataModel = {
-  userModel: userModel
-};
 var state = {
   forms: {
-    1: _index.Register,
-    0: _index.Login
+    1: _forms.RegisterForm,
+    0: _forms.LoginForm
   },
   page: 0,
   title: {
@@ -226,11 +501,11 @@ var state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: (0, _Utils.jsonCopy)(dataModel)
+  data: (0, _Utils.jsonCopy)(data)
 };
 
 var resetState = function resetState() {
-  state.data = (0, _Utils.jsonCopy)(dataModel);
+  state.data = (0, _Utils.jsonCopy)(data);
   state.errors = {};
   state.httpError = undefined;
   state.isSubmitted = false;
@@ -272,7 +547,7 @@ var validateForm = function validateForm(mdl) {
     };
 
     state.isSubmitted = true;
-    state.page ? (0, _index.validateUserRegistrationTask)(data.userModel).fork(onValidationError, onValidationSuccess) : (0, _index.validateLoginTask)(data.userModel).fork(onValidationError, onValidationSuccess);
+    state.page ? (0, _forms.validateUserRegistrationTask)(data.userModel).fork(onValidationError, onValidationSuccess) : (0, _forms.validateLoginTask)(data.userModel).fork(onValidationError, onValidationSuccess);
   };
 };
 
@@ -311,7 +586,7 @@ var AuthLink = function AuthLink() {
   return {
     view: function view(_ref3) {
       var title = _ref3.attrs.title;
-      return m("a.AuthLinkBtn btn-link", {
+      return m("a.authLinkBtn btn-link", {
         onclick: changePage
       }, title);
     }
@@ -322,7 +597,7 @@ var AuthComponent = function AuthComponent() {
   return {
     view: function view(_ref4) {
       var mdl = _ref4.attrs.mdl;
-      return m(_Modal.default, {
+      return m(_Modal["default"], {
         classList: "auth-modal",
         isActive: mdl.state.showAuthModal(),
         close: function close() {
@@ -342,7 +617,7 @@ var AuthComponent = function AuthComponent() {
           onclick: function onclick() {
             return validateForm(mdl)(state.data);
           },
-          class: mdl.state.isLoading() && "loading"
+          "class": mdl.state.isLoading() && "loading"
         }, state.title[state.page]), m(AuthLink, {
           mdl: mdl,
           title: state.page ? "Login" : "Register"
@@ -353,7 +628,7 @@ var AuthComponent = function AuthComponent() {
 };
 
 var _default = AuthComponent;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Body.js", function(exports, require, module) {
@@ -362,11 +637,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Toaster = _interopRequireDefault(require("./Toaster.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Body = {
   view: function view(_ref) {
@@ -374,13 +649,13 @@ var Body = {
         mdl = _ref.attrs.mdl;
     return m(".content", {
       id: "content"
-    }, [children, mdl.state.toast.show() && m(_Toaster.default, {
+    }, [children, mdl.state.toast.show() && m(_Toaster["default"], {
       mdl: mdl
     })]);
   }
 };
 var _default = Body;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Button.js", function(exports, require, module) {
@@ -389,11 +664,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Button = function Button() {
   return {
@@ -404,7 +679,7 @@ var Button = function Button() {
           _ref$attrs$classList = _ref$attrs.classList,
           classList = _ref$attrs$classList === void 0 ? '' : _ref$attrs$classList,
           isDisabled = _ref$attrs.isDisabled;
-      return (0, _mithril.default)("button.btn.".concat(classList), {
+      return (0, _mithril["default"])("button.btn.".concat(classList), {
         onclick: function onclick(e) {
           return action(e);
         },
@@ -415,7 +690,7 @@ var Button = function Button() {
 };
 
 var _default = Button;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/DropDown.js", function(exports, require, module) {
@@ -424,7 +699,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Utils = require("Utils");
 
@@ -457,7 +732,7 @@ var DropDown = {
   }
 };
 var _default = DropDown;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Footer.js", function(exports, require, module) {
@@ -466,11 +741,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _SocialMedia = _interopRequireDefault(require("./SocialMedia.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var GoToTop = {
   view: function view(_ref) {
@@ -493,13 +768,50 @@ var Footer = {
     var mdl = _ref2.attrs.mdl;
     return m("footer", {
       id: "footer"
-    }, m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy"), m(_SocialMedia.default), m(GoToTop, {
+    }, m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy"), m(_SocialMedia["default"]), m(GoToTop, {
       mdl: mdl
     })]));
   }
 };
 var _default = Footer;
-exports.default = _default;
+exports["default"] = _default;
+});
+
+;require.register("Components/FormInputs.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var FormInput = {
+  view: function view(_ref) {
+    var _ref$attrs = _ref.attrs,
+        isSubmitted = _ref$attrs.isSubmitted,
+        data = _ref$attrs.data,
+        errors = _ref$attrs.errors,
+        field = _ref$attrs.field,
+        label = _ref$attrs.label,
+        id = _ref$attrs.id,
+        type = _ref$attrs.type;
+    return m(".form-group ", isSubmitted && {
+      "class": errors[field] ? "has-error" : "has-success"
+    }, [m("label.form-label text-left", {
+      id: id
+    }, [label, m("span.span required", "*")]), m("input.form-input", {
+      id: id,
+      type: type,
+      placeholder: label,
+      onkeyup: function onkeyup(e) {
+        return data[field] = e.target.value;
+      },
+      value: data[field],
+      autocomplete: false
+    }), errors[field] && m("p.form-input-hint", errors[field])]);
+  }
+};
+var _default = FormInput;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Hamburger.js", function(exports, require, module) {
@@ -508,11 +820,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Hamburger = function Hamburger(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -522,7 +834,7 @@ var Hamburger = function Hamburger(_ref) {
   };
 
   var render = function render(dom) {
-    return _mithril.default.render(dom, (0, _mithril.default)('path', {
+    return _mithril["default"].render(dom, (0, _mithril["default"])('path', {
       xmlns: 'http://www.w3.org/2000/svg',
       d: mdl.state.showNav() ? state.close : state.open
     }));
@@ -539,7 +851,7 @@ var Hamburger = function Hamburger(_ref) {
     onupdate: updateDom,
     view: function view(_ref3) {
       var mdl = _ref3.attrs.mdl;
-      return (0, _mithril.default)('svg.btn.hamburger', {
+      return (0, _mithril["default"])('svg.btn.hamburger', {
         id: 'hamburger',
         onclick: function onclick() {
           return mdl.toggleNav(mdl);
@@ -550,7 +862,7 @@ var Hamburger = function Hamburger(_ref) {
 };
 
 var _default = Hamburger;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Headers/MainHeader.js", function(exports, require, module) {
@@ -559,7 +871,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
 
@@ -567,7 +879,7 @@ var _Hamburger = _interopRequireDefault(require("Components/Hamburger"));
 
 var _Navigation = _interopRequireDefault(require("Components/Navigation"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Header = function Header() {
   return {
@@ -575,11 +887,11 @@ var Header = function Header() {
       var mdl = _ref.attrs.mdl;
       return m("header.header", {
         id: "header"
-      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+      }, [mdl.state.isLoading() && m(_ProgressBar["default"], {
         mdl: mdl
-      }), mdl.state.profile !== "desktop" && m(".mobileNav", m(_Hamburger.default, {
+      }), mdl.state.profile !== "desktop" && m(".mobileNav", m(_Hamburger["default"], {
         mdl: mdl
-      })), m(_Navigation.default, {
+      })), m(_Navigation["default"], {
         mdl: mdl
       })]);
     }
@@ -587,7 +899,7 @@ var Header = function Header() {
 };
 
 var _default = Header;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Headers/ProfileHeader.js", function(exports, require, module) {
@@ -596,13 +908,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
 
 var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ProfileHeader = function ProfileHeader() {
   return {
@@ -610,9 +922,9 @@ var ProfileHeader = function ProfileHeader() {
       var mdl = _ref.attrs.mdl;
       return m("header.header", {
         id: "header"
-      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+      }, [mdl.state.isLoading() && m(_ProgressBar["default"], {
         mdl: mdl
-      }), m(_NavTabs.default, {
+      }), m(_NavTabs["default"], {
         mdl: mdl,
         tabSelected: function tabSelected() {}
       })]);
@@ -621,7 +933,7 @@ var ProfileHeader = function ProfileHeader() {
 };
 
 var _default = ProfileHeader;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Headers/SplashHeader.js", function(exports, require, module) {
@@ -630,13 +942,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
 
 var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var SplashHeader = function SplashHeader() {
   return {
@@ -644,9 +956,9 @@ var SplashHeader = function SplashHeader() {
       var mdl = _ref.attrs.mdl;
       return m("header.header", {
         id: "header"
-      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+      }, [mdl.state.isLoading() && m(_ProgressBar["default"], {
         mdl: mdl
-      }), m(_NavTabs.default, {
+      }), m(_NavTabs["default"], {
         mdl: mdl,
         tabSelected: function tabSelected() {}
       })]);
@@ -655,7 +967,7 @@ var SplashHeader = function SplashHeader() {
 };
 
 var _default = SplashHeader;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Headers/index.js", function(exports, require, module) {
@@ -708,7 +1020,7 @@ Object.keys(_ProfileHeader).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 var logo = m("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   "xmlns:xlink": "http://www.w3.org/1999/xlink",
@@ -786,7 +1098,7 @@ var _default = {
   upChevron: upChevron,
   dotsVerticleThree: dotsVerticleThree
 };
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/LeftAside.js", function(exports, require, module) {
@@ -795,7 +1107,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _NavMenu = _interopRequireDefault(require("./Navigation/NavMenu.js"));
 
@@ -803,7 +1115,7 @@ var _animations = require("Utils/animations");
 
 var _ramda = require("ramda");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var LeftAside = function LeftAside(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -824,7 +1136,7 @@ var LeftAside = function LeftAside(_ref) {
       var mdl = _ref2.attrs.mdl;
       return m(".left-aside.sidebar-modal", {
         id: "left-aside"
-      }, m(_NavMenu.default, {
+      }, m(_NavMenu["default"], {
         routes: routes,
         mdl: mdl
       }));
@@ -833,7 +1145,7 @@ var LeftAside = function LeftAside(_ref) {
 };
 
 var _default = LeftAside;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Modal.js", function(exports, require, module) {
@@ -842,42 +1154,45 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
-var _animations = require("Utils/animations");
-
-var Modal = {
-  oncreate: _animations.SlideInRight,
-  onbeforeremove: _animations.SlideOutLeft,
-  view: function view(_ref) {
-    var _ref$attrs = _ref.attrs,
-        classList = _ref$attrs.classList,
-        isActive = _ref$attrs.isActive,
-        close = _ref$attrs.close,
-        title = _ref$attrs.title,
-        content = _ref$attrs.content,
-        footer = _ref$attrs.footer;
-    return m("section.modal.".concat(classList), {
-      class: isActive ? "active" : "",
-      id: "modal"
-    }, [m("a.modal-overlay", {
-      "aria-label": "Close",
-      onclick: function onclick() {
-        return close();
-      }
-    }), m(".modal-container", {
-      role: "document"
-    }, [m(".modal-header", [m("a.btn btn-clear float-right", {
-      id: "modal-close",
-      "aria-label": "Close",
-      onclick: function onclick() {
-        return close();
-      }
-    }), m(".modal-title h3", title)]), m(".modal-body", m(".content", content)), m(".modal-footer", footer)])]);
-  }
+var Modal = function Modal(_ref) {
+  var animateEntrance = _ref.animateEntrance,
+      animateExit = _ref.animateExit;
+  return {
+    oncreate: animateEntrance,
+    onbeforeremove: animateExit,
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          classList = _ref2$attrs.classList,
+          isActive = _ref2$attrs.isActive,
+          close = _ref2$attrs.close,
+          title = _ref2$attrs.title,
+          content = _ref2$attrs.content,
+          footer = _ref2$attrs.footer;
+      return m("section.modal.".concat(classList), {
+        "class": isActive ? "active" : "",
+        id: "modal"
+      }, [m("a.modal-overlay", {
+        "aria-label": "Close",
+        onclick: function onclick() {
+          return close();
+        }
+      }), m(".modal-container", {
+        role: "document"
+      }, [m(".modal-header", [m("a.btn btn-clear float-right", {
+        id: "modal-close",
+        "aria-label": "Close",
+        onclick: function onclick() {
+          return close();
+        }
+      }), m(".modal-title h3", title)]), m(".modal-body", m(".content", content)), m(".modal-footer", footer)])]);
+    }
+  };
 };
+
 var _default = Modal;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/NavMenu.js", function(exports, require, module) {
@@ -886,7 +1201,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var Tab = function Tab(_ref) {
   var key = _ref.attrs.key;
@@ -932,7 +1247,7 @@ var NavMenu = function NavMenu(_ref3) {
 };
 
 var _default = NavMenu;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/NavTabs.js", function(exports, require, module) {
@@ -941,7 +1256,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Utils = require("Utils");
 
@@ -951,7 +1266,7 @@ var _SettingsMenu = _interopRequireDefault(require("./SettingsMenu.js"));
 
 var _Icons = _interopRequireDefault(require("Components/Icons"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Tab = function Tab(_ref) {
   var key = _ref.attrs.key;
@@ -962,7 +1277,7 @@ var Tab = function Tab(_ref) {
           tab = _ref2$attrs.tab,
           active = _ref2$attrs.active;
       return m(m.route.Link, {
-        class: active ? "tab-item active" : "tab-item",
+        "class": active ? "tab-item active" : "tab-item",
         key: key,
         id: "".concat(tab.id),
         onclick: function onclick(e) {
@@ -977,7 +1292,7 @@ var Tab = function Tab(_ref) {
         style: {
           width: "50px"
         }
-      }, _Icons.default.logo) : tab.title);
+      }, _Icons["default"].logo) : tab.title);
     }
   };
 };
@@ -1008,13 +1323,13 @@ var NavTabs = function NavTabs() {
           tab: tab,
           mdl: mdl
         }));
-      }), mdl.state.isAuth() ? m(_SettingsMenu.default, {
+      }), mdl.state.isAuth() ? m(_SettingsMenu["default"], {
         mdl: mdl
       }) : m("li.tab-item", m("button.btn btn-primary", {
         onclick: function onclick() {
           return mdl.toggleAuthModal(mdl);
         }
-      }, "Login / Register")), m(_Auth.default, {
+      }, "Login / Register")), m(_Auth["default"], {
         mdl: mdl
       })])];
     }
@@ -1022,7 +1337,7 @@ var NavTabs = function NavTabs() {
 };
 
 var _default = NavTabs;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/Navigation.js", function(exports, require, module) {
@@ -1031,17 +1346,17 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _NavTabs = _interopRequireDefault(require("./NavTabs.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Navigation = function Navigation() {
   return {
     view: function view(_ref) {
       var mdl = _ref.attrs.mdl;
-      return m(".navigation", m(_NavTabs.default, {
+      return m(".navigation", m(_NavTabs["default"], {
         mdl: mdl
       }));
     }
@@ -1049,7 +1364,7 @@ var Navigation = function Navigation() {
 };
 
 var _default = Navigation;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/ProfileNavigation.js", function(exports, require, module) {
@@ -1058,17 +1373,17 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _NavTabs = _interopRequireDefault(require("./NavTabs.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ProfileNavigation = function ProfileNavigation() {
   return {
     view: function view(_ref) {
       var mdl = _ref.attrs.mdl;
-      return m(".navigation", m(_NavTabs.default, {
+      return m(".navigation", m(_NavTabs["default"], {
         mdl: mdl
       }));
     }
@@ -1076,7 +1391,7 @@ var ProfileNavigation = function ProfileNavigation() {
 };
 
 var _default = ProfileNavigation;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/SettingsMenu.js", function(exports, require, module) {
@@ -1085,7 +1400,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Utils = require("Utils");
 
@@ -1132,7 +1447,7 @@ var Tab = function Tab(_ref2) {
           active = _ref3$attrs.active,
           mdl = _ref3$attrs.mdl;
       return m("li.menu-item", m("a.btn btn-link menu-item", {
-        class: active && "active",
+        "class": active && "active",
         onclick: function onclick() {
           m.route.set(tab.route, {
             name: (0, _Utils.makeRoute)(mdl.user.name)
@@ -1188,7 +1503,7 @@ var SettingsMenu = function SettingsMenu() {
 };
 
 var _default = SettingsMenu;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Navigation/index.js", function(exports, require, module) {
@@ -1229,13 +1544,13 @@ Object.keys(_ProfileNavigation).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
 var _Components = _interopRequireDefault(require("Components"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Paginate = {
   view: function view(_ref) {
@@ -1245,27 +1560,27 @@ var Paginate = {
         paginateFn = _ref$attrs.paginateFn,
         limit = _ref$attrs.limit,
         mdl = _ref$attrs.mdl;
-    return (0, _mithril.default)(".pagination", [(0, _mithril.default)(_Components.default, {
+    return (0, _mithril["default"])(".pagination", [(0, _mithril["default"])(_Components["default"], {
       action: function action() {
         state.from = state.from - mdl.state.limit;
         state.size = mdl.state.limit;
         paginateFn(http);
       },
       isDisabled: state.from - mdl.state.limit <= 0,
-      label: [_mithril.default.trust("&#8678;"), limit]
-    }), (0, _mithril.default)(_Components.default, {
+      label: [_mithril["default"].trust("&#8678;"), limit]
+    }), (0, _mithril["default"])(_Components["default"], {
       action: function action() {
         state.from = state.from + state.data.length++;
         state.size = mdl.state.limit;
         paginateFn(http);
       },
-      label: [limit, _mithril.default.trust("&#8680;")],
+      label: [limit, _mithril["default"].trust("&#8680;")],
       isDisabled: state.from + mdl.state.limit > state.total
-    }), (0, _mithril.default)(".", (0, _mithril.default)("code.code", "".concat(state.from, " - ").concat(state.from + state.size, " ")), (0, _mithril.default)("code.code.row", " of ".concat(state.total, " ")))]);
+    }), (0, _mithril["default"])(".", (0, _mithril["default"])("code.code", "".concat(state.from, " - ").concat(state.from + state.size, " ")), (0, _mithril["default"])("code.code.row", " of ".concat(state.total, " ")))]);
   }
 };
 var _default = Paginate;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/ProgressBar.js", function(exports, require, module) {
@@ -1274,7 +1589,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var ProgressBar = function ProgressBar() {
   return {
@@ -1291,7 +1606,7 @@ var ProgressBar = function ProgressBar() {
 };
 
 var _default = ProgressBar;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/RightAside.js", function(exports, require, module) {
@@ -1300,16 +1615,16 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var RightAside = function RightAside() {
   return {
     view: function view() {
-      return (0, _mithril.default)('.aside', {
+      return (0, _mithril["default"])('.aside', {
         id: 'right-aside'
       });
     }
@@ -1317,7 +1632,7 @@ var RightAside = function RightAside() {
 };
 
 var _default = RightAside;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/SearchBar.js", function(exports, require, module) {
@@ -1326,13 +1641,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
 var _Utils = require("Utils");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var debounce300 = (0, _Utils.debounce)(300);
 
@@ -1341,7 +1656,7 @@ var SearchBar = function SearchBar(_ref) {
   var filterData = mdl.filterData(mdl);
   return {
     view: function view() {
-      return (0, _mithril.default)(".searchBar", [(0, _mithril.default)("input.input", {
+      return (0, _mithril["default"])(".searchBar", [(0, _mithril["default"])("input.input", {
         placeholder: "search query",
         oninput: function oninput(e) {
           return debounce300(filterData(e.target.value));
@@ -1352,7 +1667,7 @@ var SearchBar = function SearchBar(_ref) {
 };
 
 var _default = SearchBar;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Sidebar.js", function(exports, require, module) {
@@ -1361,24 +1676,24 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
 var _Utils = require("Utils");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Sidebar = {
   oncreate: _Utils.animateSidebarEntrance,
   view: function view(_ref) {
     var children = _ref.children,
         classList = _ref.attrs.classList;
-    return (0, _mithril.default)("aside.".concat(classList), children);
+    return (0, _mithril["default"])("aside.".concat(classList), children);
   }
 };
 var _default = Sidebar;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/SocialMedia.js", function(exports, require, module) {
@@ -1387,11 +1702,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var facebook = {
   name: "f",
@@ -1407,9 +1722,9 @@ var avatar = {
     var _ref$attrs = _ref.attrs,
         name = _ref$attrs.name,
         href = _ref$attrs.href;
-    return (0, _mithril.default)("a", {
+    return (0, _mithril["default"])("a", {
       selector: "figure",
-      class: "avatar avatar-xl",
+      "class": "avatar avatar-xl",
       "data-initial": name,
       target: "_blank",
       href: href
@@ -1420,10 +1735,10 @@ var avatar = {
 var SocialMediaLinks = function SocialMediaLinks() {
   return {
     view: function view() {
-      return (0, _mithril.default)(".socialmedias", socialmedialinks.map(function (_ref2) {
+      return (0, _mithril["default"])(".socialmedias", socialmedialinks.map(function (_ref2) {
         var name = _ref2.name,
             href = _ref2.href;
-        return (0, _mithril.default)(avatar, {
+        return (0, _mithril["default"])(avatar, {
           name: name,
           href: href
         });
@@ -1433,7 +1748,7 @@ var SocialMediaLinks = function SocialMediaLinks() {
 };
 
 var _default = SocialMediaLinks;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/Toaster.js", function(exports, require, module) {
@@ -1442,19 +1757,19 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Toaster = function Toaster() {
   return {
     view: function view(_ref) {
       var mdl = _ref.attrs.mdl;
-      return (0, _mithril.default)('.toast', {
-        class: "toast-".concat(mdl.state.toast.class())
-      }, [(0, _mithril.default)('button.btn btn-clear', {
+      return (0, _mithril["default"])('.toast', {
+        "class": "toast-".concat(mdl.state.toast["class"]())
+      }, [(0, _mithril["default"])('button.btn btn-clear', {
         id: 'btn-toast'
       }), mdl.state.toast.contents()]);
     }
@@ -1462,7 +1777,7 @@ var Toaster = function Toaster() {
 };
 
 var _default = Toaster;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Components/index.js", function(exports, require, module) {
@@ -1603,6 +1918,18 @@ Object.keys(_ProgressBar).forEach(function (key) {
     }
   });
 });
+
+var _FormInputs = require("./FormInputs.js");
+
+Object.keys(_FormInputs).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _FormInputs[key];
+    }
+  });
+});
 });
 
 ;require.register("FP/all.js", function(exports, require, module) {
@@ -1734,7 +2061,7 @@ var configure = function configure(_) {
   Object.defineProperty(Array.prototype, 'in', (0, _util.value)(_in));
 
   var _pushIfNotExist = function _pushIfNotExist(element, comparer) {
-    if (!this.in(comparer)) {
+    if (!this["in"](comparer)) {
       this.push(element);
     }
   };
@@ -2299,22 +2626,22 @@ var _data2 = _interopRequireDefault(require("data.task"));
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var configure = function configure(_) {
   var _toTask = function _toTask(nothing) {
     var cata = {
       Nothing: function Nothing(_) {
-        return _data2.default.of(nothing);
+        return _data2["default"].of(nothing);
       },
       Just: function Just(x) {
-        return _data2.default.of(x);
+        return _data2["default"].of(x);
       }
     };
     return this.cata(cata);
   };
 
-  Object.defineProperty(_data.default.prototype, 'toTask', (0, _util.value)(_toTask));
+  Object.defineProperty(_data["default"].prototype, 'toTask', (0, _util.value)(_toTask));
 };
 
 var Maybe = {
@@ -2337,7 +2664,7 @@ var _data = _interopRequireDefault(require("data.either"));
 
 var _data2 = _interopRequireDefault(require("data.task"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -2433,10 +2760,10 @@ exports.toList = toList;
 var eitherToTask = function eitherToTask(x) {
   return x.cata({
     Left: function Left(e) {
-      return _data2.default.rejected(new ParseError(e));
+      return _data2["default"].rejected(new ParseError(e));
     },
     Right: function Right(x) {
-      return _data2.default.of(x);
+      return _data2["default"].of(x);
     }
   });
 };
@@ -2444,7 +2771,7 @@ var eitherToTask = function eitherToTask(x) {
 exports.eitherToTask = eitherToTask;
 
 var promiseToTask = function promiseToTask(p) {
-  return new _data2.default(function (rej, res) {
+  return new _data2["default"](function (rej, res) {
     return p.then(res, rej);
   });
 };
@@ -2459,7 +2786,7 @@ var taskToPromise = function taskToPromise(t) {
 
 exports.taskToPromise = taskToPromise;
 
-var parse = _data.default.try((0, _ramda.compose)(JSON.parse, (0, _ramda.prop)('response')));
+var parse = _data["default"]["try"]((0, _ramda.compose)(JSON.parse, (0, _ramda.prop)('response')));
 
 exports.parse = parse;
 });
@@ -2498,20 +2825,20 @@ var _data = _interopRequireDefault(require("data.task"));
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var configure = function configure() {
   var _mjoin = function _mjoin() {
     var _this = this;
 
-    return new _data.default(function (rej, res) {
+    return new _data["default"](function (rej, res) {
       return _this.fork(rej, function (s) {
         return s.fork(rej, res);
       });
     });
   };
 
-  Object.defineProperty(_data.default.prototype, 'mjoin', (0, _util.value)(_mjoin));
+  Object.defineProperty(_data["default"].prototype, 'mjoin', (0, _util.value)(_mjoin));
 };
 
 var Task = {
@@ -2700,7 +3027,7 @@ var _data2 = _interopRequireDefault(require("data.task"));
 
 var _util = require("./util");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var constant = function constant(x) {
   return function () {
@@ -2717,27 +3044,27 @@ var configure = function configure() {
     return this.map(constant).ap(b);
   };
 
-  Object.defineProperty(_data.default.prototype, 'apLeft', (0, _util.value)(apLeft));
+  Object.defineProperty(_data["default"].prototype, 'apLeft', (0, _util.value)(apLeft));
 
   var apRight = function apRight(b) {
     return this.map(constant(id)).ap(b);
   };
 
-  Object.defineProperty(_data.default.prototype, 'apRight', (0, _util.value)(apRight));
+  Object.defineProperty(_data["default"].prototype, 'apRight', (0, _util.value)(apRight));
 
   var _toTask = function _toTask() {
     var f = {
       Failure: function Failure(x) {
-        return _data2.default.rejected(x);
+        return _data2["default"].rejected(x);
       },
       Success: function Success(x) {
-        return _data2.default.of(x);
+        return _data2["default"].of(x);
       }
     };
     return this.cata(f);
   };
 
-  Object.defineProperty(_data.default.prototype, 'toTask', (0, _util.value)(_toTask));
+  Object.defineProperty(_data["default"].prototype, 'toTask', (0, _util.value)(_toTask));
 };
 
 var Validation = {
@@ -2746,331 +3073,13 @@ var Validation = {
 exports.Validation = Validation;
 });
 
-;require.register("Forms/authentication/Login.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Login = void 0;
-
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Login = function Login() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          userModel = _ref$attrs.data.userModel,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted,
-          httpError = _ref$attrs.httpError;
-      return (0, _mithril.default)('form.column', {
-        role: 'form',
-        id: 'Login-form',
-        onsubmit: function onsubmit(e) {
-          return e.preventDefault();
-        }
-      }, [(0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.email ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'reg-email'
-      }, 'Email'), (0, _mithril.default)('input.form-input', {
-        id: 'reg-email',
-        type: 'email',
-        placeholder: 'Email',
-        onkeyup: function onkeyup(e) {
-          return userModel.email = e.target.value;
-        },
-        value: userModel.email
-      }), errors.email && (0, _mithril.default)('p.form-input-hint', errors.email)]), (0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.password ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'reg-pass'
-      }, 'Password'), (0, _mithril.default)('input.form-input', {
-        id: 'reg-pass',
-        type: 'password',
-        placeholder: 'must contain and not contain',
-        onkeyup: function onkeyup(e) {
-          return userModel.password = e.target.value;
-        },
-        value: userModel.password
-      }), errors.password && (0, _mithril.default)('p.form-input-hint', errors.password)]), httpError && (0, _mithril.default)('.toast toast-error', httpError)]);
-    }
-  };
-};
-
-exports.Login = Login;
-});
-
-;require.register("Forms/authentication/Register.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Register = void 0;
-
-var _registerUser = _interopRequireDefault(require("./registerUser.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Register = function Register() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          userModel = _ref$attrs.data.userModel,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted,
-          httpError = _ref$attrs.httpError;
-      return [m("form.columns", {
-        role: "form",
-        id: "Register-form",
-        onsubmit: function onsubmit(e) {
-          return e.preventDefault();
-        }
-      }, [m(_registerUser.default, {
-        data: userModel,
-        errors: errors,
-        isSubmitted: isSubmitted,
-        httpError: httpError
-      }), m(".divider-vert", {
-        dataContent: "|"
-      })]), httpError && m(".toast toast-error", httpError)];
-    }
-  };
-};
-
-exports.Register = Register;
-});
-
-;require.register("Forms/authentication/Validations.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.validateLoginTask = exports.validateUserRegistrationTask = void 0;
-
-var _ramda = require("ramda");
-
-var _data = require("data.validation");
-
-var _Utils = require("Utils");
-
-var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
-var ValidateLogin = (0, _data.Success)((0, _ramda.curryN)(2, _ramda.identity));
-var nameLense = (0, _ramda.lensProp)("name");
-var passwordLense = (0, _ramda.lensProp)("password");
-var passwordConfirmLense = (0, _ramda.lensProp)("confirmPassword");
-var emailLense = (0, _ramda.lensProp)("email");
-var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
-var NAME_REQUIRED_MSG = "A Name is required";
-var PASSWORD_REQUIRED_MSG = "A Password is required";
-var EMAIL_REQUIRED_MSG = "An Email is required";
-var EMAILS_MUST_MATCH = "Emails do not match";
-var INVALID_EMAIL_FORMAT = "Email must be a valid format";
-var PASSWORDS_MUST_MATCH = "Passwords do not match";
-
-var inputsMatch = function inputsMatch(input1) {
-  return function (input2) {
-    return input2 === input1;
-  };
-};
-
-var validateName = function validateName(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense, NAME_REQUIRED_MSG, data));
-};
-
-var validateEmails = function validateEmails(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
-};
-
-var validateEmail = function validateEmail(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
-};
-
-var validatePasswords = function validatePasswords(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordConfirmLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.password), passwordConfirmLense, PASSWORDS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmPassword), passwordLense, PASSWORDS_MUST_MATCH, data));
-};
-
-var validatePassword = function validatePassword(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data));
-};
-
-var validateUserRegistrationTask = function validateUserRegistrationTask(data) {
-  return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)).ap(validatePasswords(data)).failureMap(_ramda.mergeAll).toTask();
-};
-
-exports.validateUserRegistrationTask = validateUserRegistrationTask;
-
-var validateLoginTask = function validateLoginTask(data) {
-  return ValidateLogin.ap(validateEmail(data)).ap(validatePassword(data)).failureMap(_ramda.mergeAll).toTask();
-};
-
-exports.validateLoginTask = validateLoginTask;
-});
-
-;require.register("Forms/authentication/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Login = require("./Login.js");
-
-Object.keys(_Login).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Login[key];
-    }
-  });
-});
-
-var _Register = require("./Register.js");
-
-Object.keys(_Register).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Register[key];
-    }
-  });
-});
-
-var _Validations = require("./Validations.js");
-
-Object.keys(_Validations).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _Validations[key];
-    }
-  });
-});
-});
-
-;require.register("Forms/authentication/registerUser.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RegisterUser = function RegisterUser() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          data = _ref$attrs.data,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted;
-      return (0, _mithril.default)('.column col-6', [(0, _mithril.default)('.form-group ', isSubmitted && {
-        class: errors.name ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'reg-name'
-      }, ['Name', (0, _mithril.default)('span.span required', '*')]), (0, _mithril.default)('input.form-input', {
-        id: 'reg-name',
-        type: 'text',
-        placeholder: 'Name',
-        onkeyup: function onkeyup(e) {
-          return data.name = e.target.value;
-        },
-        value: data.name
-      }), errors.name && (0, _mithril.default)('p.form-input-hint', errors.name)]), (0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.email ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'reg-email'
-      }, ['Email', (0, _mithril.default)('span.span required', '*')]), (0, _mithril.default)('input.form-input', {
-        id: 'reg-email',
-        type: 'email',
-        placeholder: 'Email',
-        onkeyup: function onkeyup(e) {
-          return data.email = e.target.value;
-        },
-        value: data.email
-      }), errors.email && (0, _mithril.default)('p.form-input-hint', errors.email)]), (0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.confirmEmail ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'confirmEmail'
-      }, ['Confirm Email', (0, _mithril.default)('span.span required', '*')]), (0, _mithril.default)('input.form-input', {
-        id: 'confirmEmail',
-        type: 'email',
-        placeholder: 'Email',
-        onkeyup: function onkeyup(e) {
-          return data.confirmEmail = e.target.value;
-        },
-        value: data.confirmEmail
-      }), errors.confirmEmail && (0, _mithril.default)('p.form-input-hint', errors.confirmEmail)]), (0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.password ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'reg-pass'
-      }, ['Password', (0, _mithril.default)('span.span required', '*')]), (0, _mithril.default)('input.form-input', {
-        id: 'reg-pass',
-        type: 'password',
-        placeholder: 'must contain and not contain',
-        onkeyup: function onkeyup(e) {
-          return data.password = e.target.value;
-        },
-        value: data.password
-      }), errors.password && (0, _mithril.default)('p.form-input-hint', errors.password)]), (0, _mithril.default)('.form-group', isSubmitted && {
-        class: errors.confirmPassword ? 'has-error' : 'has-success'
-      }, [(0, _mithril.default)('label.form-label text-left', {
-        for: 'pass-confirm'
-      }, ['Confirm Password', (0, _mithril.default)('span.span required', '*')]), (0, _mithril.default)('input.form-input', {
-        id: 'pass-confirm',
-        type: 'password',
-        placeholder: 'must contain and not contain',
-        onkeyup: function onkeyup(e) {
-          return data.confirmPassword = e.target.value;
-        },
-        value: data.confirmPassword
-      }), errors.confirmPassword && (0, _mithril.default)('p.form-input-hint', errors.confirmPassword)])]);
-    }
-  };
-};
-
-var _default = RegisterUser;
-exports.default = _default;
-});
-
-;require.register("Forms/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("./authentication/index.js");
-
-Object.keys(_index).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _index[key];
-    }
-  });
-});
-});
-
 ;require.register("Layouts/MainLayout.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _MainHeader = _interopRequireDefault(require("Components/Headers/MainHeader"));
 
@@ -3082,7 +3091,7 @@ var _LeftAside = _interopRequireDefault(require("Components/LeftAside"));
 
 var _RightAside = _interopRequireDefault(require("Components/RightAside"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var MainLayout = function MainLayout(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -3096,15 +3105,15 @@ var MainLayout = function MainLayout(_ref) {
       var children = _ref2.children;
       return m(".mainLayout", {
         id: "mainLayout"
-      }, [m(_MainHeader.default, {
+      }, [m(_MainHeader["default"], {
         mdl: mdl
-      }), showMenu() && m(_LeftAside.default, {
+      }), showMenu() && m(_LeftAside["default"], {
         mdl: mdl
-      }), m(_Body.default, {
+      }), m(_Body["default"], {
         mdl: mdl
-      }, [children]), m(_RightAside.default, {
+      }, [children]), m(_RightAside["default"], {
         mdl: mdl
-      }), m(_Footer.default, {
+      }), m(_Footer["default"], {
         mdl: mdl
       })]);
     }
@@ -3112,7 +3121,7 @@ var MainLayout = function MainLayout(_ref) {
 };
 
 var _default = MainLayout;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Layouts/ProfileLayout.js", function(exports, require, module) {
@@ -3121,7 +3130,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _ProfileHeader = _interopRequireDefault(require("Components/Headers/ProfileHeader"));
 
@@ -3133,7 +3142,7 @@ var _Body = _interopRequireDefault(require("Components/Body"));
 
 var _Modal = _interopRequireDefault(require("Components/Modal"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ProfileLayout = function ProfileLayout(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -3142,23 +3151,23 @@ var ProfileLayout = function ProfileLayout(_ref) {
       var children = _ref2.children;
       return m(".profileLayout", {
         id: "profileLayout"
-      }, [m(_ProfileHeader.default, {
+      }, [m(_ProfileHeader["default"], {
         mdl: mdl
-      }), mdl.state.profile !== "desktop" ? m(_Modal.default, {
+      }), mdl.state.profile !== "desktop" ? m(_Modal["default"], {
         isActive: mdl.state.showSidebarModal(),
         close: function close() {
           return mdl.toggleSidebarModal(mdl);
         },
         classList: "",
         mdl: mdl,
-        content: m(_LeftAside.default, {
+        content: m(_LeftAside["default"], {
           mdl: mdl
         })
-      }) : m(_LeftAside.default, {
+      }) : m(_LeftAside["default"], {
         mdl: mdl
-      }), m(_Body.default, {
+      }), m(_Body["default"], {
         mdl: mdl
-      }, [children]), m(_Footer.default, {
+      }, [children]), m(_Footer["default"], {
         mdl: mdl
       })]);
     }
@@ -3166,7 +3175,7 @@ var ProfileLayout = function ProfileLayout(_ref) {
 };
 
 var _default = ProfileLayout;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Layouts/SplashLayout.js", function(exports, require, module) {
@@ -3175,7 +3184,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _SplashHeader = _interopRequireDefault(require("Components/Headers/SplashHeader"));
 
@@ -3185,7 +3194,7 @@ var _Body = _interopRequireDefault(require("Components/Body"));
 
 var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var SplashLayout = function SplashLayout(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -3194,11 +3203,11 @@ var SplashLayout = function SplashLayout(_ref) {
       var children = _ref2.children;
       return m(".splashlayout", {
         id: "splashlayout"
-      }, [m(_SplashHeader.default, {
+      }, [m(_SplashHeader["default"], {
         mdl: mdl
-      }), m(_Body.default, {
+      }), m(_Body["default"], {
         mdl: mdl
-      }, [children]), m(_Footer.default, {
+      }, [children]), m(_Footer["default"], {
         mdl: mdl
       })]);
     }
@@ -3206,7 +3215,7 @@ var SplashLayout = function SplashLayout(_ref) {
 };
 
 var _default = SplashLayout;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Layouts/index.js", function(exports, require, module) {
@@ -3265,12 +3274,12 @@ var _http = _interopRequireDefault(require("Utils/http"));
 
 var _index = _interopRequireDefault(require("./Routes/index.js"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // import m from 'mithril'
 var model = {
-  Routes: _index.default,
-  http: _http.default,
+  Routes: _index["default"],
+  http: _http["default"],
   data: Stream({}),
   state: {
     loadingProgress: {
@@ -3289,16 +3298,20 @@ var model = {
     scrollPos: Stream(window.scrollY),
     limit: 10,
     profile: "",
+    showModal: Stream(false),
     showSidebarModal: Stream(false),
     showAuthModal: Stream(false),
     showSettings: Stream(false),
     showNav: Stream(false),
     toast: {
       show: Stream(false),
-      class: Stream("primary"),
+      "class": Stream("primary"),
       contents: Stream("content")
     },
     query: Stream("")
+  },
+  toggleModal: function toggleModal(mdl) {
+    return mdl.state.showModal(!mdl.state.showModal());
   },
   toggleToast: function toggleToast(mdl) {
     return mdl.state.toast.show(!mdl.state.toast.show());
@@ -3330,20 +3343,26 @@ exports.model = model;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var BatteryTestConfig = function BatteryTestConfig(_ref) {
   var mdl = _ref.attrs.mdl;
   // console.log('mdl', mdl)
   return {
     view: function view() {
-      return m(".calc-config", m("h1", mdl.state.route.title));
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".battery-config", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
     }
   };
 };
 
 var _default = BatteryTestConfig;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Admin/Dashboard/index.js", function(exports, require, module) {
@@ -3352,20 +3371,121 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var Dashboard = function Dashboard(_ref) {
   var mdl = _ref.attrs.mdl;
   // console.log('mdl', mdl)
   return {
     view: function view() {
-      return m(".dashboard", m("h1", mdl.state.route.title));
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".dashboard", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
     }
   };
 };
 
 var _default = Dashboard;
-exports.default = _default;
+exports["default"] = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/AddClient.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _registerClientForm = _interopRequireDefault(require("./registerClientForm.js"));
+
+var _Utils = require("Utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var clientModel = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  birthday: ""
+};
+var dataModel = {
+  clientModel: clientModel
+};
+var state = {
+  isSubmitted: false,
+  errors: {},
+  httpError: undefined,
+  data: (0, _Utils.jsonCopy)(dataModel)
+};
+
+var resetState = function resetState() {
+  state.data = (0, _Utils.jsonCopy)(dataModel);
+  state.errors = {};
+  state.httpError = undefined;
+  state.isSubmitted = false;
+};
+
+var AddClientActions = function AddClientActions() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          state = _ref$attrs.state;
+      return [m("input.btn.btn-primary authBtn", {
+        type: "submit",
+        form: "client-form",
+        onclick: function onclick() {
+          console.log(state); //  validateForm(mdl)(state.data)
+        },
+        "class": mdl.state.isLoading() && "loading"
+      }, "Add New Client")];
+    }
+  };
+};
+
+var AddClient = function AddClient() {
+  return {
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return m(".", [m("button.btn", {
+        onclick: function onclick(e) {
+          return mdl.state.showModal(true);
+        }
+      }, "Add Client"), m(_Modal["default"], {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.state.showModal(),
+        close: function close() {
+          return mdl.state.showModal(false);
+        },
+        title: "Add Client",
+        content: m(_registerClientForm["default"], {
+          data: state.data,
+          errors: state.errors,
+          isSubmitted: state.isSubmitted
+        }),
+        footer: m(AddClientActions, {
+          mdl: mdl,
+          state: state
+        })
+      })]);
+    }
+  };
+};
+
+var _default = AddClient;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Admin/ManageClients/index.js", function(exports, require, module) {
@@ -3374,9 +3494,124 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
+
+var _AddClient = _interopRequireDefault(require("./AddClient.js"));
+
+var _helpers = require("Utils/helpers");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ManageClients = function ManageClients() {
+  var state = {};
+
+  var loadUsers = function loadUsers(_ref) {
+    var mdl = _ref.attrs.mdl;
+    var query = "query {\n  user(where:{clientId: ".concat((0, _helpers.removeHyphens)(mdl.user.objectId), "}){clients{id}}\n}");
+
+    var onError = function onError(e) {
+      console.log("ERROR", e);
+    };
+
+    var onSuccess = function onSuccess(s) {
+      console.log("SUCCESSS", s);
+      state.clients = s;
+    };
+
+    console.log("the Q", query);
+    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
+  };
+
+  return {
+    oninit: loadUsers,
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, [m(_AddClient["default"], {
+        mdl: mdl
+      })]), m("section.section", {
+        id: "content-data"
+      }, [m(".manageClients", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
+    }
+  };
+};
+
+var _default = ManageClients;
+exports["default"] = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/registerClientForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var RegisterClient = function RegisterClient() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted;
+      return m(".column col-6", [m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "firstname",
+        label: "First Name",
+        id: "first-name",
+        type: "text"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "lastname",
+        label: "Last Name",
+        id: "last-name",
+        type: "text"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "birthday",
+        label: "birthday",
+        id: "birthday",
+        type: "date"
+      })]);
+    }
+  };
+};
+
+var _default = RegisterClient;
+exports["default"] = _default;
+});
+
+;require.register("Pages/Admin/ManageNetwork/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var ManageNetwork = function ManageNetwork() {
   var state = {};
 
   var loadUsers = function loadUsers(_ref) {
@@ -3423,65 +3658,26 @@ var ManageClients = function ManageClients() {
     oninit: loadUsers,
     view: function view(_ref2) {
       var mdl = _ref2.attrs.mdl;
-      return m(".manageClients", {
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, [m(".", [m("button.btn", "Add Client")])]), m("section.section", {
+        id: "content-data"
+      }, [m(".manageNetworks", {
         id: mdl.state.route.id
       }, [m("h1.title", mdl.state.route.title), state.users && state.users.map(function (u) {
         return m(".menu", m(".menu-item", [m("p", u.name), m("p", u.email), m(".form-group", m("label.form-switch", [m("input[type='checkbox']", {
           checked: u.isAdmin,
           onchange: updateAdminStatus(mdl, u),
           isDisabled: false,
-          class: ""
+          "class": ""
         }), m("i.form-icon"), "User is Admin"]))]));
-      })]);
+      })])])]);
     }
   };
 };
 
-var _default = ManageClients;
-exports.default = _default;
-});
-
-;require.register("Pages/Admin/ManageUsers/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var ManageUsers = function ManageUsers() {
-  var state = {};
-
-  var loadUsers = function loadUsers(_ref) {
-    var mdl = _ref.attrs.mdl;
-    var query = "query {\n  user(where:{clientId: ".concat(mdl.user.objectId, "}){clients{id}}\n}");
-
-    var onError = function onError(e) {
-      console.log("ERROR", e);
-    };
-
-    var onSuccess = function onSuccess(s) {
-      console.log("SUCCESSS", s);
-      state.clients = s;
-    };
-
-    console.log("the Q", query);
-    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
-  };
-
-  return {
-    oninit: loadUsers,
-    view: function view(_ref2) {
-      var mdl = _ref2.attrs.mdl;
-      return m(".manageUsers", {
-        id: mdl.state.route.id
-      }, [m("h1.title", mdl.state.route.title)]);
-    }
-  };
-};
-
-var _default = ManageUsers;
-exports.default = _default;
+var _default = ManageNetwork;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Admin/index.js", function(exports, require, module) {
@@ -3503,7 +3699,7 @@ Object.keys(_index).forEach(function (key) {
   });
 });
 
-var _index2 = require("./ManageUsers/index");
+var _index2 = require("./ManageNetwork/index");
 
 Object.keys(_index2).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -3546,23 +3742,23 @@ Object.keys(_index4).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Icons = _interopRequireDefault(require("Components/Icons"));
 
 var _Auth = _interopRequireDefault(require("Components/Auth"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var UnautherizedView = function UnautherizedView() {
   return {
     view: function view(_ref) {
       var mdl = _ref.attrs.mdl;
-      return m(".empty", [m("svg.unauth-lock", _Icons.default.lock), m("p.empty-title.h5", "Registered Users Only"), m("p.empty-subtitle", [m("button.btn", {
+      return m(".empty", [m("svg.unauth-lock", _Icons["default"].lock), m("p.empty-title.h5", "Registered Users Only"), m("p.empty-subtitle", [m("button.btn", {
         onclick: function onclick() {
           return mdl.toggleAuthModal(mdl);
         }
-      }, "Register or Log in to view this content"), m(_Auth.default, {
+      }, "Register or Log in to view this content"), m(_Auth["default"], {
         mdl: mdl
       })])]);
     }
@@ -3570,7 +3766,7 @@ var UnautherizedView = function UnautherizedView() {
 };
 
 var _default = UnautherizedView;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Default/index.js", function(exports, require, module) {
@@ -3579,20 +3775,26 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var Default = function Default(_ref) {
   var mdl = _ref.attrs.mdl;
   // console.log('mdl', mdl)
   return {
     view: function view() {
-      return m(".default", m("h1", mdl.state.route.title));
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".default", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
     }
   };
 };
 
 var _default = Default;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Splash/About/index.js", function(exports, require, module) {
@@ -3601,7 +3803,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var About = function About(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -3614,7 +3816,7 @@ var About = function About(_ref) {
 };
 
 var _default = About;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Splash/Contact/index.js", function(exports, require, module) {
@@ -3623,23 +3825,23 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Contact = function Contact(_ref) {
   var mdl = _ref.attrs.mdl;
   return {
     view: function view() {
-      return (0, _mithril.default)('.contact', mdl.state.route.title);
+      return (0, _mithril["default"])('.contact', mdl.state.route.title);
     }
   };
 };
 
 var _default = Contact;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Splash/Home/index.js", function(exports, require, module) {
@@ -3648,11 +3850,11 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _Icons = _interopRequireDefault(require("Components/Icons"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Home = function Home(_ref) {
   var mdl = _ref.attrs.mdl;
@@ -3664,7 +3866,7 @@ var Home = function Home(_ref) {
 };
 
 var _default = Home;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Pages/Splash/index.js", function(exports, require, module) {
@@ -3717,7 +3919,7 @@ Object.keys(_index3).forEach(function (key) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _ProfileLayout = _interopRequireDefault(require("Layouts/ProfileLayout"));
 
@@ -3725,9 +3927,9 @@ var _Dashboard = _interopRequireDefault(require("Pages/Admin/Dashboard"));
 
 var _Default = _interopRequireDefault(require("Pages/Default"));
 
-var _ManageUsers = _interopRequireDefault(require("Pages/Admin/ManageUsers"));
-
 var _ManageClients = _interopRequireDefault(require("Pages/Admin/ManageClients"));
+
+var _ManageNetwork = _interopRequireDefault(require("Pages/Admin/ManageNetwork"));
 
 var _BatteryConfig = _interopRequireDefault(require("Pages/Admin/BatteryConfig"));
 
@@ -3735,12 +3937,12 @@ var _Utils = require("Utils");
 
 var _Icons = _interopRequireDefault(require("Components/Icons"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var authenticated = [{
   id: "dashboard",
   title: "Dashboard",
-  icon: _Icons.default.logo,
+  icon: _Icons["default"].logo,
   route: "/EXRX/:name/dashboard",
   position: ["auth-nav", "left-aside"],
   group: ["authenticated"],
@@ -3749,16 +3951,16 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_ProfileLayout.default, {
+    return m(_ProfileLayout["default"], {
       mdl: mdl
-    }, m(_Dashboard.default, {
+    }, m(_Dashboard["default"], {
       mdl: mdl
     }));
   }
 }, {
   id: "profile-page",
   title: "Profile Page",
-  icon: _Icons.default.home,
+  icon: _Icons["default"].home,
   route: "/EXRX/:name/profile",
   position: ["settings-nav"],
   group: ["authenticated"],
@@ -3768,16 +3970,16 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_ProfileLayout.default, {
+    return m(_ProfileLayout["default"], {
       mdl: mdl
-    }, m(_Default.default, {
+    }, m(_Default["default"], {
       mdl: mdl
     }));
   }
 }, {
   id: "battery-config",
-  title: "Configure Batteries",
-  icon: _Icons.default.calcs,
+  title: "Batteries",
+  icon: _Icons["default"].calcs,
   route: "/EXRX/:name/battery-config",
   position: ["left-aside"],
   group: ["authenticated", "admin"],
@@ -3797,17 +3999,17 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_ProfileLayout.default, {
+    return m(_ProfileLayout["default"], {
       mdl: mdl
-    }, m(_BatteryConfig.default, {
+    }, m(_BatteryConfig["default"], {
       mdl: mdl
     }));
   }
 }, {
-  id: "manage-users",
-  title: "Manage Users",
-  icon: _Icons.default.users,
-  route: "/EXRX/:name/manage-users",
+  id: "manage-clients",
+  title: "Clientelle",
+  icon: _Icons["default"].users,
+  route: "/EXRX/:name/manage-clients",
   position: ["left-aside"],
   group: ["authenticated", "admin"],
   children: [],
@@ -3825,17 +4027,17 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_ProfileLayout.default, {
+    return m(_ProfileLayout["default"], {
       mdl: mdl
-    }, m(_ManageUsers.default, {
+    }, m(_ManageClients["default"], {
       mdl: mdl
     }));
   }
 }, {
-  id: "manage-clients",
-  title: "Manage Clients",
-  icon: _Icons.default.users,
-  route: "/EXRX/:name/client-management",
+  id: "manage-network",
+  title: "Configure Network",
+  icon: _Icons["default"].users,
+  route: "/EXRX/:name/network-management",
   position: ["settings-nav"],
   group: ["authenticated", "admin"],
   children: [],
@@ -3854,15 +4056,15 @@ var authenticated = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_ProfileLayout.default, {
+    return m(_ProfileLayout["default"], {
       mdl: mdl
-    }, m(_ManageClients.default, {
+    }, m(_ManageNetwork["default"], {
       mdl: mdl
     }));
   }
 }];
 var _default = authenticated;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Routes/index.js", function(exports, require, module) {
@@ -3871,7 +4073,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _splash = _interopRequireDefault(require("./splash.js"));
 
@@ -3879,11 +4081,11 @@ var _authenticated = _interopRequireDefault(require("./authenticated"));
 
 var _ramda = require("ramda");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var Routes = (0, _ramda.flatten)([_splash.default, _authenticated.default]);
+var Routes = (0, _ramda.flatten)([_splash["default"], _authenticated["default"]]);
 var _default = Routes;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Routes/splash.js", function(exports, require, module) {
@@ -3892,7 +4094,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _SplashLayout = _interopRequireDefault(require("Layouts/SplashLayout"));
 
@@ -3904,12 +4106,12 @@ var _Utils = require("Utils");
 
 var _Icons = _interopRequireDefault(require("Components/Icons"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Splash = [{
   id: "home",
   title: "Home",
-  icon: _Icons.default.logo,
+  icon: _Icons["default"].logo,
   route: "/home",
   position: ["nav"],
   group: [],
@@ -3918,9 +4120,9 @@ var Splash = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_SplashLayout.default, {
+    return m(_SplashLayout["default"], {
       mdl: mdl
-    }, m(_Home.default, {
+    }, m(_Home["default"], {
       mdl: mdl
     }));
   }
@@ -3936,16 +4138,16 @@ var Splash = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_SplashLayout.default, {
+    return m(_SplashLayout["default"], {
       mdl: mdl
-    }, m(_Default.default, {
+    }, m(_Default["default"], {
       mdl: mdl
     }));
   }
 }, {
   id: "contact",
   title: "Contact",
-  icon: _Icons.default.contact,
+  icon: _Icons["default"].contact,
   route: "/contact",
   position: ["nav", "footer"],
   group: [],
@@ -3954,9 +4156,9 @@ var Splash = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_SplashLayout.default, {
+    return m(_SplashLayout["default"], {
       mdl: mdl
-    }, m(_Default.default, {
+    }, m(_Default["default"], {
       mdl: mdl
     }));
   }
@@ -3972,15 +4174,15 @@ var Splash = [{
     isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
   },
   component: function component(mdl) {
-    return m(_SplashLayout.default, {
+    return m(_SplashLayout["default"], {
       mdl: mdl
-    }, m(_Default.default, {
+    }, m(_Default["default"], {
       mdl: mdl
     }));
   }
 }];
 var _default = Splash;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Styles/animations.js", function(exports, require, module) {
@@ -4101,7 +4303,7 @@ exports.animateChildrenLimitsExit = exports.slideModalOut = exports.animate = ex
 
 var _mithril = _interopRequireDefault(require("mithril"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -4111,7 +4313,7 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-var IsLoading = (0, _mithril.default)(".holder", [(0, _mithril.default)(".preloader", [(0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div")])]);
+var IsLoading = (0, _mithril["default"])(".holder", [(0, _mithril["default"])(".preloader", [(0, _mithril["default"])("div"), (0, _mithril["default"])("div"), (0, _mithril["default"])("div"), (0, _mithril["default"])("div"), (0, _mithril["default"])("div"), (0, _mithril["default"])("div"), (0, _mithril["default"])("div")])]);
 exports.IsLoading = IsLoading;
 
 var animateComponentEntrance = function animateComponentEntrance(idx) {
@@ -4212,13 +4414,13 @@ exports.animateChildrenLimitsExit = animateChildrenLimitsExit;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterTask = exports._paginate = exports._direction = exports._sort = exports._search = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
+exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterTask = exports._paginate = exports._direction = exports._sort = exports._search = exports.removeHyphens = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
 
 var _ramda = require("ramda");
 
 var _data = _interopRequireDefault(require("data.task"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var makeRoute = (0, _ramda.compose)((0, _ramda.join)("-"), (0, _ramda.split)(" "), (0, _ramda.trim)(), (0, _ramda.toLower)());
 exports.makeRoute = makeRoute;
@@ -4259,6 +4461,12 @@ var addTerms = function addTerms(item) {
 
 exports.addTerms = addTerms;
 
+var removeHyphens = function removeHyphens(str) {
+  return str.replace(/-/gi, "");
+};
+
+exports.removeHyphens = removeHyphens;
+
 var byTerms = function byTerms(query) {
   return (0, _ramda.compose)((0, _ramda.test)(new RegExp(query, "i")), (0, _ramda.prop)("name"));
 };
@@ -4296,7 +4504,7 @@ var filterTask = function filterTask(query) {
     return function (direction) {
       return function (offset) {
         return function (limit) {
-          return (0, _ramda.compose)(_data.default.of, (0, _ramda.map)(_paginate(offset)(limit)), (0, _ramda.map)(_direction(direction)), (0, _ramda.map)(_sort(prop)), _search(query));
+          return (0, _ramda.compose)(_data["default"].of, (0, _ramda.map)(_paginate(offset)(limit)), (0, _ramda.map)(_direction(direction)), (0, _ramda.map)(_sort(prop)), _search(query));
         };
       };
     };
@@ -4365,7 +4573,7 @@ exports.jsonCopy = jsonCopy;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.parseHttpSuccess = exports.parseHttpError = void 0;
+exports["default"] = exports.parseHttpSuccess = exports.parseHttpError = void 0;
 
 var _data = _interopRequireDefault(require("data.task"));
 
@@ -4373,7 +4581,7 @@ var _secrets = require("./secrets.js");
 
 var _Model = require("../Model.js");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -4416,8 +4624,8 @@ var xhrProgress = {
   }
 };
 
-var makeQuery = function makeQuery(string) {
-  return JSON.parse(JSON.stringify(string));
+var makeQueryString = function makeQueryString(query) {
+  return JSON.parse(JSON.stringify(query));
 };
 
 var parseQLResponse = function parseQLResponse(model) {
@@ -4458,13 +4666,15 @@ exports.parseHttpSuccess = parseHttpSuccess;
 var postQl = function postQl(model) {
   return function (query) {
     model.state.isLoading(true);
-    return new _data.default(function (rej, res) {
+    return new _data["default"](function (rej, res) {
       return m.request(_objectSpread({
         method: "POST",
         url: _secrets.GraphQl.url,
         withCredentials: false
       }, xhrProgress, {
-        body: makeQuery(query)
+        body: makeQueryString({
+          query: query
+        })
       })).then(parseQLResponse(model)).then(parseHttpSuccess(model)(res), parseHttpError(model)(rej));
     });
   };
@@ -4476,7 +4686,7 @@ var HttpTask = function HttpTask(_headers) {
       return function (url) {
         return function (body) {
           mdl.state.isLoading(true);
-          return new _data.default(function (rej, res) {
+          return new _data["default"](function (rej, res) {
             return m.request(_objectSpread({
               method: method,
               url: url,
@@ -4578,7 +4788,7 @@ var http = {
   postQl: postQl
 };
 var _default = http;
-exports.default = _default;
+exports["default"] = _default;
 });
 
 ;require.register("Utils/index.js", function(exports, require, module) {
@@ -4650,8 +4860,8 @@ var getUserToken = function getUserToken() {
 };
 
 var BackEnd = {
-  API_KEY: "7C923A78-BBF7-7D49-FF41-80A623EBE100",
-  APP_ID: "266157DE-A888-4853-B777-61AB54739D3A",
+  API_KEY: "0870B3E1-56DD-4A8A-8DA7-A6F7AC417C16",
+  APP_ID: "62607660-30EF-AD36-FFB1-FF547F6B1800",
   baseUrl: "https://api.backendless.com",
   headers: function headers() {
     return {
@@ -4680,7 +4890,7 @@ var _data = require("data.validation");
 
 var _data2 = _interopRequireDefault(require("data.maybe"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var getOrElse = function getOrElse(val) {
   return function (x) {
@@ -4741,12 +4951,12 @@ var onlyNumeric = (0, _ramda.test)(/^[0-9]*$/);
 exports.onlyNumeric = onlyNumeric;
 
 var maxLengthNullable = function maxLengthNullable(max) {
-  return (0, _ramda.compose)(getOrElse(false), (0, _ramda.map)((0, _ramda.gte)(max)), (0, _ramda.map)(_ramda.length), _data2.default.fromNullable);
+  return (0, _ramda.compose)(getOrElse(false), (0, _ramda.map)((0, _ramda.gte)(max)), (0, _ramda.map)(_ramda.length), _data2["default"].fromNullable);
 };
 
 exports.maxLengthNullable = maxLengthNullable;
 var unique = (0, _ramda.curry)(function (keys, value) {
-  var lookup = _data2.default.fromNullable(keys);
+  var lookup = _data2["default"].fromNullable(keys);
 
   return !(0, _ramda.contains)((0, _ramda.toUpper)(value.toString()), (0, _ramda.map)(function (y) {
     return (0, _ramda.toUpper)(y.toString());
@@ -4784,7 +4994,7 @@ var _App = _interopRequireDefault(require("./App.js"));
 
 var _FP = require("FP");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var root = document.body;
 var winW = window.innerWidth;
@@ -4837,7 +5047,7 @@ window.onscroll = function () {
   _Model.model.state.scrollPos(window.pageYOffset);
 };
 
-m.route(root, "/home", (0, _App.default)(_Model.model));
+m.route(root, "/home", (0, _App["default"])(_Model.model));
 });
 
 ;require.register("init.js", function(exports, require, module) {
