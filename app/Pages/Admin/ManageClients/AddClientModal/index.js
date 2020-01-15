@@ -26,43 +26,40 @@ const resetState = () => {
   state.isSubmitted = false
 }
 
-const saveClient = (mdl) => ({ email, firstName, lastName, birthdate }) => {
+const saveClientTask = (mdl) => ({ email, firstName, lastName, birthdate }) => {
   const query = `mutation {
-  createClient(data: {email:${email}, firstname:${firstName}, lastname:${lastName}, birthdate:${birthdate} }) {
+  createClient(
+    data: {
+      email:${JSON.stringify(email)},
+      firstname:${JSON.stringify(firstName)},
+      lastname:${JSON.stringify(lastName)},
+      birthdate:${JSON.stringify(birthdate)},
+      trainer:{connect:{userId: ${JSON.stringify(mdl.user.objectId)}}}
+    }), {
     id
   }
 }`
 
-  const onError = (e) => {
-    console.log("ERROR", e)
-  }
-
-  const onSuccess = (s) => {
-    console.log("SUCCESSS", s)
-    state.clients = s
-  }
-
-  console.log("the Q", query)
-  return mdl.http
-    .postQl(mdl)(query)
-    .fork(onError, onSuccess)
+  return mdl.http.postQl(mdl)(query)
 }
 
 const validateForm = (mdl) => (data) => {
-  const onValidationError = (errs) => {
+  const onError = (errs) => {
     state.errors = errs
     console.log("failed - state", state)
   }
 
-  const onValidationSuccess = (data) => {
+  const onSuccess = (mdl) => ({ createClient }) => {
+    console.log("data", data)
+    mdl.clients.push(createClient)
+    mdl.toggleModal(mdl)
     state.errors = {}
-    saveClient(mdl)(data).fork(onError, onRegisterSuccess)
   }
+
   state.isSubmitted = true
-  validateClientRegistrationTask(data).fork(
-    onValidationError,
-    onValidationSuccess
-  )
+  validateClientRegistrationTask(data)
+    .chain(saveClientTask(mdl))
+    .fork(onError, onSuccess(mdl))
 }
 
 const AddClientActions = () => {
@@ -74,7 +71,7 @@ const AddClientActions = () => {
           type: "submit",
           form: `client-form`,
           onclick: () => {
-            console.log(state)
+            // console.log(state)
             validateForm(mdl)(state.data)
           },
           class: mdl.state.isLoading() && "loading"
@@ -89,18 +86,15 @@ const AddClient = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(".", [
-        m(
-          "button.btn",
-          { onclick: (e) => mdl.state.showModal(true) },
-          "Add Client"
-        ),
+        m("button.btn", { onclick: (e) => mdl.toggleModal(mdl) }, "Add Client"),
         m(Modal, {
+          onremove: (v) => console.log("who am i??", v),
           animateEntrance: animateComponentEntrance,
           animateExit: slideModalOut,
           mdl,
           classList: "",
           isActive: mdl.state.showModal(),
-          close: () => mdl.state.showModal(false),
+          close: () => mdl.toggleModal(mdl),
           title: "Add Client",
           content: m(RegisterClientForm, {
             data: state.data,

@@ -3,6 +3,7 @@ import http from "Utils/http"
 import Routes from "./Routes/index.js"
 
 export const model = {
+  clients: [],
   Routes,
   http,
   data: Stream({}),

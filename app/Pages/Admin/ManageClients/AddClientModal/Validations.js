@@ -2,7 +2,7 @@ import { curryN, identity, lensProp, mergeAll } from "ramda"
 import { Success } from "data.validation"
 import { validate, isRequired, emailFormat } from "Utils"
 
-const ValidateRegistration = Success(curryN(3, identity))
+const ValidateRegistration = Success(curryN(2, identity))
 
 const nameLense = lensProp("name")
 const emailLense = lensProp("email")

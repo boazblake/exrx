@@ -3247,6 +3247,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 // import m from 'mithril'
 var model = {
+  clients: [],
   Routes: _index["default"],
   http: _http["default"],
   data: Stream({}),
@@ -3376,7 +3377,7 @@ var _data = require("data.validation");
 
 var _Utils = require("Utils");
 
-var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(2, _ramda.identity));
 var nameLense = (0, _ramda.lensProp)("name");
 var emailLense = (0, _ramda.lensProp)("email");
 var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
@@ -3448,56 +3449,50 @@ var resetState = function resetState() {
   state.isSubmitted = false;
 };
 
-var saveClient = function saveClient(mdl) {
+var saveClientTask = function saveClientTask(mdl) {
   return function (_ref) {
     var email = _ref.email,
         firstName = _ref.firstName,
         lastName = _ref.lastName,
         birthdate = _ref.birthdate;
-    var query = "mutation {\n  createClient(data: {email:".concat(email, ", firstname:").concat(firstName, ", lastname:").concat(lastName, ", birthdate:").concat(birthdate, " }) {\n    id\n  }\n}");
-
-    var onError = function onError(e) {
-      console.log("ERROR", e);
-    };
-
-    var onSuccess = function onSuccess(s) {
-      console.log("SUCCESSS", s);
-      state.clients = s;
-    };
-
-    console.log("the Q", query);
-    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
+    var query = "mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstName), ",\n      lastname:").concat(JSON.stringify(lastName), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {\n    id\n  }\n}");
+    return mdl.http.postQl(mdl)(query);
   };
 };
 
 var validateForm = function validateForm(mdl) {
   return function (data) {
-    var onValidationError = function onValidationError(errs) {
+    var onError = function onError(errs) {
       state.errors = errs;
       console.log("failed - state", state);
     };
 
-    var onValidationSuccess = function onValidationSuccess(data) {
-      state.errors = {};
-      saveClient(mdl)(data).fork(onError, onRegisterSuccess);
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref2) {
+        var createClient = _ref2.createClient;
+        console.log("data", data);
+        mdl.clients.push(createClient);
+        mdl.toggleModal(mdl);
+        state.errors = {};
+      };
     };
 
     state.isSubmitted = true;
-    (0, _Validations.validateClientRegistrationTask)(data).fork(onValidationError, onValidationSuccess);
+    (0, _Validations.validateClientRegistrationTask)(data).chain(saveClientTask(mdl)).fork(onError, onSuccess(mdl));
   };
 };
 
 var AddClientActions = function AddClientActions() {
   return {
-    view: function view(_ref2) {
-      var _ref2$attrs = _ref2.attrs,
-          mdl = _ref2$attrs.mdl,
-          state = _ref2$attrs.state;
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          mdl = _ref3$attrs.mdl,
+          state = _ref3$attrs.state;
       return [m("input.btn.btn-primary authBtn", {
         type: "submit",
         form: "client-form",
         onclick: function onclick() {
-          console.log(state);
+          // console.log(state)
           validateForm(mdl)(state.data);
         },
         "class": mdl.state.isLoading() && "loading"
@@ -3508,20 +3503,23 @@ var AddClientActions = function AddClientActions() {
 
 var AddClient = function AddClient() {
   return {
-    view: function view(_ref3) {
-      var mdl = _ref3.attrs.mdl;
+    view: function view(_ref4) {
+      var mdl = _ref4.attrs.mdl;
       return m(".", [m("button.btn", {
         onclick: function onclick(e) {
-          return mdl.state.showModal(true);
+          return mdl.toggleModal(mdl);
         }
       }, "Add Client"), m(_Modal["default"], {
+        onremove: function onremove(v) {
+          return console.log("who am i??", v);
+        },
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
         classList: "",
         isActive: mdl.state.showModal(),
         close: function close() {
-          return mdl.state.showModal(false);
+          return mdl.toggleModal(mdl);
         },
         title: "Add Client",
         content: m(_registerClientForm["default"], {
@@ -3625,8 +3623,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var ManageClients = function ManageClients() {
   var state = {};
 
-  var loadUsers = function loadUsers(_ref) {
+  var loadClients = function loadClients(_ref) {
     var mdl = _ref.attrs.mdl;
+    console.log("fetching clients");
     var query = "query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id}\n}");
 
     var onError = function onError(e) {
@@ -3636,16 +3635,17 @@ var ManageClients = function ManageClients() {
     var onSuccess = function onSuccess(_ref2) {
       var clients = _ref2.clients;
       console.log("SUCCESSS", clients);
-      state.clients = clients;
+      mdl.clients = clients;
     };
 
     return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
   };
 
   return {
-    oninit: loadUsers,
+    oninit: loadClients,
     view: function view(_ref3) {
       var mdl = _ref3.attrs.mdl;
+      console.log("manageclients");
       return m(".content", [m("section.section", {
         id: "content-toolbar"
       }, [m(_index["default"], {
@@ -3654,7 +3654,9 @@ var ManageClients = function ManageClients() {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("h1.title", mdl.state.route.title)])])]);
+      }, [m("h1.title", mdl.state.route.title), m("section.section", mdl.clients.map(function (client) {
+        return m("ul", m("li", m("code", "client Id:", client.id)));
+      }))])])]);
     }
   };
 };
