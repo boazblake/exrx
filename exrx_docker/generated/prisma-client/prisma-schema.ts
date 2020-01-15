@@ -24,6 +24,7 @@ type Biometric {
   weight: Float
   height: Float
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type BiometricConnection {
@@ -64,6 +65,8 @@ enum BiometricOrderByInput {
   height_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type BiometricPreviousValues {
@@ -71,6 +74,7 @@ type BiometricPreviousValues {
   weight: Float
   height: Float
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input BiometricScalarWhereInput {
@@ -112,6 +116,14 @@ input BiometricScalarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [BiometricScalarWhereInput!]
   OR: [BiometricScalarWhereInput!]
   NOT: [BiometricScalarWhereInput!]
@@ -224,6 +236,14 @@ input BiometricWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [BiometricWhereInput!]
   OR: [BiometricWhereInput!]
   NOT: [BiometricWhereInput!]
@@ -241,6 +261,8 @@ type Client {
   birthdate: DateTime!
   biometrics(where: BiometricWhereInput, orderBy: BiometricOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Biometric!]
   trainer: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type ClientConnection {
@@ -303,6 +325,10 @@ enum ClientOrderByInput {
   email_DESC
   birthdate_ASC
   birthdate_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ClientPreviousValues {
@@ -311,6 +337,8 @@ type ClientPreviousValues {
   lastname: String!
   email: String!
   birthdate: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ClientScalarWhereInput {
@@ -378,6 +406,22 @@ input ClientScalarWhereInput {
   birthdate_lte: DateTime
   birthdate_gt: DateTime
   birthdate_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ClientScalarWhereInput!]
   OR: [ClientScalarWhereInput!]
   NOT: [ClientScalarWhereInput!]
@@ -551,6 +595,22 @@ input ClientWhereInput {
   biometrics_some: BiometricWhereInput
   biometrics_none: BiometricWhereInput
   trainer: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [ClientWhereInput!]
   OR: [ClientWhereInput!]
   NOT: [ClientWhereInput!]
@@ -625,6 +685,8 @@ type User {
   id: ID!
   userId: String!
   clients(where: ClientWhereInput, orderBy: ClientOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Client!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -659,11 +721,17 @@ enum UserOrderByInput {
   id_DESC
   userId_ASC
   userId_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   userId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -743,6 +811,22 @@ input UserWhereInput {
   clients_every: ClientWhereInput
   clients_some: ClientWhereInput
   clients_none: ClientWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

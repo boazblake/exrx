@@ -1,16 +1,16 @@
 import Modal from "Components/Modal"
 import { animateComponentEntrance, slideModalOut } from "Utils/animations"
-import RegisterClient from "./registerClientForm.js"
+import RegisterClientForm from "./registerClientForm.js"
+import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 
-const clientModel = {
-  firstname: "",
-  lastname: "",
+const dataModel = {
+  firstName: "",
+  lastName: "",
   email: "",
-  birthday: ""
+  confirmEmail: "",
+  birthdate: ""
 }
-
-const dataModel = { clientModel }
 
 const state = {
   isSubmitted: false,
@@ -26,6 +26,45 @@ const resetState = () => {
   state.isSubmitted = false
 }
 
+const saveClient = (mdl) => ({ email, firstName, lastName, birthdate }) => {
+  const query = `mutation {
+  createClient(data: {email:${email}, firstname:${firstName}, lastname:${lastName}, birthdate:${birthdate} }) {
+    id
+  }
+}`
+
+  const onError = (e) => {
+    console.log("ERROR", e)
+  }
+
+  const onSuccess = (s) => {
+    console.log("SUCCESSS", s)
+    state.clients = s
+  }
+
+  console.log("the Q", query)
+  return mdl.http
+    .postQl(mdl)(query)
+    .fork(onError, onSuccess)
+}
+
+const validateForm = (mdl) => (data) => {
+  const onValidationError = (errs) => {
+    state.errors = errs
+    console.log("failed - state", state)
+  }
+
+  const onValidationSuccess = (data) => {
+    state.errors = {}
+    saveClient(mdl)(data).fork(onError, onRegisterSuccess)
+  }
+  state.isSubmitted = true
+  validateClientRegistrationTask(data).fork(
+    onValidationError,
+    onValidationSuccess
+  )
+}
+
 const AddClientActions = () => {
   return {
     view: ({ attrs: { mdl, state } }) => [
@@ -36,7 +75,7 @@ const AddClientActions = () => {
           form: `client-form`,
           onclick: () => {
             console.log(state)
-            //  validateForm(mdl)(state.data)
+            validateForm(mdl)(state.data)
           },
           class: mdl.state.isLoading() && "loading"
         },
@@ -63,7 +102,7 @@ const AddClient = () => {
           isActive: mdl.state.showModal(),
           close: () => mdl.state.showModal(false),
           title: "Add Client",
-          content: m(RegisterClient, {
+          content: m(RegisterClientForm, {
             data: state.data,
             errors: state.errors,
             isSubmitted: state.isSubmitted

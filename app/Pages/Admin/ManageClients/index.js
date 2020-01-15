@@ -1,24 +1,22 @@
-import AddClient from "./AddClient.js"
-import { removeHyphens } from "Utils/helpers"
+import AddClient from "./AddClientModal/index.js"
 
 const ManageClients = () => {
   const state = {}
 
   const loadUsers = ({ attrs: { mdl } }) => {
-    const query = `query {
-  user(where:{clientId: ${removeHyphens(mdl.user.objectId)}}){clients{id}}
+    const query = `query{
+  clients(where:{trainer:{userId:${JSON.stringify(mdl.user.objectId)}}}){id}
 }`
 
     const onError = (e) => {
       console.log("ERROR", e)
     }
 
-    const onSuccess = (s) => {
-      console.log("SUCCESSS", s)
-      state.clients = s
+    const onSuccess = ({ clients }) => {
+      console.log("SUCCESSS", clients)
+      state.clients = clients
     }
 
-    console.log("the Q", query)
     return mdl.http
       .postQl(mdl)(query)
       .fork(onError, onSuccess)

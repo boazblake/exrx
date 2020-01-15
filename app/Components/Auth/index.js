@@ -71,14 +71,11 @@ const validateForm = (mdl) => (data) => {
   }
   state.isSubmitted = true
   state.page
-    ? validateUserRegistrationTask(data.userModel).fork(
+    ? validateUserRegistrationTask(data).fork(
         onValidationError,
         onValidationSuccess
       )
-    : validateLoginTask(data.userModel).fork(
-        onValidationError,
-        onValidationSuccess
-      )
+    : validateLoginTask(data).fork(onValidationError, onValidationSuccess)
 }
 
 const loginUser = (mdl) => ({ email, password }) =>
@@ -87,13 +84,22 @@ const loginUser = (mdl) => ({ email, password }) =>
     password: password
   })
 
+const AddUserId = (mdl) => (id) =>
+  mdl.http.postQl(mdl)(`mutation {
+  createUser(data:{userId:${id}}){id}
+}`)
+
 const registerUser = (mdl) => ({ name, email, password, isAdmin }) =>
-  mdl.http.backEnd.postTask(mdl)("users/register")({
-    name,
-    email,
-    password,
-    isAdmin
-  })
+  mdl.http.backEnd
+    .postTask(mdl)("users/register")({
+      name,
+      email,
+      password,
+      isAdmin
+    })
+    .chain((user) =>
+      AddUserId(mdl)(JSON.stringify(user.objectId)).map(() => user)
+    )
 
 const changePage = () => {
   state.httpError = undefined

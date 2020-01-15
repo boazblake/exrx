@@ -1,6 +1,6 @@
 import FormInput from "Components/FormInputs"
 
-const RegisterClient = () => {
+const RegisterClientForm = () => {
   return {
     view: ({ attrs: { data, errors, isSubmitted } }) =>
       m(".column col-6", [
@@ -8,7 +8,7 @@ const RegisterClient = () => {
           isSubmitted,
           data,
           errors,
-          field: "firstname",
+          field: "firstName",
           label: "First Name",
           id: "first-name",
           type: "text"
@@ -17,7 +17,7 @@ const RegisterClient = () => {
           isSubmitted,
           data,
           errors,
-          field: "lastname",
+          field: "lastName",
           label: "Last Name",
           id: "last-name",
           type: "text"
@@ -27,7 +27,7 @@ const RegisterClient = () => {
           data,
           errors,
           field: "email",
-          label: "email",
+          label: "Email",
           id: "email",
           type: "email"
         }),
@@ -35,13 +35,22 @@ const RegisterClient = () => {
           isSubmitted,
           data,
           errors,
-          field: "birthday",
-          label: "birthday",
-          id: "birthday",
+          field: "confirmEmail",
+          label: "Confirm Email",
+          id: "confirm-email",
+          type: "email"
+        }),
+        m(FormInput, {
+          isSubmitted,
+          data,
+          errors,
+          field: "birthdate",
+          label: "birthdate",
+          id: "birthdate",
           type: "date"
         })
       ])
   }
 }
 
-export default RegisterClient
+export default RegisterClientForm

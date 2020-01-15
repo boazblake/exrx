@@ -186,47 +186,6 @@ var _default = App;
 exports["default"] = _default;
 });
 
-;require.register("Components/Auth/authentication/register.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Register = void 0;
-
-var _RegisterForm = _interopRequireDefault(require("../forms/RegisterForm.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var Register = function Register() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          userModel = _ref$attrs.data.userModel,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted,
-          httpError = _ref$attrs.httpError;
-      return [m("form.columns", {
-        role: "form",
-        id: "Register-form",
-        onsubmit: function onsubmit(e) {
-          return e.preventDefault();
-        }
-      }, [m(_RegisterForm["default"], {
-        data: userModel,
-        errors: errors,
-        isSubmitted: isSubmitted,
-        httpError: httpError
-      }), m(".divider-vert", {
-        dataContent: "|"
-      })]), httpError && m(".toast toast-error", httpError)];
-    }
-  };
-};
-
-exports.Register = Register;
-});
-
 ;require.register("Components/Auth/forms/LoginForm.js", function(exports, require, module) {
 "use strict";
 
@@ -547,7 +506,7 @@ var validateForm = function validateForm(mdl) {
     };
 
     state.isSubmitted = true;
-    state.page ? (0, _forms.validateUserRegistrationTask)(data.userModel).fork(onValidationError, onValidationSuccess) : (0, _forms.validateLoginTask)(data.userModel).fork(onValidationError, onValidationSuccess);
+    state.page ? (0, _forms.validateUserRegistrationTask)(data).fork(onValidationError, onValidationSuccess) : (0, _forms.validateLoginTask)(data).fork(onValidationError, onValidationSuccess);
   };
 };
 
@@ -562,6 +521,12 @@ var loginUser = function loginUser(mdl) {
   };
 };
 
+var AddUserId = function AddUserId(mdl) {
+  return function (id) {
+    return mdl.http.postQl(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
+  };
+};
+
 var registerUser = function registerUser(mdl) {
   return function (_ref2) {
     var name = _ref2.name,
@@ -573,6 +538,10 @@ var registerUser = function registerUser(mdl) {
       email: email,
       password: password,
       isAdmin: isAdmin
+    }).chain(function (user) {
+      return AddUserId(mdl)(JSON.stringify(user.objectId)).map(function () {
+        return user;
+      });
     });
   };
 };
@@ -3393,7 +3362,52 @@ var _default = Dashboard;
 exports["default"] = _default;
 });
 
-;require.register("Pages/Admin/ManageClients/AddClient.js", function(exports, require, module) {
+;require.register("Pages/Admin/ManageClients/AddClientModal/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+var nameLense = (0, _ramda.lensProp)("name");
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+var NAME_REQUIRED_MSG = "A Name is required";
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateName = function validateName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense, NAME_REQUIRED_MSG, data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/AddClientModal/index.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3407,18 +3421,18 @@ var _animations = require("Utils/animations");
 
 var _registerClientForm = _interopRequireDefault(require("./registerClientForm.js"));
 
+var _Validations = require("./Validations.js");
+
 var _Utils = require("Utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var clientModel = {
-  firstname: "",
-  lastname: "",
-  email: "",
-  birthday: ""
-};
 var dataModel = {
-  clientModel: clientModel
+  firstName: "",
+  lastName: "",
+  email: "",
+  confirmEmail: "",
+  birthdate: ""
 };
 var state = {
   isSubmitted: false,
@@ -3434,17 +3448,57 @@ var resetState = function resetState() {
   state.isSubmitted = false;
 };
 
+var saveClient = function saveClient(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        firstName = _ref.firstName,
+        lastName = _ref.lastName,
+        birthdate = _ref.birthdate;
+    var query = "mutation {\n  createClient(data: {email:".concat(email, ", firstname:").concat(firstName, ", lastname:").concat(lastName, ", birthdate:").concat(birthdate, " }) {\n    id\n  }\n}");
+
+    var onError = function onError(e) {
+      console.log("ERROR", e);
+    };
+
+    var onSuccess = function onSuccess(s) {
+      console.log("SUCCESSS", s);
+      state.clients = s;
+    };
+
+    console.log("the Q", query);
+    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
+  };
+};
+
+var validateForm = function validateForm(mdl) {
+  return function (data) {
+    var onValidationError = function onValidationError(errs) {
+      state.errors = errs;
+      console.log("failed - state", state);
+    };
+
+    var onValidationSuccess = function onValidationSuccess(data) {
+      state.errors = {};
+      saveClient(mdl)(data).fork(onError, onRegisterSuccess);
+    };
+
+    state.isSubmitted = true;
+    (0, _Validations.validateClientRegistrationTask)(data).fork(onValidationError, onValidationSuccess);
+  };
+};
+
 var AddClientActions = function AddClientActions() {
   return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          mdl = _ref$attrs.mdl,
-          state = _ref$attrs.state;
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          state = _ref2$attrs.state;
       return [m("input.btn.btn-primary authBtn", {
         type: "submit",
         form: "client-form",
         onclick: function onclick() {
-          console.log(state); //  validateForm(mdl)(state.data)
+          console.log(state);
+          validateForm(mdl)(state.data);
         },
         "class": mdl.state.isLoading() && "loading"
       }, "Add New Client")];
@@ -3454,8 +3508,8 @@ var AddClientActions = function AddClientActions() {
 
 var AddClient = function AddClient() {
   return {
-    view: function view(_ref2) {
-      var mdl = _ref2.attrs.mdl;
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
       return m(".", [m("button.btn", {
         onclick: function onclick(e) {
           return mdl.state.showModal(true);
@@ -3488,62 +3542,7 @@ var _default = AddClient;
 exports["default"] = _default;
 });
 
-;require.register("Pages/Admin/ManageClients/index.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _AddClient = _interopRequireDefault(require("./AddClient.js"));
-
-var _helpers = require("Utils/helpers");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-var ManageClients = function ManageClients() {
-  var state = {};
-
-  var loadUsers = function loadUsers(_ref) {
-    var mdl = _ref.attrs.mdl;
-    var query = "query {\n  user(where:{clientId: ".concat((0, _helpers.removeHyphens)(mdl.user.objectId), "}){clients{id}}\n}");
-
-    var onError = function onError(e) {
-      console.log("ERROR", e);
-    };
-
-    var onSuccess = function onSuccess(s) {
-      console.log("SUCCESSS", s);
-      state.clients = s;
-    };
-
-    console.log("the Q", query);
-    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
-  };
-
-  return {
-    oninit: loadUsers,
-    view: function view(_ref2) {
-      var mdl = _ref2.attrs.mdl;
-      return m(".content", [m("section.section", {
-        id: "content-toolbar"
-      }, [m(_AddClient["default"], {
-        mdl: mdl
-      })]), m("section.section", {
-        id: "content-data"
-      }, [m(".manageClients", {
-        id: mdl.state.route.id
-      }, [m("h1.title", mdl.state.route.title)])])]);
-    }
-  };
-};
-
-var _default = ManageClients;
-exports["default"] = _default;
-});
-
-;require.register("Pages/Admin/ManageClients/registerClientForm.js", function(exports, require, module) {
+;require.register("Pages/Admin/ManageClients/AddClientModal/registerClientForm.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3555,7 +3554,7 @@ var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var RegisterClient = function RegisterClient() {
+var RegisterClientForm = function RegisterClientForm() {
   return {
     view: function view(_ref) {
       var _ref$attrs = _ref.attrs,
@@ -3566,7 +3565,7 @@ var RegisterClient = function RegisterClient() {
         isSubmitted: isSubmitted,
         data: data,
         errors: errors,
-        field: "firstname",
+        field: "firstName",
         label: "First Name",
         id: "first-name",
         type: "text"
@@ -3574,7 +3573,7 @@ var RegisterClient = function RegisterClient() {
         isSubmitted: isSubmitted,
         data: data,
         errors: errors,
-        field: "lastname",
+        field: "lastName",
         label: "Last Name",
         id: "last-name",
         type: "text"
@@ -3583,23 +3582,84 @@ var RegisterClient = function RegisterClient() {
         data: data,
         errors: errors,
         field: "email",
-        label: "email",
+        label: "Email",
         id: "email",
         type: "email"
       }), m(_FormInputs["default"], {
         isSubmitted: isSubmitted,
         data: data,
         errors: errors,
-        field: "birthday",
-        label: "birthday",
-        id: "birthday",
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs["default"], {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "birthdate",
+        label: "birthdate",
+        id: "birthdate",
         type: "date"
       })]);
     }
   };
 };
 
-var _default = RegisterClient;
+var _default = RegisterClientForm;
+exports["default"] = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _index = _interopRequireDefault(require("./AddClientModal/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var ManageClients = function ManageClients() {
+  var state = {};
+
+  var loadUsers = function loadUsers(_ref) {
+    var mdl = _ref.attrs.mdl;
+    var query = "query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id}\n}");
+
+    var onError = function onError(e) {
+      console.log("ERROR", e);
+    };
+
+    var onSuccess = function onSuccess(_ref2) {
+      var clients = _ref2.clients;
+      console.log("SUCCESSS", clients);
+      state.clients = clients;
+    };
+
+    return mdl.http.postQl(mdl)(query).fork(onError, onSuccess);
+  };
+
+  return {
+    oninit: loadUsers,
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, [m(_index["default"], {
+        mdl: mdl
+      })]), m("section.section", {
+        id: "content-data"
+      }, [m(".manageClients", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
+    }
+  };
+};
+
+var _default = ManageClients;
 exports["default"] = _default;
 });
 
@@ -4669,7 +4729,7 @@ var postQl = function postQl(model) {
     return new _data["default"](function (rej, res) {
       return m.request(_objectSpread({
         method: "POST",
-        url: _secrets.GraphQl.url,
+        url: _secrets.GraphQl.local,
         withCredentials: false
       }, xhrProgress, {
         body: makeQueryString({
@@ -4871,7 +4931,8 @@ var BackEnd = {
 };
 exports.BackEnd = BackEnd;
 var GraphQl = {
-  url: "https://us1.prisma.sh/exrx/exrx_service/dev"
+  online: "https://us1.prisma.sh/exrx/exrx_service/dev",
+  local: "http://localhost:4466/"
 };
 exports.GraphQl = GraphQl;
 });

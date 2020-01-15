@@ -63,7 +63,7 @@ const postQl = (model) => (query) => {
     m
       .request({
         method: "POST",
-        url: GraphQl.url,
+        url: GraphQl.local,
         withCredentials: false,
         ...xhrProgress,
         body: makeQueryString({ query })
