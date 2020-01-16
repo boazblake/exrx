@@ -6,7 +6,6 @@ export const RegisterForm = () => {
       m(
         "form.column",
         {
-          role: "form",
           id: "Register-form",
           onsubmit: (e) => e.preventDefault()
         },

@@ -4,7 +4,8 @@ import {
   validateLoginTask,
   validateUserRegistrationTask
 } from "./forms"
-import Modal from "../Modal.js"
+import Modal from "Components/Modal.js"
+import Button from "Components/Button.js"
 import { jsonCopy } from "Utils"
 
 const data = {
@@ -137,16 +138,15 @@ const AuthComponent = () => {
           isSubmitted: state.isSubmitted
         }),
         footer: [
-          m(
-            "input.btn.btn-primary authBtn",
-            {
-              type: "submit",
-              form: `${state.title[state.page]}-form`,
-              onclick: () => validateForm(mdl)(state.data),
-              class: mdl.state.isLoading() && "loading"
-            },
-            state.title[state.page]
-          ),
+          m(Button, {
+            mdl,
+            type: "submit",
+            for: `${state.title[state.page]}-form`,
+            action: () => validateForm(mdl)(state.data),
+            label: state.title[state.page],
+            classList: "input btn btn-primary authBtn"
+          }),
+
           m(AuthLink, {
             mdl,
             title: state.page ? "Login" : "Register"

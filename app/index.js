@@ -10,9 +10,10 @@ if (module.hot) {
 }
 
 if (process.env.NODE_ENV !== "production") {
-  console.log("Looks like we are in development mode!")
+  // console.log("Looks like we are in development mode!")
 }
 
+// set display profiles
 const getProfile = (w) => {
   if (w < 668) return "phone"
   if (w < 920) return "tablet"
@@ -47,7 +48,10 @@ model.state.profile = getProfile(winW)
 
 checkWidth(winW)
 
+//Include custome and Fp polyfills
 FP.configure()
+
+//position on page
 window.onscroll = () => {
   model.state.scrollPos(window.pageYOffset)
 }

@@ -79,17 +79,26 @@ a {
 #content {
   grid-area: content;
   padding: 10px;
-  min-height: 100vh;
-  height: 100%;
+  // min-height: 100vh;
+  // height: 100%;
   display: grid;
-  grid-template-rows: 1fr 9fr;
+  // grid-template-rows: 1fr 9fr;
   grid-template-areas: "content-toolbar" "conent-data";
 }
 
 #content-toolbar {
   padding-bottom: 4px;
 }
+
 #content-data {
+  max-height: 100vh;
+}
+
+.clientForms {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
 }
 
 .empty {

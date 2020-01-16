@@ -5,7 +5,7 @@ export const LoginForm = () => {
     view: ({ attrs: { data, errors, isSubmitted, httpError } }) =>
       m(
         "form.column",
-        { role: "form", id: "Login-form", onsubmit: (e) => e.preventDefault() },
+        { id: "Login-form", onsubmit: (e) => e.preventDefault() },
         [
           m(FormInput, {
             isSubmitted,

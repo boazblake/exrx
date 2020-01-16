@@ -1,13 +1,13 @@
-import m from 'mithril'
+import m from "mithril"
 
 const Button = () => {
   return {
-    view: ({ attrs: { action, label, classList = '', isDisabled } }) =>
+    view: ({ attrs: { mdl, action, label, classList = "", isDisabled } }) =>
       m(
-        `button.btn.${classList}`,
+        `button.btn.${classList} ${mdl.state.isLoading() ? "loading" : ""}`,
         { onclick: (e) => action(e), disabled: isDisabled },
         label
-      ),
+      )
   }
 }
 

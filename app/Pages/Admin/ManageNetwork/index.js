@@ -39,7 +39,7 @@ const ManageNetwork = () => {
     view: ({ attrs: { mdl } }) =>
       m(".content", [
         m("section.section", { id: "content-toolbar" }, [
-          m(".", [m("button.btn", "Add Client")])
+          m(".", [m("button.btn", "Add User")])
         ]),
         m("section.section", { id: "content-data" }, [
           m(".manageNetworks", { id: mdl.state.route.id }, [

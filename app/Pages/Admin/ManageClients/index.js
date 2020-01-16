@@ -9,7 +9,9 @@ const ManageClients = () => {
     return mdl.http
       .postQl(mdl)(
         `query{
-  clients(where:{trainer:{userId:${JSON.stringify(mdl.user.objectId)}}}){id}
+  clients(where:{trainer:{userId:${JSON.stringify(
+    mdl.user.objectId
+  )}}}){id, firstname, lastname}
 }`
       )
       .fork(onError, onSuccess)
@@ -29,7 +31,10 @@ const ManageClients = () => {
             m(
               "section.section",
               mdl.clients.map((client) =>
-                m("ul", m("li", m("code", "client Id:", client.id)))
+                m(
+                  "ul",
+                  m("li", m("code", client.lastname, ",", client.firstname))
+                )
               )
             )
           ])

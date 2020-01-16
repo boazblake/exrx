@@ -207,7 +207,6 @@ var LoginForm = function LoginForm() {
           isSubmitted = _ref$attrs.isSubmitted,
           httpError = _ref$attrs.httpError;
       return m("form.column", {
-        role: "form",
         id: "Login-form",
         onsubmit: function onsubmit(e) {
           return e.preventDefault();
@@ -257,7 +256,6 @@ var RegisterForm = function RegisterForm() {
           isSubmitted = _ref$attrs.isSubmitted,
           httpError = _ref$attrs.httpError;
       return [m("form.column", {
-        role: "form",
         id: "Register-form",
         onsubmit: function onsubmit(e) {
           return e.preventDefault();
@@ -433,7 +431,9 @@ exports["default"] = void 0;
 
 var _forms = require("./forms");
 
-var _Modal = _interopRequireDefault(require("../Modal.js"));
+var _Modal = _interopRequireDefault(require("Components/Modal.js"));
+
+var _Button = _interopRequireDefault(require("Components/Button.js"));
 
 var _Utils = require("Utils");
 
@@ -580,14 +580,16 @@ var AuthComponent = function AuthComponent() {
           httpError: state.httpError,
           isSubmitted: state.isSubmitted
         }),
-        footer: [m("input.btn.btn-primary authBtn", {
+        footer: [m(_Button["default"], {
+          mdl: mdl,
           type: "submit",
-          form: "".concat(state.title[state.page], "-form"),
-          onclick: function onclick() {
+          "for": "".concat(state.title[state.page], "-form"),
+          action: function action() {
             return validateForm(mdl)(state.data);
           },
-          "class": mdl.state.isLoading() && "loading"
-        }, state.title[state.page]), m(AuthLink, {
+          label: state.title[state.page],
+          classList: "input btn btn-primary authBtn"
+        }), m(AuthLink, {
           mdl: mdl,
           title: state.page ? "Login" : "Register"
         })]
@@ -616,8 +618,8 @@ var Body = {
   view: function view(_ref) {
     var children = _ref.children,
         mdl = _ref.attrs.mdl;
-    return m(".content", {
-      id: "content"
+    return m(".main", {
+      id: "main"
     }, [children, mdl.state.toast.show() && m(_Toaster["default"], {
       mdl: mdl
     })]);
@@ -643,12 +645,13 @@ var Button = function Button() {
   return {
     view: function view(_ref) {
       var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
           action = _ref$attrs.action,
           label = _ref$attrs.label,
           _ref$attrs$classList = _ref$attrs.classList,
-          classList = _ref$attrs$classList === void 0 ? '' : _ref$attrs$classList,
+          classList = _ref$attrs$classList === void 0 ? "" : _ref$attrs$classList,
           isDisabled = _ref$attrs.isDisabled;
-      return (0, _mithril["default"])("button.btn.".concat(classList), {
+      return (0, _mithril["default"])("button.btn.".concat(classList, " ").concat(mdl.state.isLoading() ? "loading" : ""), {
         onclick: function onclick(e) {
           return action(e);
         },
@@ -1155,7 +1158,7 @@ var Modal = function Modal(_ref) {
         onclick: function onclick() {
           return close();
         }
-      }), m(".modal-title h3", title)]), m(".modal-body", m(".content", content)), m(".modal-footer", footer)])]);
+      }), m(".modal-title h3", title)]), m(".modal-body", m(".modal-content", content)), m(".modal-footer", footer)])]);
     }
   };
 };
@@ -1387,6 +1390,7 @@ var Logout = function Logout() {
       window.sessionStorage.removeItem("user-token");
       mdl.state.isAuth(false);
       mdl.user = null;
+      mdl.clients = [];
       mdl.state.route.group.includes("authenticated") && history.back();
     };
   };
@@ -3426,36 +3430,49 @@ var _Validations = require("./Validations.js");
 
 var _Utils = require("Utils");
 
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _ramda = require("ramda");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var dataModel = {
-  firstName: "",
-  lastName: "",
+  firstname: "",
+  lastname: "",
   email: "",
   confirmEmail: "",
   birthdate: ""
 };
+var entries = Stream(1);
+
+var createForms = function createForms(length, state) {
+  return state.data = Array.from([(0, _Utils.jsonCopy)(dataModel)].fill.call({
+    length: length
+  }, (0, _Utils.jsonCopy)(dataModel)));
+};
+
 var state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: (0, _Utils.jsonCopy)(dataModel)
+  data: []
 };
 
 var resetState = function resetState() {
-  state.data = (0, _Utils.jsonCopy)(dataModel);
+  state.data = [];
   state.errors = {};
   state.httpError = undefined;
   state.isSubmitted = false;
+  state.entries(1);
 };
 
 var saveClientTask = function saveClientTask(mdl) {
   return function (_ref) {
     var email = _ref.email,
-        firstName = _ref.firstName,
-        lastName = _ref.lastName,
+        firstname = _ref.firstname,
+        lastname = _ref.lastname,
         birthdate = _ref.birthdate;
-    return mdl.http.postQl(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstName), ",\n      lastname:").concat(JSON.stringify(lastName), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {\n    id\n  }\n}"));
+    return mdl.http.postQl(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname}\n}"));
   };
 };
 
@@ -3486,14 +3503,16 @@ var AddClientActions = function AddClientActions() {
       var _ref3$attrs = _ref3.attrs,
           mdl = _ref3$attrs.mdl,
           state = _ref3$attrs.state;
-      return [m("input.btn.btn-primary authBtn", {
+      return [m(_Button["default"], {
+        mdl: mdl,
         type: "submit",
-        form: "client-form",
-        onclick: function onclick() {
+        "for": "client-form",
+        action: function action() {
           return validateForm(mdl)(state.data);
         },
-        "class": mdl.state.isLoading() && "loading"
-      }, "Add New Client")];
+        label: "Add New Client",
+        classList: "input btn btn-primary authBtn"
+      })];
     }
   };
 };
@@ -3507,6 +3526,9 @@ var AddClient = function AddClient() {
           return mdl.toggleModal(mdl);
         }
       }, "Add Client"), m(_Modal["default"], {
+        oninit: function oninit() {
+          return createForms(entries(), state);
+        },
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
@@ -3517,6 +3539,9 @@ var AddClient = function AddClient() {
         },
         title: "Add Client",
         content: m(_registerClientForm["default"], {
+          entries: entries,
+          createForms: createForms,
+          state: state,
           data: state.data,
           errors: state.errors,
           isSubmitted: state.isSubmitted
@@ -3551,49 +3576,62 @@ var RegisterClientForm = function RegisterClientForm() {
     view: function view(_ref) {
       var _ref$attrs = _ref.attrs,
           data = _ref$attrs.data,
+          state = _ref$attrs.state,
           errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted;
-      return m(".column col-6", [m(_FormInputs["default"], {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "firstName",
-        label: "First Name",
-        id: "first-name",
-        type: "text"
-      }), m(_FormInputs["default"], {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "lastName",
-        label: "Last Name",
-        id: "last-name",
-        type: "text"
-      }), m(_FormInputs["default"], {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "email",
-        label: "Email",
-        id: "email",
-        type: "email"
-      }), m(_FormInputs["default"], {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "confirmEmail",
-        label: "Confirm Email",
-        id: "confirm-email",
-        type: "email"
-      }), m(_FormInputs["default"], {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "birthdate",
-        label: "birthdate",
-        id: "birthdate",
-        type: "date"
-      })]);
+          isSubmitted = _ref$attrs.isSubmitted,
+          entries = _ref$attrs.entries,
+          createForms = _ref$attrs.createForms;
+      return [m("button.btn", {
+        onclick: function onclick(e) {
+          e["false"];
+          createForms(entries(entries() + 1), state);
+          console.log("entries", entries(), data);
+        }
+      }, "Add Another Client"), m("section.clientForms", [data.map(function (c) {
+        return m("form.column col-6", {
+          id: "client-form"
+        }, [m(_FormInputs["default"], {
+          isSubmitted: isSubmitted,
+          data: c,
+          errors: errors,
+          field: "firstname",
+          label: "First Name",
+          id: "first-name",
+          type: "text"
+        }), m(_FormInputs["default"], {
+          isSubmitted: isSubmitted,
+          data: c,
+          errors: errors,
+          field: "lastname",
+          label: "Last Name",
+          id: "last-name",
+          type: "text"
+        }), m(_FormInputs["default"], {
+          isSubmitted: isSubmitted,
+          data: c,
+          errors: errors,
+          field: "email",
+          label: "Email",
+          id: "email",
+          type: "email"
+        }), m(_FormInputs["default"], {
+          isSubmitted: isSubmitted,
+          data: c,
+          errors: errors,
+          field: "confirmEmail",
+          label: "Confirm Email",
+          id: "confirm-email",
+          type: "email"
+        }), m(_FormInputs["default"], {
+          isSubmitted: isSubmitted,
+          data: c,
+          errors: errors,
+          field: "birthdate",
+          label: "birthdate",
+          id: "birthdate",
+          type: "date"
+        })]);
+      })])];
     }
   };
 };
@@ -3627,7 +3665,7 @@ var ManageClients = function ManageClients() {
       return mdl.clients = clients;
     };
 
-    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id}\n}")).fork(onError, onSuccess);
+    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname}\n}")).fork(onError, onSuccess);
   };
 
   return {
@@ -3644,7 +3682,7 @@ var ManageClients = function ManageClients() {
       }, [m(".manageClients", {
         id: mdl.state.route.id
       }, [m("h1.title", mdl.state.route.title), m("section.section", mdl.clients.map(function (client) {
-        return m("ul", m("li", m("code", "client Id:", client.id)));
+        return m("ul", m("li", m("code", client.lastname, ",", client.firstname)));
       }))])])]);
     }
   };
@@ -3711,7 +3749,7 @@ var ManageNetwork = function ManageNetwork() {
       var mdl = _ref2.attrs.mdl;
       return m(".content", [m("section.section", {
         id: "content-toolbar"
-      }, [m(".", [m("button.btn", "Add Client")])]), m("section.section", {
+      }, [m(".", [m("button.btn", "Add User")])]), m("section.section", {
         id: "content-data"
       }, [m(".manageNetworks", {
         id: mdl.state.route.id
@@ -5055,9 +5093,9 @@ if (module.hot) {
   module.hot.accept();
 }
 
-if ('development' !== "production") {
-  console.log("Looks like we are in development mode!");
-}
+if ('development' !== "production") {} // console.log("Looks like we are in development mode!")
+// set display profiles
+
 
 var getProfile = function getProfile(w) {
   if (w < 668) return "phone";
@@ -5091,9 +5129,10 @@ _Model.model.state.profile = getProfile(winW); // if ('serviceWorker' in navigat
 //   })
 // }
 
-checkWidth(winW);
+checkWidth(winW); //Include custome and Fp polyfills
 
-_FP.FP.configure();
+_FP.FP.configure(); //position on page
+
 
 window.onscroll = function () {
   _Model.model.state.scrollPos(window.pageYOffset);

@@ -10,6 +10,7 @@ const Logout = () => {
     window.sessionStorage.removeItem("user-token")
     mdl.state.isAuth(false)
     mdl.user = null
+    mdl.clients = []
     mdl.state.route.group.includes("authenticated") && history.back()
   }
 

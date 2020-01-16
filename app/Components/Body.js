@@ -3,9 +3,9 @@ import Toaster from "./Toaster.js"
 const Body = {
   view: ({ children, attrs: { mdl } }) =>
     m(
-      ".content",
+      ".main",
       {
-        id: "content"
+        id: "main"
       },
       [children, mdl.state.toast.show() && m(Toaster, { mdl })]
     )

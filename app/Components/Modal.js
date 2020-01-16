@@ -20,7 +20,7 @@ const Modal = ({ animateEntrance, animateExit }) => {
               }),
               m(".modal-title h3", title)
             ]),
-            m(".modal-body", m(".content", content)),
+            m(".modal-body", m(".modal-content", content)),
             m(".modal-footer", footer)
           ])
         ]
