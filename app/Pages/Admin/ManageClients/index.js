@@ -11,7 +11,7 @@ const ManageClients = () => {
         `query{
   clients(where:{trainer:{userId:${JSON.stringify(
     mdl.user.objectId
-  )}}}){id, firstname, lastname}
+  )}}}){id, firstname, lastname, email, birthdate}
 }`
       )
       .fork(onError, onSuccess)
@@ -20,8 +20,7 @@ const ManageClients = () => {
   return {
     oninit: loadClients,
     view: ({ attrs: { mdl } }) => {
-      console.log("manageclients")
-      return m(".content", [
+      return m(".contents", { id: "content" }, [
         m("section.section", { id: "content-toolbar" }, [
           m(AddClient, { mdl })
         ]),
@@ -29,11 +28,26 @@ const ManageClients = () => {
           m(".manageClients", { id: mdl.state.route.id }, [
             m("h1.title", mdl.state.route.title),
             m(
-              "section.section",
-              mdl.clients.map((client) =>
-                m(
-                  "ul",
-                  m("li", m("code", client.lastname, ",", client.firstname))
+              "section.panel",
+              m(
+                ".panel-body",
+                mdl.clients.map((client) =>
+                  m(".menu", [
+                    m(
+                      ".tile-icon",
+                      m("figure.avatar", {
+                        "data-initial": `${client.firstname[0]}${client.lastname[0]}`
+                      })
+                    ),
+                    m(".tile-content", [
+                      m("p.text.text-bold", [
+                        client.firstname,
+                        client.lastname
+                      ]),
+                      m("p.sub-title", client.email),
+                      m("p.sub-title", client.birthdate)
+                    ])
+                  ])
                 )
               )
             )

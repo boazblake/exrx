@@ -8,9 +8,9 @@ const ProfileLayout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
-        ".profileLayout",
+        ".layout",
         {
-          id: "profileLayout"
+          id: "profile-layout"
         },
         [
           m(ProfileHeader, { mdl }),

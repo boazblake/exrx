@@ -43,7 +43,10 @@ $text: #1caffc;
 
 body,
 html {
+  display: grid;
   scroll-behavior: smooth;
+  grid-template-rows: 100vh;
+  height: 100vh;
 }
 
 a {
@@ -79,14 +82,14 @@ a {
 #content {
   grid-area: content;
   padding: 10px;
-  // min-height: 100vh;
-  // height: 100%;
+  min-height: 100vh;
+  height: 100%;
   display: grid;
-  // grid-template-rows: 1fr 9fr;
+  grid-template-rows: 1fr 9fr;
   grid-template-areas: "content-toolbar" "conent-data";
 }
 
-.content {
+.contents {
   padding: 10px;
 }
 
@@ -96,6 +99,7 @@ a {
 
 #content-data {
   max-height: 100vh;
+  overflow: scroll;
 }
 
 .clientForms {
@@ -115,10 +119,6 @@ a {
 
 #footer {
   grid-area: footer;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-around;
-  min-height: 200px;
   background-color: $primary-color;
   color: $white;
 }
@@ -144,6 +144,16 @@ a {
 .loader {
   height: 80vh;
   width: 80vw;
+}
+
+#main {
+  overflow: hidden;
+  max-height: 74vh;
+}
+
+#main-splash {
+  overflow: sroll;
+  max-height: 74vh;
 }
 
 #menu {
@@ -265,7 +275,7 @@ progress {
   cursor: pointer;
 }
 
-.sidebar-modal {
+.sidebar-modal-active {
   min-height: 100vh;
 }
 
@@ -306,10 +316,10 @@ progress {
     display: none;
   }
 
-  #mainLayout {
+  #splash-layout {
     position: relative;
     display: grid;
-    grid-template-columns: max-content 1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: max-content 1fr;
     grid-template-areas:
       "header header header header"
@@ -317,24 +327,7 @@ progress {
       "footer footer footer footer";
   }
 
-  #homeLayout {
-    position: relative;
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: max-content 1fr;
-    grid-template-areas:
-      "header"
-      "content"
-      "header"
-      "footer";
-  }
-
-  a#home-route-address,
-  a#home-route-call {
-    font-size: 30px;
-  }
-
-  #profileLayout {
+  #profile-layout {
     position: relative;
     display: grid;
     grid-template-columns: max-content 1fr;
@@ -360,6 +353,7 @@ progress {
 
   #left-aside {
     grid-area: left-aside;
+    overflow-y: scroll;
     min-width: 20vw;
     max-width: 200px;
     width: 100%;

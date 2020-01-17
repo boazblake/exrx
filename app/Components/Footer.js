@@ -26,10 +26,9 @@ const Footer = {
       {
         id: "footer"
       },
+      m(SocialMedia),
       m("p.text-center", [
-        `Copyright © Boaz Blake. All rights reserved. ${new Date().getFullYear()} Privacy Policy`,
-        m(SocialMedia),
-        m(GoToTop, { mdl })
+        `Copyright © Boaz Blake. All rights reserved. ${new Date().getFullYear()} Privacy Policy`
       ])
     )
 }

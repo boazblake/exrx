@@ -740,9 +740,7 @@ var Footer = {
     var mdl = _ref2.attrs.mdl;
     return m("footer", {
       id: "footer"
-    }, m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy"), m(_SocialMedia.default), m(GoToTop, {
-      mdl: mdl
-    })]));
+    }, m(_SocialMedia.default), m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy")]));
   }
 };
 var _default = Footer;
@@ -1579,32 +1577,6 @@ var ProgressBar = function ProgressBar() {
 };
 
 var _default = ProgressBar;
-exports.default = _default;
-});
-
-;require.register("Components/RightAside.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RightAside = function RightAside() {
-  return {
-    view: function view() {
-      return (0, _mithril.default)('.aside', {
-        id: 'right-aside'
-      });
-    }
-  };
-};
-
-var _default = RightAside;
 exports.default = _default;
 });
 
@@ -3046,57 +3018,6 @@ var Validation = {
 exports.Validation = Validation;
 });
 
-;require.register("Layouts/MainLayout.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _MainHeader = _interopRequireDefault(require("Components/Headers/MainHeader"));
-
-var _Footer = _interopRequireDefault(require("Components/Footer"));
-
-var _Body = _interopRequireDefault(require("Components/Body"));
-
-var _LeftAside = _interopRequireDefault(require("Components/LeftAside"));
-
-var _RightAside = _interopRequireDefault(require("Components/RightAside"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var MainLayout = function MainLayout(_ref) {
-  var mdl = _ref.attrs.mdl;
-
-  var showMenu = function showMenu() {
-    return mdl.state.showNav() || mdl.state.profile == "desktop";
-  };
-
-  return {
-    view: function view(_ref2) {
-      var children = _ref2.children;
-      return m(".mainLayout", {
-        id: "mainLayout"
-      }, [m(_MainHeader.default, {
-        mdl: mdl
-      }), showMenu() && m(_LeftAside.default, {
-        mdl: mdl
-      }), m(_Body.default, {
-        mdl: mdl
-      }, [children]), m(_RightAside.default, {
-        mdl: mdl
-      }), m(_Footer.default, {
-        mdl: mdl
-      })]);
-    }
-  };
-};
-
-var _default = MainLayout;
-exports.default = _default;
-});
-
 ;require.register("Layouts/ProfileLayout.js", function(exports, require, module) {
 "use strict";
 
@@ -3122,8 +3043,8 @@ var ProfileLayout = function ProfileLayout(_ref) {
   return {
     view: function view(_ref2) {
       var children = _ref2.children;
-      return m(".profileLayout", {
-        id: "profileLayout"
+      return m(".layout", {
+        id: "profile-layout"
       }, [m(_ProfileHeader.default, {
         mdl: mdl
       }), mdl.state.profile !== "desktop" ? m(_Modal.default, {
@@ -3174,8 +3095,8 @@ var SplashLayout = function SplashLayout(_ref) {
   return {
     view: function view(_ref2) {
       var children = _ref2.children;
-      return m(".splashlayout", {
-        id: "splashlayout"
+      return m(".layout", {
+        id: "splash-layout"
       }, [m(_SplashHeader.default, {
         mdl: mdl
       }), m(_Body.default, {
@@ -3196,18 +3117,6 @@ exports.default = _default;
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-});
-
-var _MainLayout = require("./MainLayout.js");
-
-Object.keys(_MainLayout).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _MainLayout[key];
-    }
-  });
 });
 
 var _SplashLayout = require("./SplashLayout.js");
@@ -3637,15 +3546,16 @@ var ManageClients = function ManageClients() {
       return mdl.clients = clients;
     };
 
-    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname}\n}")).fork(onError, onSuccess);
+    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n}")).fork(onError, onSuccess);
   };
 
   return {
     oninit: loadClients,
     view: function view(_ref3) {
       var mdl = _ref3.attrs.mdl;
-      console.log("manageclients");
-      return m(".content", [m("section.section", {
+      return m(".contents", {
+        id: "content"
+      }, [m("section.section", {
         id: "content-toolbar"
       }, [m(_index.default, {
         mdl: mdl
@@ -3653,9 +3563,11 @@ var ManageClients = function ManageClients() {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("h1.title", mdl.state.route.title), m("section.section", mdl.clients.map(function (client) {
-        return m("ul", m("li", m("code", client.lastname, ",", client.firstname)));
-      }))])])]);
+      }, [m("h1.title", mdl.state.route.title), m("section.panel", m(".panel-body", mdl.clients.map(function (client) {
+        return m(".menu", [m(".tile-icon", m("figure.avatar", {
+          "data-initial": "".concat(client.firstname[0]).concat(client.lastname[0])
+        })), m(".tile-content", [m("p.text.text-bold", [client.firstname, client.lastname]), m("p.sub-title", client.email), m("p.sub-title", client.birthdate)])]);
+      })))])])]);
     }
   };
 };
@@ -3921,7 +3833,9 @@ var Home = function Home(_ref) {
   var mdl = _ref.attrs.mdl;
   return {
     view: function view() {
-      return m(".home", [m("section.home-section hero hero-lg bg-primary parall", m(".hero-body", [m("h1", "section 1")])), m("section.home-section hero hero-lg bg-secondary", m(".hero-body", m("h1", "section 2")))]);
+      return m("section.section", {
+        id: "content-data"
+      }, [m("section.home-section hero hero-lg bg-primary parall", m(".hero-body", [m("h1", "section 1")])), m("section.home-section hero hero-lg bg-secondary", m(".hero-body", m("h1", "section 2")))]);
     }
   };
 };

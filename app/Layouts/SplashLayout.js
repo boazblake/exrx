@@ -7,9 +7,9 @@ const SplashLayout = ({ attrs: { mdl } }) => {
   return {
     view: ({ children }) =>
       m(
-        ".splashlayout",
+        ".layout",
         {
-          id: "splashlayout"
+          id: "splash-layout"
         },
         [
           m(SplashHeader, { mdl }),

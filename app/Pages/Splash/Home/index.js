@@ -3,7 +3,7 @@ import Icons from "Components/Icons"
 const Home = ({ attrs: { mdl } }) => {
   return {
     view: () =>
-      m(".home", [
+      m("section.section", { id: "content-data" }, [
         m(
           "section.home-section hero hero-lg bg-primary parall",
           m(".hero-body", [m("h1", "section 1")])
