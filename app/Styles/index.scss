@@ -86,6 +86,10 @@ a {
   grid-template-areas: "content-toolbar" "conent-data";
 }
 
+.content {
+  padding: 10px;
+}
+
 #content-toolbar {
   padding-bottom: 4px;
 }

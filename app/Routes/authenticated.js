@@ -45,7 +45,7 @@ const authenticated = [
   },
   {
     id: "battery-config",
-    title: "Batteries",
+    title: "BATTERY-TESTS",
     icon: Icons.calcs,
     route: "/EXRX/:name/battery-config",
     position: ["left-aside"],
@@ -69,7 +69,7 @@ const authenticated = [
   },
   {
     id: "manage-clients",
-    title: "Clientelle",
+    title: "CLIENTS",
     icon: Icons.users,
     route: "/EXRX/:name/manage-clients",
     position: ["left-aside"],

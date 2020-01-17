@@ -4,7 +4,6 @@ import RegisterClientForm from "./registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 import Button from "Components/Button"
-import { range } from "ramda"
 
 const dataModel = {
   firstname: "",
@@ -14,12 +13,12 @@ const dataModel = {
   birthdate: ""
 }
 
-let entries = Stream(1)
+// let entries = Stream(1)
 
-const createForms = (length, state) =>
-  (state.data = Array.from(
-    [jsonCopy(dataModel)].fill.call({ length }, jsonCopy(dataModel))
-  ))
+// const createForms = (length, state) =>
+//   (state.data = Array.from(
+//     [jsonCopy(dataModel)].fill.call({ length }, jsonCopy(dataModel))
+//   ))
 
 const state = {
   isSubmitted: false,
@@ -33,7 +32,7 @@ const resetState = () => {
   state.errors = {}
   state.httpError = undefined
   state.isSubmitted = false
-  state.entries(1)
+  // state.entries(1)
 }
 
 const saveClientTask = (mdl) => ({ email, firstname, lastname, birthdate }) =>
@@ -49,6 +48,7 @@ const saveClientTask = (mdl) => ({ email, firstname, lastname, birthdate }) =>
 }`)
 
 const validateForm = (mdl) => (data) => {
+  console.log(mdl, data)
   const onError = (errs) => {
     state.errors = errs
     console.log("failed - state", state)
@@ -68,12 +68,12 @@ const validateForm = (mdl) => (data) => {
 
 const AddClientActions = () => {
   return {
-    view: ({ attrs: { mdl, state } }) => [
+    view: ({ attrs: { mdl, clients } }) => [
       m(Button, {
         mdl,
         type: "submit",
         for: `client-form`,
-        action: () => validateForm(mdl)(state.data),
+        action: () => clients.map((state) => validateForm(mdl)(state.data)),
         label: "Add New Client",
         classList: "input btn btn-primary authBtn"
       })
@@ -82,12 +82,12 @@ const AddClientActions = () => {
 }
 
 const AddClient = () => {
+  let clients = [state]
   return {
     view: ({ attrs: { mdl } }) =>
       m(".", [
         m("button.btn", { onclick: (e) => mdl.toggleModal(mdl) }, "Add Client"),
         m(Modal, {
-          oninit: () => createForms(entries(), state),
           animateEntrance: animateComponentEntrance,
           animateExit: slideModalOut,
           mdl,
@@ -95,15 +95,28 @@ const AddClient = () => {
           isActive: mdl.state.showModal(),
           close: () => mdl.toggleModal(mdl),
           title: "Add Client",
-          content: m(RegisterClientForm, {
-            entries,
-            createForms,
-            state,
-            data: state.data,
-            errors: state.errors,
-            isSubmitted: state.isSubmitted
-          }),
-          footer: m(AddClientActions, { mdl, state })
+          content: [
+            m(
+              "button.btn",
+              {
+                onclick: (e) => {
+                  e.false
+                  clients.push(jsonCopy(state))
+                }
+              },
+              "Add Another Client"
+            ),
+            m("section.clientForms", [
+              clients.map((client) =>
+                m(RegisterClientForm, {
+                  data: client.data,
+                  errors: client.errors,
+                  isSubmitted: client.isSubmitted
+                })
+              )
+            ])
+          ],
+          footer: m(AddClientActions, { mdl, clients })
         })
       ])
   }
