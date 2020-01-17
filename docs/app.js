@@ -3405,7 +3405,6 @@ var validateEmails = function validateEmails(data) {
 };
 
 var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
-  console.log(data);
   return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
   .failureMap(_ramda.mergeAll).toTask();
 };
@@ -3441,24 +3440,19 @@ var dataModel = {
   email: "",
   confirmEmail: "",
   birthdate: ""
-}; // let entries = Stream(1)
-// const createForms = (length, state) =>
-//   (state.data = Array.from(
-//     [jsonCopy(dataModel)].fill.call({ length }, jsonCopy(dataModel))
-//   ))
-
+};
 var state = {
   isSubmitted: false,
   errors: {},
   httpError: undefined,
-  data: []
+  data: (0, _Utils.jsonCopy)(dataModel)
 };
 
 var resetState = function resetState() {
   state.data = [];
   state.errors = {};
   state.httpError = undefined;
-  state.isSubmitted = false; // state.entries(1)
+  state.isSubmitted = false;
 };
 
 var saveClientTask = function saveClientTask(mdl) {
@@ -3473,8 +3467,6 @@ var saveClientTask = function saveClientTask(mdl) {
 
 var validateForm = function validateForm(mdl) {
   return function (data) {
-    console.log(mdl, data);
-
     var onError = function onError(errs) {
       state.errors = errs;
       console.log("failed - state", state);
@@ -3499,15 +3491,13 @@ var AddClientActions = function AddClientActions() {
     view: function view(_ref3) {
       var _ref3$attrs = _ref3.attrs,
           mdl = _ref3$attrs.mdl,
-          clients = _ref3$attrs.clients;
+          state = _ref3$attrs.state;
       return [m(_Button.default, {
         mdl: mdl,
         type: "submit",
         for: "client-form",
         action: function action() {
-          return clients.map(function (state) {
-            return validateForm(mdl)(state.data);
-          });
+          return validateForm(mdl)(state.data);
         },
         label: "Add New Client",
         classList: "input btn btn-primary authBtn"
@@ -3517,7 +3507,6 @@ var AddClientActions = function AddClientActions() {
 };
 
 var AddClient = function AddClient() {
-  var clients = [state];
   return {
     view: function view(_ref4) {
       var mdl = _ref4.attrs.mdl;
@@ -3535,21 +3524,14 @@ var AddClient = function AddClient() {
           return mdl.toggleModal(mdl);
         },
         title: "Add Client",
-        content: [m("button.btn", {
-          onclick: function onclick(e) {
-            e.false;
-            clients.push((0, _Utils.jsonCopy)(state));
-          }
-        }, "Add Another Client"), m("section.clientForms", [clients.map(function (client) {
-          return m(_registerClientForm.default, {
-            data: client.data,
-            errors: client.errors,
-            isSubmitted: client.isSubmitted
-          });
-        })])],
+        content: m(_registerClientForm.default, {
+          data: state.data,
+          errors: state.errors,
+          isSubmitted: state.isSubmitted
+        }),
         footer: m(AddClientActions, {
           mdl: mdl,
-          clients: clients
+          state: state
         })
       })]);
     }

@@ -43,13 +43,9 @@ const validateEmails = (data) =>
     )
     .apLeft(validate(emailFormat, emailLense, INVALID_EMAIL_FORMAT, data))
 
-export const validateClientRegistrationTask = (data) => {
-  console.log(data)
-  return (
-    ValidateRegistration.ap(validateName(data))
-      .ap(validateEmails(data))
-      // .ap(validateBirthday(data))
-      .failureMap(mergeAll)
-      .toTask()
-  )
-}
+export const validateClientRegistrationTask = (data) =>
+  ValidateRegistration.ap(validateName(data))
+    .ap(validateEmails(data))
+    // .ap(validateBirthday(data))
+    .failureMap(mergeAll)
+    .toTask()
