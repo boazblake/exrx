@@ -8,7 +8,8 @@ const Tab = ({ attrs: { key } }) => {
           m.route.Link,
           {
             key,
-            id: `${tab.id}-key`,
+            class: "sidebar-nav",
+            id: `${tab.id}-link`,
             href: tab.group.includes("authenticated")
               ? `EXRX/${getUser(mdl.user)}/${tab.id}`
               : `${tab.route}`

@@ -1083,8 +1083,6 @@ var _NavMenu = _interopRequireDefault(require("./Navigation/NavMenu.js"));
 
 var _animations = require("Utils/animations");
 
-var _ramda = require("ramda");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LeftAside = function LeftAside(_ref) {
@@ -1188,7 +1186,8 @@ var Tab = function Tab(_ref) {
           mdl = _ref2$attrs.mdl;
       return m("li.".concat(active ? "nav-item" : "nav-item"), m(m.route.Link, {
         key: key,
-        id: "".concat(tab.id, "-key"),
+        class: "sidebar-nav",
+        id: "".concat(tab.id, "-link"),
         href: tab.group.includes("authenticated") ? "EXRX/".concat(getUser(mdl.user), "/").concat(tab.id) : "".concat(tab.route)
       }, tab.title));
     }
@@ -3979,7 +3978,7 @@ var authenticated = [{
   }
 }, {
   id: "battery-config",
-  title: "BATTERY-TESTS",
+  title: "Battery Tests",
   icon: _Icons.default.calcs,
   route: "/EXRX/:name/battery-config",
   position: ["left-aside"],
@@ -4008,7 +4007,7 @@ var authenticated = [{
   }
 }, {
   id: "manage-clients",
-  title: "CLIENTS",
+  title: "Clients",
   icon: _Icons.default.users,
   route: "/EXRX/:name/manage-clients",
   position: ["left-aside"],

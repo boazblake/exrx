@@ -1,6 +1,5 @@
 import NavMenu from "./Navigation/NavMenu.js"
 import { SlideInRight, SlideOutLeft } from "Utils/animations"
-import { without, propEq } from "ramda"
 
 const LeftAside = ({ attrs: { mdl } }) => {
   let routes = mdl.Routes.filter((r) => r.position.includes("left-aside"))

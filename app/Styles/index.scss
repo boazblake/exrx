@@ -79,13 +79,17 @@ a {
   }
 }
 
+.card {
+  padding: 2px;
+}
+
 #content {
   grid-area: content;
   padding: 10px;
   min-height: 100vh;
   height: 100%;
   display: grid;
-  grid-template-rows: 1fr 9fr;
+  grid-template-rows: 0.5fr 10fr;
   grid-template-areas: "content-toolbar" "content-data";
 }
 
@@ -151,12 +155,12 @@ a {
 .manageClients {
   display: flex;
   flex-flow: column;
-  margin-bottom: 310px;
+  margin-bottom: 240px;
 }
 
 #main {
   overflow: hidden;
-  max-height: 74vh;
+  max-height: 75vh;
 }
 
 #main-splash {
@@ -285,6 +289,10 @@ progress {
 
 .sidebar-modal-active {
   min-height: 100vh;
+}
+
+.sidebar-nav {
+  text-transform: uppercase;
 }
 
 .subTitle {
