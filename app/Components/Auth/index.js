@@ -86,7 +86,7 @@ const loginUser = (mdl) => ({ email, password }) =>
   })
 
 const AddUserId = (mdl) => (id) =>
-  mdl.http.postQl(mdl)(`mutation {
+  mdl.http.postQlTask(mdl)(`mutation {
   createUser(data:{userId:${id}}){id}
 }`)
 

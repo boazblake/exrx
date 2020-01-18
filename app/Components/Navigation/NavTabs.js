@@ -69,14 +69,15 @@ const NavTabs = () => {
               : m(
                   "li.tab-item",
                   m(
-                    "button.btn btn-primary",
+                    "button.btn btn-action",
                     {
+                      id: "login-reg-button",
                       onclick: () => mdl.toggleAuthModal(mdl)
                     },
                     "Login / Register"
                   )
                 ),
-            m(AuthComponent, { mdl })
+            mdl.state.showAuthModal() && m(AuthComponent, { mdl })
           ]
         )
       ]

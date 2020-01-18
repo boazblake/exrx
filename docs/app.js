@@ -523,7 +523,7 @@ var loginUser = function loginUser(mdl) {
 
 var AddUserId = function AddUserId(mdl) {
   return function (id) {
-    return mdl.http.postQl(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
+    return mdl.http.postQlTask(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
   };
 };
 
@@ -637,10 +637,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _mithril = _interopRequireDefault(require("mithril"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var Button = function Button() {
   return {
     view: function view(_ref) {
@@ -651,7 +647,7 @@ var Button = function Button() {
           _ref$attrs$classList = _ref$attrs.classList,
           classList = _ref$attrs$classList === void 0 ? "" : _ref$attrs$classList,
           isDisabled = _ref$attrs.isDisabled;
-      return (0, _mithril.default)("button.btn.".concat(classList, " ").concat(mdl.state.isLoading() ? "loading" : ""), {
+      return m("button.btn.".concat(classList, " ").concat(mdl.state.isLoading() ? "loading" : ""), {
         onclick: function onclick(e) {
           return action(e);
         },
@@ -1294,11 +1290,12 @@ var NavTabs = function NavTabs() {
         }));
       }), mdl.state.isAuth() ? m(_SettingsMenu.default, {
         mdl: mdl
-      }) : m("li.tab-item", m("button.btn btn-primary", {
+      }) : m("li.tab-item", m("button.btn btn-action", {
+        id: "login-reg-button",
         onclick: function onclick() {
           return mdl.toggleAuthModal(mdl);
         }
-      }, "Login / Register")), m(_Auth.default, {
+      }, "Login / Register")), mdl.state.showAuthModal() && m(_Auth.default, {
         mdl: mdl
       })])];
     }
@@ -1452,7 +1449,7 @@ var SettingsMenu = function SettingsMenu() {
           return state.showMenu(!state.showMenu());
         },
         tabindex: "0"
-      }, ["User Settings", m("i.icon icon-arrow-down")]), state.showMenu() && m("ul.menu", [// m(".panel", [
+      }, ["Settings", m("i.icon icon-arrow-down")]), state.showMenu() && m("ul.menu", [// m(".panel", [
       //   m(".panel-header", m(".panel-title", "Comments")),
       //   m(".panel-nav"),
       //   m(".panel-body"),
@@ -3315,11 +3312,19 @@ var _data = require("data.validation");
 
 var _Utils = require("Utils");
 
-var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(2, _ramda.identity));
-var nameLense = (0, _ramda.lensProp)("name");
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
 var emailLense = (0, _ramda.lensProp)("email");
 var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
-var NAME_REQUIRED_MSG = "A Name is required";
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
 var EMAIL_REQUIRED_MSG = "An Email is required";
 var EMAILS_MUST_MATCH = "Emails do not match";
 var INVALID_EMAIL_FORMAT = "Email must be a valid format";
@@ -3330,8 +3335,12 @@ var inputsMatch = function inputsMatch(input1) {
   };
 };
 
-var validateName = function validateName(data) {
-  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense, NAME_REQUIRED_MSG, data));
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
 };
 
 var validateEmails = function validateEmails(data) {
@@ -3339,7 +3348,7 @@ var validateEmails = function validateEmails(data) {
 };
 
 var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
-  return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
   .failureMap(_ramda.mergeAll).toTask();
 };
 
@@ -3395,7 +3404,7 @@ var saveClientTask = function saveClientTask(mdl) {
         firstname = _ref.firstname,
         lastname = _ref.lastname,
         birthdate = _ref.birthdate;
-    return mdl.http.postQl(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
   };
 };
 
@@ -3448,7 +3457,7 @@ var AddClient = function AddClient() {
         onclick: function onclick(e) {
           return mdl.toggleModal(mdl);
         }
-      }, "Add Client"), m(_Modal.default, {
+      }, "Add Client"), mdl.state.showModal() && m(_Modal.default, {
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
@@ -3495,7 +3504,7 @@ var RegisterClientForm = function RegisterClientForm() {
           data = _ref$attrs.data,
           errors = _ref$attrs.errors,
           isSubmitted = _ref$attrs.isSubmitted;
-      return [m("form.column col-6", {
+      return [m("form.column col-6 col-sm-auto", {
         id: "client-form"
       }, [m(_FormInputs.default, {
         isSubmitted: isSubmitted,
@@ -3546,6 +3555,366 @@ var _default = RegisterClientForm;
 exports.default = _default;
 });
 
+;require.register("Pages/Admin/ManageClients/ClientCard.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _animations = require("Styles/animations.js");
+
+var _fns = require("./fns.js");
+
+var _EditClientModal = _interopRequireDefault(require("./EditClientModal "));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ClientCard = function ClientCard() {
+  return {
+    onbeforeremove: _animations.SlideOutLeft,
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          client = _ref$attrs.client;
+      return m(".panel-item.card.client", m(".tile.tile-centered", [m(".tile-icon", m("figure.avatar", {
+        "data-initial": "".concat(client.firstname[0]).concat(client.lastname[0])
+      })), m(".tile-content", m(".text.text-bold", "".concat(client.lastname, ", ").concat(client.firstname))), m(".dropdown dropdown-right", m(".btn-group", [m("button.btn.btn-action.btn-lg.dropdown-toggle", {
+        tabIndex: 0
+      }, m("i.icon.icon-more-vert")), m("ul.menu", [m(_EditClientModal.default, {
+        mdl: mdl
+      }), m("li.menu-item", m(_Button.default, {
+        mdl: mdl,
+        action: function action(e) {
+          return (0, _fns.deleteClient)(mdl)(client.id);
+        },
+        label: "Delete",
+        classList: "",
+        isDisabled: false
+      }))])]))]));
+    }
+  };
+};
+
+var _default = ClientCard;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/EditClientModal /Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/EditClientModal /index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _registerClientForm = _interopRequireDefault(require("./registerClientForm.js"));
+
+var _Validations = require("./Validations.js");
+
+var _Utils = require("Utils");
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dataModel = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  confirmEmail: "",
+  birthdate: ""
+};
+var state = {
+  isSubmitted: false,
+  errors: {},
+  httpError: undefined,
+  data: (0, _Utils.jsonCopy)(dataModel)
+};
+
+var resetState = function resetState() {
+  state.data = [];
+  state.errors = {};
+  state.httpError = undefined;
+  state.isSubmitted = false;
+};
+
+var saveClientTask = function saveClientTask(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        firstname = _ref.firstname,
+        lastname = _ref.lastname,
+        birthdate = _ref.birthdate;
+    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+  };
+};
+
+var validateForm = function validateForm(mdl) {
+  return function (data) {
+    var onError = function onError(errs) {
+      state.errors = errs;
+      console.log("failed - state", state);
+    };
+
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref2) {
+        var createClient = _ref2.createClient;
+        mdl.clients.push(createClient);
+        mdl.toggleModal(mdl);
+        resetState();
+      };
+    };
+
+    state.isSubmitted = true;
+    (0, _Validations.validateClientRegistrationTask)(data).chain(saveClientTask(mdl)).fork(onError, onSuccess(mdl));
+  };
+};
+
+var EditClientActions = function EditClientActions() {
+  return {
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          mdl = _ref3$attrs.mdl,
+          state = _ref3$attrs.state;
+      return [m(_Button.default, {
+        mdl: mdl,
+        type: "submit",
+        for: "client-form",
+        action: function action() {
+          return validateForm(mdl)(state.data);
+        },
+        label: "Edit New Client",
+        classList: "input btn btn-primary authBtn"
+      })];
+    }
+  };
+};
+
+var EditClient = function EditClient() {
+  return {
+    view: function view(_ref4) {
+      var mdl = _ref4.attrs.mdl;
+      return m(".", [m("button.btn", {
+        onclick: function onclick(e) {
+          return mdl.toggleModal(mdl);
+        }
+      }, "Edit Client"), mdl.state.showModal() && m(_Modal.default, {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.state.showModal(),
+        close: function close() {
+          return mdl.toggleModal(mdl);
+        },
+        title: "Edit Client",
+        content: m(_registerClientForm.default, {
+          data: state.data,
+          errors: state.errors,
+          isSubmitted: state.isSubmitted
+        }),
+        footer: m(EditClientActions, {
+          mdl: mdl,
+          state: state
+        })
+      })]);
+    }
+  };
+};
+
+var _default = EditClient;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/EditClientModal /registerClientForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RegisterClientForm = function RegisterClientForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted;
+      return [m("form.column col-6 col-sm-auto", {
+        id: "client-form"
+      }, [m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "firstname",
+        label: "First Name",
+        id: "first-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "lastname",
+        label: "Last Name",
+        id: "last-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "Email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        errors: errors,
+        field: "birthdate",
+        label: "birthdate",
+        id: "birthdate",
+        type: "date"
+      })])];
+    }
+  };
+};
+
+var _default = RegisterClientForm;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/fns.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deleteClient = exports.loadClients = void 0;
+
+var loadClientsTask = function loadClientsTask(mdl) {
+  return mdl.http.postQlTask(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n}"));
+};
+
+var deleteClientTask = function deleteClientTask(mdl) {
+  return function (id) {
+    return mdl.http.postQlTask(mdl)("\nmutation {\n  deleteClient(where:{id:".concat(JSON.stringify(id), "}){id}\n}"));
+  };
+};
+
+var loadClients = function loadClients(_ref) {
+  var mdl = _ref.attrs.mdl;
+
+  var onError = function onError(e) {
+    return console.log("ERROR Fetching Clients", e);
+  };
+
+  var onSuccess = function onSuccess(_ref2) {
+    var clients = _ref2.clients;
+    return mdl.clients = clients;
+  };
+
+  return loadClientsTask(mdl).fork(onError, onSuccess);
+};
+
+exports.loadClients = loadClients;
+
+var deleteClient = function deleteClient(mdl) {
+  return function (id) {
+    var onError = function onError(e) {
+      return console.log("ERROR deleteing Client", e);
+    };
+
+    var onSuccess = function onSuccess(_ref3) {
+      var clients = _ref3.clients;
+      return mdl.clients = clients;
+    };
+
+    return deleteClientTask(mdl)(id).chain(function (_) {
+      return loadClientsTask(mdl);
+    }).fork(onError, onSuccess);
+  };
+};
+
+exports.deleteClient = deleteClient;
+});
+
 ;require.register("Pages/Admin/ManageClients/index.js", function(exports, require, module) {
 "use strict";
 
@@ -3554,46 +3923,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(require("./AddClientModal/index.js"));
+var _AddClientModal = _interopRequireDefault(require("./AddClientModal"));
+
+var _ClientCard = _interopRequireDefault(require("./ClientCard.js"));
+
+var _fns = require("./fns.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ManageClients = function ManageClients() {
-  var loadClients = function loadClients(_ref) {
-    var mdl = _ref.attrs.mdl;
-
-    var onError = function onError(e) {
-      return console.log("ERROR Fetching Clients", e);
-    };
-
-    var onSuccess = function onSuccess(_ref2) {
-      var clients = _ref2.clients;
-      return mdl.clients = clients;
-    };
-
-    return mdl.http.postQl(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n}")).fork(onError, onSuccess);
-  };
-
   return {
-    oninit: loadClients,
-    view: function view(_ref3) {
-      var mdl = _ref3.attrs.mdl;
+    oninit: _fns.loadClients,
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
       return m(".contents", {
         id: "content"
       }, [m("section.section", {
         id: "content-toolbar"
-      }, [m(_index.default, {
+      }, [m(_AddClientModal.default, {
         mdl: mdl
       })]), m("section.section", {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
       }, [m("section.panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
-        return m(".panel-item.card.client", m(".tile.tile-centered", [m(".tile-icon", m("figure.avatar", {
-          "data-initial": "".concat(client.firstname[0]).concat(client.lastname[0])
-        })), m(".tile-content", m(".text.text-bold", "".concat(client.lastname, ", ").concat(client.firstname))), m(".dropdown dropdown-right", m(".btn-group", [m("button.btn.btn-action.btn-lg.dropdown-toggle", {
-          tabIndex: 0
-        }, m("i.icon.icon-more-vert")), m("ul.menu", [m("li.menu-item", "Edit"), m("li.menu-item", "Delete")])]))]));
+        return m(_ClientCard.default, {
+          key: client.id,
+          mdl: mdl,
+          client: client
+        });
       }))])])])]);
     }
   };
@@ -4214,11 +4572,9 @@ exports.SlideInRight = SlideInRight;
 
 var SlideOutLeft = function SlideOutLeft(_ref2) {
   var dom = _ref2.dom;
-  return new Promise(function () {
-    dom.classList.remove("slideRight");
-    return setTimeout(function () {
-      dom.classList.add("reverseAnimation", "slideRight");
-    }, 200);
+  return new Promise(function (resolve) {
+    dom.classList.add("reverseAnimation", "slideRight");
+    dom.addEventListener("animationend", resolve);
   });
 };
 
@@ -4665,7 +5021,7 @@ var parseHttpSuccess = function parseHttpSuccess(model) {
 
 exports.parseHttpSuccess = parseHttpSuccess;
 
-var postQl = function postQl(model) {
+var postQlTask = function postQlTask(model) {
   return function (query) {
     model.state.isLoading(true);
     return new _data.default(function (rej, res) {
@@ -4787,7 +5143,7 @@ var backEnd = {
 };
 var http = {
   backEnd: backEnd,
-  postQl: postQl
+  postQlTask: postQlTask
 };
 var _default = http;
 exports.default = _default;

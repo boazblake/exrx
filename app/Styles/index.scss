@@ -61,7 +61,7 @@ a {
 .authBtn {
   font-size: 20px;
   flex-basis: 5;
-  width: 80%;
+  width: 100%;
 }
 
 .avatar {
@@ -147,6 +147,11 @@ a {
   flex-flow: column;
 }
 
+#login-reg-button {
+  width: 8em;
+  margin-right: 0.1em;
+}
+
 .loader {
   height: 80vh;
   width: 80vw;
@@ -158,7 +163,9 @@ a {
   margin-bottom: 240px;
 
   .client {
-    height: 100px;
+    height: 75px;
+    justify-content: center;
+    padding: 3px;
   }
 }
 
@@ -386,5 +393,28 @@ progress {
   #right-aside {
     max-width: 400px;
     min-width: 20vw;
+  }
+
+  .manageClients {
+    margin-bottom: 240px;
+
+    .panel {
+      min-height: 60vh;
+    }
+
+    .panel-body {
+      display: flex;
+      flex-flow: wrap;
+      justify-content: flex-start;
+    }
+
+    .client {
+      display: flex;
+      width: 250px;
+      height: 75px;
+      justify-content: center;
+      padding: 3px;
+      margin: 3px;
+    }
   }
 }

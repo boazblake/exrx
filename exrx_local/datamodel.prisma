@@ -1,0 +1,68 @@
+type Client {
+  firstname: String!
+  lastname: String!
+  email: String!
+  birthdate: DateTime!
+  biometrics: [Biometric!]!
+  documents: [Documents!]!
+  trainer: User
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Biometric {
+  clientId: Client
+  weights: [WeightMeasure!]!
+  heights: [HeightMeasure!]!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+
+type WeightMeasure {
+  unit: Unit!
+  value: Float!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+
+type HeightMeasure {
+  unit: Unit!
+  value: Float!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Unit {
+  brevis: String!
+  name: String!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Documents {
+  clientId: Client
+  title: String!
+  isRequired: Boolean!
+  isSubmitted: Boolean!
+  hasFlag: Boolean!
+  flagMsg: String
+  path: String
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type User {
+  id: ID! @id
+  userId: String! @unique
+  clients: [Client!]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

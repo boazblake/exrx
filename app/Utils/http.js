@@ -57,7 +57,7 @@ export const parseHttpSuccess = (model) => (res) => (data) => {
 //     ? window.sessionStorage.getItem('user-token')
 //     : ''
 
-const postQl = (model) => (query) => {
+const postQlTask = (model) => (query) => {
   model.state.isLoading(true)
   return new Task((rej, res) =>
     m
@@ -166,7 +166,7 @@ const backEnd = {
 
 const http = {
   backEnd,
-  postQl
+  postQlTask
 }
 
 export default http

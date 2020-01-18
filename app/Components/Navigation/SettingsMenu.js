@@ -74,7 +74,7 @@ const SettingsMenu = () => {
               onclick: () => state.showMenu(!state.showMenu()),
               tabindex: "0"
             },
-            ["User Settings", m("i.icon icon-arrow-down")]
+            ["Settings", m("i.icon icon-arrow-down")]
           ),
           state.showMenu() &&
             m("ul.menu", [

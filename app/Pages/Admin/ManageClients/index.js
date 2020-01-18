@@ -1,22 +1,8 @@
-import AddClient from "./AddClientModal/index.js"
+import AddClient from "./AddClientModal"
+import ClientCard from "./ClientCard.js"
+import { loadClients } from "./fns.js"
 
 const ManageClients = () => {
-  const loadClients = ({ attrs: { mdl } }) => {
-    const onError = (e) => console.log("ERROR Fetching Clients", e)
-
-    const onSuccess = ({ clients }) => (mdl.clients = clients)
-
-    return mdl.http
-      .postQl(mdl)(
-        `query{
-  clients(where:{trainer:{userId:${JSON.stringify(
-    mdl.user.objectId
-  )}}}){id, firstname, lastname, email, birthdate}
-}`
-      )
-      .fork(onError, onSuccess)
-  }
-
   return {
     oninit: loadClients,
     view: ({ attrs: { mdl } }) => {
@@ -31,38 +17,7 @@ const ManageClients = () => {
               m(
                 ".panel-body",
                 mdl.clients.map((client) =>
-                  m(
-                    ".panel-item.card.client",
-                    m(".tile.tile-centered", [
-                      m(
-                        ".tile-icon",
-                        m("figure.avatar", {
-                          "data-initial": `${client.firstname[0]}${client.lastname[0]}`
-                        })
-                      ),
-                      m(
-                        ".tile-content",
-                        m(
-                          ".text.text-bold",
-                          `${client.lastname}, ${client.firstname}`
-                        )
-                      ),
-                      m(
-                        ".dropdown dropdown-right",
-                        m(".btn-group", [
-                          m(
-                            "button.btn.btn-action.btn-lg.dropdown-toggle",
-                            { tabIndex: 0 },
-                            m("i.icon.icon-more-vert")
-                          ),
-                          m("ul.menu", [
-                            m("li.menu-item", "Edit"),
-                            m("li.menu-item", "Delete")
-                          ])
-                        ])
-                      )
-                    ])
-                  )
+                  m(ClientCard, { key: client.id, mdl, client })
                 )
               )
             ])

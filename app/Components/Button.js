@@ -1,5 +1,3 @@
-import m from "mithril"
-
 const Button = () => {
   return {
     view: ({ attrs: { mdl, action, label, classList = "", isDisabled } }) =>

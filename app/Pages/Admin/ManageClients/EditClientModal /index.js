@@ -57,7 +57,7 @@ const validateForm = (mdl) => (data) => {
     .fork(onError, onSuccess(mdl))
 }
 
-const AddClientActions = () => {
+const EditClientActions = () => {
   return {
     view: ({ attrs: { mdl, state } }) => [
       m(Button, {
@@ -65,18 +65,22 @@ const AddClientActions = () => {
         type: "submit",
         for: `client-form`,
         action: () => validateForm(mdl)(state.data),
-        label: "Add New Client",
+        label: "Edit New Client",
         classList: "input btn btn-primary authBtn"
       })
     ]
   }
 }
 
-const AddClient = () => {
+const EditClient = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(".", [
-        m("button.btn", { onclick: (e) => mdl.toggleModal(mdl) }, "Add Client"),
+        m(
+          "button.btn",
+          { onclick: (e) => mdl.toggleModal(mdl) },
+          "Edit Client"
+        ),
         mdl.state.showModal() &&
           m(Modal, {
             animateEntrance: animateComponentEntrance,
@@ -85,16 +89,16 @@ const AddClient = () => {
             classList: "",
             isActive: mdl.state.showModal(),
             close: () => mdl.toggleModal(mdl),
-            title: "Add Client",
+            title: "Edit Client",
             content: m(RegisterClientForm, {
               data: state.data,
               errors: state.errors,
               isSubmitted: state.isSubmitted
             }),
-            footer: m(AddClientActions, { mdl, state })
+            footer: m(EditClientActions, { mdl, state })
           })
       ])
   }
 }
 
-export default AddClient
+export default EditClient

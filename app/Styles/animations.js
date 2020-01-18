@@ -5,11 +5,9 @@ export const SlideInRight = ({ dom }) => {
 }
 
 export const SlideOutLeft = ({ dom }) => {
-  return new Promise(() => {
-    dom.classList.remove("slideRight")
-    return setTimeout(() => {
-      dom.classList.add("reverseAnimation", "slideRight")
-    }, 200)
+  return new Promise((resolve) => {
+    dom.classList.add("reverseAnimation", "slideRight")
+    dom.addEventListener("animationend", resolve)
   })
 }
 
