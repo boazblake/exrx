@@ -26,8 +26,8 @@ const ManageClients = () => {
         ]),
         m("section.section", { id: "content-data" }, [
           m(".manageClients", { id: mdl.state.route.id }, [
-            m("h1.panel-title", mdl.state.route.title),
             m("section.panel", [
+              m(".panel-header", m("h1.panel-title", mdl.state.route.title)),
               m(
                 ".panel-body",
                 mdl.clients.map((client) =>
@@ -38,14 +38,10 @@ const ManageClients = () => {
                         "data-initial": `${client.firstname[0]}${client.lastname[0]}`
                       })
                     ),
-                    m(".tile-content", [
-                      m("p.text.text-bold", [
-                        client.firstname,
-                        client.lastname
-                      ]),
-                      m("p.sub-title", client.email),
-                      m("p.sub-title", client.birthdate)
-                    ])
+                    m(
+                      ".text.text-bold",
+                      `${client.lastname}, ${client.firstname}`
+                    )
                   ])
                 )
               )

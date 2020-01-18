@@ -3,7 +3,7 @@ const Tab = ({ attrs: { key } }) => {
   return {
     view: ({ attrs: { tab, active, mdl } }) =>
       m(
-        `li.${active ? "nav-item" : "nav-item"}`,
+        `li.nav-item ${active ? "active" : ""}`,
         m(
           m.route.Link,
           {
