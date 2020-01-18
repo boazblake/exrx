@@ -31,18 +31,38 @@ const ManageClients = () => {
               m(
                 ".panel-body",
                 mdl.clients.map((client) =>
-                  m(".panel-item.card", [
-                    m(
-                      ".tile-icon",
-                      m("figure.avatar", {
-                        "data-initial": `${client.firstname[0]}${client.lastname[0]}`
-                      })
-                    ),
-                    m(
-                      ".text.text-bold",
-                      `${client.lastname}, ${client.firstname}`
-                    )
-                  ])
+                  m(
+                    ".panel-item.card.client",
+                    m(".tile.tile-centered", [
+                      m(
+                        ".tile-icon",
+                        m("figure.avatar", {
+                          "data-initial": `${client.firstname[0]}${client.lastname[0]}`
+                        })
+                      ),
+                      m(
+                        ".tile-content",
+                        m(
+                          ".text.text-bold",
+                          `${client.lastname}, ${client.firstname}`
+                        )
+                      ),
+                      m(
+                        ".dropdown dropdown-right",
+                        m(".btn-group", [
+                          m(
+                            "button.btn.btn-action.btn-lg.dropdown-toggle",
+                            { tabIndex: 0 },
+                            m("i.icon.icon-more-vert")
+                          ),
+                          m("ul.menu", [
+                            m("li.menu-item", "Edit"),
+                            m("li.menu-item", "Delete")
+                          ])
+                        ])
+                      )
+                    ])
+                  )
                 )
               )
             ])

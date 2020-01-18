@@ -156,6 +156,10 @@ a {
   display: flex;
   flex-flow: column;
   margin-bottom: 240px;
+
+  .client {
+    height: 100px;
+  }
 }
 
 #main {
