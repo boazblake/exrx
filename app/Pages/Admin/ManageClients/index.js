@@ -26,13 +26,12 @@ const ManageClients = () => {
         ]),
         m("section.section", { id: "content-data" }, [
           m(".manageClients", { id: mdl.state.route.id }, [
-            m("h1.title", mdl.state.route.title),
-            m(
-              "section.panel",
+            m("h1.panel-title", mdl.state.route.title),
+            m("section.panel", [
               m(
                 ".panel-body",
                 mdl.clients.map((client) =>
-                  m(".menu", [
+                  m(".panel-item.card", [
                     m(
                       ".tile-icon",
                       m("figure.avatar", {
@@ -50,7 +49,7 @@ const ManageClients = () => {
                   ])
                 )
               )
-            )
+            ])
           ])
         ])
       ])

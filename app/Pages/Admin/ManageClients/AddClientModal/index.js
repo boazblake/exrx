@@ -36,7 +36,7 @@ const saveClientTask = (mdl) => ({ email, firstname, lastname, birthdate }) =>
       lastname:${JSON.stringify(lastname)},
       birthdate:${JSON.stringify(birthdate)},
       trainer:{connect:{userId: ${JSON.stringify(mdl.user.objectId)}}}
-    }), {id, firstname, lastname}
+    }), {id, firstname, lastname, email, birthdate}
 }`)
 
 const validateForm = (mdl) => (data) => {

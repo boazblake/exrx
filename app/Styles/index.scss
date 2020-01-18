@@ -86,18 +86,20 @@ a {
   height: 100%;
   display: grid;
   grid-template-rows: 1fr 9fr;
-  grid-template-areas: "content-toolbar" "conent-data";
+  grid-template-areas: "content-toolbar" "content-data";
 }
 
 .contents {
-  padding: 10px;
+  // padding: 10px;
 }
 
 #content-toolbar {
+  grid-area: content-toolbar;
   padding-bottom: 4px;
 }
 
 #content-data {
+  grid-area: content-data;
   max-height: 100vh;
   overflow: scroll;
 }
@@ -144,6 +146,12 @@ a {
 .loader {
   height: 80vh;
   width: 80vw;
+}
+
+.manageClients {
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 310px;
 }
 
 #main {
