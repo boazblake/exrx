@@ -55,6 +55,5 @@ export const validateClientRegistrationTask = (data) =>
     .ap(validateLastName(data))
     .ap(validateEmails(data))
     // .ap(validateBirthday(data))
-    .map(log("validating"))
     .failureMap(mergeAll)
     .toTask()

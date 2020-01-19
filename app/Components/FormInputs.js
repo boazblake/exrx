@@ -1,9 +1,13 @@
+import { validateClientRegistrationTask } from "../Pages/Admin/ManageClients/EditClientModal /Validations"
+
 const checkErr = (errors) => (field) => {
   return
 }
 
 const FormInput = {
-  view: ({ attrs: { isSubmitted, data, errors, field, label, id, type } }) =>
+  view: ({
+    attrs: { isSubmitted, data, errors, field, label, id, type, validate }
+  }) =>
     m(
       ".form-group ",
       isSubmitted && {
@@ -18,7 +22,10 @@ const FormInput = {
           id,
           type,
           placeholder: label,
-          onkeyup: (e) => (data[field] = e.target.value),
+          oninput: (e) => {
+            data[field] = e.target.value
+            isSubmitted && validate()
+          },
           value: data[field],
           autocomplete: false
         }),

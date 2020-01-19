@@ -1,7 +1,7 @@
 import M from "moment"
 import Modal from "Components/Modal"
 import { animateComponentEntrance, slideModalOut } from "Utils/animations"
-import RegisterClientForm from "./registerClientForm.js"
+import RegisterClientForm from "../registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 import Button from "Components/Button"
@@ -9,26 +9,46 @@ import { editClient, formState, resetForm } from "../fns.js"
 
 let state = jsonCopy(formState)
 
-const validateForm = (mdl) => (data) => {
-  const onError = (mdl) => (errs) => {
-    mdl.toggleToast(mdl)
-    mdl.state.toast.contents(errs)
-    mdl.state.toast.class("warn")
-    state.errors = errs
-    console.log("failed - state", errs)
+const validateForm = (state) => {
+  const onError = (errs) => {
+    if (errs.HttpError) {
+      state.httpError = errs.Errors
+    } else state.errors = errs
+
+    console.log("failed state", state)
   }
 
-  const onSuccess = (mdl) => ({ editClient }) => {
-    mdl.clients.push(editClient)
-    mdl.toggle(mdl, `EditClient-${editClient.id}`)
+  const onSuccess = (data) => {
+    state.errors = {}
+    console.log("success", state, data)
+  }
+
+  state.isSubmitted = true
+  console.log("validating update", state)
+  validateClientRegistrationTask(state.data).fork(onError, onSuccess)
+}
+
+const saveForm = (mdl) => (state) => {
+  const onError = (errs) => {
+    if (errs.HttpError) {
+      state.httpError = errs.Errors
+      state.errors = {}
+    } else state.errors = errs
+
+    console.log("failed state", state)
+  }
+
+  const onSuccess = (mdl) => ({ updateClient }) => {
+    mdl.clients.push(updateClient)
+    mdl.toggle(mdl, `EditClient-${updateClient.id}`)
     resetForm(state)
   }
 
   state.isSubmitted = true
-  // console.log("submitting", data)
-  validateClientRegistrationTask(data)
+  console.log("updating", state)
+  validateClientRegistrationTask(state.data)
     .chain(editClient(mdl))
-    .fork(onError(mdl), onSuccess(mdl))
+    .fork(onError, onSuccess(mdl))
 }
 
 const EditClientActions = () => {
@@ -38,7 +58,7 @@ const EditClientActions = () => {
         mdl,
         type: "submit",
         for: `client-form`,
-        action: () => validateForm(mdl)(state.data),
+        action: () => saveForm(mdl)(state),
         label: "Update Client",
         classList: "input btn btn-primary authBtn"
       })
@@ -49,7 +69,7 @@ const EditClientActions = () => {
 const EditClient = () => {
   return {
     view: ({ attrs: { mdl, client } }) =>
-      m(".", [
+      m("section.editClient", [
         m(
           "button.btn",
           {
@@ -74,7 +94,8 @@ const EditClient = () => {
               data: state.data,
               errors: state.errors,
               httpError: state.httpError,
-              isSubmitted: state.isSubmitted
+              isSubmitted: state.isSubmitted,
+              validate: () => validateForm(state)
             }),
             footer: m(EditClientActions, { mdl, state })
           })

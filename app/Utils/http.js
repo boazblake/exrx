@@ -46,7 +46,8 @@ const parseQLResponse = (model) => ({ data, errors }) => {
 export const parseHttpError = (model) => (rej) => (Errors) => {
   model.state.isLoading(false)
   if (Errors.response) return rej(Errors.response)
-  if (Errors.any()) return rej(pluck("message", Errors))
+  if (Errors.any())
+    return rej({ Errors: pluck("message", Errors), HttpError: true })
 }
 
 export const parseHttpSuccess = (model) => (res) => (data) => {

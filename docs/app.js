@@ -751,6 +751,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _Validations = require("../Pages/Admin/ManageClients/EditClientModal /Validations");
+
 var checkErr = function checkErr(errors) {
   return function (field) {
     return;
@@ -766,7 +768,8 @@ var FormInput = {
         field = _ref$attrs.field,
         label = _ref$attrs.label,
         id = _ref$attrs.id,
-        type = _ref$attrs.type;
+        type = _ref$attrs.type,
+        validate = _ref$attrs.validate;
     return m(".form-group ", isSubmitted && {
       class: errors && errors[field] ? "has-error" : "has-success"
     }, [m("label.form-label text-left", {
@@ -775,8 +778,9 @@ var FormInput = {
       id: id,
       type: type,
       placeholder: label,
-      onkeyup: function onkeyup(e) {
-        return data[field] = e.target.value;
+      oninput: function oninput(e) {
+        data[field] = e.target.value;
+        isSubmitted && validate();
       },
       value: data[field],
       autocomplete: false
@@ -3224,8 +3228,7 @@ var model = {
   },
   toggles: {},
   toggle: function toggle(mdl, type) {
-    mdl.toggles[type] ? mdl.toggles[type](!mdl.toggles[type]()) : mdl.toggles[type] = Stream(true);
-    console.log(mdl.toggles[type]());
+    mdl.toggles[type] ? mdl.toggles[type](!mdl.toggles[type]()) : mdl.toggles[type] = Stream(true); // console.log(mdl.toggles[type]())
   },
   toggleModal: function toggleModal(mdl) {
     return mdl.state.showModal(!mdl.state.showModal());
@@ -3379,44 +3382,47 @@ var _Modal = _interopRequireDefault(require("Components/Modal"));
 
 var _animations = require("Utils/animations");
 
-var _registerClientForm = _interopRequireDefault(require("./registerClientForm.js"));
+var _registerClientForm = _interopRequireDefault(require("../registerClientForm.js"));
 
 var _Validations = require("./Validations.js");
-
-var _Utils = require("Utils");
 
 var _Button = _interopRequireDefault(require("Components/Button"));
 
 var _fns = require("../fns.js");
 
+var _Utils = require("Utils");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var dataModel = {
-  firstname: "",
-  lastname: "",
-  email: "",
-  confirmEmail: "",
-  birthdate: ""
-};
-var state = {
-  isSubmitted: false,
-  errors: {},
-  httpError: undefined,
-  data: (0, _Utils.jsonCopy)(dataModel)
+var state = (0, _Utils.jsonCopy)(_fns.formState);
+
+var validateForm = function validateForm(state) {
+  var onError = function onError(errs) {
+    if (errs.HttpError) {
+      state.httpError = errs.Errors;
+    } else state.errors = errs;
+
+    console.log("failed state", state);
+  };
+
+  var onSuccess = function onSuccess(data) {
+    state.errors = {};
+    console.log("success", state, data);
+  };
+
+  state.isSubmitted = true;
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError, onSuccess);
 };
 
-var resetState = function resetState() {
-  state.data = [];
-  state.errors = {};
-  state.httpError = undefined;
-  state.isSubmitted = false;
-};
-
-var validateForm = function validateForm(mdl) {
-  return function (data) {
+var saveForm = function saveForm(mdl) {
+  return function (state) {
     var onError = function onError(errs) {
-      state.errors = errs;
-      console.log("failed - state", state);
+      if (errs.HttpError) {
+        state.httpError = errs.Errors;
+        state.errors = {};
+      } else state.errors = errs;
+
+      console.log("failed state", state);
     };
 
     var onSuccess = function onSuccess(mdl) {
@@ -3424,12 +3430,12 @@ var validateForm = function validateForm(mdl) {
         var createClient = _ref.createClient;
         mdl.clients.push(createClient);
         mdl.toggle(mdl, "AddClient");
-        resetState();
+        (0, _fns.resetForm)(state);
       };
     };
 
     state.isSubmitted = true;
-    (0, _Validations.validateClientRegistrationTask)(data).chain((0, _fns.saveClient)(mdl)).fork(onError, onSuccess(mdl));
+    (0, _Validations.validateClientRegistrationTask)(state.data).chain((0, _fns.saveClient)(mdl)).fork(onError, onSuccess(mdl));
   };
 };
 
@@ -3444,7 +3450,7 @@ var AddClientActions = function AddClientActions() {
         type: "submit",
         for: "client-form",
         action: function action() {
-          return validateForm(mdl)(state.data);
+          return saveForm(mdl)(state);
         },
         label: "Add New Client",
         classList: "input btn btn-primary authBtn"
@@ -3457,7 +3463,7 @@ var AddClient = function AddClient() {
   return {
     view: function view(_ref3) {
       var mdl = _ref3.attrs.mdl;
-      return m(".", [m("button.btn", {
+      return m("section.addClient", [m("button.btn", {
         onclick: function onclick(e) {
           return mdl.toggle(mdl, "AddClient");
         }
@@ -3474,7 +3480,11 @@ var AddClient = function AddClient() {
         content: m(_registerClientForm.default, {
           data: state.data,
           errors: state.errors,
-          isSubmitted: state.isSubmitted
+          isSubmitted: state.isSubmitted,
+          httpError: state.httpError,
+          validate: function validate() {
+            return validateForm(state);
+          }
         }),
         footer: m(AddClientActions, {
           mdl: mdl,
@@ -3486,76 +3496,6 @@ var AddClient = function AddClient() {
 };
 
 var _default = AddClient;
-exports.default = _default;
-});
-
-;require.register("Pages/Admin/ManageClients/AddClientModal/registerClientForm.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RegisterClientForm = function RegisterClientForm() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          data = _ref$attrs.data,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted;
-      return [m("form.column col-6 col-sm-auto", {
-        id: "client-form"
-      }, [m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "firstname",
-        label: "First Name",
-        id: "first-name",
-        type: "text"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "lastname",
-        label: "Last Name",
-        id: "last-name",
-        type: "text"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "email",
-        label: "Email",
-        id: "email",
-        type: "email"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "confirmEmail",
-        label: "Confirm Email",
-        id: "confirm-email",
-        type: "email"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "birthdate",
-        label: "birthdate",
-        id: "birthdate",
-        type: "date"
-      })])];
-    }
-  };
-};
-
-var _default = RegisterClientForm;
 exports.default = _default;
 });
 
@@ -3661,7 +3601,7 @@ var validateEmails = function validateEmails(data) {
 
 var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
   return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
-  .map((0, _Utils.log)("validating")).failureMap(_ramda.mergeAll).toTask();
+  .failureMap(_ramda.mergeAll).toTask();
 };
 
 exports.validateClientRegistrationTask = validateClientRegistrationTask;
@@ -3681,7 +3621,7 @@ var _Modal = _interopRequireDefault(require("Components/Modal"));
 
 var _animations = require("Utils/animations");
 
-var _registerClientForm = _interopRequireDefault(require("./registerClientForm.js"));
+var _registerClientForm = _interopRequireDefault(require("../registerClientForm.js"));
 
 var _Validations = require("./Validations.js");
 
@@ -3701,30 +3641,48 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var state = (0, _Utils.jsonCopy)(_fns.formState);
 
-var validateForm = function validateForm(mdl) {
-  return function (data) {
-    var onError = function onError(mdl) {
-      return function (errs) {
-        mdl.toggleToast(mdl);
-        mdl.state.toast.contents(errs);
-        mdl.state.toast.class("warn");
-        state.errors = errs;
-        console.log("failed - state", errs);
-      };
+var validateForm = function validateForm(state) {
+  var onError = function onError(errs) {
+    if (errs.HttpError) {
+      state.httpError = errs.Errors;
+    } else state.errors = errs;
+
+    console.log("failed state", state);
+  };
+
+  var onSuccess = function onSuccess(data) {
+    state.errors = {};
+    console.log("success", state, data);
+  };
+
+  state.isSubmitted = true;
+  console.log("validating update", state);
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError, onSuccess);
+};
+
+var saveForm = function saveForm(mdl) {
+  return function (state) {
+    var onError = function onError(errs) {
+      if (errs.HttpError) {
+        state.httpError = errs.Errors;
+        state.errors = {};
+      } else state.errors = errs;
+
+      console.log("failed state", state);
     };
 
     var onSuccess = function onSuccess(mdl) {
       return function (_ref) {
-        var editClient = _ref.editClient;
-        mdl.clients.push(editClient);
-        mdl.toggle(mdl, "EditClient-".concat(editClient.id));
+        var updateClient = _ref.updateClient;
+        mdl.clients.push(updateClient);
+        mdl.toggle(mdl, "EditClient-".concat(updateClient.id));
         (0, _fns.resetForm)(state);
       };
     };
 
-    state.isSubmitted = true; // console.log("submitting", data)
-
-    (0, _Validations.validateClientRegistrationTask)(data).chain((0, _fns.editClient)(mdl)).fork(onError(mdl), onSuccess(mdl));
+    state.isSubmitted = true;
+    console.log("updating", state);
+    (0, _Validations.validateClientRegistrationTask)(state.data).chain((0, _fns.editClient)(mdl)).fork(onError, onSuccess(mdl));
   };
 };
 
@@ -3739,7 +3697,7 @@ var EditClientActions = function EditClientActions() {
         type: "submit",
         for: "client-form",
         action: function action() {
-          return validateForm(mdl)(state.data);
+          return saveForm(mdl)(state);
         },
         label: "Update Client",
         classList: "input btn btn-primary authBtn"
@@ -3754,7 +3712,7 @@ var EditClient = function EditClient() {
       var _ref3$attrs = _ref3.attrs,
           mdl = _ref3$attrs.mdl,
           client = _ref3$attrs.client;
-      return m(".", [m("button.btn", {
+      return m("section.editClient", [m("button.btn", {
         onclick: function onclick(e) {
           client.birthdate = (0, _moment.default)(client.birthdate).format("YYYY-MM-DD");
           state.data = _objectSpread({}, client, {
@@ -3776,7 +3734,10 @@ var EditClient = function EditClient() {
           data: state.data,
           errors: state.errors,
           httpError: state.httpError,
-          isSubmitted: state.isSubmitted
+          isSubmitted: state.isSubmitted,
+          validate: function validate() {
+            return validateForm(state);
+          }
         }),
         footer: m(EditClientActions, {
           mdl: mdl,
@@ -3788,77 +3749,6 @@ var EditClient = function EditClient() {
 };
 
 var _default = EditClient;
-exports.default = _default;
-});
-
-;require.register("Pages/Admin/ManageClients/EditClientModal /registerClientForm.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var RegisterClientForm = function RegisterClientForm() {
-  return {
-    view: function view(_ref) {
-      var _ref$attrs = _ref.attrs,
-          data = _ref$attrs.data,
-          errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted,
-          httpError = _ref$attrs.httpError;
-      return [m("form.column col-6 col-sm-auto", {
-        id: "client-form"
-      }, [m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "firstname",
-        label: "First Name",
-        id: "first-name",
-        type: "text"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "lastname",
-        label: "Last Name",
-        id: "last-name",
-        type: "text"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "email",
-        label: "Email",
-        id: "email",
-        type: "email"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "confirmEmail",
-        label: "Confirm Email",
-        id: "confirm-email",
-        type: "email"
-      }), m(_FormInputs.default, {
-        isSubmitted: isSubmitted,
-        data: data,
-        errors: errors,
-        field: "birthdate",
-        label: "birthdate",
-        id: "birthdate",
-        type: "date"
-      })]), httpError && m(".toast toast-error", httpError)];
-    }
-  };
-};
-
-var _default = RegisterClientForm;
 exports.default = _default;
 });
 
@@ -3882,7 +3772,7 @@ var dataModel = {
 var formState = {
   isSubmitted: false,
   errors: (0, _Utils.jsonCopy)(dataModel),
-  httpError: undefined,
+  httpError: null,
   data: (0, _Utils.jsonCopy)(dataModel)
 };
 exports.formState = formState;
@@ -3890,7 +3780,7 @@ exports.formState = formState;
 var resetForm = function resetForm(state) {
   state.data = (0, _Utils.jsonCopy)(dataModel);
   state.errors = (0, _Utils.jsonCopy)(dataModel);
-  state.httpError = undefined;
+  state.httpError = null;
   state.isSubmitted = false;
 };
 
@@ -3923,7 +3813,7 @@ var editClientTask = function editClientTask(mdl) {
         firstname = _ref2.firstname,
         lastname = _ref2.lastname,
         birthdate = _ref2.birthdate;
-    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    where: {id: ".concat(JSON.stringify(id), "}\n    data: {\n      email:").concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+    return mdl.http.postQlTask(mdl)("mutation {\n  updateClient(\n    where: {id: ".concat(JSON.stringify(id), "}\n    data: {\n      email:").concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
   };
 };
 
@@ -4023,6 +3913,85 @@ var ManageClients = function ManageClients() {
 };
 
 var _default = ManageClients;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/registerClientForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RegisterClientForm = function RegisterClientForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError,
+          validate = _ref$attrs.validate;
+      return m("form.column col-6 col-sm-auto", {
+        id: "client-form"
+      }, [m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "firstname",
+        label: "First Name",
+        id: "first-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "lastname",
+        label: "Last Name",
+        id: "last-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "Email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "birthdate",
+        label: "birthdate",
+        id: "birthdate",
+        type: "date"
+      }), httpError && httpError.map(function (err) {
+        return m(".toast toast-error", err);
+      })]);
+    }
+  };
+};
+
+var _default = RegisterClientForm;
 exports.default = _default;
 });
 
@@ -5067,7 +5036,10 @@ var parseHttpError = function parseHttpError(model) {
     return function (Errors) {
       model.state.isLoading(false);
       if (Errors.response) return rej(Errors.response);
-      if (Errors.any()) return rej((0, _ramda.pluck)("message", Errors));
+      if (Errors.any()) return rej({
+        Errors: (0, _ramda.pluck)("message", Errors),
+        HttpError: true
+      });
     };
   };
 };

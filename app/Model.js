@@ -37,7 +37,7 @@ export const model = {
     mdl.toggles[type]
       ? mdl.toggles[type](!mdl.toggles[type]())
       : (mdl.toggles[type] = Stream(true))
-    console.log(mdl.toggles[type]())
+    // console.log(mdl.toggles[type]())
   },
   toggleModal: (mdl) => mdl.state.showModal(!mdl.state.showModal()),
   toggleToast: (mdl) => mdl.state.toast.show(!mdl.state.toast.show()),

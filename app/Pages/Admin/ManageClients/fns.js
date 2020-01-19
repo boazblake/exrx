@@ -11,14 +11,14 @@ const dataModel = {
 export const formState = {
   isSubmitted: false,
   errors: jsonCopy(dataModel),
-  httpError: undefined,
+  httpError: null,
   data: jsonCopy(dataModel)
 }
 
 export const resetForm = (state) => {
   state.data = jsonCopy(dataModel)
   state.errors = jsonCopy(dataModel)
-  state.httpError = undefined
+  state.httpError = null
   state.isSubmitted = false
 }
 
@@ -57,7 +57,7 @@ const editClientTask = (mdl) => ({
   birthdate
 }) =>
   mdl.http.postQlTask(mdl)(`mutation {
-  createClient(
+  updateClient(
     where: {id: ${JSON.stringify(id)}}
     data: {
       email:${JSON.stringify(email)},
