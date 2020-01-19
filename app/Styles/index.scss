@@ -163,9 +163,15 @@ a {
   margin-bottom: 240px;
 
   .client {
+    display: flex;
     height: 75px;
     justify-content: center;
     padding: 3px;
+    margin: 3px;
+
+    .menu {
+      transform: none;
+    }
   }
 }
 
@@ -415,6 +421,10 @@ progress {
       justify-content: center;
       padding: 3px;
       margin: 3px;
+
+      .menu {
+        transform: none;
+      }
     }
   }
 }

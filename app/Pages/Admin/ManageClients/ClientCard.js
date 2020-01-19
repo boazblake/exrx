@@ -28,8 +28,8 @@ const ClientCard = () => {
                 { tabIndex: 0 },
                 m("i.icon.icon-more-vert")
               ),
-              m("ul.menu", [
-                m(EditClient, { mdl }),
+              m("ul.menu", { id: "client-menu" }, [
+                m("li.menu-item", m(EditClient, { mdl, client })),
                 m(
                   "li.menu-item",
                   m(Button, {

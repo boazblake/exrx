@@ -1,60 +1,34 @@
+import M from "moment"
 import Modal from "Components/Modal"
 import { animateComponentEntrance, slideModalOut } from "Utils/animations"
 import RegisterClientForm from "./registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 import Button from "Components/Button"
+import { editClient, formState, resetForm } from "../fns.js"
 
-const dataModel = {
-  firstname: "",
-  lastname: "",
-  email: "",
-  confirmEmail: "",
-  birthdate: ""
-}
-
-const state = {
-  isSubmitted: false,
-  errors: {},
-  httpError: undefined,
-  data: jsonCopy(dataModel)
-}
-
-const resetState = () => {
-  state.data = []
-  state.errors = {}
-  state.httpError = undefined
-  state.isSubmitted = false
-}
-
-const saveClientTask = (mdl) => ({ email, firstname, lastname, birthdate }) =>
-  mdl.http.postQlTask(mdl)(`mutation {
-  createClient(
-    data: {
-      email:${JSON.stringify(email)},
-      firstname:${JSON.stringify(firstname)},
-      lastname:${JSON.stringify(lastname)},
-      birthdate:${JSON.stringify(birthdate)},
-      trainer:{connect:{userId: ${JSON.stringify(mdl.user.objectId)}}}
-    }), {id, firstname, lastname, email, birthdate}
-}`)
+let state = jsonCopy(formState)
 
 const validateForm = (mdl) => (data) => {
-  const onError = (errs) => {
-    state.errors = errs
-    console.log("failed - state", state)
+  const onError = (mdl) => (errs) => {
+    // mdl.toggleToast(mdl)
+    // mdl.state.toast.contents(errs)
+    // mdl.state.toast.class("warn")
+    // state.errors = errs
+    console.log("failed - state", errs)
   }
 
-  const onSuccess = (mdl) => ({ createClient }) => {
-    mdl.clients.push(createClient)
-    mdl.toggleModal(mdl)
-    resetState()
+  const onSuccess = (mdl) => ({ editClient }) => {
+    mdl.clients.push(editClient)
+    mdl.toggle(mdl, `EditClient-${editClient.id}`)
+    resetForm(state)
   }
 
   state.isSubmitted = true
+  console.log("submitting", data)
   validateClientRegistrationTask(data)
-    .chain(saveClientTask(mdl))
-    .fork(onError, onSuccess(mdl))
+    .chain(editClient(mdl))
+    .fork(onError(mdl), onSuccess(mdl))
 }
 
 const EditClientActions = () => {
@@ -65,7 +39,7 @@ const EditClientActions = () => {
         type: "submit",
         for: `client-form`,
         action: () => validateForm(mdl)(state.data),
-        label: "Edit New Client",
+        label: "Update Client",
         classList: "input btn btn-primary authBtn"
       })
     ]
@@ -74,21 +48,27 @@ const EditClientActions = () => {
 
 const EditClient = () => {
   return {
-    view: ({ attrs: { mdl } }) =>
+    view: ({ attrs: { mdl, client } }) =>
       m(".", [
         m(
           "button.btn",
-          { onclick: (e) => mdl.toggleModal(mdl) },
+          {
+            onclick: (e) => {
+              client.birthdate = M(client.birthdate).format("YYYY-MM-DD")
+              state.data = { ...client, confirmEmail: client.email }
+              mdl.toggle(mdl, `EditClient-${client.id}`)
+            }
+          },
           "Edit Client"
         ),
-        mdl.state.showModal() &&
+        mdl.toggles[`EditClient-${client.id}`] &&
           m(Modal, {
             animateEntrance: animateComponentEntrance,
             animateExit: slideModalOut,
             mdl,
             classList: "",
-            isActive: mdl.state.showModal(),
-            close: () => mdl.toggleModal(mdl),
+            isActive: mdl.toggles[`EditClient-${client.id}`](),
+            close: () => mdl.toggle(mdl, `EditClient-${client.id}`),
             title: "Edit Client",
             content: m(RegisterClientForm, {
               data: state.data,

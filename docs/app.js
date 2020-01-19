@@ -750,6 +750,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var checkErr = function checkErr(errors) {
+  return function (field) {
+    return;
+  };
+};
+
 var FormInput = {
   view: function view(_ref) {
     var _ref$attrs = _ref.attrs,
@@ -761,7 +768,7 @@ var FormInput = {
         id = _ref$attrs.id,
         type = _ref$attrs.type;
     return m(".form-group ", isSubmitted && {
-      class: errors[field] ? "has-error" : "has-success"
+      class: errors && errors[field] ? "has-error" : "has-success"
     }, [m("label.form-label text-left", {
       id: id
     }, [label, m("span.span required", "*")]), m("input.form-input", {
@@ -3215,6 +3222,11 @@ var model = {
     },
     query: Stream("")
   },
+  toggles: {},
+  toggle: function toggle(mdl, type) {
+    mdl.toggles[type] ? mdl.toggles[type](!mdl.toggles[type]()) : mdl.toggles[type] = Stream(true);
+    console.log(mdl.toggles[type]());
+  },
   toggleModal: function toggleModal(mdl) {
     return mdl.state.showModal(!mdl.state.showModal());
   },
@@ -3375,6 +3387,8 @@ var _Utils = require("Utils");
 
 var _Button = _interopRequireDefault(require("Components/Button"));
 
+var _fns = require("../fns.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var dataModel = {
@@ -3398,16 +3412,6 @@ var resetState = function resetState() {
   state.isSubmitted = false;
 };
 
-var saveClientTask = function saveClientTask(mdl) {
-  return function (_ref) {
-    var email = _ref.email,
-        firstname = _ref.firstname,
-        lastname = _ref.lastname,
-        birthdate = _ref.birthdate;
-    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
-  };
-};
-
 var validateForm = function validateForm(mdl) {
   return function (data) {
     var onError = function onError(errs) {
@@ -3416,25 +3420,25 @@ var validateForm = function validateForm(mdl) {
     };
 
     var onSuccess = function onSuccess(mdl) {
-      return function (_ref2) {
-        var createClient = _ref2.createClient;
+      return function (_ref) {
+        var createClient = _ref.createClient;
         mdl.clients.push(createClient);
-        mdl.toggleModal(mdl);
+        mdl.toggle(mdl, "AddClient");
         resetState();
       };
     };
 
     state.isSubmitted = true;
-    (0, _Validations.validateClientRegistrationTask)(data).chain(saveClientTask(mdl)).fork(onError, onSuccess(mdl));
+    (0, _Validations.validateClientRegistrationTask)(data).chain((0, _fns.saveClient)(mdl)).fork(onError, onSuccess(mdl));
   };
 };
 
 var AddClientActions = function AddClientActions() {
   return {
-    view: function view(_ref3) {
-      var _ref3$attrs = _ref3.attrs,
-          mdl = _ref3$attrs.mdl,
-          state = _ref3$attrs.state;
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          state = _ref2$attrs.state;
       return [m(_Button.default, {
         mdl: mdl,
         type: "submit",
@@ -3451,20 +3455,20 @@ var AddClientActions = function AddClientActions() {
 
 var AddClient = function AddClient() {
   return {
-    view: function view(_ref4) {
-      var mdl = _ref4.attrs.mdl;
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
       return m(".", [m("button.btn", {
         onclick: function onclick(e) {
-          return mdl.toggleModal(mdl);
+          return mdl.toggle(mdl, "AddClient");
         }
-      }, "Add Client"), mdl.state.showModal() && m(_Modal.default, {
+      }, "Add Client"), mdl.toggles["AddClient"] && m(_Modal.default, {
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
         classList: "",
-        isActive: mdl.state.showModal(),
+        isActive: mdl.toggles["AddClient"](),
         close: function close() {
-          return mdl.toggleModal(mdl);
+          return mdl.toggle(mdl, "AddClient");
         },
         title: "Add Client",
         content: m(_registerClientForm.default, {
@@ -3584,9 +3588,12 @@ var ClientCard = function ClientCard() {
         "data-initial": "".concat(client.firstname[0]).concat(client.lastname[0])
       })), m(".tile-content", m(".text.text-bold", "".concat(client.lastname, ", ").concat(client.firstname))), m(".dropdown dropdown-right", m(".btn-group", [m("button.btn.btn-action.btn-lg.dropdown-toggle", {
         tabIndex: 0
-      }, m("i.icon.icon-more-vert")), m("ul.menu", [m(_EditClientModal.default, {
-        mdl: mdl
-      }), m("li.menu-item", m(_Button.default, {
+      }, m("i.icon.icon-more-vert")), m("ul.menu", {
+        id: "client-menu"
+      }, [m("li.menu-item", m(_EditClientModal.default, {
+        mdl: mdl,
+        client: client
+      })), m("li.menu-item", m(_Button.default, {
         mdl: mdl,
         action: function action(e) {
           return (0, _fns.deleteClient)(mdl)(client.id);
@@ -3653,8 +3660,9 @@ var validateEmails = function validateEmails(data) {
 };
 
 var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  console.log(data);
   return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
-  .failureMap(_ramda.mergeAll).toTask();
+  .map((0, _Utils.log)("validating")).failureMap(_ramda.mergeAll).toTask();
 };
 
 exports.validateClientRegistrationTask = validateClientRegistrationTask;
@@ -3668,6 +3676,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _moment = _interopRequireDefault(require("moment"));
+
 var _Modal = _interopRequireDefault(require("Components/Modal"));
 
 var _animations = require("Utils/animations");
@@ -3680,66 +3690,51 @@ var _Utils = require("Utils");
 
 var _Button = _interopRequireDefault(require("Components/Button"));
 
+var _fns = require("../fns.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var dataModel = {
-  firstname: "",
-  lastname: "",
-  email: "",
-  confirmEmail: "",
-  birthdate: ""
-};
-var state = {
-  isSubmitted: false,
-  errors: {},
-  httpError: undefined,
-  data: (0, _Utils.jsonCopy)(dataModel)
-};
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-var resetState = function resetState() {
-  state.data = [];
-  state.errors = {};
-  state.httpError = undefined;
-  state.isSubmitted = false;
-};
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var saveClientTask = function saveClientTask(mdl) {
-  return function (_ref) {
-    var email = _ref.email,
-        firstname = _ref.firstname,
-        lastname = _ref.lastname,
-        birthdate = _ref.birthdate;
-    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
-  };
-};
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var state = (0, _Utils.jsonCopy)(_fns.formState);
 
 var validateForm = function validateForm(mdl) {
   return function (data) {
-    var onError = function onError(errs) {
-      state.errors = errs;
-      console.log("failed - state", state);
+    var onError = function onError(mdl) {
+      return function (errs) {
+        // mdl.toggleToast(mdl)
+        // mdl.state.toast.contents(errs)
+        // mdl.state.toast.class("warn")
+        // state.errors = errs
+        console.log("failed - state", errs);
+      };
     };
 
     var onSuccess = function onSuccess(mdl) {
-      return function (_ref2) {
-        var createClient = _ref2.createClient;
-        mdl.clients.push(createClient);
-        mdl.toggleModal(mdl);
-        resetState();
+      return function (_ref) {
+        var editClient = _ref.editClient;
+        mdl.clients.push(editClient);
+        mdl.toggle(mdl, "EditClient-".concat(editClient.id));
+        (0, _fns.resetForm)(state);
       };
     };
 
     state.isSubmitted = true;
-    (0, _Validations.validateClientRegistrationTask)(data).chain(saveClientTask(mdl)).fork(onError, onSuccess(mdl));
+    console.log("submitting", data);
+    (0, _Validations.validateClientRegistrationTask)(data).chain((0, _fns.editClient)(mdl)).fork(onError(mdl), onSuccess(mdl));
   };
 };
 
 var EditClientActions = function EditClientActions() {
   return {
-    view: function view(_ref3) {
-      var _ref3$attrs = _ref3.attrs,
-          mdl = _ref3$attrs.mdl,
-          state = _ref3$attrs.state;
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          state = _ref2$attrs.state;
       return [m(_Button.default, {
         mdl: mdl,
         type: "submit",
@@ -3747,7 +3742,7 @@ var EditClientActions = function EditClientActions() {
         action: function action() {
           return validateForm(mdl)(state.data);
         },
-        label: "Edit New Client",
+        label: "Update Client",
         classList: "input btn btn-primary authBtn"
       })];
     }
@@ -3756,20 +3751,26 @@ var EditClientActions = function EditClientActions() {
 
 var EditClient = function EditClient() {
   return {
-    view: function view(_ref4) {
-      var mdl = _ref4.attrs.mdl;
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          mdl = _ref3$attrs.mdl,
+          client = _ref3$attrs.client;
       return m(".", [m("button.btn", {
         onclick: function onclick(e) {
-          return mdl.toggleModal(mdl);
+          client.birthdate = (0, _moment.default)(client.birthdate).format("YYYY-MM-DD");
+          state.data = _objectSpread({}, client, {
+            confirmEmail: client.email
+          });
+          mdl.toggle(mdl, "EditClient-".concat(client.id));
         }
-      }, "Edit Client"), mdl.state.showModal() && m(_Modal.default, {
+      }, "Edit Client"), mdl.toggles["EditClient-".concat(client.id)] && m(_Modal.default, {
         animateEntrance: _animations.animateComponentEntrance,
         animateExit: _animations.slideModalOut,
         mdl: mdl,
         classList: "",
-        isActive: mdl.state.showModal(),
+        isActive: mdl.toggles["EditClient-".concat(client.id)](),
         close: function close() {
-          return mdl.toggleModal(mdl);
+          return mdl.toggle(mdl, "EditClient-".concat(client.id));
         },
         title: "Edit Client",
         content: m(_registerClientForm.default, {
@@ -3866,10 +3867,36 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteClient = exports.loadClients = void 0;
+exports.deleteClient = exports.loadClients = exports.saveClient = exports.editClient = exports.resetForm = exports.formState = void 0;
+
+var _Utils = require("Utils");
+
+var dataModel = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  confirmEmail: "",
+  birthdate: ""
+};
+var formState = {
+  isSubmitted: false,
+  errors: (0, _Utils.jsonCopy)(dataModel),
+  httpError: undefined,
+  data: (0, _Utils.jsonCopy)(dataModel)
+};
+exports.formState = formState;
+
+var resetForm = function resetForm(state) {
+  state.data = (0, _Utils.jsonCopy)(dataModel);
+  state.errors = (0, _Utils.jsonCopy)(dataModel);
+  state.httpError = undefined;
+  state.isSubmitted = false;
+};
+
+exports.resetForm = resetForm;
 
 var loadClientsTask = function loadClientsTask(mdl) {
-  return mdl.http.postQlTask(mdl)("query{\n  clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n}"));
+  return mdl.http.postQlTask(mdl)("query{\n      clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n      }"));
 };
 
 var deleteClientTask = function deleteClientTask(mdl) {
@@ -3878,15 +3905,52 @@ var deleteClientTask = function deleteClientTask(mdl) {
   };
 };
 
-var loadClients = function loadClients(_ref) {
-  var mdl = _ref.attrs.mdl;
+var saveClientTask = function saveClientTask(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        firstname = _ref.firstname,
+        lastname = _ref.lastname,
+        birthdate = _ref.birthdate;
+    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+  };
+};
+
+var editClientTask = function editClientTask(mdl) {
+  return function (_ref2) {
+    var id = _ref2.id,
+        email = _ref2.email,
+        firstname = _ref2.firstname,
+        lastname = _ref2.lastname,
+        birthdate = _ref2.birthdate;
+    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    where: {id: ".concat(JSON.stringify(id), "}\n    data: {\n      email:").concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+  };
+};
+
+var editClient = function editClient(mdl) {
+  return function (client) {
+    return editClientTask(mdl)(client);
+  };
+};
+
+exports.editClient = editClient;
+
+var saveClient = function saveClient(mdl) {
+  return function (client) {
+    return saveClientTask(mdl)(client);
+  };
+};
+
+exports.saveClient = saveClient;
+
+var loadClients = function loadClients(_ref3) {
+  var mdl = _ref3.attrs.mdl;
 
   var onError = function onError(e) {
     return console.log("ERROR Fetching Clients", e);
   };
 
-  var onSuccess = function onSuccess(_ref2) {
-    var clients = _ref2.clients;
+  var onSuccess = function onSuccess(_ref4) {
+    var clients = _ref4.clients;
     return mdl.clients = clients;
   };
 
@@ -3901,8 +3965,8 @@ var deleteClient = function deleteClient(mdl) {
       return console.log("ERROR deleteing Client", e);
     };
 
-    var onSuccess = function onSuccess(_ref3) {
-      var clients = _ref3.clients;
+    var onSuccess = function onSuccess(_ref5) {
+      var clients = _ref5.clients;
       return mdl.clients = clients;
     };
 

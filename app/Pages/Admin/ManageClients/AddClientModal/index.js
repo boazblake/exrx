@@ -4,6 +4,7 @@ import RegisterClientForm from "./registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 import Button from "Components/Button"
+import { saveClient } from "../fns.js"
 
 const dataModel = {
   firstname: "",
@@ -27,18 +28,6 @@ const resetState = () => {
   state.isSubmitted = false
 }
 
-const saveClientTask = (mdl) => ({ email, firstname, lastname, birthdate }) =>
-  mdl.http.postQlTask(mdl)(`mutation {
-  createClient(
-    data: {
-      email:${JSON.stringify(email)},
-      firstname:${JSON.stringify(firstname)},
-      lastname:${JSON.stringify(lastname)},
-      birthdate:${JSON.stringify(birthdate)},
-      trainer:{connect:{userId: ${JSON.stringify(mdl.user.objectId)}}}
-    }), {id, firstname, lastname, email, birthdate}
-}`)
-
 const validateForm = (mdl) => (data) => {
   const onError = (errs) => {
     state.errors = errs
@@ -47,13 +36,13 @@ const validateForm = (mdl) => (data) => {
 
   const onSuccess = (mdl) => ({ createClient }) => {
     mdl.clients.push(createClient)
-    mdl.toggleModal(mdl)
+    mdl.toggle(mdl, "AddClient")
     resetState()
   }
 
   state.isSubmitted = true
   validateClientRegistrationTask(data)
-    .chain(saveClientTask(mdl))
+    .chain(saveClient(mdl))
     .fork(onError, onSuccess(mdl))
 }
 
@@ -76,15 +65,19 @@ const AddClient = () => {
   return {
     view: ({ attrs: { mdl } }) =>
       m(".", [
-        m("button.btn", { onclick: (e) => mdl.toggleModal(mdl) }, "Add Client"),
-        mdl.state.showModal() &&
+        m(
+          "button.btn",
+          { onclick: (e) => mdl.toggle(mdl, "AddClient") },
+          "Add Client"
+        ),
+        mdl.toggles["AddClient"] &&
           m(Modal, {
             animateEntrance: animateComponentEntrance,
             animateExit: slideModalOut,
             mdl,
             classList: "",
-            isActive: mdl.state.showModal(),
-            close: () => mdl.toggleModal(mdl),
+            isActive: mdl.toggles["AddClient"](),
+            close: () => mdl.toggle(mdl, "AddClient"),
             title: "Add Client",
             content: m(RegisterClientForm, {
               data: state.data,

@@ -1,6 +1,6 @@
 import { curryN, identity, lensProp, mergeAll } from "ramda"
 import { Success } from "data.validation"
-import { validate, isRequired, emailFormat } from "Utils"
+import { validate, isRequired, emailFormat, log } from "Utils"
 
 const ValidateRegistration = Success(curryN(3, identity))
 
@@ -50,10 +50,15 @@ const validateEmails = (data) =>
     )
     .apLeft(validate(emailFormat, emailLense, INVALID_EMAIL_FORMAT, data))
 
-export const validateClientRegistrationTask = (data) =>
-  ValidateRegistration.ap(validateFirstName(data))
-    .ap(validateLastName(data))
-    .ap(validateEmails(data))
-    // .ap(validateBirthday(data))
-    .failureMap(mergeAll)
-    .toTask()
+export const validateClientRegistrationTask = (data) => {
+  console.log(data)
+  return (
+    ValidateRegistration.ap(validateFirstName(data))
+      .ap(validateLastName(data))
+      .ap(validateEmails(data))
+      // .ap(validateBirthday(data))
+      .map(log("validating"))
+      .failureMap(mergeAll)
+      .toTask()
+  )
+}
