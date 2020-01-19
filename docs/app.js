@@ -3660,7 +3660,6 @@ var validateEmails = function validateEmails(data) {
 };
 
 var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
-  console.log(data);
   return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
   .map((0, _Utils.log)("validating")).failureMap(_ramda.mergeAll).toTask();
 };
@@ -3706,10 +3705,10 @@ var validateForm = function validateForm(mdl) {
   return function (data) {
     var onError = function onError(mdl) {
       return function (errs) {
-        // mdl.toggleToast(mdl)
-        // mdl.state.toast.contents(errs)
-        // mdl.state.toast.class("warn")
-        // state.errors = errs
+        mdl.toggleToast(mdl);
+        mdl.state.toast.contents(errs);
+        mdl.state.toast.class("warn");
+        state.errors = errs;
         console.log("failed - state", errs);
       };
     };
@@ -3723,8 +3722,8 @@ var validateForm = function validateForm(mdl) {
       };
     };
 
-    state.isSubmitted = true;
-    console.log("submitting", data);
+    state.isSubmitted = true; // console.log("submitting", data)
+
     (0, _Validations.validateClientRegistrationTask)(data).chain((0, _fns.editClient)(mdl)).fork(onError(mdl), onSuccess(mdl));
   };
 };
@@ -3776,6 +3775,7 @@ var EditClient = function EditClient() {
         content: m(_registerClientForm.default, {
           data: state.data,
           errors: state.errors,
+          httpError: state.httpError,
           isSubmitted: state.isSubmitted
         }),
         footer: m(EditClientActions, {
@@ -3809,7 +3809,8 @@ var RegisterClientForm = function RegisterClientForm() {
       var _ref$attrs = _ref.attrs,
           data = _ref$attrs.data,
           errors = _ref$attrs.errors,
-          isSubmitted = _ref$attrs.isSubmitted;
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError;
       return [m("form.column col-6 col-sm-auto", {
         id: "client-form"
       }, [m(_FormInputs.default, {
@@ -3852,7 +3853,7 @@ var RegisterClientForm = function RegisterClientForm() {
         label: "birthdate",
         id: "birthdate",
         type: "date"
-      })])];
+      })]), httpError && m(".toast toast-error", httpError)];
     }
   };
 };
@@ -5003,6 +5004,8 @@ var _secrets = require("./secrets.js");
 
 var _Model = require("../Model.js");
 
+var _ramda = require("ramda");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -5061,9 +5064,10 @@ var parseQLResponse = function parseQLResponse(model) {
 
 var parseHttpError = function parseHttpError(model) {
   return function (rej) {
-    return function (Error) {
+    return function (Errors) {
       model.state.isLoading(false);
-      return rej(Error.response);
+      if (Errors.response) return rej(Errors.response);
+      if (Errors.any()) return rej((0, _ramda.pluck)("message", Errors));
     };
   };
 };

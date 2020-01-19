@@ -2,7 +2,7 @@ import FormInput from "Components/FormInputs"
 
 const RegisterClientForm = () => {
   return {
-    view: ({ attrs: { data, errors, isSubmitted } }) => [
+    view: ({ attrs: { data, errors, isSubmitted, httpError } }) => [
       m("form.column col-6 col-sm-auto", { id: "client-form" }, [
         m(FormInput, {
           isSubmitted,
@@ -49,7 +49,8 @@ const RegisterClientForm = () => {
           id: `birthdate`,
           type: "date"
         })
-      ])
+      ]),
+      httpError && m(".toast toast-error", httpError)
     ]
   }
 }

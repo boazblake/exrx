@@ -11,10 +11,10 @@ let state = jsonCopy(formState)
 
 const validateForm = (mdl) => (data) => {
   const onError = (mdl) => (errs) => {
-    // mdl.toggleToast(mdl)
-    // mdl.state.toast.contents(errs)
-    // mdl.state.toast.class("warn")
-    // state.errors = errs
+    mdl.toggleToast(mdl)
+    mdl.state.toast.contents(errs)
+    mdl.state.toast.class("warn")
+    state.errors = errs
     console.log("failed - state", errs)
   }
 
@@ -25,7 +25,7 @@ const validateForm = (mdl) => (data) => {
   }
 
   state.isSubmitted = true
-  console.log("submitting", data)
+  // console.log("submitting", data)
   validateClientRegistrationTask(data)
     .chain(editClient(mdl))
     .fork(onError(mdl), onSuccess(mdl))
@@ -73,6 +73,7 @@ const EditClient = () => {
             content: m(RegisterClientForm, {
               data: state.data,
               errors: state.errors,
+              httpError: state.httpError,
               isSubmitted: state.isSubmitted
             }),
             footer: m(EditClientActions, { mdl, state })

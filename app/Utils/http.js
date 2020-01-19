@@ -1,6 +1,7 @@
 import Task from "data.task"
 import { BackEnd, GraphQl } from "./secrets.js"
 import { model } from "../Model.js"
+import { pluck } from "ramda"
 
 function onProgress(e) {
   if (e.lengthComputable) {
@@ -42,9 +43,10 @@ const parseQLResponse = (model) => ({ data, errors }) => {
   return errors ? Promise.reject(errors) : Promise.resolve(data)
 }
 
-export const parseHttpError = (model) => (rej) => (Error) => {
+export const parseHttpError = (model) => (rej) => (Errors) => {
   model.state.isLoading(false)
-  return rej(Error.response)
+  if (Errors.response) return rej(Errors.response)
+  if (Errors.any()) return rej(pluck("message", Errors))
 }
 
 export const parseHttpSuccess = (model) => (res) => (data) => {
