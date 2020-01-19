@@ -12,7 +12,7 @@ const ManageClients = () => {
         ]),
         m("section.section", { id: "content-data" }, [
           m(".manageClients", { id: mdl.state.route.id }, [
-            m("section.panel", [
+            m("section.panel.client-panel", [
               m(".panel-header", m("h1.panel-title", mdl.state.route.title)),
               m(
                 ".panel-body",

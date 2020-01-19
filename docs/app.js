@@ -3947,7 +3947,7 @@ var ManageClients = function ManageClients() {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("section.panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
+      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
         return m(_ClientCard.default, {
           key: client.id,
           mdl: mdl,
