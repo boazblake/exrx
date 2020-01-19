@@ -2,7 +2,7 @@ import FormInput from "Components/FormInputs"
 
 export const LoginForm = () => {
   return {
-    view: ({ attrs: { data, errors, isSubmitted, httpError } }) =>
+    view: ({ attrs: { data, errors, isSubmitted, validate, httpError } }) =>
       m(
         "form.column",
         { id: "Login-form", onsubmit: (e) => e.preventDefault() },
@@ -10,6 +10,7 @@ export const LoginForm = () => {
           m(FormInput, {
             isSubmitted,
             data,
+            validate,
             errors,
             field: "email",
             label: "email",
@@ -19,13 +20,14 @@ export const LoginForm = () => {
           m(FormInput, {
             isSubmitted,
             data,
+            validate,
             errors,
             field: "password",
             label: "password",
             id: "reg-pass",
             type: "password"
           }),
-          httpError && m(".toast toast-error", httpError)
+          httpError && httpError.map((err) => m(".toast toast-error", err))
         ]
       )
   }

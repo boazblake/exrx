@@ -2,7 +2,7 @@ import FormInput from "Components/FormInputs"
 
 export const RegisterForm = () => {
   return {
-    view: ({ attrs: { data, errors, isSubmitted, httpError } }) => [
+    view: ({ attrs: { data, errors, isSubmitted, validate, httpError } }) => [
       m(
         "form.column",
         {
@@ -15,6 +15,7 @@ export const RegisterForm = () => {
             m(FormInput, {
               isSubmitted,
               data,
+              validate,
               errors,
               field: "name",
               label: "Name",
@@ -24,6 +25,7 @@ export const RegisterForm = () => {
             m(FormInput, {
               isSubmitted,
               data,
+              validate,
               errors,
               field: "email",
               label: "email",
@@ -33,6 +35,7 @@ export const RegisterForm = () => {
             m(FormInput, {
               isSubmitted,
               data,
+              validate,
               errors,
               field: "confirmEmail",
               label: "Confirm Email",
@@ -42,6 +45,7 @@ export const RegisterForm = () => {
             m(FormInput, {
               isSubmitted,
               data,
+              validate,
               errors,
               field: "password",
               label: "password",
@@ -51,6 +55,7 @@ export const RegisterForm = () => {
             m(FormInput, {
               isSubmitted,
               data,
+              validate,
               errors,
               field: "confirmPassword",
               label: "Confirm Password",
@@ -62,7 +67,7 @@ export const RegisterForm = () => {
         ]
       ),
 
-      httpError && m(".toast toast-error", httpError)
+      httpError && httpError.map((err) => m(".toast toast-error", err))
     ]
   }
 }

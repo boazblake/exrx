@@ -186,6 +186,102 @@ var _default = App;
 exports.default = _default;
 });
 
+;require.register("Components/Auth/fns.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.registerUserTask = exports.loginUserTask = exports.changePage = exports.resetState = exports.state = exports.data = void 0;
+
+var _Utils = require("Utils");
+
+var _forms = require("./forms");
+
+var data = {
+  name: "",
+  email: "",
+  password: "",
+  confirmEmail: "",
+  confirmPassword: "",
+  isAdmin: false
+};
+exports.data = data;
+var state = {
+  forms: {
+    1: _forms.RegisterForm,
+    0: _forms.LoginForm
+  },
+  page: 0,
+  title: {
+    1: "Register",
+    0: "Login"
+  },
+  isSubmitted: false,
+  errors: {},
+  httpError: undefined,
+  data: (0, _Utils.jsonCopy)(data)
+};
+exports.state = state;
+
+var resetState = function resetState(state) {
+  state.data = (0, _Utils.jsonCopy)(data);
+  state.errors = {};
+  state.httpError = undefined;
+  state.isSubmitted = false;
+  state.page = 0;
+};
+
+exports.resetState = resetState;
+
+var changePage = function changePage(state) {
+  state.httpError = undefined;
+  return state.page ? state.page = 0 : state.page = 1;
+};
+
+exports.changePage = changePage;
+
+var loginUserTask = function loginUserTask(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        password = _ref.password;
+    return mdl.http.backEnd.postTask(mdl)("users/login")({
+      login: email,
+      password: password
+    });
+  };
+};
+
+exports.loginUserTask = loginUserTask;
+
+var AddUserIdTask = function AddUserIdTask(mdl) {
+  return function (id) {
+    return mdl.http.postQlTask(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
+  };
+};
+
+var registerUserTask = function registerUserTask(mdl) {
+  return function (_ref2) {
+    var name = _ref2.name,
+        email = _ref2.email,
+        password = _ref2.password,
+        isAdmin = _ref2.isAdmin;
+    return mdl.http.backEnd.postTask(mdl)("users/register")({
+      name: name,
+      email: email,
+      password: password,
+      isAdmin: isAdmin
+    }).chain(function (user) {
+      return AddUserIdTask(mdl)(JSON.stringify(user.objectId)).map(function () {
+        return user;
+      });
+    });
+  };
+};
+
+exports.registerUserTask = registerUserTask;
+});
+
 ;require.register("Components/Auth/forms/LoginForm.js", function(exports, require, module) {
 "use strict";
 
@@ -205,6 +301,7 @@ var LoginForm = function LoginForm() {
           data = _ref$attrs.data,
           errors = _ref$attrs.errors,
           isSubmitted = _ref$attrs.isSubmitted,
+          validate = _ref$attrs.validate,
           httpError = _ref$attrs.httpError;
       return m("form.column", {
         id: "Login-form",
@@ -214,6 +311,7 @@ var LoginForm = function LoginForm() {
       }, [m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "email",
         label: "email",
@@ -222,12 +320,15 @@ var LoginForm = function LoginForm() {
       }), m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "password",
         label: "password",
         id: "reg-pass",
         type: "password"
-      }), httpError && m(".toast toast-error", httpError)]);
+      }), httpError && httpError.map(function (err) {
+        return m(".toast toast-error", err);
+      })]);
     }
   };
 };
@@ -254,6 +355,7 @@ var RegisterForm = function RegisterForm() {
           data = _ref$attrs.data,
           errors = _ref$attrs.errors,
           isSubmitted = _ref$attrs.isSubmitted,
+          validate = _ref$attrs.validate,
           httpError = _ref$attrs.httpError;
       return [m("form.column", {
         id: "Register-form",
@@ -263,6 +365,7 @@ var RegisterForm = function RegisterForm() {
       }, [(".column col-6", [m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "name",
         label: "Name",
@@ -271,6 +374,7 @@ var RegisterForm = function RegisterForm() {
       }), m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "email",
         label: "email",
@@ -279,6 +383,7 @@ var RegisterForm = function RegisterForm() {
       }), m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "confirmEmail",
         label: "Confirm Email",
@@ -287,6 +392,7 @@ var RegisterForm = function RegisterForm() {
       }), m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "password",
         label: "password",
@@ -295,6 +401,7 @@ var RegisterForm = function RegisterForm() {
       }), m(_FormInputs.default, {
         isSubmitted: isSubmitted,
         data: data,
+        validate: validate,
         errors: errors,
         field: "confirmPassword",
         label: "Confirm Password",
@@ -302,7 +409,9 @@ var RegisterForm = function RegisterForm() {
         type: "password"
       })]), m(".divider-vert", {
         dataContent: "|"
-      })]), httpError && m(".toast toast-error", httpError)];
+      })]), httpError && httpError.map(function (err) {
+        return m(".toast toast-error", err);
+      })];
     }
   };
 };
@@ -431,132 +540,70 @@ exports.default = void 0;
 
 var _forms = require("./forms");
 
+var _fns = require("./fns.js");
+
 var _Modal = _interopRequireDefault(require("Components/Modal.js"));
 
 var _Button = _interopRequireDefault(require("Components/Button.js"));
 
-var _Utils = require("Utils");
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var data = {
-  name: "",
-  email: "",
-  password: "",
-  confirmEmail: "",
-  confirmPassword: "",
-  isAdmin: false
-};
-var state = {
-  forms: {
-    1: _forms.RegisterForm,
-    0: _forms.LoginForm
-  },
-  page: 0,
-  title: {
-    1: "Register",
-    0: "Login"
-  },
-  isSubmitted: false,
-  errors: {},
-  httpError: undefined,
-  data: (0, _Utils.jsonCopy)(data)
-};
+var validateForm = function validateForm(state) {
+  console.log("validateForm", state);
 
-var resetState = function resetState() {
-  state.data = (0, _Utils.jsonCopy)(data);
-  state.errors = {};
-  state.httpError = undefined;
-  state.isSubmitted = false;
-  state.page = 0;
-};
-
-var onError = function onError(error) {
-  console.log("error with http calll", error);
-  state.httpError = error.message;
-  state.isSubmitted = false;
-};
-
-var onRegisterSuccess = function onRegisterSuccess(data) {
-  console.log("succes with registering", data, state);
-  return state.page = 0;
-};
-
-var onLoginSuccess = function onLoginSuccess(mdl) {
-  return function (user) {
-    window.sessionStorage.setItem("user-token", user["user-token"]);
-    mdl.user = user;
-    mdl.state.isAuth(true);
-    mdl.toggleAuthModal(mdl);
-    m.route.set("/EXRX/".concat(mdl.user.name, "/dashboard"));
-    resetState();
+  var onError = function onError(errs) {
+    state.errors = errs;
+    console.log("failed - state", state);
   };
+
+  var onSuccess = function onSuccess(state) {
+    state.errors = {};
+  };
+
+  state.isSubmitted = true;
+  state.page ? (0, _forms.validateUserRegistrationTask)(state.data).fork(onError, onSuccess) : (0, _forms.validateLoginTask)(state.data).fork(onError, onSuccess);
 };
 
-var validateForm = function validateForm(mdl) {
-  return function (data) {
-    var onValidationError = function onValidationError(errs) {
-      state.errors = errs;
-      console.log("failed - state", state);
+var saveForm = function saveForm(mdl) {
+  return function (state) {
+    var onRegisterSuccess = function onRegisterSuccess(data) {
+      console.log("succes with registering", data, state);
+      return state.page = 0;
     };
 
-    var onValidationSuccess = function onValidationSuccess(data) {
-      state.errors = {};
-      state.page ? registerUser(mdl)(data).fork(onError, onRegisterSuccess) : loginUser(mdl)(data).fork(onError, onLoginSuccess(mdl));
+    var onLoginSuccess = function onLoginSuccess(mdl) {
+      return function (user) {
+        window.sessionStorage.setItem("user-token", user["user-token"]);
+        mdl.user = user;
+        mdl.state.isAuth(true);
+        mdl.toggleAuthModal(mdl);
+        m.route.set("/EXRX/".concat(mdl.user.name, "/dashboard"));
+        (0, _fns.resetState)(state);
+      };
+    };
+
+    var onError = function onError(errs) {
+      if (errs.HttpError) {
+        state.httpError = errs.Errors;
+        state.errors = {};
+      } else state.errors = errs;
+
+      console.log("failed", state);
     };
 
     state.isSubmitted = true;
-    state.page ? (0, _forms.validateUserRegistrationTask)(data).fork(onValidationError, onValidationSuccess) : (0, _forms.validateLoginTask)(data).fork(onValidationError, onValidationSuccess);
+    state.page ? (0, _forms.validateUserRegistrationTask)(state.data).chain((0, _fns.registerUserTask)(mdl)).fork(onError, onRegisterSuccess) : (0, _forms.validateLoginTask)(state.data).chain((0, _fns.loginUserTask)(mdl)).fork(onError, onLoginSuccess(mdl));
   };
-};
-
-var loginUser = function loginUser(mdl) {
-  return function (_ref) {
-    var email = _ref.email,
-        password = _ref.password;
-    return mdl.http.backEnd.postTask(mdl)("users/login")({
-      login: email,
-      password: password
-    });
-  };
-};
-
-var AddUserId = function AddUserId(mdl) {
-  return function (id) {
-    return mdl.http.postQlTask(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
-  };
-};
-
-var registerUser = function registerUser(mdl) {
-  return function (_ref2) {
-    var name = _ref2.name,
-        email = _ref2.email,
-        password = _ref2.password,
-        isAdmin = _ref2.isAdmin;
-    return mdl.http.backEnd.postTask(mdl)("users/register")({
-      name: name,
-      email: email,
-      password: password,
-      isAdmin: isAdmin
-    }).chain(function (user) {
-      return AddUserId(mdl)(JSON.stringify(user.objectId)).map(function () {
-        return user;
-      });
-    });
-  };
-};
-
-var changePage = function changePage() {
-  state.httpError = undefined;
-  return state.page ? state.page = 0 : state.page = 1;
 };
 
 var AuthLink = function AuthLink() {
   return {
-    view: function view(_ref3) {
-      var title = _ref3.attrs.title;
+    view: function view(_ref) {
+      var title = _ref.attrs.title;
       return m("a.authLinkBtn btn-link", {
-        onclick: changePage
+        onclick: function onclick(e) {
+          return (0, _fns.changePage)(_fns.state);
+        }
       }, title);
     }
   };
@@ -564,34 +611,37 @@ var AuthLink = function AuthLink() {
 
 var AuthComponent = function AuthComponent() {
   return {
-    view: function view(_ref4) {
-      var mdl = _ref4.attrs.mdl;
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
       return m(_Modal.default, {
         classList: "auth-modal",
         isActive: mdl.state.showAuthModal(),
         close: function close() {
-          resetState();
+          (0, _fns.resetState)(_fns.state);
           mdl.toggleAuthModal(mdl);
         },
-        title: state.title[state.page],
-        content: m(state.forms[state.page], {
-          data: state.data,
-          errors: state.errors,
-          httpError: state.httpError,
-          isSubmitted: state.isSubmitted
+        title: _fns.state.title[_fns.state.page],
+        content: m(_fns.state.forms[_fns.state.page], {
+          data: _fns.state.data,
+          errors: _fns.state.errors,
+          httpError: _fns.state.httpError,
+          isSubmitted: _fns.state.isSubmitted,
+          validate: function validate() {
+            return validateForm(_fns.state);
+          }
         }),
         footer: [m(_Button.default, {
           mdl: mdl,
           type: "submit",
-          for: "".concat(state.title[state.page], "-form"),
+          for: "".concat(_fns.state.title[_fns.state.page], "-form"),
           action: function action() {
-            return validateForm(mdl)(state.data);
+            return saveForm(mdl)(_fns.state);
           },
-          label: state.title[state.page],
+          label: _fns.state.title[_fns.state.page],
           classList: "input btn btn-primary authBtn"
         }), m(AuthLink, {
           mdl: mdl,
-          title: state.page ? "Login" : "Register"
+          title: _fns.state.page ? "Login" : "Register"
         })]
       });
     }
