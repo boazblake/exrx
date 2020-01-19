@@ -5,26 +5,16 @@ import RegisterClientForm from "../registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import { jsonCopy } from "Utils"
 import Button from "Components/Button"
-import { editClient, formState, resetForm } from "../fns.js"
+import { editClient, formState, resetForm, loadClients } from "../fns.js"
 
 let state = jsonCopy(formState)
 
 const validateForm = (state) => {
-  const onError = (errs) => {
-    if (errs.HttpError) {
-      state.httpError = errs.Errors
-    } else state.errors = errs
+  const onError = (errs) => (state.errors = errs)
 
-    console.log("failed state", state)
-  }
-
-  const onSuccess = (data) => {
-    state.errors = {}
-    console.log("success", state, data)
-  }
+  const onSuccess = (data) => (state.errors = {})
 
   state.isSubmitted = true
-  console.log("validating update", state)
   validateClientRegistrationTask(state.data).fork(onError, onSuccess)
 }
 
@@ -35,17 +25,16 @@ const saveForm = (mdl) => (state) => {
       state.errors = {}
     } else state.errors = errs
 
-    console.log("failed state", state)
+    console.log("failed save", state)
   }
 
   const onSuccess = (mdl) => ({ updateClient }) => {
-    mdl.clients.push(updateClient)
     mdl.toggle(mdl, `EditClient-${updateClient.id}`)
     resetForm(state)
+    loadClients({ attrs: { mdl } })
   }
 
   state.isSubmitted = true
-  console.log("updating", state)
   validateClientRegistrationTask(state.data)
     .chain(editClient(mdl))
     .fork(onError, onSuccess(mdl))
@@ -74,7 +63,10 @@ const EditClient = () => {
           "button.btn",
           {
             onclick: (e) => {
-              client.birthdate = M(client.birthdate).format("YYYY-MM-DD")
+              client.birthdate = M(client.birthdate)
+                .add(1, "days")
+                .format("YYYY-MM-DD")
+
               state.data = { ...client, confirmEmail: client.email }
               mdl.toggle(mdl, `EditClient-${client.id}`)
             }

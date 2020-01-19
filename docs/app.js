@@ -3398,16 +3398,11 @@ var state = (0, _Utils.jsonCopy)(_fns.formState);
 
 var validateForm = function validateForm(state) {
   var onError = function onError(errs) {
-    if (errs.HttpError) {
-      state.httpError = errs.Errors;
-    } else state.errors = errs;
-
-    console.log("failed state", state);
+    return state.errors = errs;
   };
 
   var onSuccess = function onSuccess(data) {
-    state.errors = {};
-    console.log("success", state, data);
+    return state.errors = {};
   };
 
   state.isSubmitted = true;
@@ -3422,15 +3417,19 @@ var saveForm = function saveForm(mdl) {
         state.errors = {};
       } else state.errors = errs;
 
-      console.log("failed state", state);
+      console.log("failed save", state);
     };
 
     var onSuccess = function onSuccess(mdl) {
       return function (_ref) {
         var createClient = _ref.createClient;
-        mdl.clients.push(createClient);
         mdl.toggle(mdl, "AddClient");
         (0, _fns.resetForm)(state);
+        (0, _fns.loadClients)({
+          attrs: {
+            mdl: mdl
+          }
+        });
       };
     };
 
@@ -3643,20 +3642,14 @@ var state = (0, _Utils.jsonCopy)(_fns.formState);
 
 var validateForm = function validateForm(state) {
   var onError = function onError(errs) {
-    if (errs.HttpError) {
-      state.httpError = errs.Errors;
-    } else state.errors = errs;
-
-    console.log("failed state", state);
+    return state.errors = errs;
   };
 
   var onSuccess = function onSuccess(data) {
-    state.errors = {};
-    console.log("success", state, data);
+    return state.errors = {};
   };
 
   state.isSubmitted = true;
-  console.log("validating update", state);
   (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError, onSuccess);
 };
 
@@ -3668,20 +3661,23 @@ var saveForm = function saveForm(mdl) {
         state.errors = {};
       } else state.errors = errs;
 
-      console.log("failed state", state);
+      console.log("failed save", state);
     };
 
     var onSuccess = function onSuccess(mdl) {
       return function (_ref) {
         var updateClient = _ref.updateClient;
-        mdl.clients.push(updateClient);
         mdl.toggle(mdl, "EditClient-".concat(updateClient.id));
         (0, _fns.resetForm)(state);
+        (0, _fns.loadClients)({
+          attrs: {
+            mdl: mdl
+          }
+        });
       };
     };
 
     state.isSubmitted = true;
-    console.log("updating", state);
     (0, _Validations.validateClientRegistrationTask)(state.data).chain((0, _fns.editClient)(mdl)).fork(onError, onSuccess(mdl));
   };
 };
@@ -3714,7 +3710,7 @@ var EditClient = function EditClient() {
           client = _ref3$attrs.client;
       return m("section.editClient", [m("button.btn", {
         onclick: function onclick(e) {
-          client.birthdate = (0, _moment.default)(client.birthdate).format("YYYY-MM-DD");
+          client.birthdate = (0, _moment.default)(client.birthdate).add(1, "days").format("YYYY-MM-DD");
           state.data = _objectSpread({}, client, {
             confirmEmail: client.email
           });

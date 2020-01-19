@@ -3,24 +3,15 @@ import { animateComponentEntrance, slideModalOut } from "Utils/animations"
 import RegisterClientForm from "../registerClientForm.js"
 import { validateClientRegistrationTask } from "./Validations.js"
 import Button from "Components/Button"
-import { saveClient, formState, resetForm } from "../fns.js"
+import { saveClient, formState, resetForm, loadClients } from "../fns.js"
 import { jsonCopy } from "Utils"
 
 let state = jsonCopy(formState)
 
 const validateForm = (state) => {
-  const onError = (errs) => {
-    if (errs.HttpError) {
-      state.httpError = errs.Errors
-    } else state.errors = errs
+  const onError = (errs) => (state.errors = errs)
 
-    console.log("failed state", state)
-  }
-
-  const onSuccess = (data) => {
-    state.errors = {}
-    console.log("success", state, data)
-  }
+  const onSuccess = (data) => (state.errors = {})
 
   state.isSubmitted = true
   validateClientRegistrationTask(state.data).fork(onError, onSuccess)
@@ -33,13 +24,13 @@ const saveForm = (mdl) => (state) => {
       state.errors = {}
     } else state.errors = errs
 
-    console.log("failed state", state)
+    console.log("failed save", state)
   }
 
   const onSuccess = (mdl) => ({ createClient }) => {
-    mdl.clients.push(createClient)
     mdl.toggle(mdl, "AddClient")
     resetForm(state)
+    loadClients({ attrs: { mdl } })
   }
 
   state.isSubmitted = true
