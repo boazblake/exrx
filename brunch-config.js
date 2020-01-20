@@ -23,7 +23,25 @@ exports.plugins = {
     sourceMapEmbed: true,
     includePaths: ["node_modules/spectre.css/src/**/*.scss"]
   },
-  "@babel": { presets: ["env"] }
+  "@babel": { presets: ["env"] },
+  imagemin: {
+    plugins: {
+      "imagemin-gifsicle": true,
+      "imagemin-jpegtran": true,
+      "imagemin-optipng": true,
+      "imagemin-svgo": true
+    },
+    pattern: /\.(gif|jpg|jpeg|jpe|jif|jfif|jfi|png|svg|svgz)$/
+  },
+  copycat: {
+    // fonts: [
+    //   "bower_components/material-design-iconic-font",
+    //   "bower_components/font-awesome/fonts"
+    // ],
+    images: ["app/Images"],
+    verbose: true, //shows each file that is copied to the destination directory
+    onlyChanged: true //only copy a file if it's modified time has changed (only effective when using brunch watch)
+  }
 }
 
 exports.paths = {

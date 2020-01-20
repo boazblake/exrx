@@ -1299,10 +1299,11 @@ var Tab = function Tab(_ref) {
         },
         href: tab.group.includes("authenticated") ? "/EXRX/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route)
       }, ["Dashboard", "Home"].includes(tab.title) ? m(".img", {
+        id: tab.title == "Dashboard" ? "EXRXLogo" : "EXRXSplashLogo",
         style: {
           width: "50px"
         }
-      }, _Icons.default.logo) : tab.title);
+      }) : tab.title);
     }
   };
 };
@@ -1969,6 +1970,18 @@ Object.keys(_FormInputs).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _FormInputs[key];
+    }
+  });
+});
+
+var _Toolbar = require("./Toolbar.js");
+
+Object.keys(_Toolbar).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Toolbar[key];
     }
   });
 });
@@ -3574,9 +3587,9 @@ var _Button = _interopRequireDefault(require("Components/Button"));
 
 var _animations = require("Styles/animations.js");
 
-var _fns = require("./fns.js");
-
 var _EditClientModal = _interopRequireDefault(require("./EditClientModal "));
+
+var _DeleteClientModal = _interopRequireDefault(require("./DeleteClientModal"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3596,20 +3609,144 @@ var ClientCard = function ClientCard() {
       }, [m("li.menu-item", m(_EditClientModal.default, {
         mdl: mdl,
         client: client
-      })), m("li.menu-item", m(_Button.default, {
+      })), m("li.menu-item", m(_DeleteClientModal.default, {
         mdl: mdl,
-        action: function action(e) {
-          return (0, _fns.deleteClient)(mdl)(client.id);
-        },
-        label: "Delete",
-        classList: "",
-        isDisabled: false
+        client: client
       }))])]))]));
     }
   };
 };
 
 var _default = ClientCard;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/DeleteClientModal/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/DeleteClientModal/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _fns = require("../fns.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteClientActions = function DeleteClientActions() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          client = _ref$attrs.client;
+      return [m(_Button.default, {
+        mdl: mdl,
+        type: "submit",
+        for: "client-form",
+        action: function action() {
+          return (0, _fns.deleteClient)(mdl)(client.id);
+        },
+        label: "Delete Client",
+        classList: "input btn btn-error authBtn"
+      })];
+    }
+  };
+};
+
+var DeleteClient = function DeleteClient() {
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          client = _ref2$attrs.client;
+      return m("section.deleteClient", [m("button.btn btn-error", {
+        onclick: function onclick(e) {
+          return mdl.toggle(mdl, "deleteClient");
+        }
+      }, "Delete Client"), mdl.toggles["deleteClient"] && m(_Modal.default, {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.toggles["deleteClient"](),
+        close: function close() {
+          return mdl.toggle(mdl, "deleteClient");
+        },
+        title: "Delete Client: ".concat(client.firstname, " ").concat(client.lastname),
+        content: m("p.error", "WARNING proceding will remove ".concat(client.firstname, " ").concat(client.lastname, " and all associated Data.")),
+        footer: m(DeleteClientActions, {
+          mdl: mdl,
+          client: client
+        })
+      })]);
+    }
+  };
+};
+
+var _default = DeleteClient;
 exports.default = _default;
 });
 
@@ -4693,7 +4830,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Splash = [{
   id: "home",
   title: "Home",
-  icon: _Icons.default.logo,
+  icon: _Icons.default.Home,
   route: "/home",
   position: ["nav"],
   group: [],
@@ -5645,18 +5782,17 @@ var checkWidth = function checkWidth(winW) {
   return requestAnimationFrame(checkWidth);
 };
 
-_Model.model.state.profile = getProfile(winW); // if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker
-//       .register('./service-worker.js')
-//       .then((registration) => {
-//         console.log('🧟 SW registered: ', registration)
-//       })
-//       .catch((registrationError) => {
-//         console.log('⚙️ SW registration failed: ', registrationError)
-//       })
-//   })
-// }
+_Model.model.state.profile = getProfile(winW);
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/service-worker.js").then(function (registration) {
+      console.log("🧟 SW registered: ", registration);
+    }).catch(function (registrationError) {
+      console.log("⚙️ SW registration failed: ", registrationError);
+    });
+  });
+}
 
 checkWidth(winW); //Include custome and Fp polyfills
 

@@ -8,7 +8,7 @@ const Splash = [
   {
     id: "home",
     title: "Home",
-    icon: Icons.logo,
+    icon: Icons.Home,
     route: "/home",
     position: ["nav"],
     group: [],

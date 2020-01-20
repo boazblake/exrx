@@ -24,7 +24,10 @@ const Tab = ({ attrs: { key } }) => {
             : `${tab.route}`
         },
         ["Dashboard", "Home"].includes(tab.title)
-          ? m(".img", { style: { width: "50px" } }, Icons.logo)
+          ? m(".img", {
+              id: tab.title == "Dashboard" ? "EXRXLogo" : "EXRXSplashLogo",
+              style: { width: "50px" }
+            })
           : tab.title
       )
   }

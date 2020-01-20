@@ -1,7 +1,7 @@
 import Button from "Components/Button"
 import { SlideOutLeft } from "Styles/animations.js"
-import { deleteClient } from "./fns.js"
 import EditClient from "./EditClientModal "
+import DeleteClient from "./DeleteClientModal"
 
 const ClientCard = () => {
   return {
@@ -30,16 +30,7 @@ const ClientCard = () => {
               ),
               m("ul.menu", { id: "client-menu" }, [
                 m("li.menu-item", m(EditClient, { mdl, client })),
-                m(
-                  "li.menu-item",
-                  m(Button, {
-                    mdl,
-                    action: (e) => deleteClient(mdl)(client.id),
-                    label: "Delete",
-                    classList: "",
-                    isDisabled: false
-                  })
-                )
+                m("li.menu-item", m(DeleteClient, { mdl, client }))
               ])
             ])
           )
