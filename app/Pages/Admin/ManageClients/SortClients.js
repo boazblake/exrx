@@ -7,7 +7,7 @@ const SortClients = () => {
           {
             onchange: (e) => {
               state.sortProp = e.target.value
-              sort(state)(list)
+              list = sort(list)
             }
           },
           props.map(({ key, value }) => m("option", { key, value }, key))

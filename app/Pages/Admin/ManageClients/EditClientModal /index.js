@@ -33,7 +33,7 @@ const saveForm = (mdl) => (state) => {
   const onSuccess = (mdl) => ({ updateClient }) => {
     mdl.toggle(mdl, `EditClient-${updateClient.id}`)
     resetForm(state)
-    loadClients({ attrs: { mdl } })
+    loadClients(mdl)
   }
 
   state.isSubmitted = true

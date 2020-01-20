@@ -9,19 +9,19 @@ import {
 } from "./fns.js"
 
 const ManageClients = () => {
+  const init = ({ attrs: { mdl } }) => loadClients(mdl)
+
   return {
-    oninit: loadClients,
+    oninit: init,
     view: ({ attrs: { mdl } }) => {
-      let clients = mdl.clients
-      let props = clientProps
       return m(".contents", { id: "content" }, [
         m("section.section", { id: "content-toolbar" }, [
           m(AddClient, { mdl }),
           m(SortClients, {
-            list: clients,
-            props,
+            list: mdl.clients,
+            props: clientProps,
             state: clientPageState,
-            sort: filterClientsBy
+            sort: filterClientsBy(clientPageState)
           })
         ]),
         m("section.section", { id: "content-data" }, [
@@ -30,7 +30,7 @@ const ManageClients = () => {
               m(".panel-header", m("h1.panel-title", mdl.state.route.title)),
               m(
                 ".panel-body",
-                clients.map((client) =>
+                mdl.clients.map((client) =>
                   m(ClientCard, { key: client.id, mdl, client })
                 )
               )

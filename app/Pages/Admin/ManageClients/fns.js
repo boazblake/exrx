@@ -102,7 +102,7 @@ export const saveClient = (mdl) => (client) => saveClientTask(mdl)(client)
 export const filterClientsBy = (state) =>
   compose(filterListBy(state.term)(state.sortProp)(state.isAsc))
 
-export const loadClients = ({ attrs: { mdl } }) => {
+export const loadClients = (mdl) => {
   const onError = (e) => console.log("ERROR Fetching Clients", e)
 
   const onSuccess = (clients) => (mdl.clients = clients)
@@ -117,9 +117,9 @@ export const loadClients = ({ attrs: { mdl } }) => {
 export const deleteClient = (mdl) => (id) => {
   const onError = (e) => console.log("ERROR deleteing Client", e)
 
-  const onSuccess = (clients) => (mdl.clients = clients)
+  const onSuccess = (mdl) => ({ clients }) => (mdl.clients = clients)
 
   return deleteClientTask(mdl)(id)
     .chain((_) => loadClientsTask(mdl))
-    .fork(onError, onSuccess)
+    .fork(onError, onSuccess(mdl))
 }

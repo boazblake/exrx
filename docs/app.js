@@ -3463,11 +3463,7 @@ var saveForm = function saveForm(mdl) {
         var createClient = _ref.createClient;
         mdl.toggle(mdl, "AddClient");
         (0, _fns.resetForm)(state);
-        (0, _fns.loadClients)({
-          attrs: {
-            mdl: mdl
-          }
-        });
+        (0, _fns.loadClients)(mdl);
       };
     };
 
@@ -3709,11 +3705,7 @@ var saveForm = function saveForm(mdl) {
         var updateClient = _ref.updateClient;
         mdl.toggle(mdl, "EditClient-".concat(updateClient.id));
         (0, _fns.resetForm)(state);
-        (0, _fns.loadClients)({
-          attrs: {
-            mdl: mdl
-          }
-        });
+        (0, _fns.loadClients)(mdl);
       };
     };
 
@@ -3806,7 +3798,7 @@ var SortClients = function SortClients() {
       return m(".sort", [m("select", {
         onchange: function onchange(e) {
           state.sortProp = e.target.value;
-          sort(state)(list);
+          list = sort(list);
         }
       }, props.map(function (_ref2) {
         var key = _ref2.key,
@@ -3946,9 +3938,7 @@ var filterClientsBy = function filterClientsBy(state) {
 
 exports.filterClientsBy = filterClientsBy;
 
-var loadClients = function loadClients(_ref3) {
-  var mdl = _ref3.attrs.mdl;
-
+var loadClients = function loadClients(mdl) {
   var onError = function onError(e) {
     return console.log("ERROR Fetching Clients", e);
   };
@@ -3968,13 +3958,16 @@ var deleteClient = function deleteClient(mdl) {
       return console.log("ERROR deleteing Client", e);
     };
 
-    var onSuccess = function onSuccess(clients) {
-      return mdl.clients = clients;
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref3) {
+        var clients = _ref3.clients;
+        return mdl.clients = clients;
+      };
     };
 
     return deleteClientTask(mdl)(id).chain(function (_) {
       return loadClientsTask(mdl);
-    }).fork(onError, onSuccess);
+    }).fork(onError, onSuccess(mdl));
   };
 };
 
@@ -4000,12 +3993,15 @@ var _fns = require("./fns.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ManageClients = function ManageClients() {
+  var init = function init(_ref) {
+    var mdl = _ref.attrs.mdl;
+    return (0, _fns.loadClients)(mdl);
+  };
+
   return {
-    oninit: _fns.loadClients,
-    view: function view(_ref) {
-      var mdl = _ref.attrs.mdl;
-      var clients = mdl.clients;
-      var props = _fns.clientProps;
+    oninit: init,
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
       return m(".contents", {
         id: "content"
       }, [m("section.section", {
@@ -4013,15 +4009,15 @@ var ManageClients = function ManageClients() {
       }, [m(_AddClientModal.default, {
         mdl: mdl
       }), m(_SortClients.default, {
-        list: clients,
-        props: props,
+        list: mdl.clients,
+        props: _fns.clientProps,
         state: _fns.clientPageState,
-        sort: _fns.filterClientsBy
+        sort: (0, _fns.filterClientsBy)(_fns.clientPageState)
       })]), m("section.section", {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", clients.map(function (client) {
+      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
         return m(_ClientCard.default, {
           key: client.id,
           mdl: mdl,
@@ -4943,7 +4939,13 @@ var sortByCollator = function sortByCollator(attr) {
   return function (xs) {
     var listCopy = JSON.parse(JSON.stringify(xs));
     listCopy.sort(function (a, b) {
-      console.log("as and bs", attr, a[attr], b[attr], collator.compare(a[attr], b[attr]));
+      // console.log(
+      //   "as and bs",
+      //   attr,
+      //   a[attr],
+      //   b[attr],
+      //   collator.compare(a[attr], b[attr])
+      // )
       return collator.compare(a[attr], b[attr]);
     });
     return listCopy;
@@ -5007,8 +5009,10 @@ var _search = function _search(term) {
 
 exports._search = _search;
 
-var _sort = function _sort(p) {
-  return (0, _ramda.curry)(sortByCollator(p));
+var _sort = function _sort(attr) {
+  return function (xs) {
+    return sortByCollator(attr)(xs);
+  };
 };
 
 exports._sort = _sort;
@@ -5033,15 +5037,17 @@ var filterListBy = function filterListBy(query) {
   return function (prop) {
     return function (direction) {
       return function (xs) {
-        console.log("filterListBy", query, prop, direction, xs); // (offset) => (
+        // console.log("filterListBy", query, prop, direction, xs)
+        // (offset) => (
         //   limit
         // ) =>
-
         return (0, _ramda.compose)( // log("after dir"),
         // map(_paginate(offset)(limit)),
-        _direction(direction), // log("after sort"),
-        _sort(prop), // log("before sort"),
-        _search(query))(xs);
+        // _direction(direction),
+        // log("after sort"),
+        _sort(prop) // log("before sort")
+        // _search(query)
+        )(xs);
       };
     };
   };

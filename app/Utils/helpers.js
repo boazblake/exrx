@@ -33,13 +33,13 @@ const collator = new Intl.Collator(undefined, {
 const sortByCollator = (attr) => (xs) => {
   let listCopy = JSON.parse(JSON.stringify(xs))
   listCopy.sort((a, b) => {
-    console.log(
-      "as and bs",
-      attr,
-      a[attr],
-      b[attr],
-      collator.compare(a[attr], b[attr])
-    )
+    // console.log(
+    //   "as and bs",
+    //   attr,
+    //   a[attr],
+    //   b[attr],
+    //   collator.compare(a[attr], b[attr])
+    // )
     return collator.compare(a[attr], b[attr])
   })
   return listCopy
@@ -73,7 +73,7 @@ const byTerms = (term) => compose(test(new RegExp(term, "i")), prop("_terms"))
 
 export const _search = (term) => compose(filter(byTerms(term)))
 
-export const _sort = (p) => curry(sortByCollator(p))
+export const _sort = (attr) => (xs) => sortByCollator(attr)(xs)
 
 export const _direction = (dir) => (dir ? identity : reverse)
 
@@ -85,18 +85,18 @@ export const _paginate = (offset) => (limit) => (data) =>
   )
 
 export const filterListBy = (query) => (prop) => (direction) => (xs) => {
-  console.log("filterListBy", query, prop, direction, xs)
+  // console.log("filterListBy", query, prop, direction, xs)
   // (offset) => (
   //   limit
   // ) =>
   return compose(
     // log("after dir"),
     // map(_paginate(offset)(limit)),
-    _direction(direction),
+    // _direction(direction),
     // log("after sort"),
-    _sort(prop),
-    // log("before sort"),
-    _search(query)
+    _sort(prop)
+    // log("before sort")
+    // _search(query)
   )(xs)
 }
 
