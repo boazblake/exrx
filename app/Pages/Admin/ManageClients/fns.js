@@ -1,5 +1,6 @@
 import { compose, map, prop, lensProp, over } from "ramda"
-import { log, jsonCopy, addTerms, filterListBy } from "Utils"
+import { jsonCopy, addTerms, filterListBy } from "Utils"
+import { clientPageState } from "./index.js"
 import M from "moment"
 
 const clientModel = {
@@ -17,11 +18,13 @@ export const formState = {
   data: jsonCopy(clientModel)
 }
 
-export const clientPageState = {
+export const clientPageStateModel = () => ({
   isAsc: Stream(true),
   sortProp: "firstname",
   term: Stream("")
-}
+})
+
+export const resetClientPageState = (state) => (state = clientPageStateModel())
 
 export const clientProps = [
   { value: "firstname", key: "first name" },

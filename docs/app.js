@@ -3852,11 +3852,13 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteClient = exports.loadClients = exports.filterClientsBy = exports.saveClient = exports.editClient = exports.resetForm = exports.clientProps = exports.clientPageState = exports.formState = void 0;
+exports.deleteClient = exports.loadClients = exports.filterClientsBy = exports.saveClient = exports.editClient = exports.resetForm = exports.clientProps = exports.resetClientPageState = exports.clientPageStateModel = exports.formState = void 0;
 
 var _ramda = require("ramda");
 
 var _Utils = require("Utils");
+
+var _index = require("./index.js");
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -3876,12 +3878,22 @@ var formState = {
   data: (0, _Utils.jsonCopy)(clientModel)
 };
 exports.formState = formState;
-var clientPageState = {
-  isAsc: Stream(true),
-  sortProp: "firstname",
-  term: Stream("")
+
+var clientPageStateModel = function clientPageStateModel() {
+  return {
+    isAsc: Stream(true),
+    sortProp: "firstname",
+    term: Stream("")
+  };
 };
-exports.clientPageState = clientPageState;
+
+exports.clientPageStateModel = clientPageStateModel;
+
+var resetClientPageState = function resetClientPageState(state) {
+  return state = clientPageStateModel();
+};
+
+exports.resetClientPageState = resetClientPageState;
 var clientProps = [{
   value: "firstname",
   key: "first name"
@@ -3977,7 +3989,7 @@ var loadClients = function loadClients(mdl) {
     return mdl.clients = clients;
   };
 
-  return loadClientsTask(mdl).map((0, _ramda.prop)("clients")).map((0, _ramda.map)(toViewModel)).map(filterClientsBy(clientPageState)).fork(onError, onSuccess);
+  return loadClientsTask(mdl).map((0, _ramda.prop)("clients")).map((0, _ramda.map)(toViewModel)).map(filterClientsBy(_index.clientPageState)).fork(onError, onSuccess);
 };
 
 exports.loadClients = loadClients;
@@ -4010,7 +4022,7 @@ exports.deleteClient = deleteClient;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.clientPageState = void 0;
 
 var _AddClientModal = _interopRequireDefault(require("./AddClientModal"));
 
@@ -4024,6 +4036,9 @@ var _fns = require("./fns.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var clientPageState = (0, _fns.clientPageStateModel)();
+exports.clientPageState = clientPageState;
+
 var ClientToolbar = function ClientToolbar() {
   return {
     view: function view(_ref) {
@@ -4036,16 +4051,16 @@ var ClientToolbar = function ClientToolbar() {
         right: [, m(_SortClients.default, {
           list: mdl.clients,
           props: _fns.clientProps,
-          state: _fns.clientPageState,
-          sort: (0, _fns.filterClientsBy)(_fns.clientPageState)
+          state: clientPageState,
+          sort: (0, _fns.filterClientsBy)(clientPageState)
         }), m("button.btn btn-sm", {
           onclick: function onclick() {
-            return _fns.clientPageState.isAsc(!_fns.clientPageState.isAsc());
+            return clientPageState.isAsc(!clientPageState.isAsc());
           }
-        }, m("i.icon ".concat(_fns.clientPageState.isAsc() ? "icon-arrow-down" : "icon-arrow-up"))), m(".has-icon-right", [m("input.form-input", {
+        }, m("i.icon ".concat(clientPageState.isAsc() ? "icon-arrow-down" : "icon-arrow-up"))), m(".has-icon-right", [m("input.form-input", {
           type: "text",
           oninput: function oninput(e) {
-            return _fns.clientPageState.term(e.target.value);
+            return clientPageState.term(e.target.value);
           },
           placeholder: "Filter Clients"
         }), m("i.form-icon icon icon-search icon-sm")])]
@@ -4061,10 +4076,11 @@ var ManageClients = function ManageClients() {
   };
 
   return {
+    onremove: exports.clientPageState = clientPageState = (0, _fns.clientPageStateModel)(),
     oninit: init,
     view: function view(_ref3) {
       var mdl = _ref3.attrs.mdl;
-      var clients = (0, _fns.filterClientsBy)(_fns.clientPageState)(mdl.clients);
+      var clients = (0, _fns.filterClientsBy)(clientPageState)(mdl.clients);
       return m(".contents", {
         id: "content"
       }, [m(ClientToolbar, {

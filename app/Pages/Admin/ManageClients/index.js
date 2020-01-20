@@ -5,9 +5,11 @@ import Toolbar from "Components/Toolbar"
 import {
   loadClients,
   clientProps,
-  clientPageState,
+  clientPageStateModel,
   filterClientsBy
 } from "./fns.js"
+
+export let clientPageState = clientPageStateModel()
 
 const ClientToolbar = () => {
   return {
@@ -49,6 +51,7 @@ const ManageClients = () => {
   const init = ({ attrs: { mdl } }) => loadClients(mdl)
 
   return {
+    onremove: (clientPageState = clientPageStateModel()),
     oninit: init,
     view: ({ attrs: { mdl } }) => {
       let clients = filterClientsBy(clientPageState)(mdl.clients)
