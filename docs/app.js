@@ -1792,6 +1792,36 @@ var _default = Toaster;
 exports.default = _default;
 });
 
+;require.register("Components/Toolbar.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Toolbar = function Toolbar() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          left = _ref$attrs.left,
+          right = _ref$attrs.right;
+      return m("section.navbar", {
+        id: "content-toolbar"
+      }, [m("section.navbar-section.toolbar-left", {
+        id: "toolbar-left"
+      }, left), m("section.navbar-section.toolbar-right", {
+        id: "toolbar-right"
+      }, right)]);
+    }
+  };
+};
+
+var _default = Toolbar;
+exports.default = _default;
+});
+
 ;require.register("Components/index.js", function(exports, require, module) {
 "use strict";
 
@@ -3847,9 +3877,9 @@ var formState = {
 };
 exports.formState = formState;
 var clientPageState = {
-  isAsc: true,
+  isAsc: Stream(true),
   sortProp: "firstname",
-  term: ""
+  term: Stream("")
 };
 exports.clientPageState = clientPageState;
 var clientProps = [{
@@ -3988,33 +4018,58 @@ var _ClientCard = _interopRequireDefault(require("./ClientCard.js"));
 
 var _SortClients = _interopRequireDefault(require("./SortClients.js"));
 
+var _Toolbar = _interopRequireDefault(require("Components/Toolbar"));
+
 var _fns = require("./fns.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var ClientToolbar = function ClientToolbar() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m(_Toolbar.default, {
+        mdl: mdl,
+        left: m(_AddClientModal.default, {
+          mdl: mdl
+        }),
+        right: [, m(_SortClients.default, {
+          list: mdl.clients,
+          props: _fns.clientProps,
+          state: _fns.clientPageState,
+          sort: (0, _fns.filterClientsBy)(_fns.clientPageState)
+        }), m("button.btn btn-sm", {
+          onclick: function onclick() {
+            return _fns.clientPageState.isAsc(!_fns.clientPageState.isAsc());
+          }
+        }, m("i.icon ".concat(_fns.clientPageState.isAsc() ? "icon-arrow-down" : "icon-arrow-up"))), m(".has-icon-right", [m("input.form-input", {
+          type: "text",
+          oninput: function oninput(e) {
+            return _fns.clientPageState.term(e.target.value);
+          },
+          placeholder: "Filter Clients"
+        }), m("i.form-icon icon icon-search icon-sm")])]
+      });
+    }
+  };
+};
+
 var ManageClients = function ManageClients() {
-  var init = function init(_ref) {
-    var mdl = _ref.attrs.mdl;
+  var init = function init(_ref2) {
+    var mdl = _ref2.attrs.mdl;
     return (0, _fns.loadClients)(mdl);
   };
 
   return {
     oninit: init,
-    view: function view(_ref2) {
-      var mdl = _ref2.attrs.mdl;
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
       var clients = (0, _fns.filterClientsBy)(_fns.clientPageState)(mdl.clients);
       return m(".contents", {
         id: "content"
-      }, [m("section.section", {
-        id: "content-toolbar"
-      }, [m(_AddClientModal.default, {
+      }, [m(ClientToolbar, {
         mdl: mdl
-      }), m(_SortClients.default, {
-        list: mdl.clients,
-        props: _fns.clientProps,
-        state: _fns.clientPageState,
-        sort: (0, _fns.filterClientsBy)(_fns.clientPageState)
-      })]), m("section.section", {
+      }), m("section.section", {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
@@ -5001,7 +5056,7 @@ var removeHyphens = function removeHyphens(str) {
 exports.removeHyphens = removeHyphens;
 
 var byTerms = function byTerms(term) {
-  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(term, "i")), (0, _ramda.prop)("_terms"));
+  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(term(), "i")), (0, _ramda.prop)("_terms"));
 };
 
 var _search = function _search(term) {
@@ -5019,7 +5074,7 @@ var _sort = function _sort(attr) {
 exports._sort = _sort;
 
 var _direction = function _direction(dir) {
-  return dir ? _ramda.identity : _ramda.reverse;
+  return dir() ? _ramda.identity : _ramda.reverse;
 };
 
 exports._direction = _direction;
@@ -5044,11 +5099,9 @@ var filterListBy = function filterListBy(query) {
         // ) =>
         return (0, _ramda.compose)( // log("after dir"),
         // map(_paginate(offset)(limit)),
-        // _direction(direction),
-        // log("after sort"),
-        _sort(prop) // log("before sort")
-        // _search(query)
-        )(xs);
+        _direction(direction), // log("after sort"),
+        _sort(prop), // log("before sort")
+        _search(query))(xs);
       };
     };
   };

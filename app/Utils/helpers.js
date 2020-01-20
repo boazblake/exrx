@@ -69,13 +69,13 @@ export const addTerms = (ps) => (item) => {
 
 export const removeHyphens = (str) => str.replace(/-/gi, "")
 
-const byTerms = (term) => compose(test(new RegExp(term, "i")), prop("_terms"))
+const byTerms = (term) => compose(test(new RegExp(term(), "i")), prop("_terms"))
 
 export const _search = (term) => compose(filter(byTerms(term)))
 
 export const _sort = (attr) => (xs) => sortByCollator(attr)(xs)
 
-export const _direction = (dir) => (dir ? identity : reverse)
+export const _direction = (dir) => (dir() ? identity : reverse)
 
 export const _paginate = (offset) => (limit) => (data) =>
   slice(
@@ -92,11 +92,11 @@ export const filterListBy = (query) => (prop) => (direction) => (xs) => {
   return compose(
     // log("after dir"),
     // map(_paginate(offset)(limit)),
-    // _direction(direction),
+    _direction(direction),
     // log("after sort"),
-    _sort(prop)
+    _sort(prop),
     // log("before sort")
-    // _search(query)
+    _search(query)
   )(xs)
 }
 

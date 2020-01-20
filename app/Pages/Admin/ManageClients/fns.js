@@ -18,9 +18,9 @@ export const formState = {
 }
 
 export const clientPageState = {
-  isAsc: true,
+  isAsc: Stream(true),
   sortProp: "firstname",
-  term: ""
+  term: Stream("")
 }
 
 export const clientProps = [

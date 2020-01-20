@@ -107,7 +107,7 @@ a {
   align-items: center;
 
   > * {
-    padding-left: 14px;
+    margin-left: 14px;
   }
 }
 
@@ -224,12 +224,12 @@ a {
   align-items: center;
 }
 
-.navbar {
-  display: flex;
-  flex-flow: wrap;
-  align-content: top;
-  justify-content: flex-start;
-}
+// .navbar {
+//   display: flex;
+//   flex-flow: wrap;
+//   align-content: top;
+//   justify-content: flex-start;
+// }
 
 .nav-links {
   min-height: 150px;
