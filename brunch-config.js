@@ -41,6 +41,19 @@ exports.plugins = {
     images: ["app/images"],
     verbose: true, //shows each file that is copied to the destination directory
     onlyChanged: true //only copy a file if it's modified time has changed (only effective when using brunch watch)
+  },
+  swPrecache: {
+    swFileName: "service-worker.js",
+    options: {
+      autorequire: ["app/assets/index.html"],
+      staticFileGlobs: [
+        "docs/app.css",
+        "docs/app.js",
+        "docs/vendor.js",
+        "docs/index.html"
+      ],
+      stripPrefix: "docs/"
+    }
   }
 }
 
