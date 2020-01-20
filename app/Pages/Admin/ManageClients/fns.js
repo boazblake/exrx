@@ -1,6 +1,8 @@
-import { jsonCopy } from "Utils"
+import { compose, map, prop, lensProp, over } from "ramda"
+import { log, jsonCopy, addTerms, filterListBy } from "Utils"
+import M from "moment"
 
-const dataModel = {
+const clientModel = {
   firstname: "",
   lastname: "",
   email: "",
@@ -10,14 +12,39 @@ const dataModel = {
 
 export const formState = {
   isSubmitted: false,
-  errors: jsonCopy(dataModel),
+  errors: jsonCopy(clientModel),
   httpError: null,
-  data: jsonCopy(dataModel)
+  data: jsonCopy(clientModel)
 }
 
+export const clientPageState = {
+  isAsc: true,
+  sortProp: "firstname",
+  term: ""
+}
+
+export const clientProps = [
+  { value: "firstname", key: "first name" },
+  { value: "lastname", key: "last name" },
+  { value: "birthdate", key: "birthdate" },
+  { value: "email", key: "email" }
+]
+
+const dateLens = lensProp("birthdate")
+
+const formatAndIncBirthdate = (date) =>
+  M(date)
+    .add(1, "days")
+    .format("YYYY-MM-DD")
+
+const dateViewModel = over(dateLens, formatAndIncBirthdate)
+const makeTerms = addTerms(map(prop("value"), clientProps))
+
+const toViewModel = compose(makeTerms, dateViewModel)
+
 export const resetForm = (state) => {
-  state.data = jsonCopy(dataModel)
-  state.errors = jsonCopy(dataModel)
+  state.data = jsonCopy(clientModel)
+  state.errors = jsonCopy(clientModel)
   state.httpError = null
   state.isSubmitted = false
 }
@@ -72,18 +99,25 @@ export const editClient = (mdl) => (client) => editClientTask(mdl)(client)
 
 export const saveClient = (mdl) => (client) => saveClientTask(mdl)(client)
 
+export const filterClientsBy = (state) =>
+  compose(filterListBy(state.term)(state.sortProp)(state.isAsc))
+
 export const loadClients = ({ attrs: { mdl } }) => {
   const onError = (e) => console.log("ERROR Fetching Clients", e)
 
-  const onSuccess = ({ clients }) => (mdl.clients = clients)
+  const onSuccess = (clients) => (mdl.clients = clients)
 
-  return loadClientsTask(mdl).fork(onError, onSuccess)
+  return loadClientsTask(mdl)
+    .map(prop("clients"))
+    .map(map(toViewModel))
+    .map(filterClientsBy(clientPageState))
+    .fork(onError, onSuccess)
 }
 
 export const deleteClient = (mdl) => (id) => {
   const onError = (e) => console.log("ERROR deleteing Client", e)
 
-  const onSuccess = ({ clients }) => (mdl.clients = clients)
+  const onSuccess = (clients) => (mdl.clients = clients)
 
   return deleteClientTask(mdl)(id)
     .chain((_) => loadClientsTask(mdl))

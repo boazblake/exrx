@@ -326,9 +326,7 @@ var LoginForm = function LoginForm() {
         label: "password",
         id: "reg-pass",
         type: "password"
-      }), httpError && httpError.map(function (err) {
-        return m(".toast toast-error", err);
-      })]);
+      }), httpError && m(".toast toast-error", httpError)]);
     }
   };
 };
@@ -409,9 +407,7 @@ var RegisterForm = function RegisterForm() {
         type: "password"
       })]), m(".divider-vert", {
         dataContent: "|"
-      })]), httpError && httpError.map(function (err) {
-        return m(".toast toast-error", err);
-      })];
+      })]), httpError && m(".toast toast-error", httpError)];
     }
   };
 };
@@ -549,19 +545,20 @@ var _Button = _interopRequireDefault(require("Components/Button.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var validateForm = function validateForm(state) {
-  console.log("validateForm", state);
-
-  var onError = function onError(errs) {
-    state.errors = errs;
-    console.log("failed - state", state);
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
   };
 
   var onSuccess = function onSuccess(state) {
-    state.errors = {};
+    return function (_) {
+      return state.errors = {};
+    };
   };
 
   state.isSubmitted = true;
-  state.page ? (0, _forms.validateUserRegistrationTask)(state.data).fork(onError, onSuccess) : (0, _forms.validateLoginTask)(state.data).fork(onError, onSuccess);
+  state.page ? (0, _forms.validateUserRegistrationTask)(state.data).fork(onError(state), onSuccess(state)) : (0, _forms.validateLoginTask)(state.data).fork(onError(state), onSuccess(state));
 };
 
 var saveForm = function saveForm(mdl) {
@@ -583,11 +580,7 @@ var saveForm = function saveForm(mdl) {
     };
 
     var onError = function onError(errs) {
-      if (errs.HttpError) {
-        state.httpError = errs.Errors;
-        state.errors = {};
-      } else state.errors = errs;
-
+      state.httpError = errs.message;
       console.log("failed", state);
     };
 
@@ -800,15 +793,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-
-var _Validations = require("../Pages/Admin/ManageClients/EditClientModal /Validations");
-
-var checkErr = function checkErr(errors) {
-  return function (field) {
-    return;
-  };
-};
-
 var FormInput = {
   view: function view(_ref) {
     var _ref$attrs = _ref.attrs,
@@ -821,7 +805,7 @@ var FormInput = {
         type = _ref$attrs.type,
         validate = _ref$attrs.validate;
     return m(".form-group ", isSubmitted && {
-      class: errors && errors[field] ? "has-error" : "has-success"
+      class: errors[field] ? "has-error" : "has-success"
     }, [m("label.form-label text-left", {
       id: id
     }, [label, m("span.span required", "*")]), m("input.form-input", {
@@ -3447,16 +3431,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var state = (0, _Utils.jsonCopy)(_fns.formState);
 
 var validateForm = function validateForm(state) {
-  var onError = function onError(errs) {
-    return state.errors = errs;
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
   };
 
-  var onSuccess = function onSuccess(data) {
-    return state.errors = {};
+  var onSuccess = function onSuccess(state) {
+    return function (_) {
+      return state.errors = {};
+    };
   };
 
   state.isSubmitted = true;
-  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError, onSuccess);
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError(state), onSuccess(state));
 };
 
 var saveForm = function saveForm(mdl) {
@@ -3664,8 +3652,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _moment = _interopRequireDefault(require("moment"));
-
 var _Modal = _interopRequireDefault(require("Components/Modal"));
 
 var _animations = require("Utils/animations");
@@ -3691,16 +3677,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var state = (0, _Utils.jsonCopy)(_fns.formState);
 
 var validateForm = function validateForm(state) {
-  var onError = function onError(errs) {
-    return state.errors = errs;
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
   };
 
-  var onSuccess = function onSuccess(data) {
-    return state.errors = {};
+  var onSuccess = function onSuccess(state) {
+    return function (_) {
+      return state.errors = {};
+    };
   };
 
   state.isSubmitted = true;
-  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError, onSuccess);
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError(state), onSuccess(state));
 };
 
 var saveForm = function saveForm(mdl) {
@@ -3760,7 +3750,6 @@ var EditClient = function EditClient() {
           client = _ref3$attrs.client;
       return m("section.editClient", [m("button.btn", {
         onclick: function onclick(e) {
-          client.birthdate = (0, _moment.default)(client.birthdate).add(1, "days").format("YYYY-MM-DD");
           state.data = _objectSpread({}, client, {
             confirmEmail: client.email
           });
@@ -3798,17 +3787,60 @@ var _default = EditClient;
 exports.default = _default;
 });
 
+;require.register("Pages/Admin/ManageClients/SortClients.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var SortClients = function SortClients() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          list = _ref$attrs.list,
+          props = _ref$attrs.props,
+          state = _ref$attrs.state,
+          sort = _ref$attrs.sort;
+      return m(".sort", [m("select", {
+        onchange: function onchange(e) {
+          state.sortProp = e.target.value;
+          sort(state)(list);
+        }
+      }, props.map(function (_ref2) {
+        var key = _ref2.key,
+            value = _ref2.value;
+        return m("option", {
+          key: key,
+          value: value
+        }, key);
+      }))]);
+    }
+  };
+};
+
+var _default = SortClients;
+exports.default = _default;
+});
+
 ;require.register("Pages/Admin/ManageClients/fns.js", function(exports, require, module) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.deleteClient = exports.loadClients = exports.saveClient = exports.editClient = exports.resetForm = exports.formState = void 0;
+exports.deleteClient = exports.loadClients = exports.filterClientsBy = exports.saveClient = exports.editClient = exports.resetForm = exports.clientProps = exports.clientPageState = exports.formState = void 0;
+
+var _ramda = require("ramda");
 
 var _Utils = require("Utils");
 
-var dataModel = {
+var _moment = _interopRequireDefault(require("moment"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var clientModel = {
   firstname: "",
   lastname: "",
   email: "",
@@ -3817,15 +3849,44 @@ var dataModel = {
 };
 var formState = {
   isSubmitted: false,
-  errors: (0, _Utils.jsonCopy)(dataModel),
+  errors: (0, _Utils.jsonCopy)(clientModel),
   httpError: null,
-  data: (0, _Utils.jsonCopy)(dataModel)
+  data: (0, _Utils.jsonCopy)(clientModel)
 };
 exports.formState = formState;
+var clientPageState = {
+  isAsc: true,
+  sortProp: "firstname",
+  term: ""
+};
+exports.clientPageState = clientPageState;
+var clientProps = [{
+  value: "firstname",
+  key: "first name"
+}, {
+  value: "lastname",
+  key: "last name"
+}, {
+  value: "birthdate",
+  key: "birthdate"
+}, {
+  value: "email",
+  key: "email"
+}];
+exports.clientProps = clientProps;
+var dateLens = (0, _ramda.lensProp)("birthdate");
+
+var formatAndIncBirthdate = function formatAndIncBirthdate(date) {
+  return (0, _moment.default)(date).add(1, "days").format("YYYY-MM-DD");
+};
+
+var dateViewModel = (0, _ramda.over)(dateLens, formatAndIncBirthdate);
+var makeTerms = (0, _Utils.addTerms)((0, _ramda.map)((0, _ramda.prop)("value"), clientProps));
+var toViewModel = (0, _ramda.compose)(makeTerms, dateViewModel);
 
 var resetForm = function resetForm(state) {
-  state.data = (0, _Utils.jsonCopy)(dataModel);
-  state.errors = (0, _Utils.jsonCopy)(dataModel);
+  state.data = (0, _Utils.jsonCopy)(clientModel);
+  state.errors = (0, _Utils.jsonCopy)(clientModel);
   state.httpError = null;
   state.isSubmitted = false;
 };
@@ -3879,6 +3940,12 @@ var saveClient = function saveClient(mdl) {
 
 exports.saveClient = saveClient;
 
+var filterClientsBy = function filterClientsBy(state) {
+  return (0, _ramda.compose)((0, _Utils.filterListBy)(state.term)(state.sortProp)(state.isAsc));
+};
+
+exports.filterClientsBy = filterClientsBy;
+
 var loadClients = function loadClients(_ref3) {
   var mdl = _ref3.attrs.mdl;
 
@@ -3886,12 +3953,11 @@ var loadClients = function loadClients(_ref3) {
     return console.log("ERROR Fetching Clients", e);
   };
 
-  var onSuccess = function onSuccess(_ref4) {
-    var clients = _ref4.clients;
+  var onSuccess = function onSuccess(clients) {
     return mdl.clients = clients;
   };
 
-  return loadClientsTask(mdl).fork(onError, onSuccess);
+  return loadClientsTask(mdl).map((0, _ramda.prop)("clients")).map((0, _ramda.map)(toViewModel)).map(filterClientsBy(clientPageState)).fork(onError, onSuccess);
 };
 
 exports.loadClients = loadClients;
@@ -3902,8 +3968,7 @@ var deleteClient = function deleteClient(mdl) {
       return console.log("ERROR deleteing Client", e);
     };
 
-    var onSuccess = function onSuccess(_ref5) {
-      var clients = _ref5.clients;
+    var onSuccess = function onSuccess(clients) {
       return mdl.clients = clients;
     };
 
@@ -3928,6 +3993,8 @@ var _AddClientModal = _interopRequireDefault(require("./AddClientModal"));
 
 var _ClientCard = _interopRequireDefault(require("./ClientCard.js"));
 
+var _SortClients = _interopRequireDefault(require("./SortClients.js"));
+
 var _fns = require("./fns.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -3937,17 +4004,24 @@ var ManageClients = function ManageClients() {
     oninit: _fns.loadClients,
     view: function view(_ref) {
       var mdl = _ref.attrs.mdl;
+      var clients = mdl.clients;
+      var props = _fns.clientProps;
       return m(".contents", {
         id: "content"
       }, [m("section.section", {
         id: "content-toolbar"
       }, [m(_AddClientModal.default, {
         mdl: mdl
+      }), m(_SortClients.default, {
+        list: clients,
+        props: props,
+        state: _fns.clientPageState,
+        sort: _fns.filterClientsBy
       })]), m("section.section", {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
+      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", clients.map(function (client) {
         return m(_ClientCard.default, {
           key: client.id,
           mdl: mdl,
@@ -4852,13 +4926,29 @@ exports.animateChildrenLimitsExit = animateChildrenLimitsExit;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterTask = exports._paginate = exports._direction = exports._sort = exports._search = exports.removeHyphens = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
+exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterListBy = exports._paginate = exports._direction = exports._sort = exports._search = exports.removeHyphens = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
 
 var _ramda = require("ramda");
 
 var _data = _interopRequireDefault(require("data.task"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var collator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: "base"
+});
+
+var sortByCollator = function sortByCollator(attr) {
+  return function (xs) {
+    var listCopy = JSON.parse(JSON.stringify(xs));
+    listCopy.sort(function (a, b) {
+      console.log("as and bs", attr, a[attr], b[attr], collator.compare(a[attr], b[attr]));
+      return collator.compare(a[attr], b[attr]);
+    });
+    return listCopy;
+  };
+};
 
 var makeRoute = (0, _ramda.compose)((0, _ramda.join)("-"), (0, _ramda.split)(" "), (0, _ramda.trim)(), (0, _ramda.toLower)());
 exports.makeRoute = makeRoute;
@@ -4892,9 +4982,11 @@ var infiniteScroll = function infiniteScroll(mdl) {
 
 exports.infiniteScroll = infiniteScroll;
 
-var addTerms = function addTerms(item) {
-  var terms = (0, _ramda.compose)((0, _ramda.join)(" "), _ramda.values, (0, _ramda.props)(["uuid", "id", "name"]))(item);
-  return (0, _ramda.assoc)("_terms", terms, item);
+var addTerms = function addTerms(ps) {
+  return function (item) {
+    var terms = (0, _ramda.compose)((0, _ramda.join)(" "), _ramda.values, (0, _ramda.props)(ps))(item);
+    return (0, _ramda.assoc)("_terms", terms, item);
+  };
 };
 
 exports.addTerms = addTerms;
@@ -4905,24 +4997,24 @@ var removeHyphens = function removeHyphens(str) {
 
 exports.removeHyphens = removeHyphens;
 
-var byTerms = function byTerms(query) {
-  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(query, "i")), (0, _ramda.prop)("name"));
+var byTerms = function byTerms(term) {
+  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(term, "i")), (0, _ramda.prop)("_terms"));
 };
 
-var _search = function _search(query) {
-  return (0, _ramda.compose)((0, _ramda.filter)(byTerms(query)));
+var _search = function _search(term) {
+  return (0, _ramda.compose)((0, _ramda.filter)(byTerms(term)));
 };
 
 exports._search = _search;
 
 var _sort = function _sort(p) {
-  return (0, _ramda.sortBy)((0, _ramda.compose)(_ramda.toLower, toString, (0, _ramda.prop)(p)));
+  return (0, _ramda.curry)(sortByCollator(p));
 };
 
 exports._sort = _sort;
 
 var _direction = function _direction(dir) {
-  return dir == "asc" ? _ramda.identity : _ramda.reverse;
+  return dir ? _ramda.identity : _ramda.reverse;
 };
 
 exports._direction = _direction;
@@ -4937,19 +5029,25 @@ var _paginate = function _paginate(offset) {
 
 exports._paginate = _paginate;
 
-var filterTask = function filterTask(query) {
+var filterListBy = function filterListBy(query) {
   return function (prop) {
     return function (direction) {
-      return function (offset) {
-        return function (limit) {
-          return (0, _ramda.compose)(_data.default.of, (0, _ramda.map)(_paginate(offset)(limit)), (0, _ramda.map)(_direction(direction)), (0, _ramda.map)(_sort(prop)), _search(query));
-        };
+      return function (xs) {
+        console.log("filterListBy", query, prop, direction, xs); // (offset) => (
+        //   limit
+        // ) =>
+
+        return (0, _ramda.compose)( // log("after dir"),
+        // map(_paginate(offset)(limit)),
+        _direction(direction), // log("after sort"),
+        _sort(prop), // log("before sort"),
+        _search(query))(xs);
       };
     };
   };
 };
 
-exports.filterTask = filterTask;
+exports.filterListBy = filterListBy;
 
 var debounce = function debounce(wait, now) {
   return function (fn) {

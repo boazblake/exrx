@@ -99,7 +99,16 @@ a {
 
 #content-toolbar {
   grid-area: content-toolbar;
+  flex-flow: wrap;
   padding-bottom: 4px;
+  display: flex;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+
+  > * {
+    padding-left: 14px;
+  }
 }
 
 #content-data {

@@ -1,4 +1,3 @@
-import M from "moment"
 import Modal from "Components/Modal"
 import { animateComponentEntrance, slideModalOut } from "Utils/animations"
 import RegisterClientForm from "../registerClientForm.js"
@@ -10,12 +9,15 @@ import { editClient, formState, resetForm, loadClients } from "../fns.js"
 let state = jsonCopy(formState)
 
 const validateForm = (state) => {
-  const onError = (errs) => (state.errors = errs)
+  const onError = (state) => (errs) => (state.errors = errs)
 
-  const onSuccess = (data) => (state.errors = {})
+  const onSuccess = (state) => (_) => (state.errors = {})
 
   state.isSubmitted = true
-  validateClientRegistrationTask(state.data).fork(onError, onSuccess)
+  validateClientRegistrationTask(state.data).fork(
+    onError(state),
+    onSuccess(state)
+  )
 }
 
 const saveForm = (mdl) => (state) => {
@@ -63,10 +65,6 @@ const EditClient = () => {
           "button.btn",
           {
             onclick: (e) => {
-              client.birthdate = M(client.birthdate)
-                .add(1, "days")
-                .format("YYYY-MM-DD")
-
               state.data = { ...client, confirmEmail: client.email }
               mdl.toggle(mdl, `EditClient-${client.id}`)
             }

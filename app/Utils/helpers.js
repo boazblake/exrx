@@ -1,5 +1,6 @@
 import {
   compose,
+  curry,
   last,
   join,
   values,
@@ -8,8 +9,10 @@ import {
   test,
   prop,
   filter,
+  sort,
   sortBy,
   toLower,
+  toString,
   identity,
   reverse,
   slice,
@@ -21,6 +24,26 @@ import {
 } from "ramda"
 
 import Task from "data.task"
+
+const collator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: "base"
+})
+
+const sortByCollator = (attr) => (xs) => {
+  let listCopy = JSON.parse(JSON.stringify(xs))
+  listCopy.sort((a, b) => {
+    console.log(
+      "as and bs",
+      attr,
+      a[attr],
+      b[attr],
+      collator.compare(a[attr], b[attr])
+    )
+    return collator.compare(a[attr], b[attr])
+  })
+  return listCopy
+}
 
 export const makeRoute = compose(join("-"), split(" "), trim(), toLower())
 export const log = (m) => (v) => {
@@ -39,21 +62,20 @@ export const infiniteScroll = (mdl) => (e) => {
   }
 }
 
-export const addTerms = (item) => {
-  const terms = compose(join(" "), values, props(["uuid", "id", "name"]))(item)
-
+export const addTerms = (ps) => (item) => {
+  const terms = compose(join(" "), values, props(ps))(item)
   return assoc("_terms", terms, item)
 }
 
 export const removeHyphens = (str) => str.replace(/-/gi, "")
 
-const byTerms = (query) => compose(test(new RegExp(query, "i")), prop("name"))
+const byTerms = (term) => compose(test(new RegExp(term, "i")), prop("_terms"))
 
-export const _search = (query) => compose(filter(byTerms(query)))
+export const _search = (term) => compose(filter(byTerms(term)))
 
-export const _sort = (p) => sortBy(compose(toLower, toString, prop(p)))
+export const _sort = (p) => curry(sortByCollator(p))
 
-export const _direction = (dir) => (dir == "asc" ? identity : reverse)
+export const _direction = (dir) => (dir ? identity : reverse)
 
 export const _paginate = (offset) => (limit) => (data) =>
   slice(
@@ -62,16 +84,21 @@ export const _paginate = (offset) => (limit) => (data) =>
     data
   )
 
-export const filterTask = (query) => (prop) => (direction) => (offset) => (
-  limit
-) =>
-  compose(
-    Task.of,
-    map(_paginate(offset)(limit)),
-    map(_direction(direction)),
-    map(_sort(prop)),
+export const filterListBy = (query) => (prop) => (direction) => (xs) => {
+  console.log("filterListBy", query, prop, direction, xs)
+  // (offset) => (
+  //   limit
+  // ) =>
+  return compose(
+    // log("after dir"),
+    // map(_paginate(offset)(limit)),
+    _direction(direction),
+    // log("after sort"),
+    _sort(prop),
+    // log("before sort"),
     _search(query)
-  )
+  )(xs)
+}
 
 export const debounce = (wait, now) => (fn) => {
   let timeout = undefined

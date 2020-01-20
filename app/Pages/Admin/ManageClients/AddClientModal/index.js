@@ -9,12 +9,15 @@ import { jsonCopy } from "Utils"
 let state = jsonCopy(formState)
 
 const validateForm = (state) => {
-  const onError = (errs) => (state.errors = errs)
+  const onError = (state) => (errs) => (state.errors = errs)
 
-  const onSuccess = (data) => (state.errors = {})
+  const onSuccess = (state) => (_) => (state.errors = {})
 
   state.isSubmitted = true
-  validateClientRegistrationTask(state.data).fork(onError, onSuccess)
+  validateClientRegistrationTask(state.data).fork(
+    onError(state),
+    onSuccess(state)
+  )
 }
 
 const saveForm = (mdl) => (state) => {

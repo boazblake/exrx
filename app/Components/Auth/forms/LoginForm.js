@@ -27,7 +27,7 @@ export const LoginForm = () => {
             id: "reg-pass",
             type: "password"
           }),
-          httpError && httpError.map((err) => m(".toast toast-error", err))
+          httpError && m(".toast toast-error", httpError)
         ]
       )
   }

@@ -10,20 +10,17 @@ import Modal from "Components/Modal.js"
 import Button from "Components/Button.js"
 
 const validateForm = (state) => {
-  console.log("validateForm", state)
-  const onError = (errs) => {
-    state.errors = errs
-    console.log("failed - state", state)
-  }
+  const onError = (state) => (errs) => (state.errors = errs)
 
-  const onSuccess = (state) => {
-    state.errors = {}
-  }
+  const onSuccess = (state) => (_) => (state.errors = {})
 
   state.isSubmitted = true
   state.page
-    ? validateUserRegistrationTask(state.data).fork(onError, onSuccess)
-    : validateLoginTask(state.data).fork(onError, onSuccess)
+    ? validateUserRegistrationTask(state.data).fork(
+        onError(state),
+        onSuccess(state)
+      )
+    : validateLoginTask(state.data).fork(onError(state), onSuccess(state))
 }
 
 const saveForm = (mdl) => (state) => {
@@ -42,10 +39,7 @@ const saveForm = (mdl) => (state) => {
   }
 
   const onError = (errs) => {
-    if (errs.HttpError) {
-      state.httpError = errs.Errors
-      state.errors = {}
-    } else state.errors = errs
+    state.httpError = errs.message
 
     console.log("failed", state)
   }

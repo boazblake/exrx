@@ -66,8 +66,7 @@ export const RegisterForm = () => {
           m(".divider-vert", { dataContent: "|" })
         ]
       ),
-
-      httpError && httpError.map((err) => m(".toast toast-error", err))
+      httpError && m(".toast toast-error", httpError)
     ]
   }
 }
