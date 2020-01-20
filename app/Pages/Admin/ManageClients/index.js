@@ -14,6 +14,7 @@ const ManageClients = () => {
   return {
     oninit: init,
     view: ({ attrs: { mdl } }) => {
+      let clients = filterClientsBy(clientPageState)(mdl.clients)
       return m(".contents", { id: "content" }, [
         m("section.section", { id: "content-toolbar" }, [
           m(AddClient, { mdl }),
@@ -30,7 +31,7 @@ const ManageClients = () => {
               m(".panel-header", m("h1.panel-title", mdl.state.route.title)),
               m(
                 ".panel-body",
-                mdl.clients.map((client) =>
+                clients.map((client) =>
                   m(ClientCard, { key: client.id, mdl, client })
                 )
               )

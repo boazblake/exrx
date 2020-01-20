@@ -4002,6 +4002,7 @@ var ManageClients = function ManageClients() {
     oninit: init,
     view: function view(_ref2) {
       var mdl = _ref2.attrs.mdl;
+      var clients = (0, _fns.filterClientsBy)(_fns.clientPageState)(mdl.clients);
       return m(".contents", {
         id: "content"
       }, [m("section.section", {
@@ -4017,7 +4018,7 @@ var ManageClients = function ManageClients() {
         id: "content-data"
       }, [m(".manageClients", {
         id: mdl.state.route.id
-      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", mdl.clients.map(function (client) {
+      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", clients.map(function (client) {
         return m(_ClientCard.default, {
           key: client.id,
           mdl: mdl,
