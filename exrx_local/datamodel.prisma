@@ -29,7 +29,6 @@ type WeightMeasure {
   updatedAt: DateTime! @updatedAt
 }
 
-
 type HeightMeasure {
   unit: Unit!
   value: Float!

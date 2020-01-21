@@ -1,3 +1,5836 @@
-!function(){"use strict";var e="undefined"==typeof global?self:global;if("function"!=typeof e.require){var t={},n={},r={},i={}.hasOwnProperty,o=/^\.\.?(\/|$)/,a=function(e,t){for(var n,r=[],i=(o.test(t)?e+"/"+t:t).split("/"),a=0,u=i.length;a<u;a++)n=i[a],".."===n?r.pop():"."!==n&&""!==n&&r.push(n);return r.join("/")},u=function(e){return e.split("/").slice(0,-1).join("/")},s=function(t){return function(n){var r=a(u(t),n);return e.require(r,t)}},c=function(e,t){var r=g&&g.createHot(e),i={id:e,exports:{},hot:r};return n[e]=i,t(i.exports,s(e),i),i.exports},l=function(e){return r[e]?l(r[e]):e},d=function(e,t){return l(a(u(e),t))},f=function(e,r){null==r&&(r="/");var o=l(e);if(i.call(n,o))return n[o].exports;if(i.call(t,o))return c(o,t[o]);throw new Error("Cannot find module '"+e+"' from '"+r+"'")};f.alias=function(e,t){r[t]=e};var m=/\.[^.\/]+$/,p=/\/index(\.[^\/]+)?$/,v=function(e){if(m.test(e)){var t=e.replace(m,"");i.call(r,t)&&r[t].replace(m,"")!==t+"/index"||(r[t]=e)}if(p.test(e)){var n=e.replace(p,"");i.call(r,n)||(r[n]=e)}};f.register=f.define=function(e,r){if(e&&"object"==typeof e)for(var o in e)i.call(e,o)&&f.register(o,e[o]);else t[e]=r,delete n[e],v(e)},f.list=function(){var e=[];for(var n in t)i.call(t,n)&&e.push(n);return e};var g=e._hmr&&new e._hmr(d,f,t,n);f._cache=n,f.hmr=g&&g.wrap,f.brunch=!0,e.require=f}}(),function(){var e;"undefined"==typeof window?this:window;require.register("App.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){return function(t,n){return t[n.route]={onmatch:function(t,r,i){n.group.includes("authenticated")&&!e.state.isAuth()&&e.route.set(m.route.get()),e.state.route=n,e.state.anchor=r.split("#")[1];var o=Boolean(e.state.anchor);e.state.showSidebarModal(!1),n.onmatch(e,t,r,i,o)},render:function(){return n.component(e)}},t}},i=function(e){return e.Routes.reduce(r(e),{})},o=i;e["default"]=o}),require.register("Components/Auth/fns.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.registerUserTask=e.loginUserTask=e.changePage=e.resetState=e.state=e.data=void 0;var r=t("Utils"),i=t("./forms"),o={name:"",email:"",password:"",confirmEmail:"",confirmPassword:"",isAdmin:!1};e.data=o;var a={forms:{1:i.RegisterForm,0:i.LoginForm},page:0,title:{1:"Register",0:"Login"},isSubmitted:!1,errors:{},httpError:void 0,data:(0,r.jsonCopy)(o)};e.state=a;var u=function(e){e.data=(0,r.jsonCopy)(o),e.errors={},e.httpError=void 0,e.isSubmitted=!1,e.page=0};e.resetState=u;var s=function(e){return e.httpError=void 0,e.page?e.page=0:e.page=1};e.changePage=s;var c=function(e){return function(t){var n=t.email,r=t.password;return e.http.backEnd.postTask(e)("users/login")({login:n,password:r})}};e.loginUserTask=c;var l=function(e){return function(t){return e.http.postQlTask(e)("mutation {\n  createUser(data:{userId:".concat(t,"}){id}\n}"))}},d=function(e){return function(t){var n=t.name,r=t.email,i=t.password,o=t.isAdmin;return e.http.backEnd.postTask(e)("users/register")({name:n,email:r,password:i,isAdmin:o}).chain(function(t){return l(e)(JSON.stringify(t.objectId)).map(function(){return t})})}};e.registerUserTask=d}),require.register("Components/Auth/forms/LoginForm.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.LoginForm=void 0;var i=r(t("Components/FormInputs")),o=function(){return{view:function(e){var t=e.attrs,n=t.data,r=t.errors,o=t.isSubmitted,a=t.validate,u=t.httpError;return m("form.column",{id:"Login-form",onsubmit:function(e){return e.preventDefault()}},[m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"email",label:"email",id:"email",type:"email"}),m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"password",label:"password",id:"reg-pass",type:"password"}),u&&m(".toast toast-error",u)])}}};e.LoginForm=o}),require.register("Components/Auth/forms/RegisterForm.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.RegisterForm=void 0;var i=r(t("Components/FormInputs")),o=function(){return{view:function(e){var t=e.attrs,n=t.data,r=t.errors,o=t.isSubmitted,a=t.validate,u=t.httpError;return[m("form.column",{id:"Register-form",onsubmit:function(e){return e.preventDefault()}},[[m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"name",label:"Name",id:"name",type:"text"}),m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"email",label:"email",id:"email",type:"email"}),m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"confirmEmail",label:"Confirm Email",id:"confirm-email",type:"email"}),m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"password",label:"password",id:"reg-pass",type:"password"}),m(i["default"],{isSubmitted:o,data:n,validate:a,errors:r,field:"confirmPassword",label:"Confirm Password",id:"pass-confirm",type:"password"})],m(".divider-vert",{dataContent:"|"})]),u&&m(".toast toast-error",u)]}}};e.RegisterForm=o}),require.register("Components/Auth/forms/Validations.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.validateLoginTask=e.validateUserRegistrationTask=void 0;var r=t("ramda"),i=t("data.validation"),o=t("Utils"),a=(0,i.Success)((0,r.curryN)(3,r.identity)),u=(0,i.Success)((0,r.curryN)(2,r.identity)),s=(0,r.lensProp)("name"),c=(0,r.lensProp)("password"),l=(0,r.lensProp)("confirmPassword"),d=(0,r.lensProp)("email"),f=(0,r.lensProp)("confirmEmail"),m="A Name is required",p="A Password is required",v="An Email is required",g="Emails do not match",h="Email must be a valid format",y="Passwords do not match",b=function(e){return function(t){return t===e}},_=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,s,m,e))},j=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,d,v,e)).apLeft((0,o.validate)(o.isRequired,f,v,e)).apLeft((0,o.validate)(b(e.confirmEmail),d,g,e)).apLeft((0,o.validate)(b(e.email),f,g,e)).apLeft((0,o.validate)(o.emailFormat,f,h,e)).apLeft((0,o.validate)(o.emailFormat,d,h,e))},P=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,d,v,e)).apLeft((0,o.validate)(o.emailFormat,d,h,e))},w=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,c,p,e)).apLeft((0,o.validate)(o.isRequired,l,p,e)).apLeft((0,o.validate)(b(e.password),l,y,e)).apLeft((0,o.validate)(b(e.confirmPassword),c,y,e))},O=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,c,p,e))},M=function(e){return a.ap(_(e)).ap(j(e)).ap(w(e)).failureMap(r.mergeAll).toTask()};e.validateUserRegistrationTask=M;var C=function(e){return u.ap(P(e)).ap(O(e)).failureMap(r.mergeAll).toTask()};e.validateLoginTask=C}),require.register("Components/Auth/forms/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./LoginForm.js");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./RegisterForm.js");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./Validations.js");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})})}),require.register("Components/Auth/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=t("./forms"),o=t("./fns.js"),a=r(t("Components/Modal.js")),u=r(t("Components/Button.js")),s=function(e){var t=function(e){return function(t){return e.errors=t}},n=function(e){return function(t){return e.errors={}}};e.isSubmitted=!0,e.page?(0,i.validateUserRegistrationTask)(e.data).fork(t(e),n(e)):(0,i.validateLoginTask)(e.data).fork(t(e),n(e))},c=function(e){return function(t){var n=function(e){return console.log("succes with registering",e,t),t.page=0},r=function(e){return function(n){window.sessionStorage.setItem("user-token",n["user-token"]),e.user=n,e.state.isAuth(!0),e.toggleAuthModal(e),m.route.set("/EXRX/".concat(e.user.name,"/dashboard")),(0,o.resetState)(t)}},a=function(e){t.httpError=e.message,console.log("failed",t)};t.isSubmitted=!0,t.page?(0,i.validateUserRegistrationTask)(t.data).chain((0,o.registerUserTask)(e)).fork(a,n):(0,i.validateLoginTask)(t.data).chain((0,o.loginUserTask)(e)).fork(a,r(e))}},l=function(){return{view:function(e){var t=e.attrs.title;return m("a.authLinkBtn btn-link",{onclick:function(e){return(0,o.changePage)(o.state)}},t)}}},d=function(){return{view:function(e){var t=e.attrs.mdl;return m(a["default"],{classList:"auth-modal",isActive:t.state.showAuthModal(),close:function(){(0,o.resetState)(o.state),t.toggleAuthModal(t)},title:o.state.title[o.state.page],content:m(o.state.forms[o.state.page],{data:o.state.data,errors:o.state.errors,httpError:o.state.httpError,isSubmitted:o.state.isSubmitted,validate:function(){return s(o.state)}}),footer:[m(u["default"],{mdl:t,type:"submit","for":"".concat(o.state.title[o.state.page],"-form"),action:function(){return c(t)(o.state)},label:o.state.title[o.state.page],classList:"input btn btn-primary authBtn"}),m(l,{mdl:t,title:o.state.page?"Login":"Register"})]})}}},f=d;e["default"]=f}),require.register("Components/Body.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./Toaster.js")),o={view:function(e){var t=e.children,n=e.attrs.mdl;return m(".main",{id:"main"},[t,n.state.toast.show()&&m(i["default"],{mdl:n})])}},a=o;e["default"]=a}),require.register("Components/Button.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.action,i=t.label,o=t.classList,a=void 0===o?"":o,u=t.isDisabled;return m("button.btn.".concat(a," ").concat(n.state.isLoading()?"loading":""),{onclick:function(e){return r(e)},disabled:u},i)}}},i=r;e["default"]=i}),require.register("Components/DropDown.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=t("Utils"),i={onbeforeremove:r.animateChildrenLimitsExit,view:function(e){var t=e.attrs.mdl;return m(".limits",t.limits.map(function(e,n){return m("button.btn.limit",{oncreate:(0,r.animateChildrenLimitsEntrance)(n),onclick:function(){t.state.limit=e,t.state.showLimits(!1)},key:n},e)}))}},o={view:function(e){var t=e.attrs.mdl;return m(".changeLimits",[m("button.btn",{onclick:function(){return t.toggleLimits(t)}},"Change Limit"),t.state.showLimits()&&[m(i,{mdl:t})]])}},a=o;e["default"]=a}),require.register("Components/Footer.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./SocialMedia.js")),o={view:function(e){e.attrs.mdl;return m("footer",{id:"footer"},m(i["default"]),m("p.text-center",["Copyright © Boaz Blake. All rights reserved. ".concat((new Date).getFullYear()," Privacy Policy")]))}},a=o;e["default"]=a}),require.register("Components/FormInputs.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r={view:function(e){var t=e.attrs,n=t.isSubmitted,r=t.data,i=t.errors,o=t.field,a=t.label,u=t.id,s=t.type,c=t.validate;return m(".form-group ",n&&{"class":i[o]?"has-error":"has-success"},[m("label.form-label text-left",{id:u},[a,m("span.span required","*")]),m("input.form-input",{id:u,type:s,placeholder:a,oninput:function(e){r[o]=e.target.value,n&&c()},value:r[o],autocomplete:!1}),i[o]&&m("p.form-input-hint",i[o])])}},i=r;e["default"]=i}),require.register("Components/Hamburger.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=function(e){var t=e.attrs.mdl,n={close:"M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z",open:"M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"},r=function(e){return i["default"].render(e,(0,i["default"])("path",{xmlns:"http://www.w3.org/2000/svg",d:t.state.showNav()?n.close:n.open}))},o=function(e){var t=e.dom,n=t;return r(n)};return{oncreate:o,onupdate:o,view:function(e){var t=e.attrs.mdl;return(0,i["default"])("svg.btn.hamburger",{id:"hamburger",onclick:function(){return t.toggleNav(t)}})}}},a=o;e["default"]=a}),require.register("Components/Headers/MainHeader.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/ProgressBar")),o=r(t("Components/Hamburger")),a=r(t("Components/Navigation")),u=function(){return{view:function(e){var t=e.attrs.mdl;return m("header.header",{id:"header"},[t.state.isLoading()&&m(i["default"],{mdl:t}),"desktop"!==t.state.profile&&m(".mobileNav",m(o["default"],{mdl:t})),m(a["default"],{mdl:t})])}}},s=u;e["default"]=s}),require.register("Components/Headers/ProfileHeader.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("../Navigation/NavTabs.js")),o=r(t("Components/ProgressBar")),a=function(){return{view:function(e){var t=e.attrs.mdl;return m("header.header",{id:"header"},[t.state.isLoading()&&m(o["default"],{mdl:t}),m(i["default"],{mdl:t,tabSelected:function(){}})])}}},u=a;e["default"]=u}),require.register("Components/Headers/SplashHeader.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("../Navigation/NavTabs.js")),o=r(t("Components/ProgressBar")),a=function(){return{view:function(e){var t=e.attrs.mdl;return m("header.header",{id:"header"},[t.state.isLoading()&&m(o["default"],{mdl:t}),m(i["default"],{mdl:t,tabSelected:function(){}})])}}},u=a;e["default"]=u}),require.register("Components/Headers/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./MainHeader.js");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./SplashHeader.js");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./ProfileHeader.js");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})})}),require.register("Components/Icons/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=m("svg",{xmlns:"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink",version:"1.1",x:"0px",y:"0px",viewBox:"0 0 99.978 100","enable-background":"new 0 0 99.978 100","xml:space":"preserve"},[m("polygon",{fill:"#ecf0f1",points:"49.987,0 0,25 0,37.5 49.987,12.5 99.978,37.5 99.978,25 "}),m("path",{id:"ruler",fill:"#ecf0f1",d:"M74.978,37.5V100h18.75V37.5H74.978z M89.561,45.834h-6.25V50h6.25v4.167h-3.125v4.167h3.125V62.5h-6.25  v4.167h6.25v4.166h-3.125V75h3.125v4.167h-6.25v4.166h6.25V87.5h-3.125v4.166h3.125v4.167H79.145V41.667h10.416V45.834z"}),m("path",{id:"hammer",fill:"#ecf0f1",d:"M41.111,48.539c-5.442-7.942-12.465-9.623-17.427-9.623c-3.235,0-5.497,0.741-5.593,0.773  c-0.307,0.102-0.586,0.276-0.814,0.505l-1.473,1.473h-1.221c0-1.151-0.932-2.083-2.083-2.083H8.333  c-1.151,0-2.083,0.932-2.083,2.083v6.25C6.25,49.068,7.182,50,8.333,50H12.5c1.151,0,2.083-0.932,2.083-2.083h2.083v14.245  l-1.975,5.929c-0.071,0.212-0.108,0.436-0.108,0.659v29.166c0,1.152,0.932,2.084,2.083,2.084H25c1.151,0,2.083-0.932,2.083-2.084  V68.75c0-0.224-0.037-0.447-0.108-0.659L25,62.162V49.149c0.903-0.386,1.961-0.581,3.158-0.581c4.905,0,10.302,3.186,10.355,3.218  c0.325,0.195,0.684,0.289,1.043,0.293c1.17,0.094,2.15-0.907,2.15-2.079C41.707,49.431,41.479,48.914,41.111,48.539z"}),m("path",{id:"mouse",fill:"#ecf0f1",d:"M58.26,60.588c1.029-1.677,1.978-3.805,1.994-6.092c0.014-2.233-0.86-4.301-2.531-5.969  c-0.539-0.541-1.2-1.082-1.904-1.652c-2.256-1.822-3.735-3.174-3.735-5.208c0-2.689,2.569-5.867,3.558-6.864  c0.81-0.813,0.808-2.132-0.006-2.946c-0.816-0.81-2.13-0.81-2.942,0.004c-0.488,0.488-4.777,4.916-4.777,9.807  c0,4.175,3.052,6.645,5.281,8.447c0.58,0.472,1.133,0.911,1.579,1.359c0.887,0.887,1.314,1.863,1.31,2.982  c-0.012,2.254-1.737,4.703-2.838,5.969c-7.212,0.11-13.666,1.624-13.666,10.408v8.334c0,10.241,5.455,20.833,14.583,20.833  c9.473,0,14.583-10.734,14.583-20.833v-8.334C68.75,63.367,64.088,61.153,58.26,60.588z M64.583,70.833v2.084H56.25v-8.289  C63.303,64.93,64.583,66.874,64.583,70.833z M52.083,64.628v8.289H43.75v-2.084C43.75,66.874,45.029,64.93,52.083,64.628z   M54.167,95.833c-6.433,0-10.417-8.65-10.417-16.666v-2.084h20.833v2.084C64.583,86.088,61.352,95.833,54.167,95.833z"})]),i=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M2 4v14h14v-6l2-2v10H0V2h10L8 4H2zm10.3-.3l4 4L8 16H4v-4l8.3-8.3zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"})),o=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"})),a=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"})),u=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M8 20H3V10H0L10 0l10 10h-3v10h-5v-6H8v6z"})),s=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"})),c=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M10.707 7.05L10 6.343 4.343 12l1.414 1.414L10 9.172l4.243 4.242L15.657 12z"})),l=m("svg",{xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 20 20"},m("path",{d:"M9 20v-1.7l.01-.24L15.07 12h2.94c1.1 0 1.99.89 1.99 2v4a2 2 0 0 1-2 2H9zm0-3.34V5.34l2.08-2.07a1.99 1.99 0 0 1 2.82 0l2.83 2.83a2 2 0 0 1 0 2.82L9 16.66zM0 1.99C0 .9.89 0 2 0h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zM4 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"})),d={logo:r,contact:i,services:l,home:u,downChevron:a,lock:s,upChevron:c,dotsVerticleThree:o};e["default"]=d}),require.register("Components/LeftAside.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./Navigation/NavMenu.js")),o=t("Utils/animations"),a=function(e){var t=e.attrs.mdl,n=t.Routes.filter(function(e){return e.position.includes("left-aside")});return"desktop"==t.state.profile&&(n=n.filter(function(e){return"dashboard"!=e.id})),{oncreate:o.SlideInRight,onbeforeremove:o.SlideOutLeft,view:function(e){var t=e.attrs.mdl;return m(".left-aside.sidebar-modal",{id:"left-aside"},m(i["default"],{routes:n,mdl:t}))}}},u=a;e["default"]=u}),require.register("Components/Modal.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.animateEntrance,n=e.animateExit;return{oncreate:t,onbeforeremove:n,view:function(e){var t=e.attrs,n=t.classList,r=t.isActive,i=t.close,o=t.title,a=t.content,u=t.footer;return m("section.modal.".concat(n),{"class":r?"active":"",id:"modal"},[m("a.modal-overlay",{"aria-label":"Close",onclick:function(){return i()}}),m(".modal-container",{role:"document"},[m(".modal-header",[m("a.btn btn-clear float-right",{id:"modal-close","aria-label":"Close",onclick:function(){return i()}}),m(".modal-title h3",o)]),m(".modal-body",m(".modal-content",a)),m(".modal-footer",u)])])}}},i=r;e["default"]=i}),require.register("Components/Navigation/NavMenu.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.attrs.key,n=function(e){return e?e.name:""};return{view:function(e){var r=e.attrs,i=r.tab,o=r.active,a=r.mdl;return m("li.nav-item ".concat(o?"active":""),m(m.route.Link,{key:t,"class":"sidebar-nav",id:"".concat(i.id,"-link"),href:i.group.includes("authenticated")?"EXRX/".concat(n(a.user),"/").concat(i.id):"".concat(i.route)},i.title))}}},i=function(e){e.attrs.mdl;return{view:function(e){var t=e.attrs,n=t.mdl,i=t.routes;return i.length?m("ul.nav",{id:"menu"},[i.map(function(e,t){return m(r,{key:t,active:n.state.route.route==e.route,tab:e,mdl:n})})]):[]}}},o=i;e["default"]=o}),require.register("Components/Navigation/NavTabs.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=t("Utils"),o=r(t("Components/Auth")),a=r(t("./SettingsMenu.js")),u=(r(t("Components/Icons")),function(e){var t=e.attrs.key;return{view:function(e){var n=e.attrs,r=n.mdl,i=n.tab,o=n.active;return m(m.route.Link,{"class":o?"tab-item active":"tab-item",key:t,id:"".concat(i.id),onclick:function(e){"dashboard"==i.id&&"desktop"!=r.state.profile&&(e.stopPropagation(),e.preventDefault(),r.toggleSidebarModal(r))},href:i.group.includes("authenticated")?"/EXRX/".concat(r.user.name,"/").concat(i.id):"".concat(i.route)},["Dashboard","Home"].includes(i.title)?m(".img",{id:"Dashboard"==i.title?"EXRXLogo":"EXRXSplashLogo",style:{width:"50px"}}):i.title)}}}),s=function(){return{view:function(e){var t=e.attrs.mdl,n=t.state.isAuth()?t.Routes.filter(function(e){return e.position.includes("auth-nav")}):t.Routes.filter(function(e){return e.position.includes("nav")}),r=function(e){var t=(0,i.getRoute)(1);return e.id==t};return[m("ul.tab tab-group",{id:"tabbar"},[n.map(function(e,n){return m("li.tab-item",m(u,{key:n,active:r(e),tab:e,mdl:t}))}),t.state.isAuth()?m(a["default"],{mdl:t}):m("li.tab-item",m("button.btn btn-action",{id:"login-reg-button",onclick:function(){return t.toggleAuthModal(t)}},"Login / Register")),t.state.showAuthModal()&&m(o["default"],{mdl:t})])]}}},c=s;e["default"]=c}),require.register("Components/Navigation/Navigation.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./NavTabs.js")),o=function(){return{view:function(e){var t=e.attrs.mdl;return m(".navigation",m(i["default"],{mdl:t}))}}},a=o;e["default"]=a}),require.register("Components/Navigation/ProfileNavigation.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./NavTabs.js")),o=function(){return{view:function(e){var t=e.attrs.mdl;return m(".navigation",m(i["default"],{mdl:t}))}}},a=o;e["default"]=a}),require.register("Components/Navigation/SettingsMenu.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=t("Utils"),i=(t("ramda"),function(){var e=function(e){return function(t){console.log("error",t,e)}},t=function(e){return function(){window.sessionStorage.removeItem("user-token"),e.state.isAuth(!1),e.user=null,e.clients=[],e.state.route.group.includes("authenticated")&&history.back()}},n=function(n){return n.http.backEnd.getTask(n)("users/logout").fork(e(n),t(n))};return{view:function(e){var t=e.attrs.mdl;return m("li.menu-item",m("button.btn btn-primary",{onclick:function(){return n(t)}},"LOGOUT"))}}}),o=function(e){var t=e.attrs.key;return{view:function(e){var n=e.attrs,i=n.tab,o=n.active,a=n.mdl;return m("li.menu-item",m("a.btn btn-link menu-item",{"class":o&&"active",onclick:function(){m.route.set(i.route,{name:(0,r.makeRoute)(a.user.name)}),a.toggleNav(a)},key:t,id:"".concat(i.id,"-key")},i.title))}}},a=function(e){return e.user.isAdmin?e.Routes.filter(function(e){return e.position.includes("settings-nav")}):e.Routes.filter(function(e){return e.position.includes("settings-nav")&&!e.group.includes("admin")})},u=function(){return{showMenu:Stream(!1),view:function(e){var t=e.state,n=e.attrs.mdl,r=a(n);return[m("li.dropdown dropdown-right",[m("a.btn btn-primary dropdown-toggle",{onclick:function(){return t.showMenu(!t.showMenu())},tabindex:"0"},["Settings",m("i.icon icon-arrow-down")]),t.showMenu()&&m("ul.menu",[m(i,{mdl:n}),r.map(function(e,t){return m(o,{key:t,active:n.state.route.route==e.route,tab:e,mdl:n})})])])]}}},s=u;e["default"]=s}),require.register("Components/Navigation/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./Navigation");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./ProfileNavigation");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})})}),require.register("Components/Paginate.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=r(t("Components")),a={view:function(e){var t=e.attrs,n=t.state,r=t.http,a=t.paginateFn,u=t.limit,s=t.mdl;return(0,i["default"])(".pagination",[(0,i["default"])(o["default"],{action:function(){n.from=n.from-s.state.limit,n.size=s.state.limit,a(r)},isDisabled:n.from-s.state.limit<=0,label:[i["default"].trust("&#8678;"),u]}),(0,i["default"])(o["default"],{action:function(){n.from=n.from+n.data.length++,n.size=s.state.limit,a(r)},label:[u,i["default"].trust("&#8680;")],isDisabled:n.from+s.state.limit>n.total}),(0,i["default"])(".",(0,i["default"])("code.code","".concat(n.from," - ").concat(n.from+n.size," ")),(0,i["default"])("code.code.row"," of ".concat(n.total," ")))])}},u=a;e["default"]=u}),require.register("Components/ProgressBar.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(){return{view:function(e){var t=e.attrs.mdl.state.loadingProgress,n=t.value,r=t.max;return m(".progressBar",m("progress.progress",{max:r,value:n?n:null}))}}},i=r;e["default"]=i}),require.register("Components/RightAside.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=function(){return{view:function(){return(0,i["default"])(".aside",{id:"right-aside"})}}},a=o;e["default"]=a}),require.register("Components/SearchBar.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=t("Utils"),a=(0,o.debounce)(300),u=function(e){var t=e.attrs.mdl,n=t.filterData(t);return{view:function(){return(0,i["default"])(".searchBar",[(0,i["default"])("input.input",{placeholder:"search query",oninput:function(e){return a(n(e.target.value))}})])}}},s=u;e["default"]=s}),require.register("Components/Sidebar.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=t("Utils"),a={oncreate:o.animateSidebarEntrance,view:function(e){var t=e.children,n=e.attrs.classList;return(0,i["default"])("aside.".concat(n),t)}},u=a;e["default"]=u}),require.register("Components/SocialMedia.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o={name:"f",href:"https://www.facebook.com"},a={name:"t",href:"https://www.twitter.com"},u=[o,a],s={view:function(e){var t=e.attrs,n=t.name,r=t.href;return(0,i["default"])("a",{selector:"figure","class":"avatar avatar-xl","data-initial":n,target:"_blank",href:r})}},c=function(){return{view:function(){return(0,i["default"])(".socialmedias",u.map(function(e){var t=e.name,n=e.href;return(0,i["default"])(s,{name:t,href:n})}))}}},l=c;e["default"]=l}),require.register("Components/Toaster.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=function(){return{view:function(e){var t=e.attrs.mdl;return(0,i["default"])(".toast",{"class":"toast-".concat(t.state.toast["class"]())},[(0,i["default"])("button.btn btn-clear",{id:"btn-toast"}),t.state.toast.contents()])}}},a=o;e["default"]=a}),require.register("Components/Toolbar.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(){return{view:function(e){var t=e.attrs,n=(t.mdl,t.left),r=t.right;return m("section.navbar",{id:"content-toolbar"},[m("section.navbar-section.toolbar-left",{id:"toolbar-left"},n),m("section.navbar-section.toolbar-right",{id:"toolbar-right"},r)])}}},i=r;e["default"]=i}),require.register("Components/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./Body.js");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./Button.js");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./DropDown.js");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})});var a=t("./Footer.js");Object.keys(a).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return a[t]}})});var u=t("./Hamburger.js");Object.keys(u).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return u[t]}})});var s=t("./Headers");Object.keys(s).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return s[t]}})});var c=t("./Modal.js");Object.keys(c).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return c[t]}})});var l=t("./Sidebar.js");Object.keys(l).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return l[t]}})});var d=t("./Auth/index.js");Object.keys(d).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return d[t]}})});var f=t("./Icons/index.js");Object.keys(f).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return f[t]}})});var m=t("./ProgressBar.js");Object.keys(m).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return m[t]}})});var p=t("./FormInputs.js");Object.keys(p).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return p[t]}})});var v=t("./Toolbar.js");Object.keys(v).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return v[t]}})})}),require.register("FP/all.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.All=void 0;var r=function i(e){return{val:e,concat:function(t){var n=t.val;return i(e&&n)}}};e.All=r,r.empty=r(!0)}),require.register("FP/any.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.Any=void 0;var r=function i(e){return{val:e,concat:function(t){var n=t.val;return i(e||n)}}};e.Any=r,
-r.empty=r(!1)}),require.register("FP/array.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.ArrayFP=void 0;var r=t("./util"),i=function(e){return e.reduce(function(e,t){return e.concat(t)},[])},o=function(e){var t=function(e){var t=this;return t.map(function(t){return e(t)})};Object.defineProperty(Array.prototype,"fmap",(0,r.value)(t));var n=function(e){return[]};Object.defineProperty(Array.prototype,"empty",(0,r.value)(n));var o=function(e){return i(this.fmap(e))};Object.defineProperty(Array.prototype,"chain",(0,r.value)(o));var a=function(e){return[e]};Object.defineProperty(Array.prototype,"of",(0,r.value)(a));var u=function(e){return i(this.map(function(t){return e.map(function(e){return t(e)})}))};Object.defineProperty(Array.prototype,"ap",(0,r.value)(u));var s=function(e,t){var n=function(t,n){return e(n).map(function(e){return function(t){return t.concat(e)}}).ap(t)};return this.reduce(n,t([]))};Object.defineProperty(Array.prototype,"traverse",(0,r.value)(s));var c=function(){return this.length>0};Object.defineProperty(Array.prototype,"any",(0,r.value)(c));var l=function(e){for(var t=0;t<this.length;t++)if(e(this[t]))return!0;return!1};Object.defineProperty(Array.prototype,"in",(0,r.value)(l));var d=function(e,t){this["in"](t)||this.push(e)};Object.defineProperty(Array.prototype,"pushIfNotExist",(0,r.value)(d));var f=function(e,t){var n=this,r=function i(r){return n.any()?t(r,n.shift()).chain(i):e(r)};return r};Object.defineProperty(Array.prototype,"foldM",(0,r.value)(f))},a={configure:o};e.ArrayFP=a}),require.register("FP/coyoneda.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.Coyoneda=void 0;var r=t("daggy"),i=t("ramda"),o=(0,r.tagged)("x","f");e.Coyoneda=o,o.prototype.map=function(e){return o(this.x,(0,i.compose)(e,this.f))},o.prototype.lower=function(){return this.x.map(this.f)},o.lift=function(e){return o(e,i.identity)}}),require.register("FP/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r={FP:!0,Coyoneda:!0};Object.defineProperty(e,"Coyoneda",{enumerable:!0,get:function(){return u.Coyoneda}}),e.FP=void 0;var i=t("./all");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}}))});var o=t("./any");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}}))});var a=t("./tuple.js");Object.keys(a).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return a[t]}}))});var u=t("./coyoneda"),s=t("./pointfree");Object.keys(s).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return s[t]}}))});var c=t("./sum.js");Object.keys(c).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return c[t]}}))});var l=t("./list");Object.keys(l).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return l[t]}}))});var d=t("./intersection.js");Object.keys(d).forEach(function(t){"default"!==t&&"__esModule"!==t&&(Object.prototype.hasOwnProperty.call(r,t)||Object.defineProperty(e,t,{enumerable:!0,get:function(){return d[t]}}))});var f=t("./array"),m=t("./task"),p=t("./maybe"),v=t("./validation"),g=function(){f.ArrayFP.configure(),m.Task.configure(),p.Maybe.configure(),v.Validation.configure()},h={configure:g};e.FP=h}),require.register("FP/intersection.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.Intersection=void 0;var r=function i(e){return{xs:e,concat:function(t){var n=t.xs;return i(e.filter(function(e){return n.some(function(t){return t.equals(e)})}))},inspect:"Intersection(".concat(e,")")}};e.Intersection=r}),require.register("FP/list.js",function(e,t,n){"use strict";function r(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0}),e.List=void 0;var i=t("data.maybe"),o=t("ramda"),a=function I(){r(this,I),this.head=void 0,this.tail=void 0,this.isNil=!0,this.isCons=!1},u=function H(e,t){r(this,H),this.head=e,this.tail=t,this.isNil=!1,this.isCons=!0},s=function(e){return function(t){return function(n){return e(t,n)}}},c=function(e){return function(t,n){return e(t)(n)}},l=function(e,t){return function(n){return e(t(n))}},d=function(e){return e},f=function(e){return function(t,n){return e(n,t)}},m=function(e,t){return new u(e,t)},p=function(e,t){return new u(t,e)},v=s(m),g=function(){return new a},h=function z(e){var z=e.head;return z},y=function V(e){var V=e.tail;return V},b=function(e){return function(t){return j(m)(t)(e)}},_=function(e){var t=function n(t){return function(r){var i=r.isNil,o=r.head,a=r.tail;return i?t:n(e(t,o))(a)}};return t},j=function(e){return function(t){var n=function r(e){return function(t){var n=t.isNil,i=t.head,o=t.tail;return n?e:r(m(i,e))(o)}};return l(_(f(e))(t),n(g()))}},P=function(e){return _(function(t,n){return(t||e(n).empty()).concat(e(n))})(null)},w=function(e){return function(t){var n=function r(n){return function(i){var o=i.isNil,a=i.head,u=i.tail;return o?e(n):t(n,a).chain(function(e){return r(e)(u)})}};return n}},O=function J(e){return function(t){var n=t.isNil,r=t.head,i=t.tail;return n?g():m(e(r),J(e)(i))}},M=function X(e){var t=e.isNil,n=e.head,r=e.tail;return function(e){return t?g():b(O(n)(e))(X(r)(e))}},C=function(e){return m(e,g())},S=function $(e){var t=e.isNil,n=e.head,r=e.tail;return function(e){return t?g():b(e(n))($(r)(e))}},k=j(c(b))(g()),E=function(e,t){var n=function(e,n){return t(e).map(v).ap(n)};return j(n)(e(g()))},A=function(e){return E(e,d)},L=function(e){var t=function n(e){return function(t){var r=t.isCons,i=t.tail;return r?n(e+1)(i):e}};return t(0)(e)},q=function(e){return function(t){var n=function r(t){return function(n){var o=n.isNil,a=n.head,u=n.tail;return o?(0,i.Nothing)():e(a)?(0,i.Just)(t):r(t+1)(u)}};return n(0)(t)}},T=function(e){return function(t){var n=function r(t){return function(n){var o=n.isNil,a=n.head,u=n.tail;return o?(0,i.Nothing)():t===e?(0,i.Just)(a):r(t+1)(u)}};return n(0)(t)}},x=function(e){var t=function n(e){return function(t){var r=t.isNil,i=t.head,o=t.tail;return r?e:n(m(i,e))(o)}};return t(g())(e)},N=function(e){return function(t){return q((0,o.equals)(t))(e).isJust}},R=l(x,_(function(e,t){return N(e)(t)?e:m(t,e)})(g())),F=_(function(e,t){return e.concat([t])})([]),B=function(e){return e.reduceRight(function(e,t){return m(t,e)},g())},D=function(){for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];return B(t)},U={list:D,cons:m,snoc:p,nil:g,head:h,tail:y,foldl:_,foldr:j,foldMap:P,foldM:w,concat:b,map:O,ap:M,pure:C,join:k,chain:S,traverse:E,sequenceA:A,findIndex:q,index:T,length:L,reverse:x,contains:N,unique:R,toArray:F,toList:B};e.List=U}),require.register("FP/maybe.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.Maybe=void 0;var i=r(t("data.maybe")),o=r(t("data.task")),a=t("./util"),u=function(e){var t=function(e){var t={Nothing:function(t){return o["default"].of(e)},Just:function(e){return o["default"].of(e)}};return this.cata(t)};Object.defineProperty(i["default"].prototype,"toTask",(0,a.value)(t))},s={configure:u};e.Maybe=s}),require.register("FP/pointfree.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function i(e){return(i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(e,t){return!t||"object"!==i(t)&&"function"!=typeof t?u(e):t}function u(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function s(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&m(e,t)}function c(e){var t="function"==typeof Map?new Map:void 0;return(c=function(e){function n(){return d(e,arguments,p(this).constructor)}if(null===e||!f(e))return e;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if("undefined"!=typeof t){if(t.has(e))return t.get(e);t.set(e,n)}return n.prototype=Object.create(e.prototype,{constructor:{value:n,enumerable:!1,writable:!0,configurable:!0}}),m(n,e)})(e)}function l(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(e){return!1}}function d(e,t,n){return d=l()?Reflect.construct:function(e,t,n){var r=[null];r.push.apply(r,t);var i=Function.bind.apply(e,r),o=new i;return n&&m(o,n.prototype),o},d.apply(null,arguments)}function f(e){return Function.toString.call(e).indexOf("[native code]")!==-1}function m(e,t){return(m=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function p(e){return(p=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}Object.defineProperty(e,"__esModule",{value:!0}),e.parse=e.taskToPromise=e.promiseToTask=e.eitherToTask=e.toList=e.fold=e.foldMap=e.traverse=e.of=e.sequenceA=e.mconcat=e.mjoin=e.ParseError=void 0;var v=t("ramda"),g=r(t("data.either")),h=r(t("data.task")),y=function(e){function t(){return o(this,t),a(this,p(t).apply(this,arguments))}return s(t,e),t}(c(Error));e.ParseError=y;var b=function(e){return e},_=(0,v.curry)(function(e,t){return t.length?[t.slice(0,e)].concat(_(e,t.slice(e,length))):[]}),j=function(e){return e.mjoin?e.mjoin():(0,v.chain)(b,e)};e.mjoin=j;var P=(0,v.curry)(function(e,t){return e.length?e.reduce(v.concat):t()});e.mconcat=P;var w=(0,v.curry)(function(e,t){return t.traverse(b,e)});e.sequenceA=w;var O=function(e){return e.of};e.of=O;var M=(0,v.curry)(function(e,t,n){return(0,v.compose)(w(t),(0,v.map)(e))(n)});e.traverse=M;var C=(0,v.curry)(function(e,t){return t.reduce(function(t,n){var r=e(n);return t=t||r.empty(),t.concat(r)},null)});e.foldMap=C;var S=(0,v.curry)(function(e,t,n){return n.fold(e,t)});e.fold=S;var k=function(e){return e.reduce(function(e,t){return[t].concat(e)},[])};e.toList=k;var E=function(e){return e.cata({Left:function(e){return h["default"].rejected(new y(e))},Right:function(e){return h["default"].of(e)}})};e.eitherToTask=E;var A=function(e){return new h["default"](function(t,n){return e.then(n,t)})};e.promiseToTask=A;var L=function(e){return new Promise(function(t,n){return e.fork(n,t)})};e.taskToPromise=L;var q=g["default"]["try"]((0,v.compose)(JSON.parse,(0,v.prop)("response")));e.parse=q}),require.register("FP/sum.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.Sum=void 0;var r=function(e){return{x:e,concat:function(t){var n=t.x;return e+n},inspect:"Sum(".concat(e,")")}};e.Sum=r}),require.register("FP/task.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.Task=void 0;var i=r(t("data.task")),o=t("./util"),a=function(){var e=function(){var e=this;return new i["default"](function(t,n){return e.fork(t,function(e){return e.fork(t,n)})})};Object.defineProperty(i["default"].prototype,"mjoin",(0,o.value)(e))},u={configure:a};e.Task=u}),require.register("FP/tuple.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.uncurry5=e.uncurry4=e.uncurry3=e.uncurry2=e.curry5=e.curry4=e.curry3=e.curry2=e.tuple5=e.tuple4=e.tuple3=e.tuple2=e.Tuple5=e.Tuple4=e.Tuple3=e.Tuple2=e.Tuple=void 0;var r=t("daggy"),i=(0,r.tagged)("_1","_2");e.Tuple=i;var o=i;e.Tuple2=o;var a=(0,r.tagged)("_1","_2","_3");e.Tuple3=a;var u=(0,r.tagged)("_1","_2","_3","_4");e.Tuple4=u;var s=(0,r.tagged)("_1","_2","_3","_4","_5");e.Tuple5=s,o.prototype.concat=function(e){return o(this._1.concat(e._1),this._2.concat(e._2))},a.prototype.concat=function(e){return a(this._1.concat(e._1),this._2.concat(e._2),this._3.concat(e._3))},u.prototype.concat=function(e){return u(this._1.concat(e._1),this._2.concat(e._2),this._3.concat(e._3),this._4.concat(e._4))},s.prototype.concat=function(e){return s(this._1.concat(e._1),this._2.concat(e._2),this._3.concat(e._3),this._4.concat(e._4),this._5.concat(e._5))},i.prototype.dimap=function(e,t){return i(e(this._1),t(this._2))},i.prototype.map=function(e){return i(this._1,e(this._2))},i.prototype.curry=function(e){return e(this)},i.prototype.uncurry=function(e){return e(this._1,this._2)},i.prototype.extend=function(e){return i(this._1,e(this))},i.prototype.extract=function(){return this._2},i.prototype.foldl=function(e,t){return e(this._2,t)},i.prototype.foldr=function(e,t){return e(t,this._2)},i.prototype.foldMap=function(e,t){return e(this._2)};var c=i;e.tuple2=c;var l=function(e,t,n){return i(c(e,t),n)};e.tuple3=l;var d=function(e,t,n,r){return i(l(e,t,n),r)};e.tuple4=d;var f=function(e,t,n,r,o){return i(d(e,t,n,r),o)};e.tuple5=f;var m=function(e,t,n){return e(c(t,n))};e.curry2=m;var p=function(e,t,n,r){return e(l(t,n,r))};e.curry3=p;var v=function(e,t,n,r,i){return e(d(t,n,r,i))};e.curry4=v;var g=function(e,t,n,r,i,o){return e(f(t,n,r,i,o))};e.curry5=g;var h=function(e,t){return e(t._1,t._2)};e.uncurry2=h;var y=function(e,t){return e(t._1._1,t._1._2,t._2)};e.uncurry3=y;var b=function(e,t){return e(t._1._1._1,t._1._1._2,t._1._2,t._2)};e.uncurry4=b;var _=function(e,t){return e(t._1._1._1._1,t._1._1._1._2,t._1._1._2,t._1._2,t._2)};e.uncurry5=_}),require.register("FP/util.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.value=void 0;var r=function(e){var t={value:e,writable:!0,configurable:!0,enumerable:!1};return t};e.value=r}),require.register("FP/validation.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.Validation=void 0;var i=r(t("data.validation")),o=r(t("data.task")),a=t("./util"),u=function(e){return function(){return e}},s=function(e){return e},c=function(){var e=function(e){return this.map(u).ap(e)};Object.defineProperty(i["default"].prototype,"apLeft",(0,a.value)(e));var t=function(e){return this.map(u(s)).ap(e)};Object.defineProperty(i["default"].prototype,"apRight",(0,a.value)(t));var n=function(){var e={Failure:function(e){return o["default"].rejected(e)},Success:function(e){return o["default"].of(e)}};return this.cata(e)};Object.defineProperty(i["default"].prototype,"toTask",(0,a.value)(n))},l={configure:c};e.Validation=l}),require.register("Layouts/ProfileLayout.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/Headers/ProfileHeader")),o=r(t("Components/Footer")),a=r(t("Components/LeftAside")),u=r(t("Components/Body")),s=r(t("Components/Modal")),c=function(e){var t=e.attrs.mdl;return{view:function(e){var n=e.children;return m(".layout",{id:"profile-layout"},[m(i["default"],{mdl:t}),"desktop"!==t.state.profile?m(s["default"],{isActive:t.state.showSidebarModal(),close:function(){return t.toggleSidebarModal(t)},classList:"",mdl:t,content:m(a["default"],{mdl:t})}):m(a["default"],{mdl:t}),m(u["default"],{mdl:t},[n]),m(o["default"],{mdl:t})])}}},l=c;e["default"]=l}),require.register("Layouts/SplashLayout.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/Headers/SplashHeader")),o=r(t("Components/Footer")),a=r(t("Components/Body")),u=(r(t("Components/ProgressBar")),function(e){var t=e.attrs.mdl;return{view:function(e){var n=e.children;return m(".layout",{id:"splash-layout"},[m(i["default"],{mdl:t}),m(a["default"],{mdl:t},[n]),m(o["default"],{mdl:t})])}}}),s=u;e["default"]=s}),require.register("Layouts/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./SplashLayout.js");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./ProfileLayout.js");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})})}),require.register("Model.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.model=void 0;var i=r(t("Utils/http")),o=r(t("./Routes/index.js")),a={clients:[],Routes:o["default"],http:i["default"],data:Stream({}),state:{loadingProgress:{max:0,value:0},isAuth:Stream(!1),paginate:{from:1,size:10,total:0},isLoading:Stream(!1),url:"",route:"",scrollPos:Stream(window.scrollY),limit:10,profile:"",showModal:Stream(!1),showSidebarModal:Stream(!1),showAuthModal:Stream(!1),showSettings:Stream(!1),showNav:Stream(!1),toast:{show:Stream(!1),"class":Stream("primary"),contents:Stream("content")},query:Stream("")},toggles:{},toggle:function(e,t){e.toggles[t]?e.toggles[t](!e.toggles[t]()):e.toggles[t]=Stream(!0)},toggleModal:function(e){return e.state.showModal(!e.state.showModal())},toggleToast:function(e){return e.state.toast.show(!e.state.toast.show())},toggleSidebarModal:function(e){return e.state.showSidebarModal(!e.state.showSidebarModal())},toggleAuthModal:function(e){return e.state.showAuthModal(!e.state.showAuthModal())},toggleSettings:function(e){return e.state.showSettings(!e.state.showSettings())},toggleNav:function(e){return e.state.showNav(!e.state.showNav())},filterData:function(e){return function(t){return e.state.query(t)}}};e.model=a}),require.register("Pages/Admin/BatteryConfig/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.attrs.mdl;return{view:function(){return m(".content",[m("section.section",{id:"content-toolbar"},[]),m("section.section",{id:"content-data"},[m(".battery-config",{id:t.state.route.id},[m("h1.title",t.state.route.title)])])])}}},i=r;e["default"]=i}),require.register("Pages/Admin/Dashboard/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.attrs.mdl;return{view:function(){return m(".content",[m("section.section",{id:"content-toolbar"},[]),m("section.section",{id:"content-data"},[m(".dashboard",{id:t.state.route.id},[m("h1.title",t.state.route.title)])])])}}},i=r;e["default"]=i}),require.register("Pages/Admin/ManageClients/AddClientModal/Validations.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.validateClientRegistrationTask=void 0;var r=t("ramda"),i=t("data.validation"),o=t("Utils"),a=(0,i.Success)((0,r.curryN)(3,r.identity)),u=function(e){return(0,r.lensProp)("".concat(e,"name"))},s=(0,r.lensProp)("email"),c=(0,r.lensProp)("confirmEmail"),l=function(e){return"A ".concat(e," Name is required")},d="An Email is required",f="Emails do not match",m="Email must be a valid format",p=function(e){return function(t){return t===e}},v=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("first"),l("first"),e))},g=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("last"),l("last"),e))},h=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,s,d,e)).apLeft((0,o.validate)(o.isRequired,c,d,e)).apLeft((0,o.validate)(p(e.confirmEmail),s,f,e)).apLeft((0,o.validate)(p(e.email),c,f,e)).apLeft((0,o.validate)(o.emailFormat,c,m,e)).apLeft((0,o.validate)(o.emailFormat,s,m,e))},y=function(e){return a.ap(v(e)).ap(g(e)).ap(h(e)).failureMap(r.mergeAll).toTask()};e.validateClientRegistrationTask=y}),require.register("Pages/Admin/ManageClients/AddClientModal/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/Modal")),o=t("Utils/animations"),a=r(t("../registerClientForm.js")),u=t("./Validations.js"),s=r(t("Components/Button")),c=t("../fns.js"),l=t("Utils"),d=(0,l.jsonCopy)(c.formState),f=function(e){var t=function(e){return function(t){return e.errors=t}},n=function(e){return function(t){return e.errors={}}};e.isSubmitted=!0,(0,u.validateClientRegistrationTask)(e.data).fork(t(e),n(e))},p=function(e){return function(t){var n=function(e){e.HttpError?(t.httpError=e.Errors,t.errors={}):t.errors=e,console.log("failed save",t)},r=function(e){return function(n){n.createClient;e.toggle(e,"AddClient"),(0,c.resetForm)(t),(0,c.loadClients)(e)}};t.isSubmitted=!0,(0,u.validateClientRegistrationTask)(t.data).chain((0,c.saveClient)(e)).fork(n,r(e))}},v=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.state;return[m(s["default"],{mdl:n,type:"submit","for":"client-form",action:function(){return p(n)(r)},label:"Add New Client",classList:"input btn btn-primary authBtn"})]}}},g=function(){return{view:function(e){var t=e.attrs.mdl;return m("section.addClient",[m("button.btn",{onclick:function(e){return t.toggle(t,"AddClient")}},"Add Client"),t.toggles.AddClient&&m(i["default"],{animateEntrance:o.animateComponentEntrance,animateExit:o.slideModalOut,mdl:t,classList:"",isActive:t.toggles.AddClient(),close:function(){return t.toggle(t,"AddClient")},title:"Add Client",content:m(a["default"],{data:d.data,errors:d.errors,isSubmitted:d.isSubmitted,httpError:d.httpError,validate:function(){return f(d)}}),footer:m(v,{mdl:t,state:d})})])}}},h=g;e["default"]=h}),require.register("Pages/Admin/ManageClients/ClientCard.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=(r(t("Components/Button")),t("Styles/animations.js")),o=r(t("./EditClientModal ")),a=r(t("./DeleteClientModal")),u=function(){return{onbeforeremove:i.SlideOutLeft,view:function(e){var t=e.attrs,n=t.mdl,r=t.client;return m(".panel-item.card.client",m(".tile.tile-centered",[m(".tile-icon",m("figure.avatar",{"data-initial":"".concat(r.firstname[0]).concat(r.lastname[0])})),m(".tile-content",m(".text.text-bold","".concat(r.lastname,", ").concat(r.firstname))),m(".dropdown dropdown-right",m(".btn-group",[m("button.btn.btn-action.btn-lg.dropdown-toggle",{tabIndex:0},m("i.icon.icon-more-vert")),m("ul.menu",{id:"client-menu"},[m("li.menu-item",m(o["default"],{mdl:n,client:r})),m("li.menu-item",m(a["default"],{mdl:n,client:r}))])]))]))}}},s=u;e["default"]=s}),require.register("Pages/Admin/ManageClients/DeleteClientModal/Validations.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.validateClientRegistrationTask=void 0;var r=t("ramda"),i=t("data.validation"),o=t("Utils"),a=(0,i.Success)((0,r.curryN)(3,r.identity)),u=function(e){return(0,r.lensProp)("".concat(e,"name"))},s=(0,r.lensProp)("email"),c=(0,r.lensProp)("confirmEmail"),l=function(e){return"A ".concat(e," Name is required")},d="An Email is required",f="Emails do not match",m="Email must be a valid format",p=function(e){return function(t){return t===e}},v=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("first"),l("first"),e))},g=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("last"),l("last"),e))},h=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,s,d,e)).apLeft((0,o.validate)(o.isRequired,c,d,e)).apLeft((0,o.validate)(p(e.confirmEmail),s,f,e)).apLeft((0,o.validate)(p(e.email),c,f,e)).apLeft((0,o.validate)(o.emailFormat,c,m,e)).apLeft((0,o.validate)(o.emailFormat,s,m,e))},y=function(e){return a.ap(v(e)).ap(g(e)).ap(h(e)).failureMap(r.mergeAll).toTask()};e.validateClientRegistrationTask=y}),require.register("Pages/Admin/ManageClients/DeleteClientModal/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/Modal")),o=t("Utils/animations"),a=r(t("Components/Button")),u=t("../fns.js"),s=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.client;return[m(a["default"],{mdl:n,type:"submit","for":"client-form",action:function(){return(0,u.deleteClient)(n)(r.id)},label:"Delete Client",classList:"input btn btn-error authBtn"})]}}},c=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.client;return m("section.deleteClient",[m("button.btn btn-error",{onclick:function(e){return n.toggle(n,"deleteClient")}},"Delete Client"),n.toggles.deleteClient&&m(i["default"],{animateEntrance:o.animateComponentEntrance,animateExit:o.slideModalOut,mdl:n,classList:"",isActive:n.toggles.deleteClient(),close:function(){return n.toggle(n,"deleteClient")},title:"Delete Client: ".concat(r.firstname," ").concat(r.lastname),content:m("p.error","WARNING proceding will remove ".concat(r.firstname," ").concat(r.lastname," and all associated Data.")),footer:m(s,{mdl:n,client:r})})])}}},l=c;e["default"]=l}),require.register("Pages/Admin/ManageClients/EditClientModal /Validations.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.validateClientRegistrationTask=void 0;var r=t("ramda"),i=t("data.validation"),o=t("Utils"),a=(0,i.Success)((0,r.curryN)(3,r.identity)),u=function(e){return(0,r.lensProp)("".concat(e,"name"))},s=(0,r.lensProp)("email"),c=(0,r.lensProp)("confirmEmail"),l=function(e){return"A ".concat(e," Name is required")},d="An Email is required",f="Emails do not match",m="Email must be a valid format",p=function(e){return function(t){return t===e}},v=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("first"),l("first"),e))},g=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,u("last"),l("last"),e))},h=function(e){return(0,i.Success)(e).apLeft((0,o.validate)(o.isRequired,s,d,e)).apLeft((0,o.validate)(o.isRequired,c,d,e)).apLeft((0,o.validate)(p(e.confirmEmail),s,f,e)).apLeft((0,o.validate)(p(e.email),c,f,e)).apLeft((0,o.validate)(o.emailFormat,c,m,e)).apLeft((0,o.validate)(o.emailFormat,s,m,e))},y=function(e){return a.ap(v(e)).ap(g(e)).ap(h(e)).failureMap(r.mergeAll).toTask()};e.validateClientRegistrationTask=y}),require.register("Pages/Admin/ManageClients/EditClientModal /index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function i(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),n.push.apply(n,r)}return n}function o(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?i(Object(n),!0).forEach(function(t){a(e,t,n[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):i(Object(n)).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t))})}return e}function a(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var u=r(t("Components/Modal")),s=t("Utils/animations"),c=r(t("../registerClientForm.js")),l=t("./Validations.js"),d=t("Utils"),f=r(t("Components/Button")),p=t("../fns.js"),v=(0,d.jsonCopy)(p.formState),g=function(e){var t=function(e){return function(t){return e.errors=t}},n=function(e){return function(t){return e.errors={}}};e.isSubmitted=!0,(0,l.validateClientRegistrationTask)(e.data).fork(t(e),n(e))},h=function(e){return function(t){var n=function(e){e.HttpError?(t.httpError=e.Errors,t.errors={}):t.errors=e,console.log("failed save",t)},r=function(e){return function(n){var r=n.updateClient;e.toggle(e,"EditClient-".concat(r.id)),(0,p.resetForm)(t),(0,p.loadClients)(e)}};t.isSubmitted=!0,(0,l.validateClientRegistrationTask)(t.data).chain((0,p.editClient)(e)).fork(n,r(e))}},y=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.state;return[m(f["default"],{mdl:n,type:"submit","for":"client-form",action:function(){return h(n)(r)},label:"Update Client",classList:"input btn btn-primary authBtn"})]}}},b=function(){return{view:function(e){var t=e.attrs,n=t.mdl,r=t.client;return m("section.editClient",[m("button.btn",{onclick:function(e){v.data=o({},r,{confirmEmail:r.email}),n.toggle(n,"EditClient-".concat(r.id))}},"Edit Client"),n.toggles["EditClient-".concat(r.id)]&&m(u["default"],{animateEntrance:s.animateComponentEntrance,animateExit:s.slideModalOut,mdl:n,classList:"",isActive:n.toggles["EditClient-".concat(r.id)](),close:function(){return n.toggle(n,"EditClient-".concat(r.id))},title:"Edit Client",content:m(c["default"],{data:v.data,errors:v.errors,httpError:v.httpError,isSubmitted:v.isSubmitted,validate:function(){return g(v)}}),footer:m(y,{mdl:n,state:v})})])}}},_=b;e["default"]=_}),require.register("Pages/Admin/ManageClients/SortClients.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(){return{view:function(e){var t=e.attrs,n=t.list,r=t.props,i=t.state,o=t.sort;return m(".sort",[m("select",{onchange:function(e){i.sortProp=e.target.value,n=o(n)}},r.map(function(e){var t=e.key,n=e.value;return m("option",{key:t,value:n},t)}))])}}},i=r;e["default"]=i}),require.register("Pages/Admin/ManageClients/fns.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.deleteClient=e.loadClients=e.filterClientsBy=e.saveClient=e.editClient=e.resetForm=e.clientProps=e.resetClientPageState=e.clientPageStateModel=e.formState=void 0;var i=t("ramda"),o=t("Utils"),a=t("./index.js"),u=r(t("moment")),s={firstname:"",lastname:"",email:"",confirmEmail:"",birthdate:""},c={isSubmitted:!1,errors:(0,o.jsonCopy)(s),httpError:null,data:(0,o.jsonCopy)(s)};e.formState=c;var l=function(){return{isAsc:Stream(!0),sortProp:"firstname",term:Stream("")}};e.clientPageStateModel=l;var d=function(e){return e=l()};e.resetClientPageState=d;var f=[{value:"firstname",key:"first name"},{value:"lastname",key:"last name"},{value:"birthdate",key:"birthdate"},{value:"email",key:"email"}];e.clientProps=f;var m=(0,i.lensProp)("birthdate"),p=function(e){return(0,u["default"])(e).add(1,"days").format("YYYY-MM-DD")},v=(0,i.over)(m,p),g=(0,o.addTerms)((0,i.map)((0,i.prop)("value"),f)),h=(0,i.compose)(g,v),y=function(e){e.data=(0,o.jsonCopy)(s),e.errors=(0,o.jsonCopy)(s),e.httpError=null,e.isSubmitted=!1};e.resetForm=y;var b=function(e){return e.http.postQlTask(e)("query{\n      clients(where:{trainer:{userId:".concat(JSON.stringify(e.user.objectId),"}}){id, firstname, lastname, email, birthdate}\n      }"))},_=function(e){return function(t){return e.http.postQlTask(e)("\nmutation {\n  deleteClient(where:{id:".concat(JSON.stringify(t),"}){id}\n}"))}},j=function(e){return function(t){var n=t.email,r=t.firstname,i=t.lastname,o=t.birthdate;return e.http.postQlTask(e)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(n),",\n      firstname:").concat(JSON.stringify(r),",\n      lastname:").concat(JSON.stringify(i),",\n      birthdate:").concat(JSON.stringify(o),",\n      trainer:{connect:{userId: ").concat(JSON.stringify(e.user.objectId),"}}\n    }), {id, firstname, lastname, email, birthdate}\n}"))}},P=function(e){return function(t){var n=t.id,r=t.email,i=t.firstname,o=t.lastname,a=t.birthdate;
-return e.http.postQlTask(e)("mutation {\n  updateClient(\n    where: {id: ".concat(JSON.stringify(n),"}\n    data: {\n      email:").concat(JSON.stringify(r),",\n      firstname:").concat(JSON.stringify(i),",\n      lastname:").concat(JSON.stringify(o),",\n      birthdate:").concat(JSON.stringify(a),",\n      trainer:{connect:{userId: ").concat(JSON.stringify(e.user.objectId),"}}\n    }), {id, firstname, lastname, email, birthdate}\n}"))}},w=function(e){return function(t){return P(e)(t)}};e.editClient=w;var O=function(e){return function(t){return j(e)(t)}};e.saveClient=O;var M=function(e){return(0,i.compose)((0,o.filterListBy)(e.term)(e.sortProp)(e.isAsc))};e.filterClientsBy=M;var C=function(e){var t=function(e){return console.log("ERROR Fetching Clients",e)},n=function(t){return e.clients=t};return b(e).map((0,i.prop)("clients")).map((0,i.map)(h)).map(M(a.clientPageState)).fork(t,n)};e.loadClients=C;var S=function(e){return function(t){var n=function(e){return console.log("ERROR deleteing Client",e)},r=function(e){return function(t){var n=t.clients;return e.clients=n}};return _(e)(t).chain(function(t){return b(e)}).fork(n,r(e))}};e.deleteClient=S}),require.register("Pages/Admin/ManageClients/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=e.clientPageState=void 0;var i=r(t("./AddClientModal")),o=r(t("./ClientCard.js")),a=r(t("./SortClients.js")),u=r(t("Components/Toolbar")),s=t("./fns.js"),c=(0,s.clientPageStateModel)();e.clientPageState=c;var l=function(){return{view:function(e){var t=e.attrs.mdl;return m(u["default"],{mdl:t,left:m(i["default"],{mdl:t}),right:[,m(a["default"],{list:t.clients,props:s.clientProps,state:c,sort:(0,s.filterClientsBy)(c)}),m("button.btn btn-sm",{onclick:function(){return c.isAsc(!c.isAsc())}},m("i.icon ".concat(c.isAsc()?"icon-arrow-down":"icon-arrow-up"))),m(".has-icon-right",[m("input.form-input",{type:"text",oninput:function(e){return c.term(e.target.value)},placeholder:"Filter Clients"}),m("i.form-icon icon icon-search icon-sm")])]})}}},d=function(){var t=function(e){var t=e.attrs.mdl;return(0,s.loadClients)(t)};return{onremove:e.clientPageState=c=(0,s.clientPageStateModel)(),oninit:t,view:function(e){var t=e.attrs.mdl,n=(0,s.filterClientsBy)(c)(t.clients);return m(".contents",{id:"content"},[m(l,{mdl:t}),m("section.section",{id:"content-data"},[m(".manageClients",{id:t.state.route.id},[m("section.panel.client-panel",[m(".panel-header",m("h1.panel-title",t.state.route.title)),m(".panel-body",n.map(function(e){return m(o["default"],{key:e.id,mdl:t,client:e})}))])])])])}}},f=d;e["default"]=f}),require.register("Pages/Admin/ManageClients/registerClientForm.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/FormInputs")),o=function(){return{view:function(e){var t=e.attrs,n=t.data,r=t.errors,o=t.isSubmitted,a=t.httpError,u=t.validate;return m("form.column col-6 col-sm-auto",{id:"client-form"},[m(i["default"],{isSubmitted:o,validate:u,data:n,errors:r,field:"firstname",label:"First Name",id:"first-name",type:"text"}),m(i["default"],{isSubmitted:o,validate:u,data:n,errors:r,field:"lastname",label:"Last Name",id:"last-name",type:"text"}),m(i["default"],{isSubmitted:o,validate:u,data:n,errors:r,field:"email",label:"Email",id:"email",type:"email"}),m(i["default"],{isSubmitted:o,validate:u,data:n,errors:r,field:"confirmEmail",label:"Confirm Email",id:"confirm-email",type:"email"}),m(i["default"],{isSubmitted:o,validate:u,data:n,errors:r,field:"birthdate",label:"birthdate",id:"birthdate",type:"date"}),a&&a.map(function(e){return m(".toast toast-error",e)})])}}},a=o;e["default"]=a}),require.register("Pages/Admin/ManageNetwork/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(){var e={},t=function(t){var n=t.attrs.mdl,r=function(e){console.log("ERROR",e)},i=function(t){console.log("SUCCESSS",t),e.users=t};return n.http.backEnd.getTask(n)("data/users?pageSize=100").fork(r,i)},n=function(e,t){return function(n){var r=function(e){return function(t){e.isAdmin=!e.isAdmin,console.log("ERROR",t)}},i=function(e){return function(t){console.log("SUCCESSS",e)}};console.log({mdl:e,user:t}),e.http.backEnd.putTask(e)("data/Users/".concat(t.objectId))({isAdmin:t.isAdmin=!t.isAdmin}).fork(r(t),i(t))}};return{oninit:t,view:function(t){var r=t.attrs.mdl;return m(".content",[m("section.section",{id:"content-toolbar"},[m(".",[m("button.btn","Add User")])]),m("section.section",{id:"content-data"},[m(".manageNetworks",{id:r.state.route.id},[m("h1.title",r.state.route.title),e.users&&e.users.map(function(e){return m(".menu",m(".menu-item",[m("p",e.name),m("p",e.email),m(".form-group",m("label.form-switch",[m("input[type='checkbox']",{checked:e.isAdmin,onchange:n(r,e),isDisabled:!1,"class":""}),m("i.form-icon"),"User is Admin"]))]))})])])])}}},i=r;e["default"]=i}),require.register("Pages/Admin/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./Dashboard/index");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./ManageNetwork/index");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./ManageClients/index");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})});var a=t("./BatteryConfig/index");Object.keys(a).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return a[t]}})})}),require.register("Pages/Default/UnautherizedViews.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Components/Icons")),o=r(t("Components/Auth")),a=function(){return{view:function(e){var t=e.attrs.mdl;return m(".empty",[m("svg.unauth-lock",i["default"].lock),m("p.empty-title.h5","Registered Users Only"),m("p.empty-subtitle",[m("button.btn",{onclick:function(){return t.toggleAuthModal(t)}},"Register or Log in to view this content"),m(o["default"],{mdl:t})])])}}},u=a;e["default"]=u}),require.register("Pages/Default/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.attrs.mdl;return{view:function(){return m(".content",[m("section.section",{id:"content-toolbar"},[]),m("section.section",{id:"content-data"},[m(".default",{id:t.state.route.id},[m("h1.title",t.state.route.title)])])])}}},i=r;e["default"]=i}),require.register("Pages/Splash/About/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var r=function(e){var t=e.attrs.mdl;return{view:function(){return m(".about",t.state.route.title)}}},i=r;e["default"]=i}),require.register("Pages/Splash/Contact/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("mithril")),o=function(e){var t=e.attrs.mdl;return{view:function(){return(0,i["default"])(".contact",t.state.route.title)}}},a=o;e["default"]=a}),require.register("Pages/Splash/Home/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=(r(t("Components/Icons")),function(e){e.attrs.mdl;return{view:function(){return m("section.section",{id:"content-data"},[m("section.home-section hero hero-lg bg-primary parall",m(".hero-body",[m("h1","section 1")])),m("section.home-section hero hero-lg bg-secondary",m(".hero-body",m("h1","section 2")))])}}}),o=i;e["default"]=o}),require.register("Pages/Splash/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./About/index");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./Contact/index");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./Home/index");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})})}),require.register("Routes/authenticated.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Layouts/ProfileLayout")),o=r(t("Pages/Admin/Dashboard")),a=r(t("Pages/Default")),u=r(t("Pages/Admin/ManageClients")),s=r(t("Pages/Admin/ManageNetwork")),c=r(t("Pages/Admin/BatteryConfig")),l=t("Utils"),d=r(t("Components/Icons")),f=[{id:"dashboard",title:"Dashboard",icon:d["default"].logo,route:"/EXRX/:name/dashboard",position:["auth-nav","left-aside"],group:["authenticated"],children:[],onmatch:function(e,t,n,r,i){i&&(0,l.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(o["default"],{mdl:e}))}},{id:"profile-page",title:"Profile Page",icon:d["default"].home,route:"/EXRX/:name/profile",position:["settings-nav"],group:["authenticated"],children:[],onmatch:function(e,t,n,r,i){console.log("profile page login on match",e,t,n,r,i,!e.state.isAuth()),i&&(0,l.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(a["default"],{mdl:e}))}},{id:"battery-config",title:"Battery Tests",icon:d["default"].calcs,route:"/EXRX/:name/battery-config",position:["left-aside"],group:["authenticated","admin"],children:[],onmatch:function(e,t,n,r,i){i&&(0,l.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(c["default"],{mdl:e}))}},{id:"manage-clients",title:"Clients",icon:d["default"].users,route:"/EXRX/:name/manage-clients",position:["left-aside"],group:["authenticated","admin"],children:[],onmatch:function(e,t,n,r,i){i&&(0,l.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(u["default"],{mdl:e}))}},{id:"manage-network",title:"Configure Network",icon:d["default"].users,route:"/EXRX/:name/network-management",position:["settings-nav"],group:["authenticated","admin"],children:[],onmatch:function(e,t,n,r,i){!e.user.isAdmin&&m.route.set(m.route.get()),i&&(0,l.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(s["default"],{mdl:e}))}}],p=f;e["default"]=p}),require.register("Routes/index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("./splash.js")),o=r(t("./authenticated")),a=t("ramda"),u=(0,a.flatten)([i["default"],o["default"]]),s=u;e["default"]=s}),require.register("Routes/splash.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=void 0;var i=r(t("Layouts/SplashLayout")),o=r(t("../Pages/Default")),a=r(t("Pages/Splash/Home")),u=t("Utils"),s=r(t("Components/Icons")),c=[{id:"home",title:"Home",icon:s["default"].Home,route:"/home",position:["nav"],group:[],children:[],onmatch:function(e,t,n,r,i){i&&(0,u.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(a["default"],{mdl:e}))}},{id:"about",title:"About",icon:"about",route:"/about",position:["nav"],group:[],children:[],onmatch:function(e,t,n,r,i){i&&(0,u.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(o["default"],{mdl:e}))}},{id:"contact",title:"Contact",icon:s["default"].contact,route:"/contact",position:["nav","footer"],group:[],children:[],onmatch:function(e,t,n,r,i){i&&(0,u.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(o["default"],{mdl:e}))}},{id:"blog",title:"Blog",icon:"blog",route:"/blog",position:["nav","footer"],group:[],children:[],onmatch:function(e,t,n,r,i){i&&(0,u.scrollToAnchor)(e.state.anchor)},component:function(e){return m(i["default"],{mdl:e},m(o["default"],{mdl:e}))}}],l=c;e["default"]=l}),require.register("Styles/animations.js",function(e,t,n){"use strict";function r(e){return a(e)||o(e)||i()}function i(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function o(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}function a(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}Object.defineProperty(e,"__esModule",{value:!0}),e.RemoveChildrenOut=e.animate=e.SlideChildrenInDown=e.StretchInLeft=e.SlideChildrenInRight=e.SlideOutLeft=e.SlideInRight=void 0;var u=function(e){var t=e.dom;t.style.opacity=0,t.classList.toggle("slideRight"),t.style.opacity=1};e.SlideInRight=u;var s=function(e){var t=e.dom;return new Promise(function(e){t.classList.add("reverseAnimation","slideRight"),t.addEventListener("animationend",e)})};e.SlideOutLeft=s;var c=function(e){var t=e.dom,n=r(t.children);return n.map(function(e,t){e.style.opacity=0,setTimeout(function(){e.classList.toggle("slideRight"),e.style.opacity=1},10*(t+1))})};e.SlideChildrenInRight=c;var l=function(e){return function(t){var n=t.dom;return n.style.opacity=0,setTimeout(function(){n.classList.toggle("stretchRight"),n.style.opacity=1},100*e+20)}};e.StretchInLeft=l;var d=function(e){return function(t){var n=t.dom;n.style.opacity=0,setTimeout(function(){n.classList.toggle("slideDown"),n.style.opacity=1},200*(e+1))}};e.SlideChildrenInDown=d;var f=function(e){return function(t){var n=t.dom;n.style.opacity=0,setTimeout(function(){n.classList.toggle(e),n.style.opacity=1},200)}};e.animate=f;var m=function(e){var t=e.dom;return new Promise(function(){r(t.children).reverse().map(function(e,t){return setTimeout(function(){e.style.display="none"},100*t)})})};e.RemoveChildrenOut=m}),require.register("Utils/animations.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function i(e){return u(e)||a(e)||o()}function o(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function a(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}function u(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}Object.defineProperty(e,"__esModule",{value:!0}),e.animateChildrenLimitsExit=e.slideModalOut=e.animate=e.animateChildrenLimitsEntrance=e.animateChildrenEntrance=e.animateSidebarEntrance=e.animateComponentEntrance=e.IsLoading=void 0;var s=r(t("mithril")),c=(0,s["default"])(".holder",[(0,s["default"])(".preloader",[(0,s["default"])("div"),(0,s["default"])("div"),(0,s["default"])("div"),(0,s["default"])("div"),(0,s["default"])("div"),(0,s["default"])("div"),(0,s["default"])("div")])]);e.IsLoading=c;var l=function(e){return function(t){var n=t.dom;return n.style.opacity=0,setTimeout(function(){n.classList.toggle("stretchRight"),n.style.opacity=1},100*e+20)}};e.animateComponentEntrance=l;var d=function(e){var t=e.dom;t.style.opacity=0,t.classList.toggle("slideRight"),t.style.opacity=1};e.animateSidebarEntrance=d;var f=function(e){var t=e.dom,n=i(t.children);return n.map(function(e,t){e.style.opacity=0,setTimeout(function(){e.classList.toggle("slideRight"),e.style.opacity=1},10*(t+1))})};e.animateChildrenEntrance=f;var m=function(e){return function(t){var n=t.dom;n.style.opacity=0,setTimeout(function(){n.classList.toggle("slideDown"),n.style.opacity=1},200*(e+1))}};e.animateChildrenLimitsEntrance=m;var p=function(e){return function(t){var n=t.dom;return n.style.opacity=0,setTimeout(function(){n.classList.toggle(e),n.style.opacity=1},200)}};e.animate=p;var v=function(e){var t=e.dom;return new Promise(function(){return t.classList.remove("slideRight"),setTimeout(function(){t.classList.add("reverseAnimation","slideRight")},200)})};e.slideModalOut=v;var g=function(e){var t=e.dom;return new Promise(function(){i(t.children).reverse().map(function(e,t){return setTimeout(function(){e.style.display="none"},100*t)})})};e.animateChildrenLimitsExit=g}),require.register("Utils/helpers.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.jsonCopy=e.scrollToAnchor=e.getRoute=e.debounce=e.filterListBy=e._paginate=e._direction=e._sort=e._search=e.removeHyphens=e.addTerms=e.infiniteScroll=e.isEmpty=e.log=e.makeRoute=void 0;var i=t("ramda"),o=(r(t("data.task")),new Intl.Collator((void 0),{numeric:!0,sensitivity:"base"})),a=function(e){return function(t){var n=JSON.parse(JSON.stringify(t));return n.sort(function(t,n){return o.compare(t[e],n[e])}),n}},u=(0,i.compose)((0,i.join)("-"),(0,i.split)(" "),(0,i.trim)(),(0,i.toLower)());e.makeRoute=u;var s=function(e){return function(t){return console.log(e,t),t}};e.log=s;var c=function(e){return 0==e.length};e.isEmpty=c;var l=function(e){return function(t){var n=e.state.route,r=e.data[n].data.length,i=10*r*e.state.scrollPos;t.target.scrollTop-e.state.scrollPos>=i&&e.state.scrollPos++ +t.target.scrollTop}};e.infiniteScroll=l;var d=function(e){return function(t){var n=(0,i.compose)((0,i.join)(" "),i.values,(0,i.props)(e))(t);return(0,i.assoc)("_terms",n,t)}};e.addTerms=d;var f=function(e){return e.replace(/-/gi,"")};e.removeHyphens=f;var p=function(e){return(0,i.compose)((0,i.test)(new RegExp(e(),"i")),(0,i.prop)("_terms"))},v=function(e){return(0,i.compose)((0,i.filter)(p(e)))};e._search=v;var g=function(e){return function(t){return a(e)(t)}};e._sort=g;var h=function(e){return e()?i.identity:i.reverse};e._direction=h;var y=function(e){return function(t){return function(n){return(0,i.slice)((0,i.max)(0,(0,i.min)(e,n.length)),(0,i.min)(e+t,n.length),n)}}};e._paginate=y;var b=function(e){return function(t){return function(n){return function(r){return(0,i.compose)(h(n),g(t),v(e))(r)}}}};e.filterListBy=b;var _=function(e,t){return function(n){var r=void 0;return function(){var i=this,o=arguments,a=function(){r=void 0,t||n.apply(i,o)},u=t&&!r;clearTimeout(r),r=setTimeout(a,e),console.log(n),u&&n.apply(i,o)}}};e.debounce=_;var j=function(){return(0,i.last)(m.route.get().split("/"))};e.getRoute=j;var P=function(e){var t=function(e){return void 0!==e&&null!==e},n=t(e)?document.getElementById(e):document.body,r=window.pageYOffset||document.documentElement.scrollTop,i=t(n)?n.getBoundingClientRect().top:0;window.scroll({top:i+r-10,left:0,behavior:"smooth"})};e.scrollToAnchor=P;var w=function(e){return JSON.parse(JSON.stringify(e))};e.jsonCopy=w}),require.register("Utils/http.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function i(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter(function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable})),n.push.apply(n,r)}return n}function o(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?i(Object(n),!0).forEach(function(t){a(e,t,n[t])}):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):i(Object(n)).forEach(function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t))})}return e}function a(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}function u(e){e.lengthComputable&&(p.model.state.loadingProgress.max=e.total,p.model.state.loadingProgress.value=e.loaded,m.redraw())}function s(){return!1}function c(){return p.model.state.isLoading(!0),!1}function l(){return p.model.state.isLoading(!1),p.model.state.loadingProgress.max=0,p.model.state.loadingProgress.value=0,!1}Object.defineProperty(e,"__esModule",{value:!0}),e["default"]=e.parseHttpSuccess=e.parseHttpError=void 0;var d=r(t("data.task")),f=t("./secrets.js"),p=t("../Model.js"),v=t("ramda"),g={config:function(e){e.onprogress=u,e.onload=s,e.onloadstart=c,e.onloadend=l}},h=function(e){return JSON.parse(JSON.stringify(e))},y=function(e){return function(t){var n=t.data,r=t.errors;return e.state.isLoading(!1),r?Promise.reject(r):Promise.resolve(n)}},b=function(e){return function(t){return function(n){return e.state.isLoading(!1),n.response?t(n.response):n.any()?t({Errors:(0,v.pluck)("message",n),HttpError:!0}):void 0}}};e.parseHttpError=b;var _=function(e){return function(t){return function(n){return e.state.isLoading(!1),t(n)}}};e.parseHttpSuccess=_;var j=function(e){return function(t){return e.state.isLoading(!0),new d["default"](function(n,r){return m.request(o({method:"POST",url:f.GraphQl.local,withCredentials:!1},g,{body:h({query:t})})).then(y(e)).then(_(e)(r),b(e)(n))})}},P=function(e){return function(t){return function(n){return function(r){return function(i){return n.state.isLoading(!0),new d["default"](function(a,u){return m.request(o({method:t,url:r,headers:o({"content-type":"application/json"},e),body:i,withCredentials:!1},g)).then(_(n)(u),b(n)(a))})}}}}},w="".concat(f.BackEnd.baseUrl,"/").concat(f.BackEnd.APP_ID,"/").concat(f.BackEnd.API_KEY,"/"),O={getTask:function(e){return function(t){return P(f.BackEnd.headers())("GET")(e)(w+t)(null)}},postTask:function(e){return function(t){return function(n){return P(f.BackEnd.headers())("POST")(e)(w+t)(n)}}},putTask:function(e){return function(t){return function(n){return P(f.BackEnd.headers())("PUT")(e)(w+t)(n)}}}},M={backEnd:O,postQlTask:j},C=M;e["default"]=C}),require.register("Utils/index.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=t("./animations.js");Object.keys(r).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return r[t]}})});var i=t("./helpers.js");Object.keys(i).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return i[t]}})});var o=t("./http.js");Object.keys(o).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return o[t]}})});var a=t("./validation.js");Object.keys(a).forEach(function(t){"default"!==t&&"__esModule"!==t&&Object.defineProperty(e,t,{enumerable:!0,get:function(){return a[t]}})})}),require.register("Utils/secrets.js",function(e,t,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.GraphQl=e.BackEnd=void 0;var r=function(){return window.sessionStorage.getItem("user-token")?window.sessionStorage.getItem("user-token"):""},i={API_KEY:"0870B3E1-56DD-4A8A-8DA7-A6F7AC417C16",APP_ID:"62607660-30EF-AD36-FFB1-FF547F6B1800",baseUrl:"https://api.backendless.com",headers:function(){return{"user-token":r()}}};e.BackEnd=i;var o={online:"https://us1.prisma.sh/exrx/exrx_service/dev",local:"http://localhost:4466/"};e.GraphQl=o}),require.register("Utils/validation.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(e,"__esModule",{value:!0}),e.isNilOrEmptyOrAtom=e.allCaps=e.inDateRange=e.unique=e.maxLengthNullable=e.onlyNumeric=e.urlFormat=e.phoneFormat=e.onlyAlphaNumericSpaceSpecial=e.onlyAlphaNumericSpaceUnderscore=e.onlyAlphaNumericSpace=e.onlyAlphaNumericUnderscore=e.onlyAlphaNumeric=e.onlyAlpha=e.emailFormat=e.maxSize=e.maxLength=e.isNullOrEmpty=e.isNotNullOrEmpty=e.IsNotNil=e.isRequired=e.validate=e.getOrElse=void 0;var i=t("ramda"),o=t("data.validation"),a=r(t("data.maybe")),u=function(e){return function(t){return t.getOrElse(e)}};e.getOrElse=u;var s=(0,i.curry)(function(e,t,n,r){return e((0,i.view)(t,r))?(0,o.Success)(r):(0,o.Failure)([(0,i.set)(t,n,{})])});e.validate=s;var c=(0,i.compose)(i.not,i.isEmpty);e.isRequired=c;var l=(0,i.compose)(i.not,i.isNil);e.IsNotNil=l;var d=function(e){return!f(e)};e.isNotNullOrEmpty=d;var f=function(e){return(0,i.isNil)(e)||(0,i.isEmpty)(e)};e.isNullOrEmpty=f;var m=function(e){return(0,i.compose)((0,i.gte)(e),i.length)};e.maxLength=m;var p=(0,i.curry)(function(e,t){return(0,i.gte)(e,t)});e.maxSize=p;var v=(0,i.test)(/@/);e.emailFormat=v;var g=(0,i.test)(/^[a-zA-Z]*$/);e.onlyAlpha=g;var h=(0,i.test)(/^[a-zA-Z0-9]*$/);e.onlyAlphaNumeric=h;var y=(0,i.test)(/^[a-zA-Z0-9_]*$/);e.onlyAlphaNumericUnderscore=y;var b=(0,i.test)(/^[a-zA-Z0-9\s]*$/);e.onlyAlphaNumericSpace=b;var _=(0,i.test)(/^[a-zA-Z0-9_\s]*$/);e.onlyAlphaNumericSpaceUnderscore=_;var j=(0,i.test)(/^[a-zA-Z0-9_.~!*''();:@&=+$,\/?#[%-\]+\s]*$/);e.onlyAlphaNumericSpaceSpecial=j;var P=(0,i.test)(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/);e.phoneFormat=P;var w=(0,i.test)(/^[a-zA-Z0-9_.~!*''();:@&=+$,\/?#[%-\]+]*$/);e.urlFormat=w;var O=(0,i.test)(/^[0-9]*$/);e.onlyNumeric=O;var M=function(e){return(0,i.compose)(u(!1),(0,i.map)((0,i.gte)(e)),(0,i.map)(i.length),a["default"].fromNullable)};e.maxLengthNullable=M;var C=(0,i.curry)(function(e,t){var n=a["default"].fromNullable(e);return!(0,i.contains)((0,i.toUpper)(t.toString()),(0,i.map)(function(e){return(0,i.toUpper)(e.toString())},n.getOrElse([])))});e.unique=C;var S=(0,i.curry)(function(e,t,n){return null==n||""===n||new Date(e)<=new Date(n)&&new Date(n)<new Date(t)});e.inDateRange=S;var k=function(e){return e.toUpperCase()===e};e.allCaps=k;var E=function(e){return(0,i.isNil)(e)||(0,i.isEmpty)(e)||"{$type:atom}"===e};e.isNilOrEmptyOrAtom=E}),require.register("index.js",function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}var i=t("./Model.js"),o=r(t("./App.js")),a=t("FP"),u=document.body,s=window.innerWidth;n.hot&&n.hot.accept(),"serviceWorker"in navigator&&window.addEventListener("load",function(){navigator.serviceWorker.register("./service-worker.js").then(function(e){console.log("⚙️ SW registered: ",e)})["catch"](function(e){console.log("🧟 SW registration failed: ",e)})});var c=function(e){return e<668?"phone":e<920?"tablet":"desktop"},l=function d(e){var t=window.innerWidth;if(e!==t){e=t;var n=i.model.state.profile;i.model.state.profile=c(t),n!=i.model.state.profile&&m.redraw()}return requestAnimationFrame(d)};i.model.state.profile=c(s),l(s),a.FP.configure(),window.onscroll=function(){i.model.state.scrollPos(window.pageYOffset)},m.route(u,"/home",(0,o["default"])(i.model))}),require.register("init.js",function(e,t,n){"use strict";document.addEventListener("DOMContentLoaded",function(){t("index")})}),require.alias(".pnpm/registry.npmjs.org/process/0.11.10/node_modules/process/browser.js","process"),e=require("process"),require.register("___globals___",function(e,t,n){window.m=t("mithril"),window.Stream=t("mithril-stream")})}(),require("___globals___");
+(function() {
+  'use strict';
+
+  var globals = typeof global === 'undefined' ? self : global;
+  if (typeof globals.require === 'function') return;
+
+  var modules = {};
+  var cache = {};
+  var aliases = {};
+  var has = {}.hasOwnProperty;
+
+  var expRe = /^\.\.?(\/|$)/;
+  var expand = function(root, name) {
+    var results = [], part;
+    var parts = (expRe.test(name) ? root + '/' + name : name).split('/');
+    for (var i = 0, length = parts.length; i < length; i++) {
+      part = parts[i];
+      if (part === '..') {
+        results.pop();
+      } else if (part !== '.' && part !== '') {
+        results.push(part);
+      }
+    }
+    return results.join('/');
+  };
+
+  var dirname = function(path) {
+    return path.split('/').slice(0, -1).join('/');
+  };
+
+  var localRequire = function(path) {
+    return function expanded(name) {
+      var absolute = expand(dirname(path), name);
+      return globals.require(absolute, path);
+    };
+  };
+
+  var initModule = function(name, definition) {
+    var hot = hmr && hmr.createHot(name);
+    var module = {id: name, exports: {}, hot: hot};
+    cache[name] = module;
+    definition(module.exports, localRequire(name), module);
+    return module.exports;
+  };
+
+  var expandAlias = function(name) {
+    return aliases[name] ? expandAlias(aliases[name]) : name;
+  };
+
+  var _resolve = function(name, dep) {
+    return expandAlias(expand(dirname(name), dep));
+  };
+
+  var require = function(name, loaderPath) {
+    if (loaderPath == null) loaderPath = '/';
+    var path = expandAlias(name);
+
+    if (has.call(cache, path)) return cache[path].exports;
+    if (has.call(modules, path)) return initModule(path, modules[path]);
+
+    throw new Error("Cannot find module '" + name + "' from '" + loaderPath + "'");
+  };
+
+  require.alias = function(from, to) {
+    aliases[to] = from;
+  };
+
+  var extRe = /\.[^.\/]+$/;
+  var indexRe = /\/index(\.[^\/]+)?$/;
+  var addExtensions = function(bundle) {
+    if (extRe.test(bundle)) {
+      var alias = bundle.replace(extRe, '');
+      if (!has.call(aliases, alias) || aliases[alias].replace(extRe, '') === alias + '/index') {
+        aliases[alias] = bundle;
+      }
+    }
+
+    if (indexRe.test(bundle)) {
+      var iAlias = bundle.replace(indexRe, '');
+      if (!has.call(aliases, iAlias)) {
+        aliases[iAlias] = bundle;
+      }
+    }
+  };
+
+  require.register = require.define = function(bundle, fn) {
+    if (bundle && typeof bundle === 'object') {
+      for (var key in bundle) {
+        if (has.call(bundle, key)) {
+          require.register(key, bundle[key]);
+        }
+      }
+    } else {
+      modules[bundle] = fn;
+      delete cache[bundle];
+      addExtensions(bundle);
+    }
+  };
+
+  require.list = function() {
+    var list = [];
+    for (var item in modules) {
+      if (has.call(modules, item)) {
+        list.push(item);
+      }
+    }
+    return list;
+  };
+
+  var hmr = globals._hmr && new globals._hmr(_resolve, require, modules, cache);
+  require._cache = cache;
+  require.hmr = hmr && hmr.wrap;
+  require.brunch = true;
+  globals.require = require;
+})();
+
+(function() {
+var global = typeof window === 'undefined' ? this : window;
+var process;
+var __makeRelativeRequire = function(require, mappings, pref) {
+  var none = {};
+  var tryReq = function(name, pref) {
+    var val;
+    try {
+      val = require(pref + '/node_modules/' + name);
+      return val;
+    } catch (e) {
+      if (e.toString().indexOf('Cannot find module') === -1) {
+        throw e;
+      }
+
+      if (pref.indexOf('node_modules') !== -1) {
+        var s = pref.split('/');
+        var i = s.lastIndexOf('node_modules');
+        var newPref = s.slice(0, i).join('/');
+        return tryReq(name, newPref);
+      }
+    }
+    return none;
+  };
+  return function(name) {
+    if (name in mappings) name = mappings[name];
+    if (!name) return;
+    if (name[0] !== '.' && pref) {
+      var val = tryReq(name, pref);
+      if (val !== none) return val;
+    }
+    return require(name);
+  }
+};
+require.register("App.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var toRoutes = function toRoutes(mdl) {
+  return function (acc, route) {
+    acc[route.route] = {
+      onmatch: function onmatch(args, path, fullroute) {
+        if (route.group.includes("authenticated") && !mdl.state.isAuth()) {
+          mdl.route.set(m.route.get());
+        }
+
+        mdl.state.route = route;
+        mdl.state.anchor = path.split("#")[1];
+        var isAnchor = Boolean(mdl.state.anchor);
+        mdl.state.showSidebarModal(false);
+        route.onmatch(mdl, args, path, fullroute, isAnchor);
+      },
+      render: function render() {
+        return route.component(mdl);
+      }
+    };
+    return acc;
+  };
+};
+
+var App = function App(mdl) {
+  return mdl.Routes.reduce(toRoutes(mdl), {});
+};
+
+var _default = App;
+exports.default = _default;
+});
+
+;require.register("Components/Auth/fns.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.registerUserTask = exports.loginUserTask = exports.changePage = exports.resetState = exports.state = exports.data = void 0;
+
+var _Utils = require("Utils");
+
+var _forms = require("./forms");
+
+var data = {
+  name: "",
+  email: "",
+  password: "",
+  confirmEmail: "",
+  confirmPassword: "",
+  isAdmin: false
+};
+exports.data = data;
+var state = {
+  forms: {
+    1: _forms.RegisterForm,
+    0: _forms.LoginForm
+  },
+  page: 0,
+  title: {
+    1: "Register",
+    0: "Login"
+  },
+  isSubmitted: false,
+  errors: {},
+  httpError: undefined,
+  data: (0, _Utils.jsonCopy)(data)
+};
+exports.state = state;
+
+var resetState = function resetState(state) {
+  state.data = (0, _Utils.jsonCopy)(data);
+  state.errors = {};
+  state.httpError = undefined;
+  state.isSubmitted = false;
+  state.page = 0;
+};
+
+exports.resetState = resetState;
+
+var changePage = function changePage(state) {
+  state.httpError = undefined;
+  return state.page ? state.page = 0 : state.page = 1;
+};
+
+exports.changePage = changePage;
+
+var loginUserTask = function loginUserTask(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        password = _ref.password;
+    return mdl.http.backEnd.postTask(mdl)("users/login")({
+      login: email,
+      password: password
+    });
+  };
+};
+
+exports.loginUserTask = loginUserTask;
+
+var AddUserIdTask = function AddUserIdTask(mdl) {
+  return function (id) {
+    return mdl.http.postQlTask(mdl)("mutation {\n  createUser(data:{userId:".concat(id, "}){id}\n}"));
+  };
+};
+
+var registerUserTask = function registerUserTask(mdl) {
+  return function (_ref2) {
+    var name = _ref2.name,
+        email = _ref2.email,
+        password = _ref2.password,
+        isAdmin = _ref2.isAdmin;
+    return mdl.http.backEnd.postTask(mdl)("users/register")({
+      name: name,
+      email: email,
+      password: password,
+      isAdmin: isAdmin
+    }).chain(function (user) {
+      return AddUserIdTask(mdl)(JSON.stringify(user.objectId)).map(function () {
+        return user;
+      });
+    });
+  };
+};
+
+exports.registerUserTask = registerUserTask;
+});
+
+;require.register("Components/Auth/forms/LoginForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LoginForm = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LoginForm = function LoginForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          validate = _ref$attrs.validate,
+          httpError = _ref$attrs.httpError;
+      return m("form.column", {
+        id: "Login-form",
+        onsubmit: function onsubmit(e) {
+          return e.preventDefault();
+        }
+      }, [m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "email",
+        label: "email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "password",
+        label: "password",
+        id: "reg-pass",
+        type: "password"
+      }), httpError && m(".toast toast-error", httpError)]);
+    }
+  };
+};
+
+exports.LoginForm = LoginForm;
+});
+
+;require.register("Components/Auth/forms/RegisterForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RegisterForm = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RegisterForm = function RegisterForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          validate = _ref$attrs.validate,
+          httpError = _ref$attrs.httpError;
+      return [m("form.column", {
+        id: "Register-form",
+        onsubmit: function onsubmit(e) {
+          return e.preventDefault();
+        }
+      }, [(".column col-6", [m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "name",
+        label: "Name",
+        id: "name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "email",
+        label: "email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "password",
+        label: "password",
+        id: "reg-pass",
+        type: "password"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        data: data,
+        validate: validate,
+        errors: errors,
+        field: "confirmPassword",
+        label: "Confirm Password",
+        id: "pass-confirm",
+        type: "password"
+      })]), m(".divider-vert", {
+        dataContent: "|"
+      })]), httpError && m(".toast toast-error", httpError)];
+    }
+  };
+};
+
+exports.RegisterForm = RegisterForm;
+});
+
+;require.register("Components/Auth/forms/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateLoginTask = exports.validateUserRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+var ValidateLogin = (0, _data.Success)((0, _ramda.curryN)(2, _ramda.identity));
+var nameLense = (0, _ramda.lensProp)("name");
+var passwordLense = (0, _ramda.lensProp)("password");
+var passwordConfirmLense = (0, _ramda.lensProp)("confirmPassword");
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+var NAME_REQUIRED_MSG = "A Name is required";
+var PASSWORD_REQUIRED_MSG = "A Password is required";
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+var PASSWORDS_MUST_MATCH = "Passwords do not match";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateName = function validateName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense, NAME_REQUIRED_MSG, data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateEmail = function validateEmail(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validatePasswords = function validatePasswords(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordConfirmLense, PASSWORD_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.password), passwordConfirmLense, PASSWORDS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmPassword), passwordLense, PASSWORDS_MUST_MATCH, data));
+};
+
+var validatePassword = function validatePassword(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, passwordLense, PASSWORD_REQUIRED_MSG, data));
+};
+
+var validateUserRegistrationTask = function validateUserRegistrationTask(data) {
+  return ValidateRegistration.ap(validateName(data)).ap(validateEmails(data)).ap(validatePasswords(data)).failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateUserRegistrationTask = validateUserRegistrationTask;
+
+var validateLoginTask = function validateLoginTask(data) {
+  return ValidateLogin.ap(validateEmail(data)).ap(validatePassword(data)).failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateLoginTask = validateLoginTask;
+});
+
+;require.register("Components/Auth/forms/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _LoginForm = require("./LoginForm.js");
+
+Object.keys(_LoginForm).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _LoginForm[key];
+    }
+  });
+});
+
+var _RegisterForm = require("./RegisterForm.js");
+
+Object.keys(_RegisterForm).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _RegisterForm[key];
+    }
+  });
+});
+
+var _Validations = require("./Validations.js");
+
+Object.keys(_Validations).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Validations[key];
+    }
+  });
+});
+});
+
+;require.register("Components/Auth/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _forms = require("./forms");
+
+var _fns = require("./fns.js");
+
+var _Modal = _interopRequireDefault(require("Components/Modal.js"));
+
+var _Button = _interopRequireDefault(require("Components/Button.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var validateForm = function validateForm(state) {
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
+  };
+
+  var onSuccess = function onSuccess(state) {
+    return function (_) {
+      return state.errors = {};
+    };
+  };
+
+  state.isSubmitted = true;
+  state.page ? (0, _forms.validateUserRegistrationTask)(state.data).fork(onError(state), onSuccess(state)) : (0, _forms.validateLoginTask)(state.data).fork(onError(state), onSuccess(state));
+};
+
+var saveForm = function saveForm(mdl) {
+  return function (state) {
+    var onRegisterSuccess = function onRegisterSuccess(data) {
+      console.log("succes with registering", data, state);
+      return state.page = 0;
+    };
+
+    var onLoginSuccess = function onLoginSuccess(mdl) {
+      return function (user) {
+        window.sessionStorage.setItem("user-token", user["user-token"]);
+        mdl.user = user;
+        mdl.state.isAuth(true);
+        mdl.toggleAuthModal(mdl);
+        m.route.set("/EXRX/".concat(mdl.user.name, "/dashboard"));
+        (0, _fns.resetState)(state);
+      };
+    };
+
+    var onError = function onError(errs) {
+      state.httpError = errs.message;
+      console.log("failed", state);
+    };
+
+    state.isSubmitted = true;
+    state.page ? (0, _forms.validateUserRegistrationTask)(state.data).chain((0, _fns.registerUserTask)(mdl)).fork(onError, onRegisterSuccess) : (0, _forms.validateLoginTask)(state.data).chain((0, _fns.loginUserTask)(mdl)).fork(onError, onLoginSuccess(mdl));
+  };
+};
+
+var AuthLink = function AuthLink() {
+  return {
+    view: function view(_ref) {
+      var title = _ref.attrs.title;
+      return m("a.authLinkBtn btn-link", {
+        onclick: function onclick(e) {
+          return (0, _fns.changePage)(_fns.state);
+        }
+      }, title);
+    }
+  };
+};
+
+var AuthComponent = function AuthComponent() {
+  return {
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return m(_Modal.default, {
+        classList: "auth-modal",
+        isActive: mdl.state.showAuthModal(),
+        close: function close() {
+          (0, _fns.resetState)(_fns.state);
+          mdl.toggleAuthModal(mdl);
+        },
+        title: _fns.state.title[_fns.state.page],
+        content: m(_fns.state.forms[_fns.state.page], {
+          data: _fns.state.data,
+          errors: _fns.state.errors,
+          httpError: _fns.state.httpError,
+          isSubmitted: _fns.state.isSubmitted,
+          validate: function validate() {
+            return validateForm(_fns.state);
+          }
+        }),
+        footer: [m(_Button.default, {
+          mdl: mdl,
+          type: "submit",
+          for: "".concat(_fns.state.title[_fns.state.page], "-form"),
+          action: function action() {
+            return saveForm(mdl)(_fns.state);
+          },
+          label: _fns.state.title[_fns.state.page],
+          classList: "input btn btn-primary authBtn"
+        }), m(AuthLink, {
+          mdl: mdl,
+          title: _fns.state.page ? "Login" : "Register"
+        })]
+      });
+    }
+  };
+};
+
+var _default = AuthComponent;
+exports.default = _default;
+});
+
+;require.register("Components/Body.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Toaster = _interopRequireDefault(require("./Toaster.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Body = {
+  view: function view(_ref) {
+    var children = _ref.children,
+        mdl = _ref.attrs.mdl;
+    return m(".main", {
+      id: "main"
+    }, [children, mdl.state.toast.show() && m(_Toaster.default, {
+      mdl: mdl
+    })]);
+  }
+};
+var _default = Body;
+exports.default = _default;
+});
+
+;require.register("Components/Button.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Button = function Button() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          action = _ref$attrs.action,
+          label = _ref$attrs.label,
+          _ref$attrs$classList = _ref$attrs.classList,
+          classList = _ref$attrs$classList === void 0 ? "" : _ref$attrs$classList,
+          isDisabled = _ref$attrs.isDisabled;
+      return m("button.btn.".concat(classList, " ").concat(mdl.state.isLoading() ? "loading" : ""), {
+        onclick: function onclick(e) {
+          return action(e);
+        },
+        disabled: isDisabled
+      }, label);
+    }
+  };
+};
+
+var _default = Button;
+exports.default = _default;
+});
+
+;require.register("Components/DropDown.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Utils = require("Utils");
+
+var Selector = {
+  onbeforeremove: _Utils.animateChildrenLimitsExit,
+  view: function view(_ref) {
+    var mdl = _ref.attrs.mdl;
+    return m(".limits", mdl.limits.map(function (limit, idx) {
+      return m("button.btn.limit", {
+        oncreate: (0, _Utils.animateChildrenLimitsEntrance)(idx),
+        onclick: function onclick() {
+          mdl.state.limit = limit;
+          mdl.state.showLimits(false);
+        },
+        key: idx
+      }, limit);
+    }));
+  }
+};
+var DropDown = {
+  view: function view(_ref2) {
+    var mdl = _ref2.attrs.mdl;
+    return m(".changeLimits", [m("button.btn", {
+      onclick: function onclick() {
+        return mdl.toggleLimits(mdl);
+      }
+    }, "Change Limit"), mdl.state.showLimits() && [m(Selector, {
+      mdl: mdl
+    })]]);
+  }
+};
+var _default = DropDown;
+exports.default = _default;
+});
+
+;require.register("Components/Footer.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _SocialMedia = _interopRequireDefault(require("./SocialMedia.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var GoToTop = {
+  view: function view(_ref) {
+    var mdl = _ref.attrs.mdl;
+    return m("button.btn btn-action btn-secondary btn-lg s-circle icon icon-arrow-up", {
+      onclick: function onclick() {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+        mdl.toggleNav(mdl);
+        m.route.set(mdl.state.route.route);
+      }
+    }, "Back Up");
+  }
+};
+var Footer = {
+  view: function view(_ref2) {
+    var mdl = _ref2.attrs.mdl;
+    return m("footer", {
+      id: "footer"
+    }, m(_SocialMedia.default), m("p.text-center", ["Copyright \xA9 Boaz Blake. All rights reserved. ".concat(new Date().getFullYear(), " Privacy Policy")]));
+  }
+};
+var _default = Footer;
+exports.default = _default;
+});
+
+;require.register("Components/FormInputs.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var FormInput = {
+  view: function view(_ref) {
+    var _ref$attrs = _ref.attrs,
+        isSubmitted = _ref$attrs.isSubmitted,
+        data = _ref$attrs.data,
+        errors = _ref$attrs.errors,
+        field = _ref$attrs.field,
+        label = _ref$attrs.label,
+        id = _ref$attrs.id,
+        type = _ref$attrs.type,
+        validate = _ref$attrs.validate;
+    return m(".form-group ", isSubmitted && {
+      class: errors[field] ? "has-error" : "has-success"
+    }, [m("label.form-label text-left", {
+      id: id
+    }, [label, m("span.span required", "*")]), m("input.form-input", {
+      id: id,
+      type: type,
+      placeholder: label,
+      oninput: function oninput(e) {
+        data[field] = e.target.value;
+        isSubmitted && validate();
+      },
+      value: data[field],
+      autocomplete: false
+    }), errors[field] && m("p.form-input-hint", errors[field])]);
+  }
+};
+var _default = FormInput;
+exports.default = _default;
+});
+
+;require.register("Components/Hamburger.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Hamburger = function Hamburger(_ref) {
+  var mdl = _ref.attrs.mdl;
+  var state = {
+    close: 'M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z',
+    open: 'M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z'
+  };
+
+  var render = function render(dom) {
+    return _mithril.default.render(dom, (0, _mithril.default)('path', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      d: mdl.state.showNav() ? state.close : state.open
+    }));
+  };
+
+  var updateDom = function updateDom(_ref2) {
+    var dom = _ref2.dom;
+    var _dom = dom;
+    return render(_dom);
+  };
+
+  return {
+    oncreate: updateDom,
+    onupdate: updateDom,
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
+      return (0, _mithril.default)('svg.btn.hamburger', {
+        id: 'hamburger',
+        onclick: function onclick() {
+          return mdl.toggleNav(mdl);
+        }
+      });
+    }
+  };
+};
+
+var _default = Hamburger;
+exports.default = _default;
+});
+
+;require.register("Components/Headers/MainHeader.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
+var _Hamburger = _interopRequireDefault(require("Components/Hamburger"));
+
+var _Navigation = _interopRequireDefault(require("Components/Navigation"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m("header.header", {
+        id: "header"
+      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+        mdl: mdl
+      }), mdl.state.profile !== "desktop" && m(".mobileNav", m(_Hamburger.default, {
+        mdl: mdl
+      })), m(_Navigation.default, {
+        mdl: mdl
+      })]);
+    }
+  };
+};
+
+var _default = Header;
+exports.default = _default;
+});
+
+;require.register("Components/Headers/ProfileHeader.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
+
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileHeader = function ProfileHeader() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m("header.header", {
+        id: "header"
+      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+        mdl: mdl
+      }), m(_NavTabs.default, {
+        mdl: mdl,
+        tabSelected: function tabSelected() {}
+      })]);
+    }
+  };
+};
+
+var _default = ProfileHeader;
+exports.default = _default;
+});
+
+;require.register("Components/Headers/SplashHeader.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavTabs = _interopRequireDefault(require("../Navigation/NavTabs.js"));
+
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SplashHeader = function SplashHeader() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m("header.header", {
+        id: "header"
+      }, [mdl.state.isLoading() && m(_ProgressBar.default, {
+        mdl: mdl
+      }), m(_NavTabs.default, {
+        mdl: mdl,
+        tabSelected: function tabSelected() {}
+      })]);
+    }
+  };
+};
+
+var _default = SplashHeader;
+exports.default = _default;
+});
+
+;require.register("Components/Headers/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _MainHeader = require("./MainHeader.js");
+
+Object.keys(_MainHeader).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _MainHeader[key];
+    }
+  });
+});
+
+var _SplashHeader = require("./SplashHeader.js");
+
+Object.keys(_SplashHeader).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SplashHeader[key];
+    }
+  });
+});
+
+var _ProfileHeader = require("./ProfileHeader.js");
+
+Object.keys(_ProfileHeader).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProfileHeader[key];
+    }
+  });
+});
+});
+
+;require.register("Components/Icons/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var logo = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  "xmlns:xlink": "http://www.w3.org/1999/xlink",
+  version: "1.1",
+  x: "0px",
+  y: "0px",
+  viewBox: "0 0 99.978 100",
+  "enable-background": "new 0 0 99.978 100",
+  "xml:space": "preserve"
+}, [m("polygon", {
+  fill: "#ecf0f1",
+  points: "49.987,0 0,25 0,37.5 49.987,12.5 99.978,37.5 99.978,25 "
+}), m("path", {
+  id: "ruler",
+  fill: "#ecf0f1",
+  d: "M74.978,37.5V100h18.75V37.5H74.978z M89.561,45.834h-6.25V50h6.25v4.167h-3.125v4.167h3.125V62.5h-6.25  v4.167h6.25v4.166h-3.125V75h3.125v4.167h-6.25v4.166h6.25V87.5h-3.125v4.166h3.125v4.167H79.145V41.667h10.416V45.834z"
+}), m("path", {
+  id: "hammer",
+  fill: "#ecf0f1",
+  d: "M41.111,48.539c-5.442-7.942-12.465-9.623-17.427-9.623c-3.235,0-5.497,0.741-5.593,0.773  c-0.307,0.102-0.586,0.276-0.814,0.505l-1.473,1.473h-1.221c0-1.151-0.932-2.083-2.083-2.083H8.333  c-1.151,0-2.083,0.932-2.083,2.083v6.25C6.25,49.068,7.182,50,8.333,50H12.5c1.151,0,2.083-0.932,2.083-2.083h2.083v14.245  l-1.975,5.929c-0.071,0.212-0.108,0.436-0.108,0.659v29.166c0,1.152,0.932,2.084,2.083,2.084H25c1.151,0,2.083-0.932,2.083-2.084  V68.75c0-0.224-0.037-0.447-0.108-0.659L25,62.162V49.149c0.903-0.386,1.961-0.581,3.158-0.581c4.905,0,10.302,3.186,10.355,3.218  c0.325,0.195,0.684,0.289,1.043,0.293c1.17,0.094,2.15-0.907,2.15-2.079C41.707,49.431,41.479,48.914,41.111,48.539z"
+}), m("path", {
+  id: "mouse",
+  fill: "#ecf0f1",
+  d: "M58.26,60.588c1.029-1.677,1.978-3.805,1.994-6.092c0.014-2.233-0.86-4.301-2.531-5.969  c-0.539-0.541-1.2-1.082-1.904-1.652c-2.256-1.822-3.735-3.174-3.735-5.208c0-2.689,2.569-5.867,3.558-6.864  c0.81-0.813,0.808-2.132-0.006-2.946c-0.816-0.81-2.13-0.81-2.942,0.004c-0.488,0.488-4.777,4.916-4.777,9.807  c0,4.175,3.052,6.645,5.281,8.447c0.58,0.472,1.133,0.911,1.579,1.359c0.887,0.887,1.314,1.863,1.31,2.982  c-0.012,2.254-1.737,4.703-2.838,5.969c-7.212,0.11-13.666,1.624-13.666,10.408v8.334c0,10.241,5.455,20.833,14.583,20.833  c9.473,0,14.583-10.734,14.583-20.833v-8.334C68.75,63.367,64.088,61.153,58.26,60.588z M64.583,70.833v2.084H56.25v-8.289  C63.303,64.93,64.583,66.874,64.583,70.833z M52.083,64.628v8.289H43.75v-2.084C43.75,66.874,45.029,64.93,52.083,64.628z   M54.167,95.833c-6.433,0-10.417-8.65-10.417-16.666v-2.084h20.833v2.084C64.583,86.088,61.352,95.833,54.167,95.833z"
+})]);
+var contact = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M2 4v14h14v-6l2-2v10H0V2h10L8 4H2zm10.3-.3l4 4L8 16H4v-4l8.3-8.3zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"
+}));
+var dotsVerticleThree = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M10 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0-6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+}));
+var downChevron = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+}));
+var home = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M8 20H3V10H0L10 0l10 10h-3v10h-5v-6H8v6z"
+}));
+var lock = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z"
+}));
+var upChevron = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M10.707 7.05L10 6.343 4.343 12l1.414 1.414L10 9.172l4.243 4.242L15.657 12z"
+}));
+var services = m("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 20 20"
+}, m("path", {
+  d: "M9 20v-1.7l.01-.24L15.07 12h2.94c1.1 0 1.99.89 1.99 2v4a2 2 0 0 1-2 2H9zm0-3.34V5.34l2.08-2.07a1.99 1.99 0 0 1 2.82 0l2.83 2.83a2 2 0 0 1 0 2.82L9 16.66zM0 1.99C0 .9.89 0 2 0h4a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zM4 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+}));
+var _default = {
+  logo: logo,
+  contact: contact,
+  services: services,
+  home: home,
+  downChevron: downChevron,
+  lock: lock,
+  upChevron: upChevron,
+  dotsVerticleThree: dotsVerticleThree
+};
+exports.default = _default;
+});
+
+;require.register("Components/LeftAside.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavMenu = _interopRequireDefault(require("./Navigation/NavMenu.js"));
+
+var _animations = require("Utils/animations");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LeftAside = function LeftAside(_ref) {
+  var mdl = _ref.attrs.mdl;
+  var routes = mdl.Routes.filter(function (r) {
+    return r.position.includes("left-aside");
+  });
+
+  if (mdl.state.profile == "desktop") {
+    routes = routes.filter(function (r) {
+      return r.id != "dashboard";
+    });
+  }
+
+  return {
+    oncreate: _animations.SlideInRight,
+    onbeforeremove: _animations.SlideOutLeft,
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return m(".left-aside.sidebar-modal", {
+        id: "left-aside"
+      }, m(_NavMenu.default, {
+        routes: routes,
+        mdl: mdl
+      }));
+    }
+  };
+};
+
+var _default = LeftAside;
+exports.default = _default;
+});
+
+;require.register("Components/Modal.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Modal = function Modal(_ref) {
+  var animateEntrance = _ref.animateEntrance,
+      animateExit = _ref.animateExit;
+  return {
+    oncreate: animateEntrance,
+    onbeforeremove: animateExit,
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          classList = _ref2$attrs.classList,
+          isActive = _ref2$attrs.isActive,
+          close = _ref2$attrs.close,
+          title = _ref2$attrs.title,
+          content = _ref2$attrs.content,
+          footer = _ref2$attrs.footer;
+      return m("section.modal.".concat(classList), {
+        class: isActive ? "active" : "",
+        id: "modal"
+      }, [m("a.modal-overlay", {
+        "aria-label": "Close",
+        onclick: function onclick() {
+          return close();
+        }
+      }), m(".modal-container", {
+        role: "document"
+      }, [m(".modal-header", [m("a.btn btn-clear float-right", {
+        id: "modal-close",
+        "aria-label": "Close",
+        onclick: function onclick() {
+          return close();
+        }
+      }), m(".modal-title h3", title)]), m(".modal-body", m(".modal-content", content)), m(".modal-footer", footer)])]);
+    }
+  };
+};
+
+var _default = Modal;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/NavMenu.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Tab = function Tab(_ref) {
+  var key = _ref.attrs.key;
+
+  var getUser = function getUser(user) {
+    return user ? user.name : "";
+  };
+
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          tab = _ref2$attrs.tab,
+          active = _ref2$attrs.active,
+          mdl = _ref2$attrs.mdl;
+      return m("li.nav-item ".concat(active ? "active" : ""), m(m.route.Link, {
+        key: key,
+        class: "sidebar-nav",
+        id: "".concat(tab.id, "-link"),
+        href: tab.group.includes("authenticated") ? "EXRX/".concat(getUser(mdl.user), "/").concat(tab.id) : "".concat(tab.route)
+      }, tab.title));
+    }
+  };
+};
+
+var NavMenu = function NavMenu(_ref3) {
+  var mdl = _ref3.attrs.mdl;
+  return {
+    view: function view(_ref4) {
+      var _ref4$attrs = _ref4.attrs,
+          mdl = _ref4$attrs.mdl,
+          routes = _ref4$attrs.routes;
+      return routes.length ? m("ul.nav", {
+        id: "menu"
+      }, [routes.map(function (tab, idx) {
+        return m(Tab, {
+          key: idx,
+          active: mdl.state.route.route == tab.route,
+          tab: tab,
+          mdl: mdl
+        });
+      })]) : [];
+    }
+  };
+};
+
+var _default = NavMenu;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/NavTabs.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Utils = require("Utils");
+
+var _Auth = _interopRequireDefault(require("Components/Auth"));
+
+var _SettingsMenu = _interopRequireDefault(require("./SettingsMenu.js"));
+
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Tab = function Tab(_ref) {
+  var key = _ref.attrs.key;
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          tab = _ref2$attrs.tab,
+          active = _ref2$attrs.active;
+      return m(m.route.Link, {
+        class: active ? "tab-item active" : "tab-item",
+        key: key,
+        id: "".concat(tab.id),
+        onclick: function onclick(e) {
+          if (tab.id == "dashboard" && mdl.state.profile != "desktop") {
+            e.stopPropagation();
+            e.preventDefault();
+            mdl.toggleSidebarModal(mdl);
+          }
+        },
+        href: tab.group.includes("authenticated") ? "/EXRX/".concat(mdl.user.name, "/").concat(tab.id) : "".concat(tab.route)
+      }, ["Dashboard", "Home"].includes(tab.title) ? m(".img", {
+        // id: tab.title == "Dashboard" ? "EXRXLogo" : "EXRXSplashLogo",
+        style: {
+          width: "50px"
+        }
+      }, _Icons.default.logo) : tab.title);
+    }
+  };
+};
+
+var NavTabs = function NavTabs() {
+  return {
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
+      var tabs = mdl.state.isAuth() ? mdl.Routes.filter(function (r) {
+        return r.position.includes("auth-nav");
+      }) : mdl.Routes.filter(function (r) {
+        return r.position.includes("nav");
+      });
+
+      var isTabActive = function isTabActive(tab) {
+        var _active = (0, _Utils.getRoute)(1); // console.log(tab.id, _active)
+
+
+        return tab.id == _active;
+      };
+
+      return [m("ul.tab tab-group", {
+        id: "tabbar"
+      }, [tabs.map(function (tab, idx) {
+        return m("li.tab-item", m(Tab, {
+          key: idx,
+          active: isTabActive(tab),
+          tab: tab,
+          mdl: mdl
+        }));
+      }), mdl.state.isAuth() ? m(_SettingsMenu.default, {
+        mdl: mdl
+      }) : m("li.tab-item", m("button.btn btn-action", {
+        id: "login-reg-button",
+        onclick: function onclick() {
+          return mdl.toggleAuthModal(mdl);
+        }
+      }, "Login / Register")), mdl.state.showAuthModal() && m(_Auth.default, {
+        mdl: mdl
+      })])];
+    }
+  };
+};
+
+var _default = NavTabs;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/Navigation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavTabs = _interopRequireDefault(require("./NavTabs.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Navigation = function Navigation() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m(".navigation", m(_NavTabs.default, {
+        mdl: mdl
+      }));
+    }
+  };
+};
+
+var _default = Navigation;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/ProfileNavigation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _NavTabs = _interopRequireDefault(require("./NavTabs.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileNavigation = function ProfileNavigation() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m(".navigation", m(_NavTabs.default, {
+        mdl: mdl
+      }));
+    }
+  };
+};
+
+var _default = ProfileNavigation;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/SettingsMenu.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Utils = require("Utils");
+
+var _ramda = require("ramda");
+
+var Logout = function Logout() {
+  var onError = function onError(mdl) {
+    return function (error) {
+      console.log("error", error, mdl);
+    };
+  };
+
+  var onSuccess = function onSuccess(mdl) {
+    return function () {
+      window.sessionStorage.removeItem("user-token");
+      mdl.state.isAuth(false);
+      mdl.user = null;
+      mdl.clients = [];
+      mdl.state.route.group.includes("authenticated") && history.back();
+    };
+  };
+
+  var logout = function logout(mdl) {
+    return mdl.http.backEnd.getTask(mdl)("users/logout").fork(onError(mdl), onSuccess(mdl));
+  };
+
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m("li.menu-item", m("button.btn btn-primary", {
+        onclick: function onclick() {
+          return logout(mdl);
+        }
+      }, "LOGOUT"));
+    }
+  };
+};
+
+var Tab = function Tab(_ref2) {
+  var key = _ref2.attrs.key;
+  return {
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          tab = _ref3$attrs.tab,
+          active = _ref3$attrs.active,
+          mdl = _ref3$attrs.mdl;
+      return m("li.menu-item", m("a.btn btn-link menu-item", {
+        class: active && "active",
+        onclick: function onclick() {
+          m.route.set(tab.route, {
+            name: (0, _Utils.makeRoute)(mdl.user.name)
+          });
+          mdl.toggleNav(mdl);
+        },
+        key: key,
+        id: "".concat(tab.id, "-key") // href: `${tab.route}`,
+
+      }, tab.title));
+    }
+  };
+};
+
+var toSettingsMenuRoutes = function toSettingsMenuRoutes(mdl) {
+  return mdl.user.isAdmin ? mdl.Routes.filter(function (route) {
+    return route.position.includes("settings-nav");
+  }) : mdl.Routes.filter(function (route) {
+    return route.position.includes("settings-nav") && !route.group.includes("admin");
+  });
+};
+
+var SettingsMenu = function SettingsMenu() {
+  return {
+    showMenu: Stream(false),
+    view: function view(_ref4) {
+      var state = _ref4.state,
+          mdl = _ref4.attrs.mdl;
+      var routes = toSettingsMenuRoutes(mdl);
+      return [m("li.dropdown dropdown-right", [m("a.btn btn-primary dropdown-toggle", {
+        onclick: function onclick() {
+          return state.showMenu(!state.showMenu());
+        },
+        tabindex: "0"
+      }, ["Settings", m("i.icon icon-arrow-down")]), state.showMenu() && m("ul.menu", [// m(".panel", [
+      //   m(".panel-header", m(".panel-title", "Comments")),
+      //   m(".panel-nav"),
+      //   m(".panel-body"),
+      //   m(".panel-footer")
+      // ]),
+      m(Logout, {
+        mdl: mdl
+      }), routes.map(function (tab, idx) {
+        return m(Tab, {
+          key: idx,
+          active: mdl.state.route.route == tab.route,
+          tab: tab,
+          mdl: mdl
+        });
+      })])])];
+    }
+  };
+};
+
+var _default = SettingsMenu;
+exports.default = _default;
+});
+
+;require.register("Components/Navigation/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Navigation = require("./Navigation");
+
+Object.keys(_Navigation).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Navigation[key];
+    }
+  });
+});
+
+var _ProfileNavigation = require("./ProfileNavigation");
+
+Object.keys(_ProfileNavigation).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProfileNavigation[key];
+    }
+  });
+});
+});
+
+;require.register("Components/Paginate.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+var _Components = _interopRequireDefault(require("Components"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Paginate = {
+  view: function view(_ref) {
+    var _ref$attrs = _ref.attrs,
+        state = _ref$attrs.state,
+        http = _ref$attrs.http,
+        paginateFn = _ref$attrs.paginateFn,
+        limit = _ref$attrs.limit,
+        mdl = _ref$attrs.mdl;
+    return (0, _mithril.default)(".pagination", [(0, _mithril.default)(_Components.default, {
+      action: function action() {
+        state.from = state.from - mdl.state.limit;
+        state.size = mdl.state.limit;
+        paginateFn(http);
+      },
+      isDisabled: state.from - mdl.state.limit <= 0,
+      label: [_mithril.default.trust("&#8678;"), limit]
+    }), (0, _mithril.default)(_Components.default, {
+      action: function action() {
+        state.from = state.from + state.data.length++;
+        state.size = mdl.state.limit;
+        paginateFn(http);
+      },
+      label: [limit, _mithril.default.trust("&#8680;")],
+      isDisabled: state.from + mdl.state.limit > state.total
+    }), (0, _mithril.default)(".", (0, _mithril.default)("code.code", "".concat(state.from, " - ").concat(state.from + state.size, " ")), (0, _mithril.default)("code.code.row", " of ".concat(state.total, " ")))]);
+  }
+};
+var _default = Paginate;
+exports.default = _default;
+});
+
+;require.register("Components/ProgressBar.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var ProgressBar = function ProgressBar() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs$mdl$state$ = _ref.attrs.mdl.state.loadingProgress,
+          value = _ref$attrs$mdl$state$.value,
+          max = _ref$attrs$mdl$state$.max;
+      return m(".progressBar", m("progress.progress", {
+        max: max,
+        value: value ? value : null
+      }));
+    }
+  };
+};
+
+var _default = ProgressBar;
+exports.default = _default;
+});
+
+;require.register("Components/RightAside.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RightAside = function RightAside() {
+  return {
+    view: function view() {
+      return (0, _mithril.default)('.aside', {
+        id: 'right-aside'
+      });
+    }
+  };
+};
+
+var _default = RightAside;
+exports.default = _default;
+});
+
+;require.register("Components/SearchBar.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+var _Utils = require("Utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var debounce300 = (0, _Utils.debounce)(300);
+
+var SearchBar = function SearchBar(_ref) {
+  var mdl = _ref.attrs.mdl;
+  var filterData = mdl.filterData(mdl);
+  return {
+    view: function view() {
+      return (0, _mithril.default)(".searchBar", [(0, _mithril.default)("input.input", {
+        placeholder: "search query",
+        oninput: function oninput(e) {
+          return debounce300(filterData(e.target.value));
+        }
+      })]);
+    }
+  };
+};
+
+var _default = SearchBar;
+exports.default = _default;
+});
+
+;require.register("Components/Sidebar.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+var _Utils = require("Utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Sidebar = {
+  oncreate: _Utils.animateSidebarEntrance,
+  view: function view(_ref) {
+    var children = _ref.children,
+        classList = _ref.attrs.classList;
+    return (0, _mithril.default)("aside.".concat(classList), children);
+  }
+};
+var _default = Sidebar;
+exports.default = _default;
+});
+
+;require.register("Components/SocialMedia.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var facebook = {
+  name: "f",
+  href: "https://www.facebook.com"
+};
+var twitter = {
+  name: "t",
+  href: "https://www.twitter.com"
+};
+var socialmedialinks = [facebook, twitter];
+var avatar = {
+  view: function view(_ref) {
+    var _ref$attrs = _ref.attrs,
+        name = _ref$attrs.name,
+        href = _ref$attrs.href;
+    return (0, _mithril.default)("a", {
+      selector: "figure",
+      class: "avatar avatar-xl",
+      "data-initial": name,
+      target: "_blank",
+      href: href
+    });
+  }
+};
+
+var SocialMediaLinks = function SocialMediaLinks() {
+  return {
+    view: function view() {
+      return (0, _mithril.default)(".socialmedias", socialmedialinks.map(function (_ref2) {
+        var name = _ref2.name,
+            href = _ref2.href;
+        return (0, _mithril.default)(avatar, {
+          name: name,
+          href: href
+        });
+      }));
+    }
+  };
+};
+
+var _default = SocialMediaLinks;
+exports.default = _default;
+});
+
+;require.register("Components/Toaster.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Toaster = function Toaster() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return (0, _mithril.default)('.toast', {
+        class: "toast-".concat(mdl.state.toast.class())
+      }, [(0, _mithril.default)('button.btn btn-clear', {
+        id: 'btn-toast'
+      }), mdl.state.toast.contents()]);
+    }
+  };
+};
+
+var _default = Toaster;
+exports.default = _default;
+});
+
+;require.register("Components/Toolbar.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Toolbar = function Toolbar() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          left = _ref$attrs.left,
+          right = _ref$attrs.right;
+      return m("section.navbar", {
+        id: "content-toolbar"
+      }, [m("section.navbar-section.toolbar-left", {
+        id: "toolbar-left"
+      }, left), m("section.navbar-section.toolbar-right", {
+        id: "toolbar-right"
+      }, right)]);
+    }
+  };
+};
+
+var _default = Toolbar;
+exports.default = _default;
+});
+
+;require.register("Components/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Body = require("./Body.js");
+
+Object.keys(_Body).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Body[key];
+    }
+  });
+});
+
+var _Button = require("./Button.js");
+
+Object.keys(_Button).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Button[key];
+    }
+  });
+});
+
+var _DropDown = require("./DropDown.js");
+
+Object.keys(_DropDown).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _DropDown[key];
+    }
+  });
+});
+
+var _Footer = require("./Footer.js");
+
+Object.keys(_Footer).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Footer[key];
+    }
+  });
+});
+
+var _Hamburger = require("./Hamburger.js");
+
+Object.keys(_Hamburger).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Hamburger[key];
+    }
+  });
+});
+
+var _Headers = require("./Headers");
+
+Object.keys(_Headers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Headers[key];
+    }
+  });
+});
+
+var _Modal = require("./Modal.js");
+
+Object.keys(_Modal).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Modal[key];
+    }
+  });
+});
+
+var _Sidebar = require("./Sidebar.js");
+
+Object.keys(_Sidebar).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Sidebar[key];
+    }
+  });
+});
+
+var _index = require("./Auth/index.js");
+
+Object.keys(_index).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index[key];
+    }
+  });
+});
+
+var _index2 = require("./Icons/index.js");
+
+Object.keys(_index2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index2[key];
+    }
+  });
+});
+
+var _ProgressBar = require("./ProgressBar.js");
+
+Object.keys(_ProgressBar).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProgressBar[key];
+    }
+  });
+});
+
+var _FormInputs = require("./FormInputs.js");
+
+Object.keys(_FormInputs).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _FormInputs[key];
+    }
+  });
+});
+
+var _Toolbar = require("./Toolbar.js");
+
+Object.keys(_Toolbar).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _Toolbar[key];
+    }
+  });
+});
+});
+
+;require.register("FP/all.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.All = void 0;
+
+var All = function All(x) {
+  return {
+    val: x,
+    concat: function concat(_ref) {
+      var val = _ref.val;
+      return All(x && val);
+    }
+  };
+};
+
+exports.All = All;
+All.empty = All(true);
+});
+
+;require.register("FP/any.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Any = void 0;
+
+var Any = function Any(x) {
+  return {
+    val: x,
+    concat: function concat(_ref) {
+      var val = _ref.val;
+      return Any(x || val);
+    }
+  };
+};
+
+exports.Any = Any;
+Any.empty = Any(false);
+});
+
+;require.register("FP/array.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ArrayFP = void 0;
+
+var _util = require("./util");
+
+var _flatten = function _flatten(xs) {
+  return xs.reduce(function (a, b) {
+    return a.concat(b);
+  }, []);
+};
+
+var configure = function configure(_) {
+  var _fmap = function _fmap(f) {
+    var xs = this;
+    return xs.map(function (x) {
+      return f(x);
+    }); //avoid index
+  };
+
+  Object.defineProperty(Array.prototype, 'fmap', (0, _util.value)(_fmap));
+
+  var _empty = function _empty(_) {
+    return [];
+  };
+
+  Object.defineProperty(Array.prototype, 'empty', (0, _util.value)(_empty));
+
+  var _chain = function _chain(f) {
+    return _flatten(this.fmap(f));
+  };
+
+  Object.defineProperty(Array.prototype, 'chain', (0, _util.value)(_chain));
+
+  var _of = function _of(x) {
+    return [x];
+  };
+
+  Object.defineProperty(Array.prototype, 'of', (0, _util.value)(_of));
+
+  var _ap = function _ap(a2) {
+    return _flatten(this.map(function (f) {
+      return a2.map(function (a) {
+        return f(a);
+      });
+    }));
+  };
+
+  Object.defineProperty(Array.prototype, 'ap', (0, _util.value)(_ap));
+
+  var _traverse = function _traverse(f, point) {
+    var cons_f = function cons_f(ys, x) {
+      return f(x).map(function (x) {
+        return function (y) {
+          return y.concat(x);
+        };
+      }).ap(ys);
+    };
+
+    return this.reduce(cons_f, point([]));
+  };
+
+  Object.defineProperty(Array.prototype, 'traverse', (0, _util.value)(_traverse));
+
+  var _any = function _any() {
+    return this.length > 0;
+  };
+
+  Object.defineProperty(Array.prototype, 'any', (0, _util.value)(_any));
+
+  var _in = function _in(comparer) {
+    for (var i = 0; i < this.length; i++) {
+      if (comparer(this[i])) return true;
+    }
+
+    return false;
+  };
+
+  Object.defineProperty(Array.prototype, 'in', (0, _util.value)(_in));
+
+  var _pushIfNotExist = function _pushIfNotExist(element, comparer) {
+    if (!this.in(comparer)) {
+      this.push(element);
+    }
+  };
+
+  Object.defineProperty(Array.prototype, 'pushIfNotExist', (0, _util.value)(_pushIfNotExist));
+
+  var _foldM = function _foldM(point, f) {
+    var _this = this;
+
+    var go = function go(a) {
+      return !_this.any() ? point(a) : f(a, _this.shift()).chain(go);
+    };
+
+    return go;
+  };
+
+  Object.defineProperty(Array.prototype, 'foldM', (0, _util.value)(_foldM));
+};
+
+var ArrayFP = {
+  configure: configure
+};
+exports.ArrayFP = ArrayFP;
+});
+
+;require.register("FP/coyoneda.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Coyoneda = void 0;
+
+var _daggy = require("daggy");
+
+var _ramda = require("ramda");
+
+var Coyoneda = (0, _daggy.tagged)('x', 'f');
+exports.Coyoneda = Coyoneda;
+
+Coyoneda.prototype.map = function (f) {
+  return Coyoneda(this.x, (0, _ramda.compose)(f, this.f));
+};
+
+Coyoneda.prototype.lower = function () {
+  return this.x.map(this.f);
+};
+
+Coyoneda.lift = function (x) {
+  return Coyoneda(x, _ramda.identity);
+};
+});
+
+;require.register("FP/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _exportNames = {
+  FP: true,
+  Coyoneda: true
+};
+Object.defineProperty(exports, "Coyoneda", {
+  enumerable: true,
+  get: function get() {
+    return _coyoneda.Coyoneda;
+  }
+});
+exports.FP = void 0;
+
+var _all = require("./all");
+
+Object.keys(_all).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _all[key];
+    }
+  });
+});
+
+var _any = require("./any");
+
+Object.keys(_any).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _any[key];
+    }
+  });
+});
+
+var _tuple = require("./tuple.js");
+
+Object.keys(_tuple).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _tuple[key];
+    }
+  });
+});
+
+var _coyoneda = require("./coyoneda");
+
+var _pointfree = require("./pointfree");
+
+Object.keys(_pointfree).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _pointfree[key];
+    }
+  });
+});
+
+var _sum = require("./sum.js");
+
+Object.keys(_sum).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _sum[key];
+    }
+  });
+});
+
+var _list = require("./list");
+
+Object.keys(_list).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _list[key];
+    }
+  });
+});
+
+var _intersection = require("./intersection.js");
+
+Object.keys(_intersection).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _intersection[key];
+    }
+  });
+});
+
+var _array = require("./array");
+
+var _task = require("./task");
+
+var _maybe = require("./maybe");
+
+var _validation = require("./validation");
+
+var configure = function configure() {
+  _array.ArrayFP.configure();
+
+  _task.Task.configure();
+
+  _maybe.Maybe.configure();
+
+  _validation.Validation.configure();
+};
+
+var FP = {
+  configure: configure
+};
+exports.FP = FP;
+});
+
+;require.register("FP/intersection.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Intersection = void 0;
+
+// Intersection Semigroup.
+//
+// The intersection (based on value equality) of two lists
+// Intersection :: (Eq m) <= m -> Intersection m
+var Intersection = function Intersection(xs) {
+  return {
+    xs: xs,
+    concat: function concat(_ref) {
+      var ys = _ref.xs;
+      return Intersection(xs.filter(function (x) {
+        return ys.some(function (y) {
+          return y.equals(x);
+        });
+      }));
+    },
+    inspect: "Intersection(".concat(xs, ")")
+  };
+};
+
+exports.Intersection = Intersection;
+});
+
+;require.register("FP/list.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.List = void 0;
+
+var _data = require("data.maybe");
+
+var _ramda = require("ramda");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Nil = function Nil() {
+  _classCallCheck(this, Nil);
+
+  this.head = undefined;
+  this.tail = undefined;
+  this.isNil = true;
+  this.isCons = false;
+};
+
+var Cons = function Cons(x, xs) {
+  _classCallCheck(this, Cons);
+
+  this.head = x;
+  this.tail = xs;
+  this.isNil = false;
+  this.isCons = true;
+}; //curry :: (a -> b -> c) -> a -> b -> c
+
+
+var curry = function curry(f) {
+  return function (x) {
+    return function (y) {
+      return f(x, y);
+    };
+  };
+}; //uncurry :: (a -> b -> c) -> (a, b) -> c
+
+
+var uncurry = function uncurry(f) {
+  return function (x, y) {
+    return f(x)(y);
+  };
+}; //o :: ((b -> c), (a -> b)) -> a -> c
+
+
+var o = function o(f, g) {
+  return function (x) {
+    return f(g(x));
+  };
+}; //id :: a -> a
+
+
+var id = function id(x) {
+  return x;
+}; //flip :: (a -> b -> c) -> (b, a) -> c
+
+
+var flip = function flip(f) {
+  return function (x, y) {
+    return f(y, x);
+  };
+}; //cons :: (a, List a) -> List a
+
+
+var cons = function cons(x, xs) {
+  return new Cons(x, xs);
+}; //snoc :: (List a, a) -> List a
+
+
+var snoc = function snoc(xs, x) {
+  return new Cons(x, xs);
+}; //ccons :: a -> List a -> List a
+
+
+var ccons = curry(cons); //csnoc :: List a -> a -> List a
+//const csnoc = curry(snoc)
+//nil :: () => List a
+
+var nil = function nil() {
+  return new Nil();
+}; //head :: List a -> a | undefined
+
+
+var head = function head(_ref) {
+  var head = _ref.head;
+  return head;
+}; //tail :: List a -> List a | undefined
+
+
+var tail = function tail(_ref2) {
+  var tail = _ref2.tail;
+  return tail;
+}; //concat :: List a -> List a -> List a
+
+
+var concat = function concat(xs) {
+  return function (ys) {
+    return foldr(cons)(ys)(xs);
+  };
+}; //foldl :: ((a, b) -> a) -> a -> List b -> a
+
+
+var foldl = function foldl(f) {
+  var go = function go(b) {
+    return function (_ref3) {
+      var isNil = _ref3.isNil,
+          head = _ref3.head,
+          tail = _ref3.tail;
+      return isNil ? b : go(f(b, head))(tail);
+    };
+  };
+
+  return go;
+}; //foldr :: ((a, b) -> a) -> a -> List b -> a
+
+
+var foldr = function foldr(f) {
+  return function (b) {
+    var rev = function rev(acc) {
+      return function (_ref4) {
+        var isNil = _ref4.isNil,
+            head = _ref4.head,
+            tail = _ref4.tail;
+        return isNil ? acc : rev(cons(head, acc))(tail);
+      };
+    };
+
+    return o(foldl(flip(f))(b), rev(nil()));
+  };
+}; //foldMap :: Monoid m => (a -> m) -> List a -> m
+
+
+var foldMap = function foldMap(f) {
+  return foldl(function (acc, x) {
+    return (acc || f(x).empty()).concat(f(x));
+  })(null);
+}; //foldM :: Monad m => (a -> m a) -> (a -> b -> m a) -> a -> List b -> m a
+
+
+var foldM = function foldM(point) {
+  return function (f) {
+    var go = function go(a) {
+      return function (_ref5) {
+        var isNil = _ref5.isNil,
+            head = _ref5.head,
+            tail = _ref5.tail;
+        return isNil ? point(a) : f(a, head).chain(function (x) {
+          return go(x)(tail);
+        });
+      };
+    };
+
+    return go;
+  };
+}; //map :: (a -> b) -> List a -> List b
+
+
+var map = function map(f) {
+  return function (_ref6) {
+    var isNil = _ref6.isNil,
+        head = _ref6.head,
+        tail = _ref6.tail;
+    return isNil ? nil() : cons(f(head), map(f)(tail));
+  };
+}; //ap :: List (a -> b) -> List a -> List b
+
+
+var ap = function ap(_ref7) {
+  var isNil = _ref7.isNil,
+      f = _ref7.head,
+      fs = _ref7.tail;
+  return function (xs) {
+    return isNil ? nil() : concat(map(f)(xs))(ap(fs)(xs));
+  };
+}; //pure :: a -> List a
+
+
+var pure = function pure(a) {
+  return cons(a, nil());
+}; //chain :: (a -> List b) -> List a -> List b
+
+
+var chain = function chain(_ref8) {
+  var isNil = _ref8.isNil,
+      head = _ref8.head,
+      tail = _ref8.tail;
+  return function (f) {
+    return isNil ? nil() : concat(f(head))(chain(tail)(f));
+  };
+}; //join :: List (List a -> List a)
+
+
+var join = foldr(uncurry(concat))(nil()); //traverse :: Applicative f => (a -> f a) -> (a -> f b) -> List a -> f (List b)
+
+var traverse = function traverse(point, f) {
+  var con_f = function con_f(x, ys) {
+    return f(x).map(ccons).ap(ys);
+  };
+
+  return foldr(con_f)(point(nil()));
+}; //sequenceA :: Applicative f => (a -> f a) -> List (f a) -> f (List a)
+
+
+var sequenceA = function sequenceA(point) {
+  return traverse(point, id);
+}; //length :: List a -> Int
+
+
+var length = function length(xs) {
+  var go = function go(b) {
+    return function (_ref9) {
+      var isCons = _ref9.isCons,
+          tail = _ref9.tail;
+      return isCons ? go(b + 1)(tail) : b;
+    };
+  };
+
+  return go(0)(xs);
+}; //findIndex :: (a -> Boolean) -> List a -> Maybe Int
+
+
+var findIndex = function findIndex(f) {
+  return function (xs) {
+    var go = function go(n) {
+      return function (_ref10) {
+        var isNil = _ref10.isNil,
+            head = _ref10.head,
+            tail = _ref10.tail;
+        return isNil ? (0, _data.Nothing)() : f(head) ? (0, _data.Just)(n) : go(n + 1)(tail);
+      };
+    };
+
+    return go(0)(xs);
+  };
+}; //index :: Int -> List a -> Maybe a
+
+
+var index = function index(i) {
+  return function (xs) {
+    var go = function go(n) {
+      return function (_ref11) {
+        var isNil = _ref11.isNil,
+            head = _ref11.head,
+            tail = _ref11.tail;
+        return isNil ? (0, _data.Nothing)() : n === i ? (0, _data.Just)(head) : go(n + 1)(tail);
+      };
+    };
+
+    return go(0)(xs);
+  };
+}; //reverse :: List a -> List a
+
+
+var reverse = function reverse(xs) {
+  var go = function go(acc) {
+    return function (_ref12) {
+      var isNil = _ref12.isNil,
+          head = _ref12.head,
+          tail = _ref12.tail;
+      return isNil ? acc : go(cons(head, acc))(tail);
+    };
+  };
+
+  return go(nil())(xs);
+}; //contains :: Eq a => List a -> a -> Boolean
+
+
+var contains = function contains(xs) {
+  return function (x) {
+    return findIndex((0, _ramda.equals)(x))(xs).isJust;
+  };
+}; //unique :: Eq a => List a -> List a
+
+
+var unique = o(reverse, foldl(function (acc, x) {
+  return contains(acc)(x) ? acc : cons(x, acc);
+})(nil())); //toArray :: List a -> [a]
+
+var toArray = foldl(function (acc, x) {
+  return acc.concat([x]);
+})([]); //toList :: [a] -> List a
+
+var toList = function toList(xs) {
+  return xs.reduceRight(function (acc, x) {
+    return cons(x, acc);
+  }, nil());
+}; //List :: a -> ... -> List a
+
+
+var list = function list() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  return toList(args);
+};
+
+var List = {
+  list: list,
+  cons: cons,
+  snoc: snoc,
+  nil: nil,
+  head: head,
+  tail: tail,
+  foldl: foldl,
+  foldr: foldr,
+  foldMap: foldMap,
+  foldM: foldM,
+  concat: concat,
+  map: map,
+  ap: ap,
+  pure: pure,
+  join: join,
+  chain: chain,
+  traverse: traverse,
+  sequenceA: sequenceA,
+  findIndex: findIndex,
+  index: index,
+  length: length,
+  reverse: reverse,
+  contains: contains,
+  unique: unique,
+  toArray: toArray,
+  toList: toList
+};
+exports.List = List;
+});
+
+;require.register("FP/maybe.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Maybe = void 0;
+
+var _data = _interopRequireDefault(require("data.maybe"));
+
+var _data2 = _interopRequireDefault(require("data.task"));
+
+var _util = require("./util");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var configure = function configure(_) {
+  var _toTask = function _toTask(nothing) {
+    var cata = {
+      Nothing: function Nothing(_) {
+        return _data2.default.of(nothing);
+      },
+      Just: function Just(x) {
+        return _data2.default.of(x);
+      }
+    };
+    return this.cata(cata);
+  };
+
+  Object.defineProperty(_data.default.prototype, 'toTask', (0, _util.value)(_toTask));
+};
+
+var Maybe = {
+  configure: configure
+};
+exports.Maybe = Maybe;
+});
+
+;require.register("FP/pointfree.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.parse = exports.taskToPromise = exports.promiseToTask = exports.eitherToTask = exports.toList = exports.fold = exports.foldMap = exports.traverse = exports.of = exports.sequenceA = exports.mconcat = exports.mjoin = exports.ParseError = void 0;
+
+var _ramda = require("ramda");
+
+var _data = _interopRequireDefault(require("data.either"));
+
+var _data2 = _interopRequireDefault(require("data.task"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _construct(Parent, args, Class) { if (isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var ParseError =
+/*#__PURE__*/
+function (_Error) {
+  _inherits(ParseError, _Error);
+
+  function ParseError() {
+    _classCallCheck(this, ParseError);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ParseError).apply(this, arguments));
+  }
+
+  return ParseError;
+}(_wrapNativeSuper(Error));
+
+exports.ParseError = ParseError;
+
+var id = function id(x) {
+  return x;
+};
+
+var _groupsOf = (0, _ramda.curry)(function (n, xs) {
+  return !xs.length ? [] : [xs.slice(0, n)].concat(_groupsOf(n, xs.slice(n, length)));
+});
+
+var mjoin = function mjoin(mmv) {
+  if (mmv.mjoin) return mmv.mjoin();
+  return (0, _ramda.chain)(id, mmv);
+};
+
+exports.mjoin = mjoin;
+var mconcat = (0, _ramda.curry)(function (xs, empty) {
+  return xs.length ? xs.reduce(_ramda.concat) : empty();
+});
+exports.mconcat = mconcat;
+var sequenceA = (0, _ramda.curry)(function (point, fctr) {
+  return fctr.traverse(id, point);
+});
+exports.sequenceA = sequenceA;
+
+var of = function of(x) {
+  return x.of;
+};
+
+exports.of = of;
+var traverse = (0, _ramda.curry)(function (f, point, fctr) {
+  return (0, _ramda.compose)(sequenceA(point), (0, _ramda.map)(f))(fctr);
+});
+exports.traverse = traverse;
+var foldMap = (0, _ramda.curry)(function (f, fldable) {
+  return fldable.reduce(function (acc, x) {
+    var r = f(x);
+    acc = acc || r.empty();
+    return acc.concat(r);
+  }, null);
+});
+exports.foldMap = foldMap;
+var fold = (0, _ramda.curry)(function (f, g, x) {
+  return x.fold(f, g);
+});
+exports.fold = fold;
+
+var toList = function toList(x) {
+  return x.reduce(function (acc, y) {
+    return [y].concat(acc);
+  }, []);
+};
+
+exports.toList = toList;
+
+var eitherToTask = function eitherToTask(x) {
+  return x.cata({
+    Left: function Left(e) {
+      return _data2.default.rejected(new ParseError(e));
+    },
+    Right: function Right(x) {
+      return _data2.default.of(x);
+    }
+  });
+};
+
+exports.eitherToTask = eitherToTask;
+
+var promiseToTask = function promiseToTask(p) {
+  return new _data2.default(function (rej, res) {
+    return p.then(res, rej);
+  });
+};
+
+exports.promiseToTask = promiseToTask;
+
+var taskToPromise = function taskToPromise(t) {
+  return new Promise(function (res, rej) {
+    return t.fork(rej, res);
+  });
+};
+
+exports.taskToPromise = taskToPromise;
+
+var parse = _data.default.try((0, _ramda.compose)(JSON.parse, (0, _ramda.prop)('response')));
+
+exports.parse = parse;
+});
+
+;require.register("FP/sum.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Sum = void 0;
+
+var Sum = function Sum(x) {
+  return {
+    x: x,
+    concat: function concat(_ref) {
+      var y = _ref.x;
+      return x + y;
+    },
+    inspect: "Sum(".concat(x, ")")
+  };
+};
+
+exports.Sum = Sum;
+});
+
+;require.register("FP/task.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Task = void 0;
+
+var _data = _interopRequireDefault(require("data.task"));
+
+var _util = require("./util");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var configure = function configure() {
+  var _mjoin = function _mjoin() {
+    var _this = this;
+
+    return new _data.default(function (rej, res) {
+      return _this.fork(rej, function (s) {
+        return s.fork(rej, res);
+      });
+    });
+  };
+
+  Object.defineProperty(_data.default.prototype, 'mjoin', (0, _util.value)(_mjoin));
+};
+
+var Task = {
+  configure: configure
+};
+exports.Task = Task;
+});
+
+;require.register("FP/tuple.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.uncurry5 = exports.uncurry4 = exports.uncurry3 = exports.uncurry2 = exports.curry5 = exports.curry4 = exports.curry3 = exports.curry2 = exports.tuple5 = exports.tuple4 = exports.tuple3 = exports.tuple2 = exports.Tuple5 = exports.Tuple4 = exports.Tuple3 = exports.Tuple2 = exports.Tuple = void 0;
+
+var _daggy = require("daggy");
+
+var Tuple = (0, _daggy.tagged)('_1', '_2');
+exports.Tuple = Tuple;
+var Tuple2 = Tuple;
+exports.Tuple2 = Tuple2;
+var Tuple3 = (0, _daggy.tagged)('_1', '_2', '_3');
+exports.Tuple3 = Tuple3;
+var Tuple4 = (0, _daggy.tagged)('_1', '_2', '_3', '_4');
+exports.Tuple4 = Tuple4;
+var Tuple5 = (0, _daggy.tagged)('_1', '_2', '_3', '_4', '_5'); // Methods
+
+exports.Tuple5 = Tuple5;
+
+Tuple2.prototype.concat = function (b) {
+  return Tuple2(this._1.concat(b._1), this._2.concat(b._2));
+};
+
+Tuple3.prototype.concat = function (b) {
+  return Tuple3(this._1.concat(b._1), this._2.concat(b._2), this._3.concat(b._3));
+};
+
+Tuple4.prototype.concat = function (b) {
+  return Tuple4(this._1.concat(b._1), this._2.concat(b._2), this._3.concat(b._3), this._4.concat(b._4));
+};
+
+Tuple5.prototype.concat = function (b) {
+  return Tuple5(this._1.concat(b._1), this._2.concat(b._2), this._3.concat(b._3), this._4.concat(b._4), this._5.concat(b._5));
+}; // Methods
+
+
+Tuple.prototype.dimap = function (f, g) {
+  return Tuple(f(this._1), g(this._2));
+};
+
+Tuple.prototype.map = function (f) {
+  return Tuple(this._1, f(this._2));
+};
+
+Tuple.prototype.curry = function (f) {
+  return f(this);
+};
+
+Tuple.prototype.uncurry = function (f) {
+  return f(this._1, this._2);
+};
+
+Tuple.prototype.extend = function (f) {
+  return Tuple(this._1, f(this));
+};
+
+Tuple.prototype.extract = function () {
+  return this._2;
+};
+
+Tuple.prototype.foldl = function (f, z) {
+  return f(this._2, z);
+};
+
+Tuple.prototype.foldr = function (f, z) {
+  return f(z, this._2);
+};
+
+Tuple.prototype.foldMap = function (f, _) {
+  return f(this._2);
+};
+
+var tuple2 = Tuple;
+exports.tuple2 = tuple2;
+
+var tuple3 = function tuple3(a, b, c) {
+  return Tuple(tuple2(a, b), c);
+};
+
+exports.tuple3 = tuple3;
+
+var tuple4 = function tuple4(a, b, c, d) {
+  return Tuple(tuple3(a, b, c), d);
+};
+
+exports.tuple4 = tuple4;
+
+var tuple5 = function tuple5(a, b, c, d, e) {
+  return Tuple(tuple4(a, b, c, d), e);
+};
+
+exports.tuple5 = tuple5;
+
+var curry2 = function curry2(f, a, b) {
+  return f(tuple2(a, b));
+};
+
+exports.curry2 = curry2;
+
+var curry3 = function curry3(f, a, b, c) {
+  return f(tuple3(a, b, c));
+};
+
+exports.curry3 = curry3;
+
+var curry4 = function curry4(f, a, b, c, d) {
+  return f(tuple4(a, b, c, d));
+};
+
+exports.curry4 = curry4;
+
+var curry5 = function curry5(f, a, b, c, d, e) {
+  return f(tuple5(a, b, c, d, e));
+};
+
+exports.curry5 = curry5;
+
+var uncurry2 = function uncurry2(f, t) {
+  return f(t._1, t._2);
+};
+
+exports.uncurry2 = uncurry2;
+
+var uncurry3 = function uncurry3(f, t) {
+  return f(t._1._1, t._1._2, t._2);
+};
+
+exports.uncurry3 = uncurry3;
+
+var uncurry4 = function uncurry4(f, t) {
+  return f(t._1._1._1, t._1._1._2, t._1._2, t._2);
+};
+
+exports.uncurry4 = uncurry4;
+
+var uncurry5 = function uncurry5(f, t) {
+  return f(t._1._1._1._1, t._1._1._1._2, t._1._1._2, t._1._2, t._2);
+};
+
+exports.uncurry5 = uncurry5;
+});
+
+;require.register("FP/util.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.value = void 0;
+
+var value = function value(f) {
+  var x = {
+    value: f,
+    writable: true,
+    configurable: true,
+    enumerable: false
+  };
+  return x;
+};
+
+exports.value = value;
+});
+
+;require.register("FP/validation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Validation = void 0;
+
+var _data = _interopRequireDefault(require("data.validation"));
+
+var _data2 = _interopRequireDefault(require("data.task"));
+
+var _util = require("./util");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var constant = function constant(x) {
+  return function () {
+    return x;
+  };
+};
+
+var id = function id(x) {
+  return x;
+};
+
+var configure = function configure() {
+  var apLeft = function apLeft(b) {
+    return this.map(constant).ap(b);
+  };
+
+  Object.defineProperty(_data.default.prototype, 'apLeft', (0, _util.value)(apLeft));
+
+  var apRight = function apRight(b) {
+    return this.map(constant(id)).ap(b);
+  };
+
+  Object.defineProperty(_data.default.prototype, 'apRight', (0, _util.value)(apRight));
+
+  var _toTask = function _toTask() {
+    var f = {
+      Failure: function Failure(x) {
+        return _data2.default.rejected(x);
+      },
+      Success: function Success(x) {
+        return _data2.default.of(x);
+      }
+    };
+    return this.cata(f);
+  };
+
+  Object.defineProperty(_data.default.prototype, 'toTask', (0, _util.value)(_toTask));
+};
+
+var Validation = {
+  configure: configure
+};
+exports.Validation = Validation;
+});
+
+;require.register("Layouts/ProfileLayout.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _ProfileHeader = _interopRequireDefault(require("Components/Headers/ProfileHeader"));
+
+var _Footer = _interopRequireDefault(require("Components/Footer"));
+
+var _LeftAside = _interopRequireDefault(require("Components/LeftAside"));
+
+var _Body = _interopRequireDefault(require("Components/Body"));
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileLayout = function ProfileLayout(_ref) {
+  var mdl = _ref.attrs.mdl;
+  return {
+    view: function view(_ref2) {
+      var children = _ref2.children;
+      return m(".layout", {
+        id: "profile-layout"
+      }, [m(_ProfileHeader.default, {
+        mdl: mdl
+      }), mdl.state.profile !== "desktop" ? m(_Modal.default, {
+        isActive: mdl.state.showSidebarModal(),
+        close: function close() {
+          return mdl.toggleSidebarModal(mdl);
+        },
+        classList: "",
+        mdl: mdl,
+        content: m(_LeftAside.default, {
+          mdl: mdl
+        })
+      }) : m(_LeftAside.default, {
+        mdl: mdl
+      }), m(_Body.default, {
+        mdl: mdl
+      }, [children]), m(_Footer.default, {
+        mdl: mdl
+      })]);
+    }
+  };
+};
+
+var _default = ProfileLayout;
+exports.default = _default;
+});
+
+;require.register("Layouts/SplashLayout.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _SplashHeader = _interopRequireDefault(require("Components/Headers/SplashHeader"));
+
+var _Footer = _interopRequireDefault(require("Components/Footer"));
+
+var _Body = _interopRequireDefault(require("Components/Body"));
+
+var _ProgressBar = _interopRequireDefault(require("Components/ProgressBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SplashLayout = function SplashLayout(_ref) {
+  var mdl = _ref.attrs.mdl;
+  return {
+    view: function view(_ref2) {
+      var children = _ref2.children;
+      return m(".layout", {
+        id: "splash-layout"
+      }, [m(_SplashHeader.default, {
+        mdl: mdl
+      }), m(_Body.default, {
+        mdl: mdl
+      }, [children]), m(_Footer.default, {
+        mdl: mdl
+      })]);
+    }
+  };
+};
+
+var _default = SplashLayout;
+exports.default = _default;
+});
+
+;require.register("Layouts/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _SplashLayout = require("./SplashLayout.js");
+
+Object.keys(_SplashLayout).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _SplashLayout[key];
+    }
+  });
+});
+
+var _ProfileLayout = require("./ProfileLayout.js");
+
+Object.keys(_ProfileLayout).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _ProfileLayout[key];
+    }
+  });
+});
+});
+
+;require.register("Model.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.model = void 0;
+
+var _http = _interopRequireDefault(require("Utils/http"));
+
+var _index = _interopRequireDefault(require("./Routes/index.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import m from 'mithril'
+var model = {
+  clients: [],
+  Routes: _index.default,
+  http: _http.default,
+  data: Stream({}),
+  state: {
+    loadingProgress: {
+      max: 0,
+      value: 0
+    },
+    isAuth: Stream(false),
+    paginate: {
+      from: 1,
+      size: 10,
+      total: 0
+    },
+    isLoading: Stream(false),
+    url: "",
+    route: "",
+    scrollPos: Stream(window.scrollY),
+    limit: 10,
+    profile: "",
+    showModal: Stream(false),
+    showSidebarModal: Stream(false),
+    showAuthModal: Stream(false),
+    showSettings: Stream(false),
+    showNav: Stream(false),
+    toast: {
+      show: Stream(false),
+      class: Stream("primary"),
+      contents: Stream("content")
+    },
+    query: Stream("")
+  },
+  toggles: {},
+  toggle: function toggle(mdl, type) {
+    mdl.toggles[type] ? mdl.toggles[type](!mdl.toggles[type]()) : mdl.toggles[type] = Stream(true); // console.log(mdl.toggles[type]())
+  },
+  toggleModal: function toggleModal(mdl) {
+    return mdl.state.showModal(!mdl.state.showModal());
+  },
+  toggleToast: function toggleToast(mdl) {
+    return mdl.state.toast.show(!mdl.state.toast.show());
+  },
+  toggleSidebarModal: function toggleSidebarModal(mdl) {
+    return mdl.state.showSidebarModal(!mdl.state.showSidebarModal());
+  },
+  toggleAuthModal: function toggleAuthModal(mdl) {
+    return mdl.state.showAuthModal(!mdl.state.showAuthModal());
+  },
+  toggleSettings: function toggleSettings(mdl) {
+    return mdl.state.showSettings(!mdl.state.showSettings());
+  },
+  toggleNav: function toggleNav(mdl) {
+    return mdl.state.showNav(!mdl.state.showNav());
+  },
+  filterData: function filterData(mdl) {
+    return function (query) {
+      return mdl.state.query(query);
+    };
+  }
+};
+exports.model = model;
+});
+
+;require.register("Pages/Admin/BatteryConfig/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var BatteryTestConfig = function BatteryTestConfig(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".battery-config", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
+    }
+  };
+};
+
+var _default = BatteryTestConfig;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/Dashboard/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Dashboard = function Dashboard(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".dashboard", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
+    }
+  };
+};
+
+var _default = Dashboard;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/AddClientModal/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/AddClientModal/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _registerClientForm = _interopRequireDefault(require("../registerClientForm.js"));
+
+var _Validations = require("./Validations.js");
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _fns = require("../fns.js");
+
+var _Utils = require("Utils");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var state = (0, _Utils.jsonCopy)(_fns.formState);
+
+var validateForm = function validateForm(state) {
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
+  };
+
+  var onSuccess = function onSuccess(state) {
+    return function (_) {
+      return state.errors = {};
+    };
+  };
+
+  state.isSubmitted = true;
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError(state), onSuccess(state));
+};
+
+var saveForm = function saveForm(mdl) {
+  return function (state) {
+    var onError = function onError(errs) {
+      if (errs.HttpError) {
+        state.httpError = errs.Errors;
+        state.errors = {};
+      } else state.errors = errs;
+
+      console.log("failed save", state);
+    };
+
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref) {
+        var createClient = _ref.createClient;
+        mdl.toggle(mdl, "AddClient");
+        (0, _fns.resetForm)(state);
+        (0, _fns.loadClients)(mdl);
+      };
+    };
+
+    state.isSubmitted = true;
+    (0, _Validations.validateClientRegistrationTask)(state.data).chain((0, _fns.saveClient)(mdl)).fork(onError, onSuccess(mdl));
+  };
+};
+
+var AddClientActions = function AddClientActions() {
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          state = _ref2$attrs.state;
+      return [m(_Button.default, {
+        mdl: mdl,
+        type: "submit",
+        for: "client-form",
+        action: function action() {
+          return saveForm(mdl)(state);
+        },
+        label: "Add New Client",
+        classList: "input btn btn-primary authBtn"
+      })];
+    }
+  };
+};
+
+var AddClient = function AddClient() {
+  return {
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
+      return m("section.addClient", [m("button.btn", {
+        onclick: function onclick(e) {
+          return mdl.toggle(mdl, "AddClient");
+        }
+      }, "Add Client"), mdl.toggles["AddClient"] && m(_Modal.default, {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.toggles["AddClient"](),
+        close: function close() {
+          return mdl.toggle(mdl, "AddClient");
+        },
+        title: "Add Client",
+        content: m(_registerClientForm.default, {
+          data: state.data,
+          errors: state.errors,
+          isSubmitted: state.isSubmitted,
+          httpError: state.httpError,
+          validate: function validate() {
+            return validateForm(state);
+          }
+        }),
+        footer: m(AddClientActions, {
+          mdl: mdl,
+          state: state
+        })
+      })]);
+    }
+  };
+};
+
+var _default = AddClient;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/ClientCard.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _animations = require("Styles/animations.js");
+
+var _EditClientModal = _interopRequireDefault(require("./EditClientModal "));
+
+var _DeleteClientModal = _interopRequireDefault(require("./DeleteClientModal"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ClientCard = function ClientCard() {
+  return {
+    onbeforeremove: _animations.SlideOutLeft,
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          client = _ref$attrs.client;
+      return m(".panel-item.card.client", m(".tile.tile-centered", [m(".tile-icon", m("figure.avatar", {
+        "data-initial": "".concat(client.firstname[0]).concat(client.lastname[0])
+      })), m(".tile-content", m(".text.text-bold", "".concat(client.lastname, ", ").concat(client.firstname))), m(".dropdown dropdown-right", m(".btn-group", [m("button.btn.btn-action.btn-lg.dropdown-toggle", {
+        tabIndex: 0
+      }, m("i.icon.icon-more-vert")), m("ul.menu", {
+        id: "client-menu"
+      }, [m("li.menu-item", m(_EditClientModal.default, {
+        mdl: mdl,
+        client: client
+      })), m("li.menu-item", m(_DeleteClientModal.default, {
+        mdl: mdl,
+        client: client
+      }))])]))]));
+    }
+  };
+};
+
+var _default = ClientCard;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/DeleteClientModal/Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/DeleteClientModal/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _fns = require("../fns.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DeleteClientActions = function DeleteClientActions() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          mdl = _ref$attrs.mdl,
+          client = _ref$attrs.client;
+      return [m(_Button.default, {
+        mdl: mdl,
+        type: "submit",
+        for: "client-form",
+        action: function action() {
+          return (0, _fns.deleteClient)(mdl)(client.id);
+        },
+        label: "Delete Client",
+        classList: "input btn btn-error authBtn"
+      })];
+    }
+  };
+};
+
+var DeleteClient = function DeleteClient() {
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          client = _ref2$attrs.client;
+      return m("section.deleteClient", [m("button.btn btn-error", {
+        onclick: function onclick(e) {
+          return mdl.toggle(mdl, "deleteClient");
+        }
+      }, "Delete Client"), mdl.toggles["deleteClient"] && m(_Modal.default, {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.toggles["deleteClient"](),
+        close: function close() {
+          return mdl.toggle(mdl, "deleteClient");
+        },
+        title: "Delete Client: ".concat(client.firstname, " ").concat(client.lastname),
+        content: m("p.error", "WARNING proceding will remove ".concat(client.firstname, " ").concat(client.lastname, " and all associated Data.")),
+        footer: m(DeleteClientActions, {
+          mdl: mdl,
+          client: client
+        })
+      })]);
+    }
+  };
+};
+
+var _default = DeleteClient;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/EditClientModal /Validations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.validateClientRegistrationTask = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _Utils = require("Utils");
+
+var ValidateRegistration = (0, _data.Success)((0, _ramda.curryN)(3, _ramda.identity));
+
+var nameLense = function nameLense(prefix) {
+  return (0, _ramda.lensProp)("".concat(prefix, "name"));
+};
+
+var emailLense = (0, _ramda.lensProp)("email");
+var emailConfirmLense = (0, _ramda.lensProp)("confirmEmail");
+
+var NAME_REQUIRED_MSG = function NAME_REQUIRED_MSG(prefix) {
+  return "A ".concat(prefix, " Name is required");
+};
+
+var EMAIL_REQUIRED_MSG = "An Email is required";
+var EMAILS_MUST_MATCH = "Emails do not match";
+var INVALID_EMAIL_FORMAT = "Email must be a valid format";
+
+var inputsMatch = function inputsMatch(input1) {
+  return function (input2) {
+    return input2 === input1;
+  };
+};
+
+var validateFirstName = function validateFirstName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("first"), NAME_REQUIRED_MSG("first"), data));
+};
+
+var validateLastName = function validateLastName(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, nameLense("last"), NAME_REQUIRED_MSG("last"), data));
+};
+
+var validateEmails = function validateEmails(data) {
+  return (0, _data.Success)(data).apLeft((0, _Utils.validate)(_Utils.isRequired, emailLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(_Utils.isRequired, emailConfirmLense, EMAIL_REQUIRED_MSG, data)).apLeft((0, _Utils.validate)(inputsMatch(data.confirmEmail), emailLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(inputsMatch(data.email), emailConfirmLense, EMAILS_MUST_MATCH, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailConfirmLense, INVALID_EMAIL_FORMAT, data)).apLeft((0, _Utils.validate)(_Utils.emailFormat, emailLense, INVALID_EMAIL_FORMAT, data));
+};
+
+var validateClientRegistrationTask = function validateClientRegistrationTask(data) {
+  return ValidateRegistration.ap(validateFirstName(data)).ap(validateLastName(data)).ap(validateEmails(data)) // .ap(validateBirthday(data))
+  .failureMap(_ramda.mergeAll).toTask();
+};
+
+exports.validateClientRegistrationTask = validateClientRegistrationTask;
+});
+
+;require.register("Pages/Admin/ManageClients/EditClientModal /index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Modal = _interopRequireDefault(require("Components/Modal"));
+
+var _animations = require("Utils/animations");
+
+var _registerClientForm = _interopRequireDefault(require("../registerClientForm.js"));
+
+var _Validations = require("./Validations.js");
+
+var _Utils = require("Utils");
+
+var _Button = _interopRequireDefault(require("Components/Button"));
+
+var _fns = require("../fns.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var state = (0, _Utils.jsonCopy)(_fns.formState);
+
+var validateForm = function validateForm(state) {
+  var onError = function onError(state) {
+    return function (errs) {
+      return state.errors = errs;
+    };
+  };
+
+  var onSuccess = function onSuccess(state) {
+    return function (_) {
+      return state.errors = {};
+    };
+  };
+
+  state.isSubmitted = true;
+  (0, _Validations.validateClientRegistrationTask)(state.data).fork(onError(state), onSuccess(state));
+};
+
+var saveForm = function saveForm(mdl) {
+  return function (state) {
+    var onError = function onError(errs) {
+      if (errs.HttpError) {
+        state.httpError = errs.Errors;
+        state.errors = {};
+      } else state.errors = errs;
+
+      console.log("failed save", state);
+    };
+
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref) {
+        var updateClient = _ref.updateClient;
+        mdl.toggle(mdl, "EditClient-".concat(updateClient.id));
+        (0, _fns.resetForm)(state);
+        (0, _fns.loadClients)(mdl);
+      };
+    };
+
+    state.isSubmitted = true;
+    (0, _Validations.validateClientRegistrationTask)(state.data).chain((0, _fns.editClient)(mdl)).fork(onError, onSuccess(mdl));
+  };
+};
+
+var EditClientActions = function EditClientActions() {
+  return {
+    view: function view(_ref2) {
+      var _ref2$attrs = _ref2.attrs,
+          mdl = _ref2$attrs.mdl,
+          state = _ref2$attrs.state;
+      return [m(_Button.default, {
+        mdl: mdl,
+        type: "submit",
+        for: "client-form",
+        action: function action() {
+          return saveForm(mdl)(state);
+        },
+        label: "Update Client",
+        classList: "input btn btn-primary authBtn"
+      })];
+    }
+  };
+};
+
+var EditClient = function EditClient() {
+  return {
+    view: function view(_ref3) {
+      var _ref3$attrs = _ref3.attrs,
+          mdl = _ref3$attrs.mdl,
+          client = _ref3$attrs.client;
+      return m("section.editClient", [m("button.btn", {
+        onclick: function onclick(e) {
+          state.data = _objectSpread({}, client, {
+            confirmEmail: client.email
+          });
+          mdl.toggle(mdl, "EditClient-".concat(client.id));
+        }
+      }, "Edit Client"), mdl.toggles["EditClient-".concat(client.id)] && m(_Modal.default, {
+        animateEntrance: _animations.animateComponentEntrance,
+        animateExit: _animations.slideModalOut,
+        mdl: mdl,
+        classList: "",
+        isActive: mdl.toggles["EditClient-".concat(client.id)](),
+        close: function close() {
+          return mdl.toggle(mdl, "EditClient-".concat(client.id));
+        },
+        title: "Edit Client",
+        content: m(_registerClientForm.default, {
+          data: state.data,
+          errors: state.errors,
+          httpError: state.httpError,
+          isSubmitted: state.isSubmitted,
+          validate: function validate() {
+            return validateForm(state);
+          }
+        }),
+        footer: m(EditClientActions, {
+          mdl: mdl,
+          state: state
+        })
+      })]);
+    }
+  };
+};
+
+var _default = EditClient;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/SortClients.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var SortClients = function SortClients() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          list = _ref$attrs.list,
+          props = _ref$attrs.props,
+          state = _ref$attrs.state,
+          sort = _ref$attrs.sort;
+      return m(".sort", [m("select", {
+        onchange: function onchange(e) {
+          state.sortProp = e.target.value;
+          list = sort(list);
+        }
+      }, props.map(function (_ref2) {
+        var key = _ref2.key,
+            value = _ref2.value;
+        return m("option", {
+          key: key,
+          value: value
+        }, key);
+      }))]);
+    }
+  };
+};
+
+var _default = SortClients;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/fns.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deleteClient = exports.loadClients = exports.filterClientsBy = exports.saveClient = exports.editClient = exports.resetForm = exports.clientProps = exports.resetClientPageState = exports.clientPageStateModel = exports.formState = void 0;
+
+var _ramda = require("ramda");
+
+var _Utils = require("Utils");
+
+var _index = require("./index.js");
+
+var _moment = _interopRequireDefault(require("moment"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var clientModel = {
+  firstname: "",
+  lastname: "",
+  email: "",
+  confirmEmail: "",
+  birthdate: ""
+};
+var formState = {
+  isSubmitted: false,
+  errors: (0, _Utils.jsonCopy)(clientModel),
+  httpError: null,
+  data: (0, _Utils.jsonCopy)(clientModel)
+};
+exports.formState = formState;
+
+var clientPageStateModel = function clientPageStateModel() {
+  return {
+    isAsc: Stream(true),
+    sortProp: "firstname",
+    term: Stream("")
+  };
+};
+
+exports.clientPageStateModel = clientPageStateModel;
+
+var resetClientPageState = function resetClientPageState(state) {
+  return state = clientPageStateModel();
+};
+
+exports.resetClientPageState = resetClientPageState;
+var clientProps = [{
+  value: "firstname",
+  key: "first name"
+}, {
+  value: "lastname",
+  key: "last name"
+}, {
+  value: "birthdate",
+  key: "birthdate"
+}, {
+  value: "email",
+  key: "email"
+}];
+exports.clientProps = clientProps;
+var dateLens = (0, _ramda.lensProp)("birthdate");
+
+var formatAndIncBirthdate = function formatAndIncBirthdate(date) {
+  return (0, _moment.default)(date).add(1, "days").format("YYYY-MM-DD");
+};
+
+var dateViewModel = (0, _ramda.over)(dateLens, formatAndIncBirthdate);
+var makeTerms = (0, _Utils.addTerms)((0, _ramda.map)((0, _ramda.prop)("value"), clientProps));
+var toViewModel = (0, _ramda.compose)(makeTerms, dateViewModel);
+
+var resetForm = function resetForm(state) {
+  state.data = (0, _Utils.jsonCopy)(clientModel);
+  state.errors = (0, _Utils.jsonCopy)(clientModel);
+  state.httpError = null;
+  state.isSubmitted = false;
+};
+
+exports.resetForm = resetForm;
+
+var loadClientsTask = function loadClientsTask(mdl) {
+  return mdl.http.postQlTask(mdl)("query{\n      clients(where:{trainer:{userId:".concat(JSON.stringify(mdl.user.objectId), "}}){id, firstname, lastname, email, birthdate}\n      }"));
+};
+
+var deleteClientTask = function deleteClientTask(mdl) {
+  return function (id) {
+    return mdl.http.postQlTask(mdl)("\nmutation {\n  deleteClient(where:{id:".concat(JSON.stringify(id), "}){id}\n}"));
+  };
+};
+
+var saveClientTask = function saveClientTask(mdl) {
+  return function (_ref) {
+    var email = _ref.email,
+        firstname = _ref.firstname,
+        lastname = _ref.lastname,
+        birthdate = _ref.birthdate;
+    return mdl.http.postQlTask(mdl)("mutation {\n  createClient(\n    data: {\n      email:".concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+  };
+};
+
+var editClientTask = function editClientTask(mdl) {
+  return function (_ref2) {
+    var id = _ref2.id,
+        email = _ref2.email,
+        firstname = _ref2.firstname,
+        lastname = _ref2.lastname,
+        birthdate = _ref2.birthdate;
+    return mdl.http.postQlTask(mdl)("mutation {\n  updateClient(\n    where: {id: ".concat(JSON.stringify(id), "}\n    data: {\n      email:").concat(JSON.stringify(email), ",\n      firstname:").concat(JSON.stringify(firstname), ",\n      lastname:").concat(JSON.stringify(lastname), ",\n      birthdate:").concat(JSON.stringify(birthdate), ",\n      trainer:{connect:{userId: ").concat(JSON.stringify(mdl.user.objectId), "}}\n    }), {id, firstname, lastname, email, birthdate}\n}"));
+  };
+};
+
+var editClient = function editClient(mdl) {
+  return function (client) {
+    return editClientTask(mdl)(client);
+  };
+};
+
+exports.editClient = editClient;
+
+var saveClient = function saveClient(mdl) {
+  return function (client) {
+    return saveClientTask(mdl)(client);
+  };
+};
+
+exports.saveClient = saveClient;
+
+var filterClientsBy = function filterClientsBy(state) {
+  return (0, _ramda.compose)((0, _Utils.filterListBy)(state.term)(state.sortProp)(state.isAsc));
+};
+
+exports.filterClientsBy = filterClientsBy;
+
+var loadClients = function loadClients(mdl) {
+  var onError = function onError(e) {
+    return console.log("ERROR Fetching Clients", e);
+  };
+
+  var onSuccess = function onSuccess(clients) {
+    return mdl.clients = clients;
+  };
+
+  return loadClientsTask(mdl).map((0, _ramda.prop)("clients")).map((0, _ramda.map)(toViewModel)).map(filterClientsBy(_index.clientPageState)).fork(onError, onSuccess);
+};
+
+exports.loadClients = loadClients;
+
+var deleteClient = function deleteClient(mdl) {
+  return function (id) {
+    var onError = function onError(e) {
+      return console.log("ERROR deleteing Client", e);
+    };
+
+    var onSuccess = function onSuccess(mdl) {
+      return function (_ref3) {
+        var clients = _ref3.clients;
+        return mdl.clients = clients;
+      };
+    };
+
+    return deleteClientTask(mdl)(id).chain(function (_) {
+      return loadClientsTask(mdl);
+    }).fork(onError, onSuccess(mdl));
+  };
+};
+
+exports.deleteClient = deleteClient;
+});
+
+;require.register("Pages/Admin/ManageClients/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.clientPageState = void 0;
+
+var _AddClientModal = _interopRequireDefault(require("./AddClientModal"));
+
+var _ClientCard = _interopRequireDefault(require("./ClientCard.js"));
+
+var _SortClients = _interopRequireDefault(require("./SortClients.js"));
+
+var _Toolbar = _interopRequireDefault(require("Components/Toolbar"));
+
+var _fns = require("./fns.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var clientPageState = (0, _fns.clientPageStateModel)();
+exports.clientPageState = clientPageState;
+
+var ClientToolbar = function ClientToolbar() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m(_Toolbar.default, {
+        mdl: mdl,
+        left: m(_AddClientModal.default, {
+          mdl: mdl
+        }),
+        right: [, m(_SortClients.default, {
+          list: mdl.clients,
+          props: _fns.clientProps,
+          state: clientPageState,
+          sort: (0, _fns.filterClientsBy)(clientPageState)
+        }), m("button.btn btn-sm", {
+          onclick: function onclick() {
+            return clientPageState.isAsc(!clientPageState.isAsc());
+          }
+        }, m("i.icon ".concat(clientPageState.isAsc() ? "icon-arrow-down" : "icon-arrow-up"))), m(".has-icon-right", [m("input.form-input", {
+          type: "text",
+          oninput: function oninput(e) {
+            return clientPageState.term(e.target.value);
+          },
+          placeholder: "Filter Clients"
+        }), m("i.form-icon icon icon-search icon-sm")])]
+      });
+    }
+  };
+};
+
+var ManageClients = function ManageClients() {
+  var init = function init(_ref2) {
+    var mdl = _ref2.attrs.mdl;
+    return (0, _fns.loadClients)(mdl);
+  };
+
+  return {
+    onremove: exports.clientPageState = clientPageState = (0, _fns.clientPageStateModel)(),
+    oninit: init,
+    view: function view(_ref3) {
+      var mdl = _ref3.attrs.mdl;
+      var clients = (0, _fns.filterClientsBy)(clientPageState)(mdl.clients);
+      return m(".contents", {
+        id: "content"
+      }, [m(ClientToolbar, {
+        mdl: mdl
+      }), m("section.section", {
+        id: "content-data"
+      }, [m(".manageClients", {
+        id: mdl.state.route.id
+      }, [m("section.panel.client-panel", [m(".panel-header", m("h1.panel-title", mdl.state.route.title)), m(".panel-body", clients.map(function (client) {
+        return m(_ClientCard.default, {
+          key: client.id,
+          mdl: mdl,
+          client: client
+        });
+      }))])])])]);
+    }
+  };
+};
+
+var _default = ManageClients;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageClients/registerClientForm.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _FormInputs = _interopRequireDefault(require("Components/FormInputs"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RegisterClientForm = function RegisterClientForm() {
+  return {
+    view: function view(_ref) {
+      var _ref$attrs = _ref.attrs,
+          data = _ref$attrs.data,
+          errors = _ref$attrs.errors,
+          isSubmitted = _ref$attrs.isSubmitted,
+          httpError = _ref$attrs.httpError,
+          validate = _ref$attrs.validate;
+      return m("form.column col-6 col-sm-auto", {
+        id: "client-form"
+      }, [m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "firstname",
+        label: "First Name",
+        id: "first-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "lastname",
+        label: "Last Name",
+        id: "last-name",
+        type: "text"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "email",
+        label: "Email",
+        id: "email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "confirmEmail",
+        label: "Confirm Email",
+        id: "confirm-email",
+        type: "email"
+      }), m(_FormInputs.default, {
+        isSubmitted: isSubmitted,
+        validate: validate,
+        data: data,
+        errors: errors,
+        field: "birthdate",
+        label: "birthdate",
+        id: "birthdate",
+        type: "date"
+      }), httpError && httpError.map(function (err) {
+        return m(".toast toast-error", err);
+      })]);
+    }
+  };
+};
+
+var _default = RegisterClientForm;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/ManageNetwork/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var ManageNetwork = function ManageNetwork() {
+  var state = {};
+
+  var loadUsers = function loadUsers(_ref) {
+    var mdl = _ref.attrs.mdl;
+
+    var onError = function onError(e) {
+      console.log("ERROR", e);
+    };
+
+    var onSuccess = function onSuccess(s) {
+      console.log("SUCCESSS", s);
+      state.users = s;
+    };
+
+    return mdl.http.backEnd.getTask(mdl)("data/users?pageSize=100").fork(onError, onSuccess);
+  };
+
+  var updateAdminStatus = function updateAdminStatus(mdl, user) {
+    return function (e) {
+      var onError = function onError(user) {
+        return function (e) {
+          user.isAdmin = !user.isAdmin;
+          console.log("ERROR", e);
+        };
+      };
+
+      var onSuccess = function onSuccess(user) {
+        return function (s) {
+          console.log("SUCCESSS", user);
+        };
+      };
+
+      console.log({
+        mdl: mdl,
+        user: user
+      });
+      mdl.http.backEnd.putTask(mdl)("data/Users/".concat(user.objectId))({
+        isAdmin: user.isAdmin = !user.isAdmin
+      }).fork(onError(user), onSuccess(user));
+    };
+  };
+
+  return {
+    oninit: loadUsers,
+    view: function view(_ref2) {
+      var mdl = _ref2.attrs.mdl;
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, [m(".", [m("button.btn", "Add User")])]), m("section.section", {
+        id: "content-data"
+      }, [m(".manageNetworks", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title), state.users && state.users.map(function (u) {
+        return m(".menu", m(".menu-item", [m("p", u.name), m("p", u.email), m(".form-group", m("label.form-switch", [m("input[type='checkbox']", {
+          checked: u.isAdmin,
+          onchange: updateAdminStatus(mdl, u),
+          isDisabled: false,
+          class: ""
+        }), m("i.form-icon"), "User is Admin"]))]));
+      })])])]);
+    }
+  };
+};
+
+var _default = ManageNetwork;
+exports.default = _default;
+});
+
+;require.register("Pages/Admin/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("./Dashboard/index");
+
+Object.keys(_index).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index[key];
+    }
+  });
+});
+
+var _index2 = require("./ManageNetwork/index");
+
+Object.keys(_index2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index2[key];
+    }
+  });
+});
+
+var _index3 = require("./ManageClients/index");
+
+Object.keys(_index3).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index3[key];
+    }
+  });
+});
+
+var _index4 = require("./BatteryConfig/index");
+
+Object.keys(_index4).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index4[key];
+    }
+  });
+});
+});
+
+;require.register("Pages/Default/UnautherizedViews.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+var _Auth = _interopRequireDefault(require("Components/Auth"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UnautherizedView = function UnautherizedView() {
+  return {
+    view: function view(_ref) {
+      var mdl = _ref.attrs.mdl;
+      return m(".empty", [m("svg.unauth-lock", _Icons.default.lock), m("p.empty-title.h5", "Registered Users Only"), m("p.empty-subtitle", [m("button.btn", {
+        onclick: function onclick() {
+          return mdl.toggleAuthModal(mdl);
+        }
+      }, "Register or Log in to view this content"), m(_Auth.default, {
+        mdl: mdl
+      })])]);
+    }
+  };
+};
+
+var _default = UnautherizedView;
+exports.default = _default;
+});
+
+;require.register("Pages/Default/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var Default = function Default(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".content", [m("section.section", {
+        id: "content-toolbar"
+      }, []), m("section.section", {
+        id: "content-data"
+      }, [m(".default", {
+        id: mdl.state.route.id
+      }, [m("h1.title", mdl.state.route.title)])])]);
+    }
+  };
+};
+
+var _default = Default;
+exports.default = _default;
+});
+
+;require.register("Pages/Splash/About/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var About = function About(_ref) {
+  var mdl = _ref.attrs.mdl;
+  // console.log('mdl', mdl)
+  return {
+    view: function view() {
+      return m(".about", mdl.state.route.title);
+    }
+  };
+};
+
+var _default = About;
+exports.default = _default;
+});
+
+;require.register("Pages/Splash/Contact/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Contact = function Contact(_ref) {
+  var mdl = _ref.attrs.mdl;
+  return {
+    view: function view() {
+      return (0, _mithril.default)('.contact', mdl.state.route.title);
+    }
+  };
+};
+
+var _default = Contact;
+exports.default = _default;
+});
+
+;require.register("Pages/Splash/Home/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Home = function Home(_ref) {
+  var mdl = _ref.attrs.mdl;
+  return {
+    view: function view() {
+      return m("section.section", {
+        id: "content-data"
+      }, [m("section.home-section hero hero-lg bg-primary parall", m(".hero-body", [m("h1", "section 1")])), m("section.home-section hero hero-lg bg-secondary", m(".hero-body", m("h1", "section 2")))]);
+    }
+  };
+};
+
+var _default = Home;
+exports.default = _default;
+});
+
+;require.register("Pages/Splash/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("./About/index");
+
+Object.keys(_index).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index[key];
+    }
+  });
+});
+
+var _index2 = require("./Contact/index");
+
+Object.keys(_index2).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index2[key];
+    }
+  });
+});
+
+var _index3 = require("./Home/index");
+
+Object.keys(_index3).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _index3[key];
+    }
+  });
+});
+});
+
+;require.register("Routes/authenticated.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _ProfileLayout = _interopRequireDefault(require("Layouts/ProfileLayout"));
+
+var _Dashboard = _interopRequireDefault(require("Pages/Admin/Dashboard"));
+
+var _Default = _interopRequireDefault(require("Pages/Default"));
+
+var _ManageClients = _interopRequireDefault(require("Pages/Admin/ManageClients"));
+
+var _ManageNetwork = _interopRequireDefault(require("Pages/Admin/ManageNetwork"));
+
+var _BatteryConfig = _interopRequireDefault(require("Pages/Admin/BatteryConfig"));
+
+var _Utils = require("Utils");
+
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var authenticated = [{
+  id: "dashboard",
+  title: "Dashboard",
+  icon: _Icons.default.logo,
+  route: "/EXRX/:name/dashboard",
+  position: ["auth-nav", "left-aside"],
+  group: ["authenticated"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_Dashboard.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "profile-page",
+  title: "Profile Page",
+  icon: _Icons.default.home,
+  route: "/EXRX/:name/profile",
+  position: ["settings-nav"],
+  group: ["authenticated"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    console.log("profile page login on match", mdl, args, path, fullroute, isAnchor, !mdl.state.isAuth());
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_Default.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "battery-config",
+  title: "Battery Tests",
+  icon: _Icons.default.calcs,
+  route: "/EXRX/:name/battery-config",
+  position: ["left-aside"],
+  group: ["authenticated", "admin"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    // console.log(
+    //   "calcconfig",
+    //   mdl,
+    //   args,
+    //   path,
+    //   fullroute,
+    //   isAnchor,
+    //   mdl.state.isAuth(),
+    //   mdl.user.isAdmin
+    // )
+    // !mdl.user.isAdmin && m.route.set(m.route.get())
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_BatteryConfig.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "manage-clients",
+  title: "Clients",
+  icon: _Icons.default.users,
+  route: "/EXRX/:name/manage-clients",
+  position: ["left-aside"],
+  group: ["authenticated", "admin"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    // console.log(
+    //   "manage users on match",
+    //   mdl,
+    //   args,
+    //   path,
+    //   fullroute,
+    //   isAnchor,
+    //   mdl.state.isAuth(),
+    //   mdl.user.isAdmin
+    // )
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_ManageClients.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "manage-network",
+  title: "Configure Network",
+  icon: _Icons.default.users,
+  route: "/EXRX/:name/network-management",
+  position: ["settings-nav"],
+  group: ["authenticated", "admin"],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    // console.log(
+    //   "manage users on match",
+    //   mdl,
+    //   args,
+    //   path,
+    //   fullroute,
+    //   isAnchor,
+    //   mdl.state.isAuth(),
+    //   mdl.user.isAdmin
+    // )
+    !mdl.user.isAdmin && m.route.set(m.route.get());
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_ProfileLayout.default, {
+      mdl: mdl
+    }, m(_ManageNetwork.default, {
+      mdl: mdl
+    }));
+  }
+}];
+var _default = authenticated;
+exports.default = _default;
+});
+
+;require.register("Routes/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _splash = _interopRequireDefault(require("./splash.js"));
+
+var _authenticated = _interopRequireDefault(require("./authenticated"));
+
+var _ramda = require("ramda");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Routes = (0, _ramda.flatten)([_splash.default, _authenticated.default]);
+var _default = Routes;
+exports.default = _default;
+});
+
+;require.register("Routes/splash.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _SplashLayout = _interopRequireDefault(require("Layouts/SplashLayout"));
+
+var _Default = _interopRequireDefault(require("../Pages/Default"));
+
+var _Home = _interopRequireDefault(require("Pages/Splash/Home"));
+
+var _Utils = require("Utils");
+
+var _Icons = _interopRequireDefault(require("Components/Icons"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Splash = [{
+  id: "home",
+  title: "Home",
+  icon: _Icons.default.Home,
+  route: "/home",
+  position: ["nav"],
+  group: [],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_SplashLayout.default, {
+      mdl: mdl
+    }, m(_Home.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "about",
+  title: "About",
+  icon: "about",
+  route: "/about",
+  position: ["nav"],
+  group: [],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_SplashLayout.default, {
+      mdl: mdl
+    }, m(_Default.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "contact",
+  title: "Contact",
+  icon: _Icons.default.contact,
+  route: "/contact",
+  position: ["nav", "footer"],
+  group: [],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_SplashLayout.default, {
+      mdl: mdl
+    }, m(_Default.default, {
+      mdl: mdl
+    }));
+  }
+}, {
+  id: "blog",
+  title: "Blog",
+  icon: "blog",
+  route: "/blog",
+  position: ["nav", "footer"],
+  group: [],
+  children: [],
+  onmatch: function onmatch(mdl, args, path, fullroute, isAnchor) {
+    isAnchor && (0, _Utils.scrollToAnchor)(mdl.state.anchor);
+  },
+  component: function component(mdl) {
+    return m(_SplashLayout.default, {
+      mdl: mdl
+    }, m(_Default.default, {
+      mdl: mdl
+    }));
+  }
+}];
+var _default = Splash;
+exports.default = _default;
+});
+
+;require.register("Styles/animations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RemoveChildrenOut = exports.animate = exports.SlideChildrenInDown = exports.StretchInLeft = exports.SlideChildrenInRight = exports.SlideOutLeft = exports.SlideInRight = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var SlideInRight = function SlideInRight(_ref) {
+  var dom = _ref.dom;
+  dom.style.opacity = 0;
+  dom.classList.toggle("slideRight");
+  dom.style.opacity = 1;
+};
+
+exports.SlideInRight = SlideInRight;
+
+var SlideOutLeft = function SlideOutLeft(_ref2) {
+  var dom = _ref2.dom;
+  return new Promise(function (resolve) {
+    dom.classList.add("reverseAnimation", "slideRight");
+    dom.addEventListener("animationend", resolve);
+  });
+};
+
+exports.SlideOutLeft = SlideOutLeft;
+
+var SlideChildrenInRight = function SlideChildrenInRight(_ref3) {
+  var dom = _ref3.dom;
+
+  var children = _toConsumableArray(dom.children);
+
+  return children.map(function (child, idx) {
+    child.style.opacity = 0;
+    setTimeout(function () {
+      child.classList.toggle("slideRight");
+      child.style.opacity = 1;
+    }, (idx + 1) * 10);
+  });
+};
+
+exports.SlideChildrenInRight = SlideChildrenInRight;
+
+var StretchInLeft = function StretchInLeft(idx) {
+  return function (_ref4) {
+    var dom = _ref4.dom;
+    dom.style.opacity = 0;
+    return setTimeout(function () {
+      dom.classList.toggle("stretchRight");
+      dom.style.opacity = 1;
+    }, idx * 100 + 20);
+  };
+};
+
+exports.StretchInLeft = StretchInLeft;
+
+var SlideChildrenInDown = function SlideChildrenInDown(idx) {
+  return function (_ref5) {
+    var dom = _ref5.dom;
+    dom.style.opacity = 0;
+    setTimeout(function () {
+      dom.classList.toggle("slideDown");
+      dom.style.opacity = 1;
+    }, (idx + 1) * 200);
+  };
+};
+
+exports.SlideChildrenInDown = SlideChildrenInDown;
+
+var animate = function animate(dir) {
+  return function (_ref6) {
+    var dom = _ref6.dom;
+    dom.style.opacity = 0;
+    setTimeout(function () {
+      dom.classList.toggle(dir);
+      dom.style.opacity = 1;
+    }, 200);
+  };
+};
+
+exports.animate = animate;
+
+var RemoveChildrenOut = function RemoveChildrenOut(_ref7) {
+  var dom = _ref7.dom;
+  return new Promise(function () {
+    ;
+
+    _toConsumableArray(dom.children).reverse().map(function (child, idx) {
+      return setTimeout(function () {
+        child.style.display = "none";
+      }, idx * 100);
+    });
+  });
+};
+
+exports.RemoveChildrenOut = RemoveChildrenOut;
+});
+
+;require.register("Utils/animations.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.animateChildrenLimitsExit = exports.slideModalOut = exports.animate = exports.animateChildrenLimitsEntrance = exports.animateChildrenEntrance = exports.animateSidebarEntrance = exports.animateComponentEntrance = exports.IsLoading = void 0;
+
+var _mithril = _interopRequireDefault(require("mithril"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var IsLoading = (0, _mithril.default)(".holder", [(0, _mithril.default)(".preloader", [(0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div"), (0, _mithril.default)("div")])]);
+exports.IsLoading = IsLoading;
+
+var animateComponentEntrance = function animateComponentEntrance(idx) {
+  return function (_ref) {
+    var dom = _ref.dom;
+    dom.style.opacity = 0;
+    return setTimeout(function () {
+      dom.classList.toggle("stretchRight");
+      dom.style.opacity = 1;
+    }, idx * 100 + 20);
+  };
+};
+
+exports.animateComponentEntrance = animateComponentEntrance;
+
+var animateSidebarEntrance = function animateSidebarEntrance(_ref2) {
+  var dom = _ref2.dom;
+  dom.style.opacity = 0;
+  dom.classList.toggle("slideRight");
+  dom.style.opacity = 1;
+};
+
+exports.animateSidebarEntrance = animateSidebarEntrance;
+
+var animateChildrenEntrance = function animateChildrenEntrance(_ref3) {
+  var dom = _ref3.dom;
+
+  var children = _toConsumableArray(dom.children);
+
+  return children.map(function (child, idx) {
+    child.style.opacity = 0;
+    setTimeout(function () {
+      child.classList.toggle("slideRight");
+      child.style.opacity = 1;
+    }, (idx + 1) * 10);
+  });
+};
+
+exports.animateChildrenEntrance = animateChildrenEntrance;
+
+var animateChildrenLimitsEntrance = function animateChildrenLimitsEntrance(idx) {
+  return function (_ref4) {
+    var dom = _ref4.dom;
+    dom.style.opacity = 0;
+    setTimeout(function () {
+      dom.classList.toggle("slideDown");
+      dom.style.opacity = 1;
+    }, (idx + 1) * 200);
+  };
+};
+
+exports.animateChildrenLimitsEntrance = animateChildrenLimitsEntrance;
+
+var animate = function animate(dir) {
+  return function (_ref5) {
+    var dom = _ref5.dom;
+    dom.style.opacity = 0;
+    return setTimeout(function () {
+      dom.classList.toggle(dir);
+      dom.style.opacity = 1;
+    }, 200);
+  };
+};
+
+exports.animate = animate;
+
+var slideModalOut = function slideModalOut(_ref6) {
+  var dom = _ref6.dom;
+  return new Promise(function () {
+    dom.classList.remove("slideRight");
+    return setTimeout(function () {
+      dom.classList.add("reverseAnimation", "slideRight");
+    }, 200);
+  });
+};
+
+exports.slideModalOut = slideModalOut;
+
+var animateChildrenLimitsExit = function animateChildrenLimitsExit(_ref7) {
+  var dom = _ref7.dom;
+  return new Promise(function () {
+    ;
+
+    _toConsumableArray(dom.children).reverse().map(function (child, idx) {
+      return setTimeout(function () {
+        child.style.display = "none";
+      }, idx * 100);
+    });
+  });
+};
+
+exports.animateChildrenLimitsExit = animateChildrenLimitsExit;
+});
+
+;require.register("Utils/helpers.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.jsonCopy = exports.scrollToAnchor = exports.getRoute = exports.debounce = exports.filterListBy = exports._paginate = exports._direction = exports._sort = exports._search = exports.removeHyphens = exports.addTerms = exports.infiniteScroll = exports.isEmpty = exports.log = exports.makeRoute = void 0;
+
+var _ramda = require("ramda");
+
+var _data = _interopRequireDefault(require("data.task"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var collator = new Intl.Collator(undefined, {
+  numeric: true,
+  sensitivity: "base"
+});
+
+var sortByCollator = function sortByCollator(attr) {
+  return function (xs) {
+    var listCopy = JSON.parse(JSON.stringify(xs));
+    listCopy.sort(function (a, b) {
+      // console.log(
+      //   "as and bs",
+      //   attr,
+      //   a[attr],
+      //   b[attr],
+      //   collator.compare(a[attr], b[attr])
+      // )
+      return collator.compare(a[attr], b[attr]);
+    });
+    return listCopy;
+  };
+};
+
+var makeRoute = (0, _ramda.compose)((0, _ramda.join)("-"), (0, _ramda.split)(" "), (0, _ramda.trim)(), (0, _ramda.toLower)());
+exports.makeRoute = makeRoute;
+
+var log = function log(m) {
+  return function (v) {
+    console.log(m, v);
+    return v;
+  };
+};
+
+exports.log = log;
+
+var isEmpty = function isEmpty(data) {
+  return data.length == 0;
+};
+
+exports.isEmpty = isEmpty;
+
+var infiniteScroll = function infiniteScroll(mdl) {
+  return function (e) {
+    var route = mdl.state.route;
+    var length = mdl.data[route].data.length;
+    var setpoint = 10 * length * mdl.state.scrollPos;
+
+    if (e.target.scrollTop - mdl.state.scrollPos >= setpoint) {
+      mdl.state.scrollPos++ + e.target.scrollTop;
+    }
+  };
+};
+
+exports.infiniteScroll = infiniteScroll;
+
+var addTerms = function addTerms(ps) {
+  return function (item) {
+    var terms = (0, _ramda.compose)((0, _ramda.join)(" "), _ramda.values, (0, _ramda.props)(ps))(item);
+    return (0, _ramda.assoc)("_terms", terms, item);
+  };
+};
+
+exports.addTerms = addTerms;
+
+var removeHyphens = function removeHyphens(str) {
+  return str.replace(/-/gi, "");
+};
+
+exports.removeHyphens = removeHyphens;
+
+var byTerms = function byTerms(term) {
+  return (0, _ramda.compose)((0, _ramda.test)(new RegExp(term(), "i")), (0, _ramda.prop)("_terms"));
+};
+
+var _search = function _search(term) {
+  return (0, _ramda.compose)((0, _ramda.filter)(byTerms(term)));
+};
+
+exports._search = _search;
+
+var _sort = function _sort(attr) {
+  return function (xs) {
+    return sortByCollator(attr)(xs);
+  };
+};
+
+exports._sort = _sort;
+
+var _direction = function _direction(dir) {
+  return dir() ? _ramda.identity : _ramda.reverse;
+};
+
+exports._direction = _direction;
+
+var _paginate = function _paginate(offset) {
+  return function (limit) {
+    return function (data) {
+      return (0, _ramda.slice)((0, _ramda.max)(0, (0, _ramda.min)(offset, data.length)), (0, _ramda.min)(offset + limit, data.length), data);
+    };
+  };
+};
+
+exports._paginate = _paginate;
+
+var filterListBy = function filterListBy(query) {
+  return function (prop) {
+    return function (direction) {
+      return function (xs) {
+        // console.log("filterListBy", query, prop, direction, xs)
+        // (offset) => (
+        //   limit
+        // ) =>
+        return (0, _ramda.compose)( // log("after dir"),
+        // map(_paginate(offset)(limit)),
+        _direction(direction), // log("after sort"),
+        _sort(prop), // log("before sort")
+        _search(query))(xs);
+      };
+    };
+  };
+};
+
+exports.filterListBy = filterListBy;
+
+var debounce = function debounce(wait, now) {
+  return function (fn) {
+    var timeout = undefined;
+    return function () {
+      var context = this;
+      var args = arguments;
+
+      var later = function later() {
+        timeout = undefined;
+        if (!now) fn.apply(context, args);
+      };
+
+      var callNow = now && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      console.log(fn);
+      if (callNow) fn.apply(context, args);
+    };
+  };
+};
+
+exports.debounce = debounce;
+
+var getRoute = function getRoute() {
+  return (0, _ramda.last)(m.route.get().split("/"));
+};
+
+exports.getRoute = getRoute;
+
+var scrollToAnchor = function scrollToAnchor(anchor) {
+  var is = function is(el) {
+    return el !== undefined && el !== null;
+  }; //if you pass an undefined anchor it will scroll to the top of the body
+
+
+  var targetEl = is(anchor) ? document.getElementById(anchor) : document.body;
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  var target = is(targetEl) ? targetEl.getBoundingClientRect().top : 0;
+  window.scroll({
+    top: target + scrollTop - 10,
+    left: 0,
+    behavior: "smooth"
+  });
+};
+
+exports.scrollToAnchor = scrollToAnchor;
+
+var jsonCopy = function jsonCopy(src) {
+  return JSON.parse(JSON.stringify(src));
+};
+
+exports.jsonCopy = jsonCopy;
+});
+
+;require.register("Utils/http.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.parseHttpSuccess = exports.parseHttpError = void 0;
+
+var _data = _interopRequireDefault(require("data.task"));
+
+var _secrets = require("./secrets.js");
+
+var _Model = require("../Model.js");
+
+var _ramda = require("ramda");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function onProgress(e) {
+  if (e.lengthComputable) {
+    _Model.model.state.loadingProgress.max = e.total;
+    _Model.model.state.loadingProgress.value = e.loaded;
+    m.redraw();
+  }
+}
+
+function onLoad() {
+  return false;
+}
+
+function onLoadStart() {
+  _Model.model.state.isLoading(true);
+
+  return false;
+}
+
+function onLoadEnd() {
+  _Model.model.state.isLoading(false);
+
+  _Model.model.state.loadingProgress.max = 0;
+  _Model.model.state.loadingProgress.value = 0;
+  return false;
+}
+
+var xhrProgress = {
+  config: function config(xhr) {
+    xhr.onprogress = onProgress;
+    xhr.onload = onLoad;
+    xhr.onloadstart = onLoadStart;
+    xhr.onloadend = onLoadEnd;
+  }
+};
+
+var makeQueryString = function makeQueryString(query) {
+  return JSON.parse(JSON.stringify(query));
+};
+
+var parseQLResponse = function parseQLResponse(model) {
+  return function (_ref) {
+    var data = _ref.data,
+        errors = _ref.errors;
+    model.state.isLoading(false);
+    return errors ? Promise.reject(errors) : Promise.resolve(data);
+  };
+};
+
+var parseHttpError = function parseHttpError(model) {
+  return function (rej) {
+    return function (Errors) {
+      model.state.isLoading(false);
+      if (Errors.response) return rej(Errors.response);
+
+      if (Errors.any()) {
+        return rej({
+          Errors: (0, _ramda.pluck)("message", Errors),
+          HttpError: true
+        });
+      } else {
+        return rej({
+          Errors: Errors,
+          HttpError: true
+        });
+      }
+    };
+  };
+};
+
+exports.parseHttpError = parseHttpError;
+
+var parseHttpSuccess = function parseHttpSuccess(model) {
+  return function (res) {
+    return function (data) {
+      model.state.isLoading(false);
+      return res(data);
+    };
+  };
+}; // const getUserToken = () =>
+//   window.sessionStorage.getItem('user-token')
+//     ? window.sessionStorage.getItem('user-token')
+//     : ''
+
+
+exports.parseHttpSuccess = parseHttpSuccess;
+
+var postQlTask = function postQlTask(model) {
+  return function (query) {
+    model.state.isLoading(true);
+    return new _data.default(function (rej, res) {
+      return m.request(_objectSpread({
+        method: "POST",
+        url: _secrets.GraphQl.local,
+        withCredentials: false
+      }, xhrProgress, {
+        body: makeQueryString({
+          query: query
+        })
+      })).then(parseQLResponse(model)).then(parseHttpSuccess(model)(res), parseHttpError(model)(rej));
+    });
+  };
+};
+
+var HttpTask = function HttpTask(_headers) {
+  return function (method) {
+    return function (mdl) {
+      return function (url) {
+        return function (body) {
+          mdl.state.isLoading(true);
+          return new _data.default(function (rej, res) {
+            return m.request(_objectSpread({
+              method: method,
+              url: url,
+              headers: _objectSpread({
+                "content-type": "application/json"
+              }, _headers),
+              body: body,
+              withCredentials: false
+            }, xhrProgress)).then(parseHttpSuccess(mdl)(res), parseHttpError(mdl)(rej));
+          });
+        };
+      };
+    };
+  };
+}; // const postTask = (model) => (url) => ({ dto }) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'POST',
+//         url: `${url}`,
+//         body: dto,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+// const putTask = (model) => (url) => ({ dto }) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'PUT',
+//         url: `${url}`,
+//         body: dto,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+// const getTask = (model) => (url) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'GET',
+//         url: `${url}`,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+// const deleteTask = (model) => (url) => (id) => {
+//   model.state.isLoading(true)
+//   return new Task((rej, res) =>
+//     m
+//       .request({
+//         method: 'DELETE',
+//         url: `${url}/${id}`,
+//         headers: { 'user-token': getUserToken() },
+//         withCredentials: false,
+//         ...xhrProgress,
+//       })
+//       .then(parseHttpSuccess(model)(res), parseHttpError(model)(rej))
+//   )
+// }
+
+
+var backEndUrl = "".concat(_secrets.BackEnd.baseUrl, "/").concat(_secrets.BackEnd.APP_ID, "/").concat(_secrets.BackEnd.API_KEY, "/");
+var backEnd = {
+  getTask: function getTask(mdl) {
+    return function (url) {
+      return HttpTask(_secrets.BackEnd.headers())("GET")(mdl)(backEndUrl + url)(null);
+    };
+  },
+  postTask: function postTask(mdl) {
+    return function (url) {
+      return function (dto) {
+        return HttpTask(_secrets.BackEnd.headers())("POST")(mdl)(backEndUrl + url)(dto);
+      };
+    };
+  },
+  putTask: function putTask(mdl) {
+    return function (url) {
+      return function (dto) {
+        return HttpTask(_secrets.BackEnd.headers())("PUT")(mdl)(backEndUrl + url)(dto);
+      };
+    };
+  }
+};
+var http = {
+  backEnd: backEnd,
+  postQlTask: postQlTask
+};
+var _default = http;
+exports.default = _default;
+});
+
+;require.register("Utils/index.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _animations = require("./animations.js");
+
+Object.keys(_animations).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _animations[key];
+    }
+  });
+});
+
+var _helpers = require("./helpers.js");
+
+Object.keys(_helpers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _helpers[key];
+    }
+  });
+});
+
+var _http = require("./http.js");
+
+Object.keys(_http).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _http[key];
+    }
+  });
+});
+
+var _validation = require("./validation.js");
+
+Object.keys(_validation).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _validation[key];
+    }
+  });
+});
+});
+
+;require.register("Utils/secrets.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GraphQl = exports.BackEnd = void 0;
+
+var getUserToken = function getUserToken() {
+  return window.sessionStorage.getItem("user-token") ? window.sessionStorage.getItem("user-token") : "";
+};
+
+var BackEnd = {
+  API_KEY: "0870B3E1-56DD-4A8A-8DA7-A6F7AC417C16",
+  APP_ID: "62607660-30EF-AD36-FFB1-FF547F6B1800",
+  baseUrl: "https://api.backendless.com",
+  headers: function headers() {
+    return {
+      "user-token": getUserToken()
+    };
+  }
+};
+exports.BackEnd = BackEnd;
+var GraphQl = {
+  online: "https://us1.prisma.sh/exrx/exrx_service/dev",
+  local: "http://localhost:4466/"
+};
+exports.GraphQl = GraphQl;
+});
+
+;require.register("Utils/validation.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isNilOrEmptyOrAtom = exports.allCaps = exports.inDateRange = exports.unique = exports.maxLengthNullable = exports.onlyNumeric = exports.urlFormat = exports.phoneFormat = exports.onlyAlphaNumericSpaceSpecial = exports.onlyAlphaNumericSpaceUnderscore = exports.onlyAlphaNumericSpace = exports.onlyAlphaNumericUnderscore = exports.onlyAlphaNumeric = exports.onlyAlpha = exports.emailFormat = exports.maxSize = exports.maxLength = exports.isNullOrEmpty = exports.isNotNullOrEmpty = exports.IsNotNil = exports.isRequired = exports.validate = exports.getOrElse = void 0;
+
+var _ramda = require("ramda");
+
+var _data = require("data.validation");
+
+var _data2 = _interopRequireDefault(require("data.maybe"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getOrElse = function getOrElse(val) {
+  return function (x) {
+    return x.getOrElse(val);
+  };
+};
+
+exports.getOrElse = getOrElse;
+var validate = (0, _ramda.curry)(function (rule, lens, msg, data) {
+  return rule((0, _ramda.view)(lens, data)) ? (0, _data.Success)(data) : (0, _data.Failure)([(0, _ramda.set)(lens, msg, {})]);
+});
+exports.validate = validate;
+var isRequired = (0, _ramda.compose)(_ramda.not, _ramda.isEmpty);
+exports.isRequired = isRequired;
+var IsNotNil = (0, _ramda.compose)(_ramda.not, _ramda.isNil);
+exports.IsNotNil = IsNotNil;
+
+var isNotNullOrEmpty = function isNotNullOrEmpty(data) {
+  return !isNullOrEmpty(data);
+};
+
+exports.isNotNullOrEmpty = isNotNullOrEmpty;
+
+var isNullOrEmpty = function isNullOrEmpty(data) {
+  return (0, _ramda.isNil)(data) || (0, _ramda.isEmpty)(data);
+};
+
+exports.isNullOrEmpty = isNullOrEmpty;
+
+var maxLength = function maxLength(max) {
+  return (0, _ramda.compose)((0, _ramda.gte)(max), _ramda.length);
+};
+
+exports.maxLength = maxLength;
+var maxSize = (0, _ramda.curry)(function (max, value) {
+  return (0, _ramda.gte)(max, value);
+});
+exports.maxSize = maxSize;
+var emailFormat = (0, _ramda.test)(/@/);
+exports.emailFormat = emailFormat;
+var onlyAlpha = (0, _ramda.test)(/^[a-zA-Z]*$/);
+exports.onlyAlpha = onlyAlpha;
+var onlyAlphaNumeric = (0, _ramda.test)(/^[a-zA-Z0-9]*$/);
+exports.onlyAlphaNumeric = onlyAlphaNumeric;
+var onlyAlphaNumericUnderscore = (0, _ramda.test)(/^[a-zA-Z0-9_]*$/);
+exports.onlyAlphaNumericUnderscore = onlyAlphaNumericUnderscore;
+var onlyAlphaNumericSpace = (0, _ramda.test)(/^[a-zA-Z0-9\s]*$/);
+exports.onlyAlphaNumericSpace = onlyAlphaNumericSpace;
+var onlyAlphaNumericSpaceUnderscore = (0, _ramda.test)(/^[a-zA-Z0-9_\s]*$/);
+exports.onlyAlphaNumericSpaceUnderscore = onlyAlphaNumericSpaceUnderscore;
+var onlyAlphaNumericSpaceSpecial = (0, _ramda.test)(/^[a-zA-Z0-9_.~!*''();:@&=+$,/?#[%-\]+\s]*$/);
+exports.onlyAlphaNumericSpaceSpecial = onlyAlphaNumericSpaceSpecial;
+var phoneFormat = (0, _ramda.test)(/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/);
+exports.phoneFormat = phoneFormat;
+var urlFormat = (0, _ramda.test)(/^[a-zA-Z0-9_.~!*''();:@&=+$,/?#[%-\]+]*$/);
+exports.urlFormat = urlFormat;
+var onlyNumeric = (0, _ramda.test)(/^[0-9]*$/);
+exports.onlyNumeric = onlyNumeric;
+
+var maxLengthNullable = function maxLengthNullable(max) {
+  return (0, _ramda.compose)(getOrElse(false), (0, _ramda.map)((0, _ramda.gte)(max)), (0, _ramda.map)(_ramda.length), _data2.default.fromNullable);
+};
+
+exports.maxLengthNullable = maxLengthNullable;
+var unique = (0, _ramda.curry)(function (keys, value) {
+  var lookup = _data2.default.fromNullable(keys);
+
+  return !(0, _ramda.contains)((0, _ramda.toUpper)(value.toString()), (0, _ramda.map)(function (y) {
+    return (0, _ramda.toUpper)(y.toString());
+  }, lookup.getOrElse([])));
+});
+exports.unique = unique;
+var inDateRange = (0, _ramda.curry)(function (start, end, value) {
+  if (value == null || value === '') {
+    return true;
+  }
+
+  return new Date(start) <= new Date(value) && new Date(value) < new Date(end);
+});
+exports.inDateRange = inDateRange;
+
+var allCaps = function allCaps(str) {
+  return str.toUpperCase() === str;
+};
+
+exports.allCaps = allCaps;
+
+var isNilOrEmptyOrAtom = function isNilOrEmptyOrAtom(item) {
+  return (0, _ramda.isNil)(item) || (0, _ramda.isEmpty)(item) || item === '{$type:atom}';
+};
+
+exports.isNilOrEmptyOrAtom = isNilOrEmptyOrAtom;
+});
+
+;require.register("index.js", function(exports, require, module) {
+"use strict";
+
+var _Model = require("./Model.js");
+
+var _App = _interopRequireDefault(require("./App.js"));
+
+var _FP = require("FP");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var root = document.body;
+var winW = window.innerWidth;
+
+if (module.hot) {
+  module.hot.accept();
+}
+
+if ('development' !== "production") {
+  console.log("Looks like we are in development mode!");
+} else {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("./service-worker.js").then(function (registration) {
+        console.log("⚙️ SW registered: ", registration);
+      }).catch(function (registrationError) {
+        console.log("🧟 SW registration failed: ", registrationError);
+      });
+    });
+  }
+} // set display profiles
+
+
+var getProfile = function getProfile(w) {
+  if (w < 668) return "phone";
+  if (w < 920) return "tablet";
+  return "desktop";
+};
+
+var checkWidth = function checkWidth(winW) {
+  var w = window.innerWidth;
+
+  if (winW !== w) {
+    winW = w;
+    var lastProfile = _Model.model.state.profile;
+    _Model.model.state.profile = getProfile(w);
+    if (lastProfile != _Model.model.state.profile) m.redraw();
+  }
+
+  return requestAnimationFrame(checkWidth);
+};
+
+_Model.model.state.profile = getProfile(winW);
+checkWidth(winW); //Include custome and Fp polyfills
+
+_FP.FP.configure(); //position on page
+
+
+window.onscroll = function () {
+  _Model.model.state.scrollPos(window.pageYOffset);
+};
+
+m.route(root, "/home", (0, _App.default)(_Model.model));
+});
+
+;require.register("init.js", function(exports, require, module) {
+"use strict";
+
+document.addEventListener("DOMContentLoaded", function () {
+  require("index");
+});
+});
+
+;require.alias(".pnpm/registry.npmjs.org/process/0.11.10/node_modules/process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
+  
+
+// Auto-loaded modules from config.npm.globals.
+window.m = require("mithril");
+window.Stream = require("mithril-stream");
+
+
+});})();require('___globals___');
+
+
+//# sourceMappingURL=app.js.map
